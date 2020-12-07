@@ -2,3 +2,6 @@ name: pulsar
 title: Pulsar Documentation
 version: 1.0
 display_version: 1.0 Beta
+
+nav:
+- modules/ROOT/nav.adoc
