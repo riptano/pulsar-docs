@@ -1,7 +1,3 @@
-:doctype: book
-
-image:https://avatars1.githubusercontent.com/u/9919?s=30&v=4[GitHub,link=https://github.com/kafkaesque-io/pulsar-helm-chart]  image:https://circleci.com/gh/kafkaesque-io/pulsar-helm-chart/tree/master.svg?style=svg[CircleCI,link=https://circleci.com/gh/kafkaesque-io/pulsar-helm-chart/tree/master] image:https://img.shields.io/hexpm/l/pulsar.svg[LICENSE,link=https://github.com/kafkaesque-io/pulsar-helm-chart/blob/master/LICENSE]
-
 = Helm Chart for an Apache Pulsar Cluster
 
 This Helm chart configures an Apache Pulsar cluster.
