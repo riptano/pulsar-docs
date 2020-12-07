@@ -3,5 +3,10 @@ title: Pulsar Documentation
 version: 1.0
 display_version: 1.0 Beta
 
+asciidoc:
+  attributes:
+    sectanchors: ''
+    sectlinks: ''
+
 nav:
 - modules/ROOT/nav.adoc
