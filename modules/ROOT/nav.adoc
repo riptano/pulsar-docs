@@ -1,1 +1,2 @@
 * xref:overview.adoc[Pulsar Overview]
+* xref:helm-chart.adoc[Pulsar Helm Chart Reference]
