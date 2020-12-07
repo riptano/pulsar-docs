@@ -1,0 +1,54 @@
+= Installing DataStax Pulsar Distro on a Server
+
+The DataStax Pulsar Distro is built using replicated.io packaging.
+
+It includes:
+
+* Apache Pulsar
+* Management Dashboard
+* Promethues/Grafana/Alertmanager
+* Ready-made Grafana dashboards and Alertmanager rules
+* Support for TLS and token-based authentication
+
+== Requirements
+
+* For a single node install, a server with at least 8 CPU and 32 GB of memory is required
+* For a small HA, 4 servers are required
+
+== Installation steps
+
+. Install the base system.
+
+----
+curl -sSL https://k8s.kurl.sh/datastax-distribution-pulsar-unstable | sudo bash
+----
+
+This will take about 10 minutes to complete.
+Note the URL for connecting to the admin interface and the password.
+
+. Install the community license.
+
+----
+curl -s https://kesque-image-prod.s3.amazonaws.com/Community.yaml -o Community.yaml
+bash -l
+kubectl kots install datastax-distribution-pulsar \
+  --namespace default \
+  --license-file ./Community.yaml
+----
+
+. Open the admin interface URL in a browser.
+. Optionally add TLS hostname and certificate information.
+If you don't enter TLS information, a self-signed certificate will be used.
+. Login to the adminstration application.
+
+The user name is `admin`.
+The password was displayed after installing the base system.
+
+. Select the configuration options: single-node vs small HA, TLS enabled (for Pulsar clients), Authentication enabled (for Pulsar admin and clients)
+. Let the pre-flight checks complete, then deploy the application.
+. Once the application is deployed and the status is green, connect to the dashboard using https://+++<IP or="" hostname="">+++/.
+You can connect directly to the Grafana interface using https://+++<IP or="" hostname="">+++.+++</IP>++++++</IP>+++
+
+The username is 'admin'.
+The password is 'Z562xRxS9HYRHf'.
+In the future, this will be randomly generated on install.
