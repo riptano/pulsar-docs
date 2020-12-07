@@ -1,0 +1,13 @@
+site:
+  title: DataStax Pulsar Documentation
+  url: https://www.datastax.com/streaming/docs/
+
+content:
+  sources:
+  - url: .
+    branches: HEAD
+
+ui:
+  bundle:
+    url: https://github.com/riptano/antora-ui-pulsar/raw/main/releases/download/v0.1/ui-bundle.zip
+    snapshot: true
