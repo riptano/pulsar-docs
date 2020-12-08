@@ -1,4 +1,4 @@
-= Installing DataStax Pulsar Distro on a Server
+= Developer Quick Start
 
 The DataStax Pulsar Distro is built using replicated.io packaging.
 

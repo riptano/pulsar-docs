@@ -1,4 +1,4 @@
 * xref:overview.adoc[Pulsar Overview]
-* xref:pulsar-distro-setup.adoc[Installing Pulsar]
+* xref:pulsar-distro-setup.adoc[Developer Quick Start]
 * xref:helm-chart.adoc[Pulsar Helm Chart Reference]
 * xref:pulsar-monitor.adoc[Pulsar Monitor]
