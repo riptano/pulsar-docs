@@ -6,7 +6,7 @@ It includes:
 
 * Apache Pulsar
 * Management Dashboard
-* Promethues/Grafana/Alertmanager
+* Prometheus/Grafana/Alertmanager
 * Ready-made Grafana dashboards and Alertmanager rules
 * Support for TLS and token-based authentication
 
