@@ -1,19 +1,19 @@
-= Helm Chart for an Apache Pulsar Cluster
+= Enterprise Deployment
 
 This Helm chart configures an Apache Pulsar cluster.
 It is designed for production use, but can also be used in local development environments with the proper settings.
 
 It includes support for:
 
-* <<tls,TLS>>
-* <<authentication,Authentication>>
+* <<_tls,TLS>>
+* <<_authentication,Authentication>>
 * WebSocket Proxy
 * Standalone Functions Workers
 * Pulsar IO Connectors
-* <<tiered-storage,Tiered Storage>>
-* <<pulsar-sql,Pulsar SQL Workers>>
+* <<_tiered_storage,Tiered Storage>>
+* <<_pulsar_sql,Pulsar SQL Workers>>
 * Independent Image Versions for Components (Zookeeper, Bookkeeper, etc), enabling controlled upgrades
-* <<managing-pulsar-using-pulsar-express,Pulsar Express Web UI>> for managing the cluster
+* <<_managing_pulsar_using_pulsar_express,Pulsar Express Web UI>> for managing the cluster
 
 https://helm.sh[Helm] must be installed and initialized to use the chart.
 Both Helm 2 and Helm 3 are supported.
