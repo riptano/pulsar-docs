@@ -4,7 +4,7 @@ If you're new to DataStax Luna Streaming and its Apache Pulsar enhancements, the
 
 What is DataStax Luna Streaming?::
 
-Luna Streaming is the DataStax distribution and enhancements of Apache Pulsar, complete with DataStax enterprise-level performance and support. Luna Streaming ...
+Luna Streaming is the DataStax distribution and enhancement of Apache Pulsar, complete with DataStax enterprise-level performance and support. Luna Streaming ...
 
 What components and features are provided by Luna Streaming?::
 
