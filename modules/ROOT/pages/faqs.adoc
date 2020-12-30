@@ -4,23 +4,21 @@ If you're new to DataStax Luna Streaming and its Apache Pulsar enhancements, the
 
 What is DataStax Luna Streaming?::
 
-Luna Streaming is the DataStax distribution and enhancement of Apache Pulsar, complete with DataStax enterprise-level performance and support. Luna Streaming ...
+DataStax Luna Streaming is a new Kubernetes-based distribution of Apache Pulsar, based on the technology that https://kesque.com/[Kesque] built to run its Pulsar-as-a-service.
 
 What components and features are provided by Luna Streaming?::
 
-Answer placeholder.
+In addition to Apache Pulsar itself, Luna Streaming provides:
 
-How does Luna Streaming compare to open-source Apache Pulsar?::
+* An installer that can stand up a dev or production cluster on bare metal or VMs without a pre-existing Kubernetes environment
+* A helm chart that can deploy and manage Pulsar on your current Kubernetes infrastructure
+* Cassandra, Elastic, Kinesis, Kafka, and JDBC connectors
+* A management dashboard
+* A monitoring and alerting system
 
-Answer placeholder...
+On which version of Pulsar is Luna Streaming based?::
 
-Why would I use Luna Streaming instead of Apache Pulsar?::
-
-Answer placeholder...
-
-What additional capabilities does Luna Streaming provide?::
-
-Answer placeholder...
+Luna Streaming is based on Apache Pulsar 2.6.3.
 
 Where is the Luna Streaming public GitHub repo?::  
 
@@ -79,7 +77,7 @@ Answer placeholder...
 
 Which Kubernetes platforms are supported by Luna Streaming?::
 
-Google Kubernetes Engine (GKE), Microsoft Azure, Amazon Kubernetes Service (AKS), Kind, ... 
+Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service, Amazon Kubernetes Service (AKS), and other commonly used platforms. 
 
 What is Pulsar Sink?::
 
@@ -88,10 +86,6 @@ Answer placeholder...
 Is Luna Streaming an open-source project?
 
 Yes, Luna Streaming is open source. See (github url) for information about the contribution guidelines.
-
-Would I map subscribed topics from the pulsar-sink to my Cassandra or DataStax Enterprise (DSE) database tables?
-
-Answer placeholder...
 
 What is the replicated?::
 
