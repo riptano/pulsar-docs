@@ -1,0 +1,111 @@
+= Luna Streaming FAQs
+
+If you're new to DataStax Luna Streaming and its Apache Pulsar enhancements, these FAQs are for you.
+
+What is DataStax Luna Streaming?::
+
+Luna Streaming is the DataStax distribution and enhancements of Apache Pulsar, complete with DataStax enterprise-level performance and support. Luna Streaming ...
+
+What components and features are provided by Luna Streaming?::
+
+Answer placeholder.
+
+How does Luna Streaming compare to open-source Apache Pulsar?::
+
+Answer placeholder...
+
+Why would I use Luna Streaming instead of Apache Pulsar?::
+
+Answer placeholder...
+
+What additional capabilities does Luna Streaming provide?::
+
+Answer placeholder...
+
+Where is the Luna Streaming public GitHub repo?::  
+
+See (url) . . . 
+
+What are the install options for Luna Streaming?::
+
+* Use helm v3 to install Luna Streaming in an existing Kubernetes cluster
+* Use replicated.io to install Luna Streaming on a server or VM
+
+How do I install Luna Streaming in my Kubernetes cluster?::
+
+Use Helm to add the kafkaesque.io repo and install pulsar with pre-configured sample values. Example:
+
+----
+% helm repo add kafkaesque https://helm.kafkaesque.io
+% helm repo update
+% helm install pulsar kafkaesque/pulsar -n pulsar -f dev-values.yaml
+----
+
+How do I install Luna Streaming on my server or VM?::
+
+Use replicated.io to …  you can install on a single or multiple servers. The provided configuration example uses one server, or four servers.  
+
+How do I start the Luna Streaming Management Dashboard?::
+
+Answer placeholder...
+
+What task can I perform in the Luna Streaming Management Dashboard?::
+
+Answer placeholder…
+
+How is Luna Streaming different from DataStax Apache Kafka Connector?::
+
+Answer placeholder...
+
+What is Prometheus?::
+
+Answer placeholder...
+
+What is Grafana?::
+
+Answer placeholder...
+
+How do I set up an Ingress to access the metrics and Grafana?::
+
+Answer placeholder...
+
+Do you provide a Traefik Ingress chart?::
+
+Answer placeholder...
+
+What metrics are displayed by the pre-configured Grafana dashboards?::
+
+Answer placeholder...
+
+Which Kubernetes platforms are supported by Luna Streaming?::
+
+Google Kubernetes Engine (GKE), Microsoft Azure, Amazon Kubernetes Service (AKS), Kind, ... 
+
+What is Pulsar Sink?::
+
+Answer placeholder...
+
+Is Luna Streaming an open-source project?
+
+Yes, Luna Streaming is open source. See (github url) for information about the contribution guidelines.
+
+Would I map subscribed topics from the pulsar-sink to my Cassandra or DataStax Enterprise (DSE) database tables?
+
+Answer placeholder...
+
+What is the replicated?::
+
+Replicated provides a container-based platform to deploy cloud-native applications inside your on-prem environment, which gives you greater security and control. Luna Streaming uses replicated to ... 
+See https://www.replicated.com/. 
+
+How do I configure the replicated.io options?::
+
+Answer placeholder...
+
+What client APIs does Luna Streaming provide?::
+
+The same as for Apache Pulsar. See https://pulsar.apache.org/docs/en/client-libraries/. 
+
+== Next
+
+Learn now to ... ( topic link ) 
