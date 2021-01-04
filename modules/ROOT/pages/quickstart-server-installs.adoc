@@ -37,6 +37,7 @@ curl -s https://kesque-image-prod.s3.amazonaws.com/Community_Beta.yaml -o Commun
 bash -l
 kubectl kots install datastax-distribution-pulsar --namespace default --license-file ./Community_Beta.yaml
 ----
+TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
 +
 . Open the admin interface URL in a browser.
 . Add the TLS hostname and certificate information.
