@@ -33,11 +33,9 @@ In the command output, note the URL for connecting to the admin interface and th
 . Install the community license.
 +
 ----
-curl -s https://kesque-image-prod.s3.amazonaws.com/Community_Beta.yaml -o Community.yaml
+curl -s https://kesque-image-prod.s3.amazonaws.com/Community_Beta.yaml -o Community_Beta.yaml
 bash -l
-kubectl kots install datastax-distribution-pulsar \
-  --namespace default \
-  --license-file ./Community_Beta.yaml
+kubectl kots install datastax-distribution-pulsar --namespace default --license-file ./Community_Beta.yaml
 ----
 +
 . Open the admin interface URL in a browser.
