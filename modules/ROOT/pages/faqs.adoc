@@ -18,16 +18,23 @@ In addition to Apache Pulsar itself, Luna Streaming provides:
 
 On which version of Pulsar is Luna Streaming based?::
 
-Luna Streaming is based on Apache Pulsar 2.6.2 plus updates.
+Luna Streaming is based on Apache Pulsar 2.6.2 plus a number updates that are listed in https://github.com/riptano/pulsar-distro/blob/master/releases/2.6.2_ds/release-notes.txt.
 
-Where is the Luna Streaming public GitHub repo?::  
+Where are the Luna Streaming public GitHub repos?::  
 
-See (url) . . . 
+There are several public repos, each with different purposes. See:
+
+* https://github.com/datastax/pulsar : This is the distro repo (a fork of apache/pulsar).  
+* https://github.com/datastax/pulsar-dashboard : This is the repo for the Pulsar admin console which allows for the configuration and monitoring of Pulsar.
+* https://github.com/datastax/pulsar-monitor : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
+* https://github.com/datastax/pulsar-helm-chart : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
+* https://github.com/datastax/pulsar-sink : This is the Pulsar Sink for Cassandra.
+* https://github.com/datastax/burnell : This is a utility for Pulsar that provides various functions, such as key initialization for authentication, and JWT token creation API.
 
 What are the install options for Luna Streaming?::
 
-* Use helm v3 to install Luna Streaming in an existing Kubernetes cluster
-* Use replicated.io to install Luna Streaming on a server or VM
+* Use Helm v3 to install Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
+* Use the replicated.io packaging provided by Luna Streaming to install on a server or VM
 
 How do I install Luna Streaming in my Kubernetes cluster?::
 
