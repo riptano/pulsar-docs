@@ -23,9 +23,6 @@ The resulting configuration includes support for:
 https://helm.sh[Helm] version 3 must be installed and initialized to use the chart. 
 Please refer to Helm's https://helm.sh/docs/[documentation] to get started.
 
-_Don't want to run it yourself?
-Go to https://kesque.com[Kesque] for fully managed Pulsar services._
-
 == Add to local Helm repository
 
 NOTE: Luna Streaming supports Helm version 3.
