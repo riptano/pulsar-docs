@@ -3,7 +3,7 @@
 You have two options for installing DataStax Luna Streaming:
 
 * Via a simple Helm chart for an existing Kubernetes environment on a laptop or with a cloud provider, as covered in this topic. 
-* Via replicated.io packaging for deployment to a single server/VM, or to multiple servers/VMs. See link:Quick Start for Server/VM installs[quickstart-server-installs].
+* Via replicated.io packaging for deployment to a single server/VM, or to multiple servers/VMs. See <<quickstart-server-installs.adoc,Quick Start for Server/VM installs>>.
 
 For DataStax Luna Streaming enterprise deployments that can run on a laptop, the Helm chart and options described below configure an Apache Pulsar cluster.
 It is designed for production use, but can also be used in local development environments with the proper settings.
