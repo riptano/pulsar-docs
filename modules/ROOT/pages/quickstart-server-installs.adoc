@@ -1,19 +1,17 @@
 = Quick Start for Server/VM installs
 
-There are two options to installing DataStax Luna Streaming:
+You have two options for installing DataStax Luna Streaming:
 
-* On a laptop via Helm chart - see ( link to Helm topic ) 
-* On a server/VM or multiple servers, as covered in this topic. 
+* Via a simple Helm chart for an existing Kubernetes environment, making it possible to run Pulsar on a laptop or with a cloud provider. See (link to Helm topic). 
+* Via replicated.io packaging for deployment to a single server/VM, or to multiple servers/VMs, as covered in this topic. 
 
-Luna Streaming for servers or VMs is built using replicated.io packaging, which includes:
+Luna Streaming takes care of the replicated.io packaging details and deployment for you. The resulting deployment includes:
 
 * Apache Pulsar
 * Management Dashboard
 * Prometheus/Grafana/Alertmanager
 * Ready-made Grafana dashboards and Alertmanager rules
 * Support for TLS and token-based authentication
-
-Luna Streaming takes care of the replicated.io details for you via the commands below. 
 
 == Requirements
 
