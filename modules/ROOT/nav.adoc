@@ -1,5 +1,5 @@
 * xref:overview.adoc[Luna Streaming Overview]
 * xref:faqs.adoc[Luna Streaming FAQs]
-* xref:pulsar-distro-setup.adoc[Developer Quick Start]
-* xref:helm-chart.adoc[Enterprise Deployment]
-** xref:pulsar-monitor.adoc[Pulsar Monitor]
+* xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]
+* xref:quickstart-server-installs.adoc[Quick start for Server installs]
+* xref:pulsar-monitor.adoc[Pulsar Monitor]
