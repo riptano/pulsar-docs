@@ -18,6 +18,7 @@ Luna Streaming takes care of the replicated.io packaging details and deployment 
 
 * For a single node install, a server with at least 8 CPU and 32 GB of memory is required
 * For a small HA, 4 servers are required
+* The server should have at least a 40 GB drive. However, the size depends on how much data you want to be able to store. If you want to be able to store 500 GB of message data, then you need a 540 GB drive.
 
 == Installation steps
 
@@ -28,7 +29,17 @@ curl -sSL https://k8s.kurl.sh/datastax-distribution-pulsar-unstable | sudo bash
 ----
 +
 This will take about 10 minutes to complete.
-In the command output, note the URL for connecting to the admin interface and the password.
+Near the conclusion of the command output, note the URL for connecting to the admin interface and the password.
+For example:
++
+----
+. . . 
+		Installation
+		  Complete ✔
+
+Kotsadm: http://10.101.37.2:8800
+Login with password (will not be shown again): Wm501W6GY
+----
 +
 . Install the community license.
 +
@@ -39,7 +50,7 @@ kubectl kots install datastax-distribution-pulsar --namespace default --license-
 ----
 TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
 +
-. Open the admin interface URL in a browser.
+. Open the admin interface URL in a browser. In the example command output above, it's http://10.101.37.2:8800. 
 . Add the TLS hostname and certificate information.
   If you don't enter TLS information, a self-signed certificate will be used.
 . Login to the adminstration application.
