@@ -18,7 +18,7 @@ In addition to Apache Pulsar itself, Luna Streaming provides:
 
 On which version of Pulsar is Luna Streaming based?::
 
-Luna Streaming is based on Apache Pulsar 2.6.3.
+Luna Streaming is based on Apache Pulsar 2.6.2 plus updates.
 
 Where is the Luna Streaming public GitHub repo?::  
 
