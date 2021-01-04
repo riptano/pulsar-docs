@@ -37,7 +37,7 @@ curl -s https://kesque-image-prod.s3.amazonaws.com/Community.yaml -o Community.y
 bash -l
 kubectl kots install datastax-distribution-pulsar \
   --namespace default \
-  --license-file ./Community.yaml
+  --license-file ./Community_Beta.yaml
 ----
 +
 . Open the admin interface URL in a browser.
