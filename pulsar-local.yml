@@ -1,6 +1,6 @@
 site:
-  title: DataStax Pulsar Documentation
-  url: https://www.datastax.com/streaming/docs/
+  title: DataStax Luna Streaming Documentation
+  url: https://docs.datastax.com/en/luna/streaming/
 
 content:
   sources:
