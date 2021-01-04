@@ -1,11 +1,11 @@
-= Luna Streaming Quick Start for Server/VM installs
+= Quick Start for Server/VM installs
 
 There are two options to installing DataStax Luna Streaming:
 
 * On a laptop via Helm chart - see ( link to Helm topic ) 
 * On a server/VM or multiple servers, as covered in this topic. 
 
-Luna Streaming for well-resourced servers/VMs is built using replicated.io packaging, which includes:
+Luna Streaming for servers or VMs is built using replicated.io packaging, which includes:
 
 * Apache Pulsar
 * Management Dashboard
