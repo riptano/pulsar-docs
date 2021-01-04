@@ -1,8 +1,11 @@
-= Developer Quick Start
+= Developer Quick Start via Server/VM install
 
-The DataStax Pulsar Distro is built using replicated.io packaging.
+There are two options to installing DataStax Luna Streaming:
 
-It includes:
+* On a laptop via Helm chart - see ( link to Helm topic ) 
+* On a server/VM or multiple servers, as covered in this topic. 
+
+Luna Streaming for servers/VMs is built using replicated.io packaging, which includes:
 
 * Apache Pulsar
 * Management Dashboard
@@ -24,7 +27,7 @@ curl -sSL https://k8s.kurl.sh/datastax-distribution-pulsar-unstable | sudo bash
 ----
 +
 This will take about 10 minutes to complete.
-Note the URL for connecting to the admin interface and the password.
+In the command output, note the URL for connecting to the admin interface and the password.
 +
 . Install the community license.
 +
@@ -37,7 +40,7 @@ kubectl kots install datastax-distribution-pulsar \
 ----
 +
 . Open the admin interface URL in a browser.
-. Optionally add TLS hostname and certificate information.
+. Add the TLS hostname and certificate information.
   If you don't enter TLS information, a self-signed certificate will be used.
 . Login to the adminstration application.
 +
@@ -52,3 +55,5 @@ You can connect directly to the Grafana interface using https://<ip-or-hostname>
 The username is 'admin'.
 The password is 'Z562xRxS9HYRHf'.
 In the future, this will be randomly generated on install.
+. Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. You can connect a test client (Test Clients) directly from the admin console and you can view the built-in Grafana dashboards (Cluster/Monitoring).
+
