@@ -21,7 +21,7 @@ The docs can be generated locally during development, to check work.
 
 [source,bash]
 ----
-antora pulsar-local.yml
+antora --clean --fetch pulsar-local.yml
 ----
 
 Output files are located in the build directory.
