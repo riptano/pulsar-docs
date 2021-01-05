@@ -1,4 +1,3 @@
-= Pulsar Overview
-John Francis <john.francis@datastax.com>
+= Luna Streaming Overview
 
-This is a brief overview of the DataStax Pulsar project.
+This is a brief overview of the DataStax Luna Streaming project.
