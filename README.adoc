@@ -32,5 +32,5 @@ To generate files for publishing:
 
 [source,bash]
 ----
-antora --clean --fetch pulsar-remote.yml
+antora --clean --fetch pulsar-publish.yml
 ----
