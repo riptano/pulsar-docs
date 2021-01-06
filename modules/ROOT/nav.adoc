@@ -1,4 +1,3 @@
-* xref:overview.adoc[Luna Streaming Overview]
 * xref:faqs.adoc[Luna Streaming FAQs]
 * xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]
 * xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]
