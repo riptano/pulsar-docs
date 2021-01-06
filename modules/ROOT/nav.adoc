@@ -1,4 +1,4 @@
-* xref:faqs.adoc[Luna Streaming FAQs]
-* xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]
-* xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]
-* xref:pulsar-monitor.adoc[Pulsar Monitor]
+* xref:faqs.adoc[]
+* xref:quickstart-helm-installs.adoc[]
+* xref:quickstart-server-installs.adoc[]
+* xref:pulsar-monitor.adoc[]
