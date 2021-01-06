@@ -25,3 +25,12 @@ antora --clean --fetch pulsar-local.yml
 ----
 
 Output files are located in the build directory.
+
+== Publishing the HTML output
+
+To generate files for publishing:
+
+[source,bash]
+----
+antora --clean --fetch pulsar-remote.yml
+----
