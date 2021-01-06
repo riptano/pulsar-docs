@@ -25,32 +25,43 @@ Where are the Luna Streaming public GitHub repos?::
 There are several public repos, each with different purposes. See:
 
 * https://github.com/datastax/pulsar : This is the distro repo (a fork of apache/pulsar).  
-* https://github.com/datastax/pulsar-dashboard : This is the repo for the Pulsar admin console which allows for the configuration and monitoring of Pulsar.
-* https://github.com/datastax/pulsar-monitor : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
+* https://github.com/datastax/pulsar-admin-console : This is the repo for the Pulsar admin console, which allows for the configuration and monitoring of Pulsar.
+https://github.com/datastax/pulsar-heartbeat : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
 * https://github.com/datastax/pulsar-helm-chart : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
 * https://github.com/datastax/pulsar-sink : This is the Pulsar Sink for Cassandra.
 * https://github.com/datastax/burnell : This is a utility for Pulsar that provides various functions, such as key initialization for authentication, and JWT token creation API.
 
 What are the install options for Luna Streaming?::
 
-* Use Helm v3 to install Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
-* Use the replicated.io packaging provided by Luna Streaming to install on a server or VM
+* Use the provided Helm Chart to install Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
+* Use the provided replicated.io packaging to install on a single or multiple server(s) or VM(s)
 
 How do I install Luna Streaming in my Kubernetes cluster?::
 
-Use Helm to add the kafkaesque.io repo and install pulsar with pre-configured sample values. Example:
+We provides a Helm Chart (version 3) to add the datastax-pulsar repo and install Luna Streaming (Pulsar) on your local or cloud-provided Kubernetes cluster. Example:
 
 ----
-% helm repo add kafkaesque https://helm.kafkaesque.io
-% helm repo update
-% helm install pulsar kafkaesque/pulsar -n pulsar -f dev-values.yaml
+helm repo add datastax-pulsar https://datastax.github.io/pulsar-helm-chart
+curl -LOs https://datastax.github.io/pulsar-helm-chart/examples/dev-values.yaml
+helm install pulsar -f dev-values.yaml datastax-pulsar/pulsar
 ----
+
+You can set additional options in the values file, but the commands above represent the quick start approach. For more, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].
 
 How do I install Luna Streaming on my server or VM?::
 
-Use replicated.io to …  you can install on a single or multiple servers. The provided configuration example uses one server, or four servers.  
+We provide a pre-configuration replicated.io package to install Luna Streaming on a single server/VM or multiple (4) servers/VMs. Example initial setup commands:
 
-How do I start the Luna Streaming Management Dashboard?::
+----
+curl -sSL https://k8s.kurl.sh/datastax-distribution-pulsar | sudo bash
+curl -s https://kesque-image-prod.s3.amazonaws.com/Community.yaml -o Community.yaml
+bash -l
+kubectl kots install datastax-distribution-pulsar --namespace default --license-file ./Community.yaml
+----
+
+Then follow the full instructions in xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
+
+How do I start the Luna Streaming Admin Console?::
 
 Answer placeholder...
 
