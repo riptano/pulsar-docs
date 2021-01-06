@@ -24,9 +24,9 @@ Where are the Luna Streaming public GitHub repos?::
 
 There are several public repos, each with different purposes. See:
 
-* https://github.com/datastax/pulsar : This is the distro repo (a fork of apache/pulsar).  
+// * https://github.com/datastax/pulsar : This is the distro repo (a fork of apache/pulsar).  
 * https://github.com/datastax/pulsar-admin-console : This is the repo for the Pulsar admin console, which allows for the configuration and monitoring of Pulsar.
-https://github.com/datastax/pulsar-heartbeat : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
+* https://github.com/datastax/pulsar-heartbeat : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
 * https://github.com/datastax/pulsar-helm-chart : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
 * https://github.com/datastax/pulsar-sink : This is the Pulsar Sink for Cassandra.
 * https://github.com/datastax/burnell : This is a utility for Pulsar that provides various functions, such as key initialization for authentication, and JWT token creation API.
