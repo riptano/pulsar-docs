@@ -35,6 +35,8 @@ Pulsar Heartbeat is a data driven tool that sources configuration from a yaml or
 * A command line argument `./pulsar-monitor -config /path/to/pulsar_ops_monitor_config.yml`
 * A default path to `../config/runtime.yml`
 
+You can download a template https://github.com/datastax/pulsar-heartbeat/blob/master/config/runtime-template.json[here].
+
 == Observability
 
 Pulsar Heartbeat exposes Prometheus compliant metrics at the `\metrics` endpoint for scraping. The exported metrics are:
