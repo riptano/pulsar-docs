@@ -53,25 +53,6 @@ If you've got an existing K8 environment...:: To deploy Luna Streaming in your e
 
 If you've got bare metal or a cloud environment...:: To deploy Luna Streaming environment from scratch on bare metal or in a cloud environment, see xref::quickstart-server-installs.adoc[].
 
-If you'd like to learn about the Luna Streaming Monitor service...:: See xref::pulsar-monitor.adoc[].
+If you'd like to learn about Pulsar Hearbeat...:: See xref::pulsar-monitor.adoc[].
 
 If you've got more questions...:: For additional information about Luna Streaming, see xref::faqs.adoc[].
-
-== Next steps...
-
-If you'd like to review a list of frequently asked questions before continuing, see xref::faqs.adoc[]. Otherwise choose from the following topics.
-
-=== If you've got an existing K8 environment...
-To deploy Luna Streaming in your existing Kubernetes environment, see:
-
-* xref::quickstart-helm-installs.adoc[].
-
-=== If you've got bare metal or a cloud environment...
-To deploy Luna Streaming environment from scratch on bare metal or in a cloud environment, see:
-
-* xref::quickstart-server-installs.adoc[].
-
-=== If you'd like to learn about the Luna Streaming Monitor service...
-See:
-
-* xref::pulsar-monitor.adoc[].
