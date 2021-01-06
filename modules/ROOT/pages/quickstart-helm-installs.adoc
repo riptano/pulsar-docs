@@ -53,11 +53,18 @@ brew install gcc
 brew install helm
 ----
 
-Again only if you don't already have a Kubernetes cluster, create one. For information on setting up a minikube environment, see its https://minikube.sigs.k8s.io/docs/start/[documentation].
+Again, only if you don't already have a Kubernetes cluster, create one. For details on setting up minikube, see its https://minikube.sigs.k8s.io/docs/start/[documentation]. Here's a quick summary of the commands, which assume you already have Homebrew and https://kubernetes.io/docs/tasks/tools/install-kubectl[kubectl] installed:
+
+----
+brew install minikube
+which minikube
+minikube start
+kubectl get pods -A
+----
 
 == Use Helm to add the repo and install Luna Streaming (Pulsar) on your laptop
 
-With the prerequisites met, submit:
+With the prerequisites listed above met, enter these commands:
 
 ----
 helm repo add datastax-pulsar https://datastax.github.io/pulsar-helm-chart
