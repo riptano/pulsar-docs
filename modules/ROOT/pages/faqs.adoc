@@ -18,13 +18,17 @@ In addition to Apache Pulsar itself, Luna Streaming provides:
 
 On which version of Pulsar is Luna Streaming based?::
 
-Luna Streaming is based on Apache Pulsar 2.6.2 plus a number updates that are listed in https://github.com/riptano/pulsar-distro/blob/master/releases/2.6.2_ds/release-notes.txt.
+Luna Streaming is based on Apache Pulsar 2.6.2 plus updates, including commits from DataStax contributors. 
+
+////
+See https://github.com/datastax/pulsar  TODO: provide relevant release-notes.txt full path here instead of this private https://github.com/riptano/pulsar-distro/blob/master/releases/2.6.2_ds/release-notes.txt.
+////
 
 Where are the Luna Streaming public GitHub repos?::  
 
 There are several public repos, each with different purposes. See:
 
-// * https://github.com/datastax/pulsar : This is the distro repo (a fork of apache/pulsar).  
+* https://github.com/datastax/pulsar : This is the distro repo (a fork of apache/pulsar).  
 * https://github.com/datastax/pulsar-admin-console : This is the repo for the Pulsar admin console, which allows for the configuration and monitoring of Pulsar.
 * https://github.com/datastax/pulsar-heartbeat : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
 * https://github.com/datastax/pulsar-helm-chart : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
