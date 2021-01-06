@@ -3,7 +3,9 @@ John Smart <john.smart@datastax.com>
 
 DataStax Luna Streaming is a new Kubernetes-based distribution of Apache Pulsar, based on the technology that Kesque built to run its Pulsar-as-a-service.
 
-In addition to Apache Pulsar itself, Luna Streaming provides:
+== Components
+
+In addition to the distribution of https://pulsar.apache.org/docs/en/2.6.2/standalone/[Apache Pulsar 2.6.2], DataStax Luna Streaming provides:
 
 * An installer that can stand up a dev or production cluster on bare metal or VMs without a pre-existing Kubernetes environment
 
@@ -14,3 +16,33 @@ In addition to Apache Pulsar itself, Luna Streaming provides:
 * A management Admin Console
 
 * A monitoring and alerting system
+
+== Features
+
+* Horizontally scalable to millions of independent topics and millions of messages published per second
+
+* Strong ordering and consistency guarantees
+
+* Low latency durable storage
+
+* Topic and queue semantics
+
+* Load balancer
+
+* Designed for being deployed as a hosted service:
+** Multi-tenant
+** Authentication
+** Authorization
+** Quotas
+** Support for mixing very different workloads
+** Optional hardware isolation
+
+* Keeps track of consumer cursor position
+
+* REST API for provisioning, admin and stats
+
+* Geo replication
+
+* Transparent handling of partitioned topics
+
+* Transparent batching of messages
