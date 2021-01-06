@@ -15,8 +15,8 @@ The resulting configuration includes support for:
 * WebSocket Proxy
 * Standalone Functions Workers
 * Pulsar IO Connectors
-* xref:quickstart-helm-installs.adoc#tiered_storage[Tiered Storage] including Tardigarde distributed cloud storage
-* xref:quickstart-helm-installs.adoc#pulsar_sql[Pulsar SQL Workers]
+* xref:quickstart-helm-installs.adoc#tiered-storage[Tiered Storage] including Tardigarde distributed cloud storage
+* xref:quickstart-helm-installs.adoc#pulsar-sql[Pulsar SQL Workers]
 * Admin Console for managing the cluster
 * Pulsar heartbeat
 * Burnell for API-based token generation
