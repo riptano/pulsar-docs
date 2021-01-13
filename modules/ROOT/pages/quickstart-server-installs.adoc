@@ -70,11 +70,13 @@ To add worker nodes to this installation, run the following script on your other
 . Download and install the Community license.
 +
 ----
-curl -s https://kesque-image-prod.s3.amazonaws.com/community.yaml -o Community.yaml
+curl -s https://downloads.datastax.com/luna-streaming/license/Community.yaml -o Community.yaml
 bash -l
 kubectl kots install luna-streaming --namespace default --license-file ./Community.yaml
 ----
 + 
+TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
++
 Output from the install command:
 +
 ----
@@ -82,20 +84,20 @@ Output from the install command:
   • Waiting for Admin Console to be ready ✓  
 ----
 +
-**Internal temporary note:** the license url will change to this for GA: https://downloads.datastax.com/luna-streaming/license/community.yaml 
-+
-TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
 . Open the installation interface URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.34.161:8800. 
 +
 In the browser, you may see a message similar to this:
 +
 image::luna-streaming-tls-warning.png[TLS warning dialog]
-. Optionally, add the TLS hostname and certificate information. 
 +
-Or, skip the LTS setup and click Continue. If you don't enter TLS information, a self-signed certificate will be used. 
-. Login to the adminstration application.
-The user name is `admin`.
-The password was displayed after installing the base system in step 1 above.
+Note the browser security advice, and click the Continue to Setup button. If you encounter a "Your connection is not private" dialog, you can (if you agree) click the Advanced section and click "Proceed to <your IP address>". 
++
+. The installation console displays the "HTTPS for Luna Streaming admin console" page. It includes an explanation that we're currently using a self-signed TLS certificate to secure the communication between your browser and the management console. If you don't upload your own TLS cert, you'll see a warning about this scenario in your browser every time you access the management console.
++
+In development, if you agree, you can click Skip &amp; continue. 
+. Login to the Luna Streaming Admin Console.
+The user name defaults to `admin`.
+Enter the password that was displayed after installing the base system in step 1 above.
 . Select the configuration options: 
 Select the configuration type, single node or small HA. If you select small HA make sure you have previously added the required number of nodes.
 +
