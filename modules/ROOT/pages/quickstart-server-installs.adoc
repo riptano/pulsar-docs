@@ -31,19 +31,42 @@ curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
 ----
 +
 This will take about 10 minutes to complete.
-Near the conclusion of the command output, be sure to note (for a later step) **the URL displayed for connecting to the admin interface and the password**.
-For example:
++
+TIP: Near the conclusion of the command output, be sure to note (for later steps) **the URL displayed for connecting to the admin interface and the password**, and other tips. 
++
+The following is sample output from the install. Your version will have different values:
 +
 ----
-. . . 
+.
+.
+.
+deployment.apps/metrics-server created
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+configmap/kurl-config created
+
+
 		Installation
 		  Complete ✔
 
-Kotsadm: http://10.101.37.2:8800
-Login with password (will not be shown again): Wm501W6GY
+Kotsadm: http://10.101.34.161:8800
+Login with password (will not be shown again): uidMj4Be6
+
+To access the cluster with kubectl, ensure the KUBECONFIG environment variable is unset:
+
+    echo unset KUBECONFIG >> ~/.profile
+    bash -l
+
+Node join commands expire after 24 hours.
+
+To generate new node join commands, run curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token on this node.
+
+To add worker nodes to this installation, run the following script on your other nodes:
+    curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.34.161:6443 kubeadm-token=cuo1ja.f5iszjdmcwvhx67s kubeadm-token-ca-hash=sha256:9efd7031f508d1dfe651258843908eeb2a2b05a0ff5acfb2f564bddd24d06460 kubernetes-version=1.19.3 docker-registry-ip=10.96.2.35
+
+
 ----
 +
-. If you are planning a multi-node installation (small HA), add the worker nodes. The command to run **on each node** is displayed after step 1 is complete; see the text following, “To add worker nodes to this installation...” in the output. If necessary, you can regenerate the node install command using the following:
+. If you are planning a multi-node installation (small HA), add the worker nodes. The Luna Streaming configuration is for 4 nodes. The command to run **on each node** is displayed in the output; the sample values above are just an example. See the text for your environment following, “To add worker nodes to this installation...” in the output. If necessary, you can regenerate the node install command using the following:
 +
 `curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token`
 +
