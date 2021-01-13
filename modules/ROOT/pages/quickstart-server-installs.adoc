@@ -64,17 +64,17 @@ The user name is `admin`.
 The password was displayed after installing the base system in step 1 above.
 . Select the configuration options: 
 Select the configuration type, single node or small HA. If you select small HA make sure you have previously added the required number of nodes.
-
++
 Enter a DNS resolvable name for the cluster. For a single node install, this should resolve to the IP address of the single node. For a multi-node install, the DNS name should resolve to a list of all the IP addresses in the cluster.
-
++
 Optionally enable TLS enabled for Pulsar clients. If you entered TLS information in step 4, that certificate will be used. The certificate should be signed by a public authority (for example, Let’s Encrypt). If you want to use a self-signed certificate, select “Generate Self-Signed Certificate”.
-
++
 Optionally enable token-based authentication for Pulsar admin and clients. The installation will automatically generate keys and tokens. The superuser token can be retrieved from the Admin Console.
-
++
 The BookKeeper storage settings allow you to optionally use attached volumes for the BookKeeper journal and ledgers. By default, they will use the OS volume of the servers. However, if you have attached devices, the installation will automatically detect them and map them to BookKeeper. The journal device should be 20 GB. The ledger device can be any size, but defaults to 50 GB. Make sure the attached volume device is at least as large as the specified size. If it is not large enough, it will not be successfully mapped. 
-
++
 Once you have entered the config options, click on “Save Config”.
-
++
 . Let the pre-flight checks complete, then deploy the application.
 
 . Once the application is deployed and the Application status is green on the Dashboard/Application tab, open the Pulsar Admin Console in a browser. Use the hostname if you configured one when enabling TLS in Step 4. You can also find the hostname on the Dashboard/Config tab under **Main Settings**.
