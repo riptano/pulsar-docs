@@ -70,7 +70,7 @@ To add worker nodes to this installation, run the following script on your other
 . Download and install the Community license.
 +
 ----
-curl -s https://downloads.datastax.com/luna-streaming/license/Community.yaml -o Community.yaml
+curl -s https://downloads.datastax.com/license/luna-streaming/Community.yaml -o Community.yaml
 bash -l
 kubectl kots install luna-streaming --namespace default --license-file ./Community.yaml
 ----
