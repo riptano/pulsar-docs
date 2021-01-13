@@ -7,28 +7,31 @@ You have two options for installing DataStax Luna Streaming (Pulsar):
 
 Luna Streaming takes care of the replicated.io packaging details and deployment for you. The resulting deployment includes:
 
-* Apache Pulsar
-* Management Dashboard
-* Prometheus/Grafana/Alertmanager
-* Ready-made Grafana dashboards and Alertmanager rules
-* Support for TLS and token-based authentication
+* The DataStax distribution of Apache Pulsar
+* Pulsar Admin Console
+* Prometheus Operator and Grafana Operator
+* Ready-made Grafana dashboards that visualize the metrics collected via Prometheus
+* Support for Transport Layer Security (TLS) and token-based authentication
+* Support for single-node and multi-node (4) installs
 
 == Requirements
 
+* A Linux server or VM
 * For a single node install, a server with at least 8 CPU and 32 GB of memory is required
-* For a small HA, 4 servers are required
-* The server should have at least a 40 GB drive. However, the size depends on how much data you want to be able to store. If you want to be able to store 500 GB of message data, then you need a 540 GB drive.
+* For a small HA, 4 servers are required. The servers must be on the same network so they can communicate with each other.
+* The servers should have at least 50 GB in their root disk volume. If you want to retain messages or improve performance, you should add diskl volume devices to the servers to be used by BookKeeper. Ideally BookKeeper uses 2 volumes devices, one for the journal, and one for the ledgers. The journal device should be 20GB. The ledgers' device should be large enough to hold the expected amount of stored message data, such as 500 GB. 
+* The first server must have a DNS name, which you will need to specify during the steps below. 
 
 == Installation steps
 
 . Install the base system.
 +
 ----
-curl -sSL https://k8s.kurl.sh/datastax-distribution-pulsar-unstable | sudo bash
+curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
 ----
 +
 This will take about 10 minutes to complete.
-Near the conclusion of the command output, note the URL for connecting to the admin interface and the password.
+Near the conclusion of the command output, be sure to note (for a later step) **the URL displayed for connecting to the admin interface and the password**.
 For example:
 +
 ----
@@ -40,30 +43,45 @@ Kotsadm: http://10.101.37.2:8800
 Login with password (will not be shown again): Wm501W6GY
 ----
 +
-. Install the community license.
+. If you are planning a multi-node installation (small HA), add the worker nodes. The command to run **on each node** is displayed after step 1 is complete; see the text following, “To add worker nodes to this installation...” in the output. If necessary, you can regenerate the node install command using the following:
++
+`curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token`
++
+. Download and install the Community license.
 +
 ----
-curl -s https://kesque-image-prod.s3.amazonaws.com/Community_Beta.yaml -o Community_Beta.yaml
+curl -s https://downloads.datastax.com/luna-streaming/license/Community.yaml -o Community.yaml
 bash -l
-kubectl kots install datastax-distribution-pulsar --namespace default --license-file ./Community_Beta.yaml
+kubectl kots install luna-streaming --namespace default --license-file ./Community.yaml
 ----
 TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
 +
-. Open the admin interface URL in a browser. In the example command output above, it's http://10.101.37.2:8800. 
-. Add the TLS hostname and certificate information.
-  If you don't enter TLS information, a self-signed certificate will be used.
+. Open the installation interface URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.37.2:8800. 
++
+. Optionally, add the TLS hostname and certificate information. If you don't enter TLS information, a self-signed certificate will be used.
 . Login to the adminstration application.
-+
 The user name is `admin`.
-The password was displayed after installing the base system.
-+
-. Select the configuration options: single-node vs small HA, TLS enabled (for Pulsar clients), Authentication enabled (for Pulsar admin and clients)
-. Let the pre-flight checks complete, then deploy the application.
-. Once the application is deployed and the status is green, connect to the dashboard using https://<ip-or-hostname>/.
-You can connect directly to the Grafana interface using https://<ip-or-hostname>/.
-+
-The username is 'admin'.
-The password is 'Z562xRxS9HYRHf'.
-In the future, this will be randomly generated on install.
-. Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. You can connect a test client (Test Clients) directly from the admin console and you can view the built-in Grafana dashboards (Cluster/Monitoring).
+The password was displayed after installing the base system in step 1 above.
+. Select the configuration options: 
+Select the configuration type, single node or small HA. If you select small HA make sure you have previously added the required number of nodes.
 
+Enter a DNS resolvable name for the cluster. For a single node install, this should resolve to the IP address of the single node. For a multi-node install, the DNS name should resolve to a list of all the IP addresses in the cluster.
+
+Optionally enable TLS enabled for Pulsar clients. If you entered TLS information in step 4, that certificate will be used. The certificate should be signed by a public authority (for example, Let’s Encrypt). If you want to use a self-signed certificate, select “Generate Self-Signed Certificate”.
+
+Optionally enable token-based authentication for Pulsar admin and clients. The installation will automatically generate keys and tokens. The superuser token can be retrieved from the Admin Console.
+
+The BookKeeper storage settings allow you to optionally use attached volumes for the BookKeeper journal and ledgers. By default, they will use the OS volume of the servers. However, if you have attached devices, the installation will automatically detect them and map them to BookKeeper. The journal device should be 20 GB. The ledger device can be any size, but defaults to 50 GB. Make sure the attached volume device is at least as large as the specified size. If it is not large enough, it will not be successfully mapped. 
+
+Once you have entered the config options, click on “Save Config”.
+
+. Let the pre-flight checks complete, then deploy the application.
+
+. Once the application is deployed and the Application status is green on the Dashboard/Application tab, open the Pulsar Admin Console in a browser. Use the hostname if you configured one when enabling TLS in Step 4. You can also find the hostname on the Dashboard/Config tab under **Main Settings**.
+
+. Log in to the Pulsar Admin Console. 
+The username is `admin`. The password can be found in the Dashboard/Config tab of the installation interface, under the Values section.
+
+. Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. 
+
+You can connect a test client (Test Clients) directly from the admin console and you can view the built-in Grafana dashboards (Cluster/Monitoring). The Grafana user name is `admin` and the password is the same as for the Admin Console, which can be found under Dashboard/Config tab of the installation interface in the Admin Console Value section.
