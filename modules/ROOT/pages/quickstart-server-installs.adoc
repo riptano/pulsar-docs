@@ -83,5 +83,5 @@ Once you have entered the config options, click on “Save Config”.
 The username is `admin`. The password can be found in the Dashboard/Config tab of the installation interface, under the Values section.
 
 . Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. 
-
++
 You can connect a test client (Test Clients) directly from the admin console and you can view the built-in Grafana dashboards (Cluster/Monitoring). The Grafana user name is `admin` and the password is the same as for the Admin Console, which can be found under Dashboard/Config tab of the installation interface in the Admin Console Value section.
