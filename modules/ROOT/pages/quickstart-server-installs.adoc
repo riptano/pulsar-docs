@@ -89,7 +89,7 @@ TIP: If necessary on your node, preface the `kubectl` command above with `sudo k
 +
 In the browser, you may see message similar to this:
 +
-image::images/luna-streaming-tls-warning.png[TLS warning dialog]
+image::luna-streaming-tls-warning.png[TLS warning dialog]
 . Optionally, add the TLS hostname and certificate information. If you don't enter TLS information, a self-signed certificate will be used.
 . Login to the adminstration application.
 The user name is `admin`.
