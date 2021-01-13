@@ -73,10 +73,13 @@ To add worker nodes to this installation, run the following script on your other
 . Download and install the Community license.
 +
 ----
-curl -s https://downloads.datastax.com/luna-streaming/license/Community.yaml -o Community.yaml
+curl -s https://kesque-image-prod.s3.amazonaws.com/community.yaml -o community.yaml
 bash -l
-kubectl kots install luna-streaming --namespace default --license-file ./Community.yaml
+kubectl kots install luna-streaming --namespace default --license-file ./community.yaml
 ----
++ 
+**Internal note:** the license url will change to this for GA: https://downloads.datastax.com/luna-streaming/license/community.yaml 
++
 TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
 +
 . Open the installation interface URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.37.2:8800. 
