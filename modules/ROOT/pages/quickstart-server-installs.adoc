@@ -34,7 +34,7 @@ This will take about 10 minutes to complete.
 +
 TIP: Near the conclusion of the command output, be sure to note (for later steps) **the URL displayed for connecting to the admin interface and the password**, and other tips. 
 +
-The following is sample output from the install. Your version will have different values:
+The following is sample output from an install. Your version will have different values - copy them for use in later steps:
 +
 ----
 .
@@ -63,6 +63,13 @@ To add worker nodes to this installation, run the following script on your other
     curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.34.161:6443 kubeadm-token=cuo1ja.f5iszjdmcwvhx67s kubeadm-token-ca-hash=sha256:9efd7031f508d1dfe651258843908eeb2a2b05a0ff5acfb2f564bddd24d06460 kubernetes-version=1.19.3 docker-registry-ip=10.96.2.35
 ----
 +
+. If you haven't already, ensure the `KUBECONFIG` environment variable is unset by entering these commands:
++
+----
+echo unset KUBECONFIG >> ~/.profile
+bash -l
+----
++
 . If you are planning a multi-node installation (small HA), add the worker nodes. The Luna Streaming configuration is for 4 nodes. The command to run **on each node** is displayed in the output; the sample values above are just an example. See the text for your environment following, “To add worker nodes to this installation...” in the output. If necessary, you can regenerate the node install command using the following:
 +
 `curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token`
@@ -84,7 +91,7 @@ Output from the install command:
   • Waiting for Admin Console to be ready ✓  
 ----
 +
-. Open the installation interface URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.34.161:8800. 
+. Open the installation console URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.34.161:8800. 
 +
 In the browser, you may see a message similar to this:
 +
@@ -95,13 +102,29 @@ Note the browser security advice, and click the Continue to Setup button. If you
 . The installation console displays the "HTTPS for Luna Streaming admin console" page. It includes an explanation that we're currently using a self-signed TLS certificate to secure the communication between your browser and the management console. If you don't upload your own TLS cert, you'll see a warning about this scenario in your browser every time you access the management console.
 +
 In development, if you agree, you can click Skip &amp; continue. 
-. Login to the Luna Streaming Admin Console.
+. Login to the installation console. It presents options before you will launch the Luna Streaming Admin Console.
 The user name defaults to `admin`.
 Enter the password that was displayed after installing the base system in step 1 above.
 . Select the configuration options: 
-Select the configuration type, single node or small HA. If you select small HA make sure you have previously added the required number of nodes.
+The installation console presents its "Configure Luna Streaming" page. Example:
 +
-Enter a DNS resolvable name for the cluster. For a single node install, this should resolve to the IP address of the single node. For a multi-node install, the DNS name should resolve to a list of all the IP addresses in the cluster.
+image::luna-streaming-configure.png[Configure Luna Streaming page]
++ 
+Start by selecting the configuration type: single node or small HA. If you select small HA, make sure you have previously added the required number of nodes.
++
+In the Hostname field, enter a DNS resolvable name for the cluster. For a single node install, this should resolve to the IP address of the single node. For a multi-node install, the DNS name should resolve to a list of all the IP addresses in the cluster.
++ 
+If you know your node's IP address but not its DNS name, use an `nslookup` command. For example, if the node's IP is 10.101.34.161:
++
+----
+nslookup 10.101.34.161
+Server:		10.100.6.66
+Address:	10.100.6.66#53
+
+161.34.101.10.in-addr.arpa	name = ip-10-101-34-161.srv101.dsinternal.org.
+----
++
+The DNS name in this example is `ip-10-101-34-161.srv101.dsinternal.org` and you would enter this in the required Hostname field. 
 +
 Optionally enable TLS enabled for Pulsar clients. If you entered TLS information in step 4, that certificate will be used. The certificate should be signed by a public authority (for example, Let’s Encrypt). If you want to use a self-signed certificate, select “Generate Self-Signed Certificate”.
 +
@@ -109,7 +132,11 @@ Optionally enable token-based authentication for Pulsar admin and clients. The i
 +
 The BookKeeper storage settings allow you to optionally use attached volumes for the BookKeeper journal and ledgers. By default, they will use the OS volume of the servers. However, if you have attached devices, the installation will automatically detect them and map them to BookKeeper. The journal device should be 20 GB. The ledger device can be any size, but defaults to 50 GB. Make sure the attached volume device is at least as large as the specified size. If it is not large enough, it will not be successfully mapped. 
 +
-Once you have entered the config options, click on “Save Config”.
+Scroll down the Configure Luna Streaming page. In the Admin Console Values section, if you'll authenticate with username/password, copy the credentials for a subsequent Admin Console login. Example:
++
+image::luna-streaming-admin-console-sample-creds.png[Admin Console Values fields as described in surrounding text]
++ 
+Once you have entered the config options, click the Continue button.
 +
 . Let the pre-flight checks complete, then deploy the application.
 
