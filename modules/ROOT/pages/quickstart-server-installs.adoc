@@ -44,7 +44,6 @@ deployment.apps/metrics-server created
 apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
 configmap/kurl-config created
 
-
 		Installation
 		  Complete ✔
 
@@ -62,8 +61,6 @@ To generate new node join commands, run curl -sSL https://kurl.sh/luna-streaming
 
 To add worker nodes to this installation, run the following script on your other nodes:
     curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.34.161:6443 kubeadm-token=cuo1ja.f5iszjdmcwvhx67s kubeadm-token-ca-hash=sha256:9efd7031f508d1dfe651258843908eeb2a2b05a0ff5acfb2f564bddd24d06460 kubernetes-version=1.19.3 docker-registry-ip=10.96.2.35
-
-
 ----
 +
 . If you are planning a multi-node installation (small HA), add the worker nodes. The Luna Streaming configuration is for 4 nodes. The command to run **on each node** is displayed in the output; the sample values above are just an example. See the text for your environment following, “To add worker nodes to this installation...” in the output. If necessary, you can regenerate the node install command using the following:
@@ -90,6 +87,9 @@ Output from the install command:
 TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
 . Open the installation interface URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.34.161:8800. 
 +
+In the browser, you may see message similar to this:
++
+image::images/luna-streaming-tls-warning.png[TLS warning dialog]
 . Optionally, add the TLS hostname and certificate information. If you don't enter TLS information, a self-signed certificate will be used.
 . Login to the adminstration application.
 The user name is `admin`.
