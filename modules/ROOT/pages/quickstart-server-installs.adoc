@@ -70,9 +70,9 @@ To add worker nodes to this installation, run the following script on your other
 . Download and install the Community license.
 +
 ----
-curl -s https://kesque-image-prod.s3.amazonaws.com/community.yaml -o community.yaml
+curl -s https://kesque-image-prod.s3.amazonaws.com/community.yaml -o Community.yaml
 bash -l
-kubectl kots install luna-streaming --namespace default --license-file ./community.yaml
+kubectl kots install luna-streaming --namespace default --license-file ./Community.yaml
 ----
 + 
 Output from the install command:
@@ -87,10 +87,12 @@ Output from the install command:
 TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
 . Open the installation interface URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.34.161:8800. 
 +
-In the browser, you may see message similar to this:
+In the browser, you may see a message similar to this:
 +
 image::luna-streaming-tls-warning.png[TLS warning dialog]
-. Optionally, add the TLS hostname and certificate information. If you don't enter TLS information, a self-signed certificate will be used.
+. Optionally, add the TLS hostname and certificate information. 
++
+Or, skip the LTS setup and click Continue. If you don't enter TLS information, a self-signed certificate will be used. 
 . Login to the adminstration application.
 The user name is `admin`.
 The password was displayed after installing the base system in step 1 above.
