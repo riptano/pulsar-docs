@@ -78,10 +78,16 @@ bash -l
 kubectl kots install luna-streaming --namespace default --license-file ./community.yaml
 ----
 + 
-**Internal note:** the license url will change to this for GA: https://downloads.datastax.com/luna-streaming/license/community.yaml 
+Output from the install command:
++
+----
+  • Deploying Admin Console
+  • Waiting for Admin Console to be ready ✓  
+----
++
+**Internal temporary note:** the license url will change to this for GA: https://downloads.datastax.com/luna-streaming/license/community.yaml 
 +
 TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
-+
 . Open the installation interface URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.37.2:8800. 
 +
 . Optionally, add the TLS hostname and certificate information. If you don't enter TLS information, a self-signed certificate will be used.
