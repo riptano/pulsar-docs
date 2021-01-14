@@ -72,16 +72,28 @@ In a browser, open the URL listed in the command output from the Luna Streaming 
 * If you installed Luna Streaming via the Helm Chart for a Kubernetes environment residing on your laptop or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].  
 * If you installed Luna Streaming via the Replicated package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].  
 
+What task can I perform in the DataStax Luna Streaming Installation Console?::
+
+From the Installation Console, you can:
+
+* View and update the DataStax Luna Streaming version
+* Configure the DataStax Luna Streaming environment
+* Set up and view Grafana graphs, which display metrics collected by the provided Prometheus Operator
+* Analyze DataStax Luna Streaming to collect information you could provide for Support
+* Sync the license that enables DataStax Luna Streaming software
+* View upstream, midstream, and downstream files used by DataStax Luna Streaming
+* Launch the DataStax Luna Streaming Admin Console
+
 What task can I perform in the DataStax Luna Streaming Admin Console?::
 
-You can:
+From the Admin Console, you can:
 
-* View and update the Luna Streaming version.
-* Configure the initial Luna Streaming environment.
-* Set up and view Grafana graphs, which display metrics collected by the provided Prometheus Operator.
-* Analyze Luna Streaming to collect information you could provide for Support.
-* Sync the license that enables Luna Streaming software.
-* View files used by Luna Streaming.
+* Add and run Pulsar clients
+* Establish credentials for secure connections 
+* Define topics that can be published for streaming apps
+* Set up Pulsar sinks that publish topics and make them available to subscribers, such as for a Cassandra database table
+* Control namespaces used by Pulsar
+* Use the Admin API
 
 What are the features provided by DataStax Apache Pulsar Connector (`pulsar-sink`) that are not supported in `kafka-sink`::
 
