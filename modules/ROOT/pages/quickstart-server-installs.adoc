@@ -152,3 +152,31 @@ The username is `admin`. The password can be found in the Dashboard/Config tab o
 . Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. 
 +
 You can connect a test client (Test Clients) directly from the admin console and you can view the built-in Grafana dashboards (Cluster/Monitoring). The Grafana user name is `admin` and the password is the same as for the Admin Console, which can be found under Dashboard/Config tab of the installation interface in the Admin Console Value section.
+
+== Updating Luna Streaming
+
+Luna Streaming is a Replicated KOTS application. You can update the application by using the procedures in the Version History tab of the Admin Console, or via the KOTS CLI. 
+
+An example from the Version History tab:
+
+image::luna-streaming-version-history-update.png[Version History update in the Admin Console]
+
+For details, see https://kots.io/kotsadm/updating/updating-kots-apps[Updating a KOTS application].
+
+== Viewing debug logs
+
+Logs can be viewed from the installation, which uses Kubernetes. To view the logs from components, use `kubectl` commands.
+
+TIP: `kubectl` will only work on the installation node. It will not work on worker nodes.
+
+To list all the pods, enter:
+
+`kubectl get pods`
+
+To view the logs of a specific pod, for example:
+
+`kubectl logs <podname>`
+
+If the pods has multiple containers, use the following command to view the logs for one of the containers:
+
+`kubectl logs <podname> -c <containername>`
