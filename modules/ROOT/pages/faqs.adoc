@@ -16,17 +16,13 @@ In addition to Apache Pulsar itself, Luna Streaming provides:
 * A management dashboard
 * A monitoring and alerting system
 
-On which version of Pulsar is Luna Streaming based?::
+On which version of Apache Pulsar is DataStax Luna Streaming based?::
 
 Luna Streaming is based on Apache Pulsar 2.6.2 plus updates, including commits from DataStax contributors. 
 
-////
-See https://github.com/datastax/pulsar  TODO: provide relevant release-notes.txt full path here instead of this private https://github.com/riptano/pulsar-distro/blob/master/releases/2.6.2_ds/release-notes.txt.
-////
-
 Where are the Luna Streaming public GitHub repos?::  
 
-There are several public repos, each with different purposes. See:
+There are several public repos, each with a different purpose. See:
 
 * https://github.com/datastax/pulsar : This is the distro repo (a fork of apache/pulsar).  
 * https://github.com/datastax/pulsar-admin-console : This is the repo for the Pulsar admin console, which allows for the configuration and monitoring of Pulsar.
@@ -57,21 +53,31 @@ How do I install Luna Streaming on my server or VM?::
 We provide a pre-configuration replicated.io package to install Luna Streaming on a single server/VM or multiple (4) servers/VMs. Example initial setup commands:
 
 ----
-curl -sSL https://k8s.kurl.sh/datastax-distribution-pulsar | sudo bash
-curl -s https://kesque-image-prod.s3.amazonaws.com/Community.yaml -o Community.yaml
+curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
+curl -s https://downloads.datastax.com/license/luna-streaming/Community.yaml -o Community.yaml
 bash -l
-kubectl kots install datastax-distribution-pulsar --namespace default --license-file ./Community.yaml
+kubectl kots install luna-streaming --namespace default --license-file ./Community.yaml
 ----
 
 Then follow the full instructions in xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
 
 How do I start the Luna Streaming Admin Console?::
 
-Answer placeholder...
+In a browser, open the URL listed in the command output from the Luna Streaming install, follow the steps in the UI. For tips, see the following topics:
 
-What task can I perform in the Luna Streaming Management Dashboard?::
+* If you installed Luna Streaming via the Helm Chart for a Kubernetes environment residing on your laptop or a server, see ref:quickstart-helm-chart-installs.adoc[Quick Start for Helm Chart installs].  
+* If you installed Luna Streaming via the Replicated package on a large server/VM or in a small HA (4 node cluster), see ref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].  
 
-Answer placeholder…
+What task can I perform in the Luna Streaming Admin Console?::
+
+You can:
+
+* View and update the Luna Streaming version.
+* Configure the initial Luna Streaming environment.
+* Set up and view Grafana graphs, which display metrics collected by the provided Prometheus Operator.
+* Analyze Luna Streaming to collect information you could provide for Support.
+* Sync the license that enables Luna Streaming software.
+* View files used by Luna Streaming.
 
 What are the features provided by `pulsar-sink` that are not supported in `kafka-sink`::
 
@@ -97,40 +103,17 @@ What is Grafana?::
 
 https://grafana.com/[Grafana] is a visualization tool that helps you make sense of metrics and related data coming from your apps via Prometheus, for example. 
 
-
-
-How do I set up an Ingress to access the metrics and Grafana?::
-
-Answer placeholder...
-
-Do you provide a Traefik Ingress chart?::
-
-Answer placeholder...
-
-What metrics are displayed by the pre-configured Grafana dashboards?::
-
-Answer placeholder...
-
 Which Kubernetes platforms are supported by Luna Streaming?::
 
-Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service, Amazon Kubernetes Service (AKS), and other commonly used platforms. 
-
-What is Pulsar Sink?::
-
-Answer placeholder...
+They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service, Amazon Kubernetes Service (AKS), and other commonly used platforms. 
 
 Is Luna Streaming an open-source project?
 
-Yes, Luna Streaming is open source. See (github url) for information about the contribution guidelines.
+Yes, Luna Streaming is open source. See the repos FAQ listed above. 
 
 What is the replicated?::
 
-Replicated provides a container-based platform to deploy cloud-native applications inside your on-prem environment, which gives you greater security and control. Luna Streaming uses replicated to ... 
-See https://www.replicated.com/. 
-
-How do I configure the replicated.io options?::
-
-Answer placeholder...
+https://www.replicated.com/[Replicated] provides a container-based platform to deploy cloud-native applications inside your on-prem environment, which gives you greater security and control. Luna Streaming uses replicated to install our software on a large server/VM (minimum 8 CPUs, 32 GB RAM), or on a small HA comprised of 4 nodes, each with the same minimum 8 CPUs and 32 GB RAM requirement.
 
 What client APIs does Luna Streaming provide?::
 
@@ -138,4 +121,4 @@ The same as for Apache Pulsar. See https://pulsar.apache.org/docs/en/client-libr
 
 == Next
 
-Learn now to ... ( topic link ) 
+Learn now to install Luna Streaming via the ref:quickstart-helm-chart-installs.adoc[Helm Chart] or via the ref:quickstart-server-installs.adoc[Replicated] package.
