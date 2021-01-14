@@ -65,7 +65,7 @@ How do I start the Luna Streaming Admin Console?::
 
 In a browser, open the URL listed in the command output from the Luna Streaming install, follow the steps in the UI. For tips, see the following topics:
 
-* If you installed Luna Streaming via the Helm Chart for a Kubernetes environment residing on your laptop or with a cloud provider, see xref:quickstart-helm-chart-installs.adoc[Quick Start for Helm Chart installs].  
+* If you installed Luna Streaming via the Helm Chart for a Kubernetes environment residing on your laptop or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].  
 * If you installed Luna Streaming via the Replicated package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].  
 
 What task can I perform in the Luna Streaming Admin Console?::
@@ -121,4 +121,4 @@ The same as for Apache Pulsar. See https://pulsar.apache.org/docs/en/client-libr
 
 == Next
 
-Learn now to install Luna Streaming via the xref:quickstart-helm-chart-installs.adoc[Helm Chart] or via the xref:quickstart-server-installs.adoc[Replicated] package.
+Learn now to install Luna Streaming via the xref:quickstart-helm-installs.adoc[Helm Chart] or via the xref:quickstart-server-installs.adoc[Replicated] package.
