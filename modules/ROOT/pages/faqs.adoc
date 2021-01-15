@@ -2,11 +2,11 @@
 
 If you're new to DataStax Luna Streaming and its Apache Pulsar enhancements, these FAQs are for you.
 
-What is DataStax Luna Streaming?::
+=== What is DataStax Luna Streaming?
 
 DataStax Luna Streaming is a new Kubernetes-based distribution of Apache Pulsar, based on the technology that https://kesque.com/[Kesque] built to run its Pulsar-as-a-service.
 
-What components and features are provided by DataStax Luna Streaming?::
+=== What components and features are provided by DataStax Luna Streaming?
 
 In addition to Apache Pulsar itself, DataStax Luna Streaming provides:
 
@@ -16,15 +16,16 @@ In addition to Apache Pulsar itself, DataStax Luna Streaming provides:
 * A management dashboard
 * A monitoring and alerting system
 
-On which version of Apache Pulsar is DataStax Luna Streaming based?::
+=== On which version of Apache Pulsar is DataStax Luna Streaming based?
 
 DataStax Luna Streaming is based on Apache Pulsar 2.6.2 plus updates, including commits from DataStax contributors. 
 
-What does DataStax Luna Streaming provide that I cannot get with open-source Apache Pulsar?::
+=== What does DataStax Luna Streaming provide that I cannot get with open-source Apache Pulsar?
 
 Answer placeholder here.
 
-Where are the DataStax Luna Streaming public GitHub repos?::  
+[#gitHubRepos]
+=== Where are the DataStax Luna Streaming public GitHub repos?
 
 There are several public repos, each with a different purpose. See:
 
@@ -35,12 +36,12 @@ There are several public repos, each with a different purpose. See:
 * https://github.com/datastax/pulsar-sink : This is the Pulsar Sink for Cassandra.
 * https://github.com/datastax/burnell : This is a utility for Pulsar that provides various functions, such as key initialization for authentication, and JWT token creation API.
 
-What are the install options for DataStax Luna Streaming?::
+=== What are the install options for DataStax Luna Streaming?
 
 * Use the provided Helm Chart to install DataStax Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
 * Use the provided replicated.io packaging to install on a single or multiple server(s) or VM(s)
 
-How do I install DataStax Luna Streaming in my Kubernetes cluster?::
+=== How do I install DataStax Luna Streaming in my Kubernetes cluster?
 
 We provides a Helm Chart (version 3) to add the datastax-pulsar repo and install DataStax Luna Streaming on your laptop or cloud-provided Kubernetes cluster. Example:
 
@@ -52,7 +53,7 @@ helm install pulsar -f dev-values.yaml datastax-pulsar/pulsar
 
 You can set additional options in the values file, but the commands above represent the quick start approach. For more, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].
 
-How do I install DataStax Luna Streaming on my server or VM?::
+=== How do I install DataStax Luna Streaming on my server or VM?
 
 We provide a pre-configuration replicated.io package to install Luna Streaming on a single server/VM or multiple (4) servers/VMs. Example initial setup commands:
 
@@ -65,14 +66,14 @@ kubectl kots install luna-streaming --namespace default --license-file ./Communi
 
 Then follow the full instructions in xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
 
-How do I start the DataStax Luna Streaming Admin Console?::
+=== How do I start the DataStax Luna Streaming Admin Console?
 
 In a browser, open the URL listed in the command output from the Luna Streaming install, follow the steps in the UI. For tips, see the following topics:
 
 * If you installed Luna Streaming via the Helm Chart for a Kubernetes environment residing on your laptop or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].  
 * If you installed Luna Streaming via the Replicated package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].  
 
-What task can I perform in the DataStax Luna Streaming Installation Console?::
+=== What task can I perform in the DataStax Luna Streaming Installation Console?
 
 From the Installation Console, you can:
 
@@ -84,7 +85,7 @@ From the Installation Console, you can:
 * View upstream, midstream, and downstream files used by DataStax Luna Streaming
 * Launch the DataStax Luna Streaming Admin Console
 
-What task can I perform in the DataStax Luna Streaming Admin Console?::
+=== What task can I perform in the DataStax Luna Streaming Admin Console?
 
 From the Admin Console, you can:
 
@@ -95,50 +96,50 @@ From the Admin Console, you can:
 * Control namespaces used by Pulsar
 * Use the Admin API
 
-What are the features provided by DataStax Apache Pulsar Connector (`pulsar-sink`) that are not supported in `kafka-sink`::
+=== What are the features provided by DataStax Apache Pulsar Connector (`pulsar-sink`) that are not supported in `kafka-sink`?
 
 * Single record acknowledgement and negative acknowledgements.
 * The https://pulsar.apache.org/docs/en/2.6.2/io-overview/[Pulsar IO framework] provides many features that are not possible in Kafka, and has different compression formats and auth/security features. The features are handled by Pulsar.
 
-What features are missing in DataStax Apache Pulsar Connector (`pulsar-sink`) compared with `kafka-sink`::
+=== What features are missing in DataStax Apache Pulsar Connector (`pulsar-sink`) compared with `kafka-sink`?
 
 * No support for `tinyint` (`int8bit`) and `smallint` (`int16bit`).
 * The key is always a String, but you can write JSON inside it; the support is implemented in pulsar-sink, but not in Pulsar IO.
 * The “value” of a “message property” is always a String; for example, you cannot map the message property to `__ttl` or to `__timestamp`.
 * Field names inside structures must be valid for Avro, even in case of JSON structures. For example, field names like `Int.field` (with dot) or `int field` (with space) are not valid.
 
-How is DataStax Apache Pulsar Connector distributed?::
+=== How is DataStax Apache Pulsar Connector distributed?
 
 There are two packages:
 
 * The `pulsar-sink` functionality of DataStax Apache Pulsar Connector is included with DataStax Luna Streaming. It's built in!
 * You can optionally download the DataStax Apache Pulsar Connector tarball from the https://downloads.datastax.com/#pulsar-sink[DataStax Downloads] site, and then use it as its own product with your open-source Apache Pulsar install. 
 
-What is Pulsar Heartbeat?::
+=== What is Pulsar Heartbeat?
 
 https://github.com/datastax/pulsar-heartbeat[Pulsar Heartbeat] monitors the availability, tracks the performance, and reports failures of the Pulsar cluster. It produces synthetic workloads to measure end-to-end message pubsub latency.  Pulsar Heartbeat is a cloud-native application that can be installed by Helm within the Pulsar Kubernetes cluster.
 
-What is Prometheus?::
+=== What is Prometheus?
 
 https://prometheus.io/docs/introduction/overview/[Prometheus] is an open-source tool to collect metrics on a running app, providing real-time monitoring and alerts.
 
-What is Grafana?::
+=== What is Grafana?
 
 https://grafana.com/[Grafana] is a visualization tool that helps you make sense of metrics and related data coming from your apps via Prometheus, for example. 
 
-Which Kubernetes platforms are supported by DataStax Luna Streaming?::
+=== Which Kubernetes platforms are supported by DataStax Luna Streaming?
 
 They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service, Amazon Kubernetes Service (AKS), and other commonly used platforms. 
 
-Is DataStax Luna Streaming an open-source project?::
+=== Is DataStax Luna Streaming an open-source project?
 
-Yes, DataStax Luna Streaming is open source. See the repos FAQ listed above. 
+Yes, DataStax Luna Streaming is open source. See the <<gitHubRepos,repos FAQ>> above. 
 
-What is the replicated?::
+=== What is the replicated?
 
 https://www.replicated.com/[Replicated] provides a container-based platform to deploy cloud-native applications inside your on-prem environment, which gives you greater security and control. Luna Streaming uses replicated to install our software on a large server/VM (minimum 8 CPUs, 32 GB RAM), or on a small HA comprised of 4 nodes, each with the same minimum 8 CPUs and 32 GB RAM requirement.
 
-What client APIs does DataStax Luna Streaming provide?::
+=== What client APIs does DataStax Luna Streaming provide?
 
 The same as for Apache Pulsar. See https://pulsar.apache.org/docs/en/client-libraries/. 
 
