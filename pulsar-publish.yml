@@ -4,6 +4,7 @@ site:
   start_page: streaming::index.adoc
 
 content:
+  edit_url: 'https://github.com/riptano/pulsar-docs/blob/main/{path}'
   sources:
   - url: .
     branches: HEAD
