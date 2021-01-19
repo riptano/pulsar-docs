@@ -23,7 +23,11 @@ DataStax Luna Streaming is based on Apache Pulsar 2.6.2, and features additional
 
 === What does DataStax Luna Streaming provide that I cannot get with open-source Apache Pulsar?
 
-_Answer placeholder here._
+DataStax Luna Streaming is a hardened version of Apache Pulsar that been run through additional testing to ensure it is ready for production use. It also includes additional tooling to help monitor your system, including an enhanced Admin Console and a Heartbeat service to monitor the system health.
+
+=== Is DataStax Luna Streaming an open-source project?
+
+Yes, DataStax Luna Streaming is open source. See the <<gitHubRepos,repos FAQ>>. 
 
 [#gitHubRepos]
 === Where are the DataStax Luna Streaming public GitHub repos?
@@ -70,6 +74,10 @@ kubectl kots install luna-streaming --namespace default --license-file ./Communi
 ----
 
 Then follow the full instructions in xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
+
+=== What is Replicated?
+
+https://www.replicated.com/[Replicated] provides a container-based platform to deploy cloud-native applications inside your on-prem environment, which gives you greater security and control. DataStax Luna Streaming uses Replicated to install on a large server/VM (minimum 8 CPUs, 32 GB RAM), or on a small HA comprised of 4 nodes, each with the same minimum 8 CPUs and 32 GB RAM requirement. By design, the details of the Replicated packaging and its configuration are abstracted away by DataStax Luna Streaming, so that instead you can get started quickly and focus on building pub/sub apps with this enhanced distribution of Pulsar.
 
 === What are the system requirements for the server/VM installs that use Replicated KOTS?
 
@@ -139,14 +147,6 @@ https://grafana.com/[Grafana] is a visualization tool that helps you make sense 
 === Which Kubernetes platforms are supported by DataStax Luna Streaming?
 
 They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service, Amazon Kubernetes Service (AKS), and other commonly used platforms. 
-
-=== Is DataStax Luna Streaming an open-source project?
-
-Yes, DataStax Luna Streaming is open source. See the <<gitHubRepos,repos FAQ>> above. 
-
-=== What is the replicated?
-
-https://www.replicated.com/[Replicated] provides a container-based platform to deploy cloud-native applications inside your on-prem environment, which gives you greater security and control. Luna Streaming uses replicated to install our software on a large server/VM (minimum 8 CPUs, 32 GB RAM), or on a small HA comprised of 4 nodes, each with the same minimum 8 CPUs and 32 GB RAM requirement.
 
 === What client APIs does DataStax Luna Streaming provide?
 
