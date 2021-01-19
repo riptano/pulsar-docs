@@ -32,7 +32,7 @@ curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
 +
 This will take about 10 minutes to complete.
 +
-TIP: Near the conclusion of the command output, be sure to note (for later steps) **the URL displayed for connecting to the admin interface and the password**, and other tips. 
+TIP: Near the conclusion of the command output, be sure to note (for later steps) **the URL displayed for connecting to the Installation Console and the password**, and other tips. 
 +
 The following is sample output from an install. Your version will have different values - copy them for use in later steps:
 +
@@ -91,7 +91,7 @@ Output from the install command:
   • Waiting for Admin Console to be ready ✓  
 ----
 +
-. Open the Installation Console URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.34.161:8800. 
+. Open the Installation Console's URL in a browser. The URL was displayed after step 1. In the example command output above, it was http://10.101.34.161:8800. Remember to note the generated password, which you'll need soon. 
 +
 In the browser, you may see a message similar to this:
 +
@@ -132,21 +132,29 @@ Optionally enable token-based authentication for Pulsar admin and clients. The i
 +
 The BookKeeper storage settings allow you to optionally use attached volumes for the BookKeeper journal and ledgers. By default, they will use the OS volume of the servers. However, if you have attached devices, the installation will automatically detect them and map them to BookKeeper. The journal device should be 20 GB. The ledger device can be any size, but defaults to 50 GB. Make sure the attached volume device is at least as large as the specified size. If it is not large enough, it will not be successfully mapped. 
 +
-Scroll down the Configure Luna Streaming page. In the Admin Console Values section, if you'll authenticate with username/password, copy the credentials for a subsequent Admin Console login. Example:
+Scroll down the Configure Luna Streaming page. In the Values section, if you'll authenticate with username/password, copy the credentials for a subsequent Admin Console login. Example:
 +
 image::luna-streaming-admin-console-sample-creds.png[Admin Console Values fields as described in surrounding text]
 + 
-Once you have entered the config options, click the Continue button.
+Once you have entered the config options, click **Continue**.
 +
 . Let the pre-flight checks complete. Example:
 +
 image:luna-streaming-preflight-checks.png[Luna Streaming preflight checks shows all verifications successfully completed]
 +
 When you're ready, click Continue to deploy the Luna Streaming application. 
-+
-. Once the application is deployed and the Application status is green on the Installation Console's Application tab, open the Pulsar Admin Console in a browser. Use the hostname if you configured one when enabling TLS in Step 4. You can also find the hostname on the Installation Console's Config tab, under **Main Settings**.
 
-. Log in to the Pulsar Admin Console. 
+== Launch the DataStax Luna Streaming Admin Console
+
+Once the application is deployed and the Application status is green on the Installation Console's Application tab, open the Admin Console in a browser. 
+
+For example, if you specified ip-10-101-34-161.srv101.dsinternal.org as the hostname in the Installation Console's Config tab, and if you did not configure TLS, launch the Admin Console in a browser:
+
+http://ip-10-101-34-161.srv101.dsinternal.org 
+
+Or open https://ip-10-101-34-161.srv101.dsinternal.org if you configured TLS from the Installation Console. 
+
+. Log in to the DataStax Luna Streaming Admin Console. 
 The username is `admin`. You can find the password in the Installation Console's Config tab, under **Values**.
 
 . Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. 
