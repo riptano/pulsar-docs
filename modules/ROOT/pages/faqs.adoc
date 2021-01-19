@@ -19,15 +19,11 @@ In addition to Apache Pulsar itself, DataStax Luna Streaming provides:
 
 === On which version of Apache Pulsar is DataStax Luna Streaming based?
 
-DataStax Luna Streaming is based on Apache Pulsar 2.6.2 plus updates, including commits from DataStax contributors. 
-
-=== Is there a prerequisite version of Java needed for the DataStax Luna Streaming installation?
-
-The DataStax Luna Streaming distribution is designed for Java 11. However, because the product releases Docker images, you do not need to install Java (8 or 11) in advance. Java 11 is bundled in the Docker image.
+DataStax Luna Streaming is based on Apache Pulsar 2.6.2, and features additional enhancements from DataStax contributors. 
 
 === What does DataStax Luna Streaming provide that I cannot get with open-source Apache Pulsar?
 
-Answer placeholder here.
+_Answer placeholder here._
 
 [#gitHubRepos]
 === Where are the DataStax Luna Streaming public GitHub repos?
@@ -40,6 +36,10 @@ There are several public repos, each with a different purpose. See:
 * https://github.com/datastax/pulsar-helm-chart : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
 * https://github.com/datastax/pulsar-sink : This is the Pulsar Sink for Cassandra.
 * https://github.com/datastax/burnell : This is a utility for Pulsar that provides various functions, such as key initialization for authentication, and JWT token creation API.
+
+=== Is there a prerequisite version of Java needed for the DataStax Luna Streaming installation?
+
+The DataStax Luna Streaming distribution is designed for Java 11. However, because the product releases Docker images, you do not need to install Java (8 or 11) in advance. Java 11 is bundled in the Docker image.
 
 === What are the install options for DataStax Luna Streaming?
 
