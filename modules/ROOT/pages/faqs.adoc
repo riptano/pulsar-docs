@@ -60,7 +60,7 @@ You can set additional options in the values file, but the commands above repres
 
 === How do I install DataStax Luna Streaming on my server or VM?
 
-DataStax Luna Streaming provide a pre-configured https://www.replicated.com/[Replicated kURL] package to install Luna Streaming on a single server/VM or multiple (4) servers/VMs. Example initial setup commands:
+DataStax Luna Streaming provide a pre-configured https://www.replicated.com/[Replicated kURL, window=_blank] package to install Luna Streaming on a single server/VM or multiple (4) servers/VMs. Example initial setup commands:
 
 ----
 curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
