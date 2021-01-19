@@ -103,13 +103,3 @@ Run docker container with Pulsar CA certificate if TLS is enabled and expose Pro
 $ docker run -d -it -v ./config/runtime.yml:/config/runtime.yml -v /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem:/etc/ssl/certs/ca-bundle.crt -p 8080:8080 --name=pulsar-heartbeat datastax/pulsar-heartbeat:latest
 ----
 
-== Helm chart
-
-=== Install as an individual deployment using helm
-
-Pulsar Heartbeat can be installed by this https://github.com/kafkaesque-io/pulsar-helm-chart/tree/master/helm-chart-sources/pulsar-monitor[helm chart] (Helm version 3) With that chart, it can monitor multiple remote Pulsar clusters or co-reside on the same Pulsar cluster.
-
-[source,bash]
-----
-helm install pulsar-heartbeat kafkaesque/pulsar --namespace monitoring --values ./config/helm-values/pulsar-monitor-values.yaml
-----
