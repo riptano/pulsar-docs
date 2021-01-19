@@ -91,7 +91,7 @@ Output from the install command:
   • Waiting for Admin Console to be ready ✓  
 ----
 +
-. Open the installation console URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.34.161:8800. 
+. Open the Installation Console URL (displayed after step 1) in a browser. In the example command output above, it's http://10.101.34.161:8800. 
 +
 In the browser, you may see a message similar to this:
 +
@@ -99,14 +99,14 @@ image::luna-streaming-tls-warning.png[TLS warning dialog]
 +
 Note the browser security advice, and click the Continue to Setup button. If you encounter a "Your connection is not private" dialog, you can (if you agree) click the Advanced section and click "Proceed to <your IP address>". 
 +
-. The installation console displays the "HTTPS for Luna Streaming admin console" page. It includes an explanation that we're currently using a self-signed TLS certificate to secure the communication between your browser and the management console. If you don't upload your own TLS cert, you'll see a warning about this scenario in your browser every time you access the management console.
+. The Installation Console displays an "HTTPS for Luna Streaming admin console" message. It includes an explanation that we're currently using a self-signed TLS certificate to secure the communication between your browser and the management console. If you don't upload your own TLS cert, you'll see a warning about this scenario in your browser every time you access the management console.
 +
 In development, if you agree, you can click Skip &amp; continue. 
-. Login to the installation console. It presents options before you will launch the Luna Streaming Admin Console.
+. Login to the Installation Console. It presents options before you will launch the Luna Streaming Admin Console.
 The user name defaults to `admin`.
 Enter the password that was displayed after installing the base system in step 1 above.
 . Select the configuration options: 
-The installation console presents its "Configure Luna Streaming" page. Example:
+The Installation Console presents its "Configure Luna Streaming" page. Example:
 +
 image::luna-streaming-configure.png[Configure Luna Streaming page]
 + 
@@ -144,10 +144,10 @@ image:luna-streaming-preflight-checks.png[Luna Streaming preflight checks shows 
 +
 When you're ready, click Continue to deploy the Luna Streaming application. 
 +
-. Once the application is deployed and the Application status is green on the Dashboard/Application tab, open the Pulsar Admin Console in a browser. Use the hostname if you configured one when enabling TLS in Step 4. You can also find the hostname on the Dashboard/Config tab under **Main Settings**.
+. Once the application is deployed and the Application status is green on the Installation Console's Application tab, open the Pulsar Admin Console in a browser. Use the hostname if you configured one when enabling TLS in Step 4. You can also find the hostname on the Installation Console's Config tab, under **Main Settings**.
 
 . Log in to the Pulsar Admin Console. 
-The username is `admin`. The password can be found in the Dashboard/Config tab of the installation interface, under the Values section.
+The username is `admin`. You can find the password in the Installation Console's Config tab, under **Values**.
 
 . Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. 
 +
