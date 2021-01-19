@@ -68,22 +68,22 @@ Then follow the full instructions in xref:quickstart-server-installs.adoc[Quick 
 
 === How do I start the DataStax Luna Streaming Admin Console?
 
-In a browser, open the URL listed in the command output from the Luna Streaming install, follow the steps in the UI. For tips, see the following topics:
+See the following topics:
 
 * If you installed Luna Streaming via the Helm Chart for a Kubernetes environment residing on your laptop or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].  
-* If you installed Luna Streaming via the Replicated package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].  
+* If you installed Luna Streaming via the Replicated package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. First set up the environment via the Installation Console; its URL and password for your environment were displayed in the output from Step 1, as covered in that topic. Then when the application has been deployed and is running, open the node's host DNS name in a browser. To login to the Luna Streaming Admin Console, by default the username is `admin` and you can find the generated password on the Intallation Console's Config tab. 
 
 === What task can I perform in the DataStax Luna Streaming Installation Console?
 
 From the Installation Console, you can:
 
-* View and update the DataStax Luna Streaming version
 * Configure the DataStax Luna Streaming environment
+* View and update the DataStax Luna Streaming version and application status
+* Get the host URL and generated password to launch the DataStax Luna Streaming Admin Console
 * Set up and view Grafana graphs, which display metrics collected by the provided Prometheus Operator
 * Analyze DataStax Luna Streaming to collect information you could provide for Support
 * Sync the license that enables DataStax Luna Streaming software
 * View upstream, midstream, and downstream files used by DataStax Luna Streaming
-* Launch the DataStax Luna Streaming Admin Console
 
 === What task can I perform in the DataStax Luna Streaming Admin Console?
 
