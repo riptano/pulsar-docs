@@ -1,4 +1,5 @@
 = Luna Streaming FAQs
+== 
 
 If you're new to DataStax Luna Streaming and its Apache Pulsar enhancements, these FAQs are for you.
 
@@ -19,6 +20,10 @@ In addition to Apache Pulsar itself, DataStax Luna Streaming provides:
 === On which version of Apache Pulsar is DataStax Luna Streaming based?
 
 DataStax Luna Streaming is based on Apache Pulsar 2.6.2 plus updates, including commits from DataStax contributors. 
+
+=== Is there a prerequisite version of Java needed for the DataStax Luna Streaming installation?
+
+The DataStax Luna Streaming distribution is designed for Java 11. However, because the product releases Docker images, you do not need to install Java (8 or 11) in advance. Java 11 is bundled in the Docker image.
 
 === What does DataStax Luna Streaming provide that I cannot get with open-source Apache Pulsar?
 
@@ -43,7 +48,7 @@ There are several public repos, each with a different purpose. See:
 
 === How do I install DataStax Luna Streaming in my Kubernetes cluster?
 
-We provides a Helm Chart (version 3) to add the datastax-pulsar repo and install DataStax Luna Streaming on your laptop or cloud-provided Kubernetes cluster. Example:
+DataStax Luna Streaming provides a Helm Chart (version 3) to add the datastax-pulsar repo and install DataStax Luna Streaming on your laptop or cloud-provided Kubernetes cluster. Example:
 
 ----
 helm repo add datastax-pulsar https://datastax.github.io/pulsar-helm-chart
@@ -55,7 +60,7 @@ You can set additional options in the values file, but the commands above repres
 
 === How do I install DataStax Luna Streaming on my server or VM?
 
-We provide a pre-configuration replicated.io package to install Luna Streaming on a single server/VM or multiple (4) servers/VMs. Example initial setup commands:
+DataStax Luna Streaming provide a pre-configured https://www.replicated.com/[Replicated kURL] package to install Luna Streaming on a single server/VM or multiple (4) servers/VMs. Example initial setup commands:
 
 ----
 curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
@@ -65,6 +70,10 @@ kubectl kots install luna-streaming --namespace default --license-file ./Communi
 ----
 
 Then follow the full instructions in xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
+
+=== What are the system requirements for the server/VM installs that use Replicated KOTS?
+
+See the system requirements in the https://kurl.sh/docs/install-with-kurl/system-requirements[kURL documentation], which is used with Replicated Kubernetes Off The Shelf (KOTS).
 
 === How do I start the DataStax Luna Streaming Admin Console?
 
