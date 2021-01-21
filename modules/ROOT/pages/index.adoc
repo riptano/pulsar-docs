@@ -47,12 +47,12 @@ In addition to the distribution of https://pulsar.apache.org/docs/en/2.6.2/stand
 
 * Transparent batching of messages
 
-== Where to go next...
+== Where to go next
 
-If you've got an existing K8 environment...:: To deploy Luna Streaming in your existing Kubernetes environment, see xref::quickstart-helm-installs.adoc[].
+If you've got an existing Kubernetes environment:: To deploy Luna Streaming in your existing Kubernetes environment, see xref::quickstart-helm-installs.adoc[].
 
-If you've got bare metal or a cloud environment...:: To deploy Luna Streaming environment from scratch on bare metal or in a cloud environment, see xref::quickstart-server-installs.adoc[].
+If you've got bare metal or a cloud environment:: To deploy Luna Streaming environment from scratch on bare metal or in a cloud environment, see xref::quickstart-server-installs.adoc[].
 
-If you'd like to learn about Pulsar Heartbeat...:: See xref::pulsar-monitor.adoc[].
+If you'd like to learn about Pulsar Heartbeat:: See xref::pulsar-monitor.adoc[].
 
 If you've got more questions...:: For additional information about Luna Streaming, see xref::faqs.adoc[].
