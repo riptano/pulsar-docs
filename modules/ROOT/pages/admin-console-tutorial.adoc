@@ -46,7 +46,7 @@ In the WebSocket Test Client 1 section, click Connect.
 
 Scroll down to the Consume tab. In this simple example, which verifies that the service is running properly, add a `hello world` message. Example:
 
-image::send-message.png[Send a message using a test client]
+image::test-message.png[Send a message using a test client]
 
 See the <<codeSamples,Code samples>> section for a look at the clients.
 
@@ -90,39 +90,41 @@ pulsar+ssl://ip-10-101-34-161.srv101.dsinternal.org:6651
 
 To connect using the WebSocket API, use the following URL format with port 8001:
 
-wss://<dns-name>:8001
+`wss://<dns-name>:8001`
 
 For example:
 
-wss://ip-10-101-34-161.srv101.dsinternal.org:8001
+`wss://ip-10-101-34-161.srv101.dsinternal.org:8001`
 
 
 To connect using HTTP, use the following URL format with port 8085:
 
-https://<dns-name>:8085
+`https://<dns-name>:8085`
 
 For example:
 
-https://ip-10-101-34-161.srv101.dsinternal.org:8085
+`https://ip-10-101-34-161.srv101.dsinternal.org:8085`
 
 
 == Admin API
 
 To connect to the admin API, use the following URL format with port 8443:
 
-https://<dns-name>:8443
+`https://<dns-name>:8443`
 
 For example, give a DNS name of ip-10-101-34-161.srv101.dsinternal.org:
 
-https://ip-10-101-34-161.srv101.dsinternal.org:8443
+`https://ip-10-101-34-161.srv101.dsinternal.org:8443`
 
 You can list all the tenants like this, for example:
 
-pulsar-admin --admin-url https://ip-10-101-34-161.srv101.dsinternal.org:8443
+`pulsar-admin --admin-url https://ip-10-101-34-161.srv101.dsinternal.org:8443`
 
 Or if you have authentication enabled, like this:
 
+----
 pulsar-admin --admin-url https://ip-10-101-34-161.srv101.dsinternal.org:8443 --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken ----auth-params file:///token.jwt
+----
 
 You can get the token from the Admin Console's Credentials page.
 
