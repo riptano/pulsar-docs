@@ -81,11 +81,11 @@ dependencies {
 
 To connect using the Pulsar binary protocol, use the following URL format with port 6651:
 
-pulsar+ssl://<dns-name>:6651
+`pulsar+ssl://<dns-name>:6651`
 
 For example, for an installed node with a DNS name ip-10-101-34-161.srv101.dsinternal.org:
 
-pulsar+ssl://ip-10-101-34-161.srv101.dsinternal.org:6651
+`pulsar+ssl://ip-10-101-34-161.srv101.dsinternal.org:6651`
 
 
 To connect using the WebSocket API, use the following URL format with port 8001:
@@ -143,7 +143,7 @@ In the Admin Console's Credentials page, click **Create New token** and follow t
 
 === CA Certificate
 
-The cluster may be using certificates signed by trusted certicate authorities, such as https://letsencrypt.org/[Let's Encrypt]. That means that you can use the default set of certificate authorities in your environment. The path to the default CA bundle varies by environment. For example:
+The cluster may be using certificates signed by trusted certicate authorities, such as https://letsencrypt.org/[Let's Encrypt, window=_blank]. That means that you can use the default set of certificate authorities in your environment. The path to the default CA bundle varies by environment. For example:
 
 * `/etc/ssl/certs/ca-bundle.crt` (RHEL/CentOS)
 * `/etc/ssl/certs/ca-certificates.crt` (Debian/Ubuntu)
