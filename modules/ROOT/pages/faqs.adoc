@@ -6,7 +6,7 @@ If you're new to DataStax Luna Streaming and its Apache Pulsar enhancements, the
 
 === What is DataStax Luna Streaming?
 
-DataStax Luna Streaming is a new Kubernetes-based distribution of Apache Pulsar, based on the technology that https://kesque.com/[Kesque] built to run its Pulsar-as-a-service.
+DataStax Luna Streaming is a new Kubernetes-based distribution of Apache Pulsar, based on the technology that https://kesque.com/[Kesque, window=_blank] built to run its Pulsar-as-a-service.
 
 === What components and features are provided by DataStax Luna Streaming?
 
@@ -39,12 +39,12 @@ They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azur
 
 There are several public repos, each with a different purpose. See:
 
-* https://github.com/datastax/pulsar : This is the distro repo (a fork of apache/pulsar).  
-* https://github.com/datastax/pulsar-admin-console : This is the repo for the Pulsar admin console, which allows for the configuration and monitoring of Pulsar.
-* https://github.com/datastax/pulsar-heartbeat : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
-* https://github.com/datastax/pulsar-helm-chart : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
-* https://github.com/datastax/pulsar-sink : This is the Pulsar Sink for Cassandra.
-* https://github.com/datastax/burnell : This is a utility for Pulsar that provides various functions, such as key initialization for authentication, and JWT token creation API.
+* https://github.com/datastax/pulsar[https://github.com/datastax/pulsar, window=_blank] : This is the distro repo (a fork of apache/pulsar).  
+* https://github.com/datastax/pulsar-admin-console[https://github.com/datastax/pulsar-admin-console, window=_blank] : This is the repo for the Pulsar admin console, which allows for the configuration and monitoring of Pulsar.
+* https://github.com/datastax/pulsar-heartbeat[https://github.com/datastax/pulsar-heartbeat, window=_blank] : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
+* https://github.com/datastax/pulsar-helm-chart[https://github.com/datastax/pulsar-helm-chart, window=_blank] : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
+* https://github.com/datastax/pulsar-sink[https://github.com/datastax/pulsar-sink, window=_blank] : This is the DataStax Apache Pulsar Connector (`pulsar-sink` for Cassandra) repo.
+* https://github.com/datastax/burnell[https://github.com/datastax/burnell, window=_blank] : This is a utility for Pulsar that provides various functions, such as key initialization for authentication, and JWT token creation API.
 
 == Installation
 
@@ -154,6 +154,8 @@ There are two packages:
 
 * The `pulsar-sink` functionality of DataStax Apache Pulsar Connector is included with DataStax Luna Streaming. It's built in!
 * You can optionally download the DataStax Apache Pulsar Connector tarball from the https://downloads.datastax.com/#pulsar-sink[DataStax Downloads] site, and then use it as its own product with your open-source Apache Pulsar install. 
+
+If you're using open-source software (OSS) Apache Pulsar, you can use DataStax Apache Pulsar Connector with the OSS to take advantage of this `pulsar-sink` for Cassandra. See the DataStax Apache Pulsar Connector https://docs.datastax.com/en/pulsar-connector/connector/1/[documentation].
 
 == APIs
 
