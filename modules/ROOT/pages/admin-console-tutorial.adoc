@@ -4,25 +4,23 @@ The Luna Streaming Admin Console is a web-based UI from DataStax that administer
 
 == Getting Started in Admin Console
 
-You can use Pulsar clients to send and receive pub/sub messages.
+In the Luna Streaming Admin Console, you can use Pulsar clients to send and receive pub/sub messages.
 
-If you haven't already, you can launch the Luna Streaming Admin Console in a browser by opening the URL that was specified in the Luna Streaming Installation Console. Example:
+If you haven't already, launch the Luna Streaming Admin Console in a browser by opening the URL that was specified in the Luna Streaming Installation Console. Example:
 
 image::install-to-admin-console.png[Get Admin Console URL and password from Config tab of Installation Console]
 
-By default, you can log in with username `admin` and the generated password that was also shown on the Config tab of the Installation Console.
+By default, you can log in with username `admin`.  The generated and persisted password was also shown on the Config tab of the Installation Console.
 
-For information about building and running a standalone Admin Console, see the https://github.com/datastax/pulsar-admin-console#dev[readme] on github.com/datastax/pulsar-admin-console.
+=== Admin Console features
 
-When connecting you may need to provide the connect token for your account. You can get the token by going to the Admin Console's Credentials page.
-
-To try out your service right now, use our built-in WebSocket test clients. See the Test Clients page. 
+To try out your service right now, use the built-in WebSocket test clients. See the Admin Console's Test Clients page. 
 
 To see interactive code samples, go to Code Samples.
 
-To see the available namespaces, go to Namespaces. Messages published to namespaces, such as worldwide are automatically replicated to all cluster.
+To see the available namespaces, go to Namespaces. Messages published to namespaces are automatically replicated to all node(s) in the cluster.
 
-Topics are automatically created (by default) when you first try to publish or subscribe. To manually create a topic or to create a partitioned topic, go to Topics.
+Topics are automatically created, by default, when you first try to publish or subscribe. To manually create a topic or to create a partitioned topic, go to Topics.
 
 The first part of a full topic name is your tenant name, followed by the namespace, and then the topic name.
 
@@ -30,12 +28,56 @@ Here is an example of a topic using its full name:
 
 `public/namespace/my-topic`
 
-You can select your current tenant using the drop-down at the top right. To create a new tenant, go to Tenants.
+You can select your current tenant using the drop-down at the top right of the Topics page. To create a new tenant, go to Tenants.
 
 To see detailed information about your topics, go to Topics.
 
-== Connecting Clients
+=== Standalone version
 
+For information about building and running a standalone Admin Console, see the https://github.com/datastax/pulsar-admin-console#dev[readme, window=_blank] on github.com/datastax/pulsar-admin-console.
+
+When connecting you may need to provide the connect token for your account. You can get the token by going to the Admin Console's Credentials page.
+
+== Sending and receiving Pulsar messages
+
+Go to the Admin Console's Test Clients page. The quickest way to try your service is to use the test clients, sending messages from one client to the other. 
+
+In the WebSocket Test Client 1 section, click Connect. 
+
+Scroll down to the Consume tab. In this simple example, which verifies that the service is running properly, add a `hello world` message. Example:
+
+image::send-message.png[Send a message using a test client]
+
+See the <<codeSamples,Code samples>> section for a look at the clients.
+
+[#codeSamples]
+== Code samples
+
+On the Admin Console's Code Samples page, there are examples of Java, Python, Golang, Node.js, WebSocket, and HTTP clients.  Each example shows Producer, Consumer, and Reader code; plus language-specific examples of setting project properties and dependencies. For example with Java, if you are using Maven in your project, add the following to the `<properties>` section of your `pom.xml` file:
+
+`<pulsar.version>2.6.2</pulsar.version>`
+
+And add the following to the `pom.xml` file's `<dependencies>` section:
+
+----
+<dependency>
+  <groupId>org.apache.pulsar</groupId>
+  <artifactId>pulsar-client</artifactId>
+  <version>${pulsar.version}</version>
+</dependency>
+----
+
+If you are using Gradle, add this to your `build.gradle` file:
+
+----
+def pulsarVersion = '2.6.2'
+
+dependencies {
+    compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
+}
+----
+
+== Connecting Clients
 
 To connect using the Pulsar binary protocol, use the following URL format with port 6651:
 
@@ -86,43 +128,6 @@ You can get the token from the Admin Console's Credentials page.
 
 Alternatively, you can save the URL authentication parameters in your `client.conf` file.
 
-== Sending and receiving Pulsar messages
-
-Go to the Admin Console's Test Clients page. The quickest way to try your service is to use the test clients, sending messages from one client to the other. 
-
-In the WebSocket Test Client 1 section, click Connect. 
-
-Scroll down to the Consume tab. In this simple example, which verifies that the service is running properly, add a `hello world` message.
-
-See the <<codeSamples,Code samples>> section for a look at the clients.
-
-[#codeSamples]
-== Code samples
-
-On the Admin Console's Code Samples page, there are examples of Java, Python, Golang, Node.js, WebSocket, and HTTP clients.  Each example shows Producer, Consumer, and Reader code; plus language-specific examples of setting project properties and dependencies. For example with Java, if you are using Maven in your project, add the following to the `<properties>` section of your `pom.xml` file:
-
-`<pulsar.version>2.6.2</pulsar.version>`
-
-And add the following to the `pom.xml` file's `<dependencies>` section:
-
-----
-<dependency>
-  <groupId>org.apache.pulsar</groupId>
-  <artifactId>pulsar-client</artifactId>
-  <version>${pulsar.version}</version>
-</dependency>
-----
-
-If you are using Gradle, add this to your `build.gradle` file:
-
-----
-def pulsarVersion = '2.6.2'
-
-dependencies {
-    compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
-}
-----
-
 
 == Creating and showing credentials
 
@@ -132,7 +137,7 @@ When connecting clients, you'll need too provide your connect token to identify 
 
 The code samples automatically add your client token as part of the source code for convenience. However, a more secure practice would be to read the token from an environment variable or a file.
 
-In the Admin Console's Credentials page, click Create New token and follow the instructions.  If you previously created a token, use the Credentials page to get its value.
+In the Admin Console's Credentials page, click **Create New token** and follow the instructions.  If you previously created a token, use the Credentials page to get its value.
 
 === CA Certificate
 
@@ -141,10 +146,10 @@ The cluster may be using certificates signed by trusted certicate authorities, s
 * `/etc/ssl/certs/ca-bundle.crt` (RHEL/CentOS)
 * `/etc/ssl/certs/ca-certificates.crt` (Debian/Ubuntu)
 
-On OSX run this command to export the default certificates to a file:
+On OSX, run this command to export the default certificates to a file:
 
 `security find-certificate -a -p /System/Library/Keychains/SystemCACertificates.keychain > ca-certificates.crt`
 
-If the cluster is not using a public certificate authority, you can use the Admin Console's Credentials page to display it with Click to Show CA Certificate.
+If the cluster is not using a public certificate authority, you can use the Admin Console's Credentials page to display it with **Click to Show CA Certificate**.
 
 Most Pulsar APIs can be configured to skip certificate validation, but this is not recommended.
