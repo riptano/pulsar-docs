@@ -13,6 +13,7 @@ Luna Streaming takes care of the replicated.io packaging details and deployment 
 * Ready-made Grafana dashboards that visualize the metrics collected via Prometheus
 * Support for Transport Layer Security (TLS) and token-based authentication
 * Support for single-node and multi-node (4) installs
+* Luna Streaming Installation Console
 
 == Requirements
 
@@ -32,7 +33,7 @@ curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
 +
 This will take about 10 minutes to complete.
 +
-TIP: Near the conclusion of the command output, be sure to note (for later steps) **the URL displayed for connecting to the Installation Console and the password**, and other tips. 
+TIP: Near the conclusion of the command output, be sure to note (for later steps) **the URL displayed for connecting to the Luna Streaming Installation Console and the password**, and other tips. 
 +
 The following is sample output from an install. Your version will have different values - copy them for use in later steps:
 +
@@ -91,7 +92,7 @@ Output from the install command:
   • Waiting for Admin Console to be ready ✓  
 ----
 +
-. Open the Installation Console's URL in a browser. The URL was displayed after step 1. In the example command output above, it was http://10.101.34.161:8800. Remember to note the generated password, which you'll need soon. 
+. Open the Luna Streaming Installation Console's URL in a browser. The URL was displayed after step 1. In the example command output above, it was http://10.101.34.161:8800. Remember to note the generated password, which you'll need soon. 
 +
 In the browser, you may see a message similar to this:
 +
@@ -99,14 +100,14 @@ image::luna-streaming-tls-warning.png[TLS warning dialog]
 +
 Note the browser security advice, and click the Continue to Setup button. If you encounter a "Your connection is not private" dialog, you can (if you agree) click the Advanced section and click "Proceed to <your IP address>". 
 +
-. The Installation Console displays an "HTTPS for Luna Streaming admin console" message. It includes an explanation that we're currently using a self-signed TLS certificate to secure the communication between your browser and the management console. If you don't upload your own TLS cert, you'll see a warning about this scenario in your browser every time you access the management console.
+. The Luna Streaming Installation Console displays an "HTTPS for Luna Streaming admin console" message. It includes an explanation that we're currently using a self-signed TLS certificate to secure the communication between your browser and the Luna Streaming Installation Console. If you don't upload your own TLS cert, you'll see a warning about this scenario in your browser every time you access the Luna Streaming Installation Console.
 +
 In development, if you agree, you can click Skip &amp; continue. 
-. Login to the Installation Console. It presents options before you will launch the Luna Streaming Admin Console.
+. Login to the Luna Streaming Installation Console. It presents options before you will launch the Luna Streaming Installation Console.
 The user name defaults to `admin`.
 Enter the password that was displayed after installing the base system in step 1 above.
 . Select the configuration options: 
-The Installation Console presents its "Configure Luna Streaming" page. Example:
+The Luna Streaming Installation Console presents its "Configure Luna Streaming" page. Example:
 +
 image::luna-streaming-configure.png[Configure Luna Streaming page]
 + 
@@ -126,15 +127,15 @@ Address:	10.100.6.66#53
 +
 The DNS name in this example is `ip-10-101-34-161.srv101.dsinternal.org` and you would enter this in the required Hostname field. 
 +
-Optionally enable TLS enabled for Pulsar clients. If you entered TLS information in step 4, that certificate will be used. The certificate should be signed by a public authority (for example, Let’s Encrypt). If you want to use a self-signed certificate, select “Generate Self-Signed Certificate”.
+Optionally enable TLS enabled for Pulsar clients. If you entered TLS information in step 6, that certificate will be used. The certificate should be signed by a trusted certificate authority (for example, Let’s Encrypt). If you want to use a self-signed certificate, select “Generate Self-Signed Certificate”.
 +
-Optionally enable token-based authentication for Pulsar admin and clients. The installation will automatically generate keys and tokens. The superuser token can be retrieved from the Admin Console.
+Optionally enable token-based authentication for Pulsar admin and clients. The installation will automatically generate keys and tokens. The superuser token can be retrieved from the Pulsar Admin Console.
 +
 The BookKeeper storage settings allow you to optionally use attached volumes for the BookKeeper journal and ledgers. By default, they will use the OS volume of the servers. However, if you have attached devices, the installation will automatically detect them and map them to BookKeeper. The journal device should be 20 GB. The ledger device can be any size, but defaults to 50 GB. Make sure the attached volume device is at least as large as the specified size. If it is not large enough, it will not be successfully mapped. 
 +
-Scroll down the Configure Luna Streaming page. In the Values section, if you'll authenticate with username/password, copy the credentials for a subsequent Admin Console login. Example:
+Scroll down the Configure Luna Streaming page. In the Values section, if you'll authenticate with username/password, copy the credentials for a subsequent Pulsar Admin Console login. Example:
 +
-image::luna-streaming-admin-console-sample-creds.png[Admin Console Values fields as described in surrounding text]
+image::luna-streaming-admin-console-sample-creds.png[Pulsar Admin Console Values fields as described in surrounding text]
 + 
 Once you have entered the config options, click **Continue**.
 +
@@ -144,26 +145,26 @@ image:luna-streaming-preflight-checks.png[Luna Streaming preflight checks shows 
 +
 When you're ready, click Continue to deploy the Luna Streaming application. 
 
-== Launch the DataStax Luna Streaming Admin Console
+== Launch the DataStax Luna Streaming Pulsar Admin Console
 
-Once the application is deployed and the Application status is green on the Installation Console's Application tab, open the Admin Console in a browser. 
+Once the application is deployed and the Application status is green on the Luna Streaming Installation Console's Application tab, open the Pulsar Admin Console in a new browser window or tab. 
 
-For example, if you specified ip-10-101-34-161.srv101.dsinternal.org as the hostname in the Installation Console's Config tab, and if you did not configure TLS, launch the Admin Console in a browser:
+For example, if you specified ip-10-101-34-161.srv101.dsinternal.org as the hostname in the Luna Streaming Installation Console's Config tab, and if you did not configure TLS, launch the Pulsar Admin Console in a browser:
 
 http://ip-10-101-34-161.srv101.dsinternal.org 
 
-Or open https://ip-10-101-34-161.srv101.dsinternal.org if you configured TLS from the Installation Console. 
+Or open https://ip-10-101-34-161.srv101.dsinternal.org if you configured TLS from the Luna Streaming Installation Console. 
 
-. Log in to the DataStax Luna Streaming Admin Console. 
-The username is `admin`. You can find the password in the Installation Console's Config tab, under **Values**.
+. Log in to the DataStax Luna Streaming Pulsar Admin Console. 
+The username is `admin`. You can find the password in the Luna Streaming Installation Console's Config tab, under **Values**.
 
 . Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. 
 +
-You can connect a test client (Test Clients) directly from the admin console and you can view the built-in Grafana dashboards (Cluster/Monitoring). The Grafana user name is `admin` and the password is the same as for the Admin Console, which can be found under Dashboard/Config tab of the installation interface in the Admin Console Value section.
+You can connect a test client (Test Clients) directly from the Pulsar Admin Console and you can view the built-in Grafana dashboards (Cluster/Monitoring). The Grafana user name is `admin` and the password is the same as for the Admin Console, which can be found under Dashboard/Config tab of the installation interface in the Admin Console Value section.
 
-== Updating Luna Streaming
+== Updating DataStax Luna Streaming
 
-Luna Streaming is a Replicated KOTS application. You can update the application by using the procedures in the Version History tab of the Admin Console, or via the KOTS CLI. 
+DataStax Luna Streaming is a Replicated KOTS application. You can update the application by using the procedures in the Version History tab of the Admin Console, or via the KOTS CLI. 
 
 An example from the Version History tab:
 
@@ -173,7 +174,7 @@ For details, see https://kots.io/kotsadm/updating/updating-kots-apps[Updating a 
 
 == Viewing debug logs
 
-Logs can be viewed from the installation, which uses Kubernetes. To view the logs from components, use `kubectl` commands.
+Logs can be viewed from the installation node using the Kubernetes command line interface. To view the logs for each component, use `kubectl` commands.
 
 TIP: `kubectl` will only work on the installation node. It will not work on worker nodes.
 
