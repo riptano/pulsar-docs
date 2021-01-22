@@ -1,20 +1,20 @@
-= Admin Console tutorial
+= Pulsar Admin Console tutorial
 
-The Luna Streaming Admin Console is a web-based UI from DataStax that administers topics, namespaces, sources, sinks, and various aspects of Apache Pulsar features.
+The Luna Streaming Pulsar Admin Console is a web-based UI from DataStax that administers topics, namespaces, sources, sinks, and various aspects of Apache Pulsar features.
 
-== Getting Started in Admin Console
+== Getting Started in Pulsar Admin Console
 
-In the Luna Streaming Admin Console, you can use Pulsar clients to send and receive pub/sub messages.
+In the Luna Streaming Pulsar Admin Console, you can use Pulsar clients to send and receive pub/sub messages.
 
-If you haven't already, launch the Luna Streaming Admin Console in a browser by opening the URL that was specified in the Luna Streaming Installation Console. Example:
+If you haven't already, launch the Luna Streaming Pulsar Admin Console in a browser by opening the URL that was specified in the Luna Streaming Installation Console. Example:
 
-image::install-to-admin-console.png[Get Admin Console URL and password from Config tab of Installation Console]
+image::install-to-admin-console.png[Get Pulsar Admin Console URL and password from Config tab of Installation Console]
 
 By default, you can log in with username `admin`.  The generated and persisted password was also shown on the Config tab of the Installation Console.
 
-=== Admin Console features
+=== Pulsar Admin Console features
 
-To try out your service right now, use the built-in WebSocket test clients. See the Admin Console's Test Clients page. 
+To try out your service right now, use the built-in WebSocket test clients. See the Pulsar Admin Console's Test Clients page. 
 
 To see interactive code samples, go to Code Samples.
 
@@ -34,13 +34,13 @@ To see detailed information about your topics, go to Topics.
 
 === Standalone version
 
-For information about building and running a standalone Admin Console, see the https://github.com/datastax/pulsar-admin-console#dev[readme, window=_blank] on github.com/datastax/pulsar-admin-console.
+For information about building and running a standalone Pulsar Admin Console, see the https://github.com/datastax/pulsar-admin-console#dev[readme, window=_blank] on github.com/datastax/pulsar-admin-console.
 
-When connecting you may need to provide the connect token for your account. You can get the token by going to the Admin Console's Credentials page.
+When connecting you may need to provide the connect token for your account. You can get the token by going to the Pulsar Admin Console's Credentials page.
 
 == Sending and receiving Pulsar messages
 
-Go to the Admin Console's Test Clients page. The quickest way to try your service is to use the test clients, sending messages from one client to the other. 
+Go to the Pulsar Admin Console's Test Clients page. The quickest way to try your service is to use the test clients, sending messages from one client to the other. 
 
 In the WebSocket Test Client 1 section, click Connect. 
 
@@ -53,7 +53,7 @@ See the <<codeSamples,Code samples>> section for a look at the clients.
 [#codeSamples]
 == Code samples
 
-On the Admin Console's Code Samples page, there are examples of Java, Python, Golang, Node.js, WebSocket, and HTTP clients.  Each example shows Producer, Consumer, and Reader code; plus language-specific examples of setting project properties and dependencies. For example with Java, if you are using Maven in your project, add the following to the `<properties>` section of your `pom.xml` file:
+On the Pulsar Admin Console's Code Samples page, there are examples of Java, Python, Golang, Node.js, WebSocket, and HTTP clients.  Each example shows Producer, Consumer, and Reader code; plus language-specific examples of setting project properties and dependencies. For example with Java, if you are using Maven in your project, add the following to the `<properties>` section of your `pom.xml` file:
 
 `<pulsar.version>2.6.2</pulsar.version>`
 
@@ -126,7 +126,7 @@ Or if you have authentication enabled, like this:
 pulsar-admin --admin-url https://ip-10-101-34-161.srv101.dsinternal.org:8443 --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken ----auth-params file:///token.jwt
 ----
 
-You can get the token from the Admin Console's Credentials page.
+You can get the token from the Pulsar Admin Console's Credentials page.
 
 Alternatively, you can save the URL authentication parameters in your `client.conf` file.
 
@@ -139,7 +139,7 @@ When connecting clients, you'll need too provide your connect token to identify 
 
 The code samples automatically add your client token as part of the source code for convenience. However, a more secure practice would be to read the token from an environment variable or a file.
 
-In the Admin Console's Credentials page, click **Create New token** and follow the instructions.  If you previously created a token, use the Credentials page to get its value.
+In the Pulsar Admin Console's Credentials page, click **Create New token** and follow the instructions.  If you previously created a token, use the Credentials page to get its value.
 
 === CA Certificate
 
@@ -152,6 +152,6 @@ On OSX, run this command to export the default certificates to a file:
 
 `security find-certificate -a -p /System/Library/Keychains/SystemCACertificates.keychain > ca-certificates.crt`
 
-If the cluster is not using a public certificate authority, you can use the Admin Console's Credentials page to display it with **Click to Show CA Certificate**.
+If the cluster is not using a public certificate authority, you can use the Pulsar Admin Console's Credentials page to display it with **Click to Show CA Certificate**.
 
 Most Pulsar APIs can be configured to skip certificate validation, but this is not recommended.
