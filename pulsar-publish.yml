@@ -1,6 +1,6 @@
 site:
   title: DataStax Luna Streaming Documentation
-  url: http://docs.datastax.com/en/luna
+  url: http://docs.datastax.com/en/luna/streaming
   start_page: streaming::index.adoc
 
 content:
