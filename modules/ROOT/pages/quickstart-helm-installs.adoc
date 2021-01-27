@@ -29,7 +29,6 @@ To get started with Helm, refer to Helm https://helm.sh/docs/[documentation].
 
 == Prerequisites and tips
 
-* Java 11
 * Helm version 3
 * A Kubernetes cluster
 
