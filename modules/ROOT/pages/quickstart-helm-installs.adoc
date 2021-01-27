@@ -240,29 +240,56 @@ Or if you would rather go directly to the broker:
 
 == Managing Pulsar using Pulsar Admin Console
 
-You can install the Pulsar Pulsar Admin Console in your cluster by enabling it with this values setting:
+You can install the Pulsar Admin Console in your cluster by enabling the console with this values setting:
 
 ----
-extra:
-  pulsarexpress: yes
+component:
+  pulsarAdminConsole: yes
 ----
 
-It will be automatically configured to connect to the Pulsar cluster.
+The Pulsar Admin Console will be automatically configured to connect to the Pulsar cluster.
 
-By default, the Pulsar Admin Console has authentication disabled.
-
-=== Accessing Pulsar Express on your local machine
-
-To access the Pulsar Admin Console on your local machine, forward port 3000:
+By default, the Pulsar Admin Console has authentication disabled. You can enable authentication with these settings:
 
 ----
-kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l component=pulsarAdminConsole -o jsonpath='{.items[0].metadata.name}') 3000:3000
+pulsarAdminConsole:
+    authMode: k8s
 ----
 
-=== Accessing Pulsar Express from a cloud provider
+When `k8s` authentication mode is enabled, the Pulsar Admin Console gets the users from Kubernetes secrets that start with `dashboard-user-` in the same namespace where it is deployed. The text that follows the prefix is the username. For example, for a user `admin` you need to have a secret `dashboard-user-admin`. The secret data must have a key named `password` with the base-64 encoded password. The following command will create a secret for a user `admin` with a password of `password`:
 
-To access the Pulsar Admin Console from a cloud provider, the chart supports https://kubernetes.io/docs/concepts/services-networking/ingress/[Kubernetes Ingress].
-Your Kubernetes cluster must have a running Ingress controller (ex Nginx, Traefik, etc).
+----
+kubectl create secret generic dashboard-user-admin --from-literal=password=password
+----
+
+You can create multiple users for the Pulsar Admin Console by creating multiple secrets. To change the password for a user, delete the secret then recreate it with a new password. Example:
+
+----
+kubectl delete secret dashboard-user-admin
+kubectl create secret generic dashboard-user-admin --from-literal=password=newpassword
+----
+
+For convenience, the Helm chart is able to create an initial user for the Pulsar Admin Console with the following settings:
+
+----
+pulsarAdminConsole:
+    createUserSecret:
+      enabled: yes
+      user: 'admin'
+      password: 'password'
+----
+
+### Accessing Admin Console on your local machine
+
+To access Pulsar Admin Console on your local machine, forward port 80:
+
+----
+kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l component=pulsarAdminConsole -o jsonpath='{.items[0].metadata.name}') 8888:80
+----
+
+### Accessing Pulsar Admin Console from a cloud provider
+
+To access Pulsar Admin Console from a cloud provider, the chart supports [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/). Your Kubernetes cluster must have a running Ingress controller, such as Nginx or Traefik.
 
 Set these values to configure the Ingress for the Pulsar Admin Console:
 
@@ -273,83 +300,153 @@ pulsarAdminConsole:
     host: pulsar-ui.example.com
 ----
 
-Pulsar Express does not have any built-in authentication capabilities.
-You should use authentication features of your Ingress to limit access.
-The example above (which has been tested with https://docs.traefik.io/[Traefik]) uses annotations to enable basic authentication with the password stored in secret.
+## Enabling the Prometheus stack
 
-== Tiered Storage
+You can enable a full Prometheus stack (Prometheus, Altermanager, Grafana) from [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus). This includes default Prometheus rules and Grafana dashboards for Kubernetes. 
 
-Tiered storage (offload to blob storage) can be configured in the `storageOffload` section of the `values.yaml` file.
-Instructions for AWS S3 and Google Cloud Storage are provided in the file.
+In an addition, this chart can deploy Grafana dashboards for Pulsar as well as Pulsar-specific rules for Prometheus. 
 
-In addition you can configure any S3 compatible storage.
-There is explicit support for https://tardigrade.io[Tardigrade], which is a provider of secure, decentralized storage.
-You can enable the Tardigarde S3 gateway in the `extras` configuration.
-The instructions for configuring the gateway are provided in the `tardigrade` section of the `values.yaml` file.
+To deploy the Prometheus stack, use the following setting in your values file:
 
-== Pulsar SQL
+----
+kube-prometheus-stack:
+  enabled: yes
+----
 
-If you enable Pulsar SQL, the cluster provides https://prestodb.io/[Presto] access to the data stored in BookKeeper (and tiered storage, if enabled).
-Presto is exposed on the service named `<release>-sql-svc`.
+To enable the Grafana dashboards, modify the following setting:
+
+----
+grafanaDashboards:
+  enabled: no
+----
+
+To enable the Kubernetes default rules, use the following setting:
+
+----
+kube-prometheus-stack:
+  defaultRules:
+    create: yes
+----
+
+
+## Example configurations
+
+There are several example configurations in the https://github.com/datastax/pulsar-helm-chart/blob/master/examples[examples] directory:
+
+* https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[dse-values.yaml example file]. A configuration for setting up a development environment to run in a local Kubernetes environment (for example, https://minikube.sigs.k8s.io/docs/start/[minikube], or https://kind.sigs.k8s.io/[kind]). Message/state persistence, redundancy, authentication, and TLS are disabled. 
+
+TIP: With message/state persistence disabled, the cluster will not survive a restart of the ZooKeeper or BookKeeper.
+
+* dev-values-persistence. Same as above, but persistence is enabled. This will allow for the cluster to survive the restarts of the pods, but requires persistent volume claims (PVC) to be supported by the Kubernetes environment. 
+
+* dev-values-auth.yaml. A development environment with authentication enabled. New keys and tokens from those keys are automatically generated and stored in Kubernetes secrets. You can retrieve the superuser token from the admin console (Credentials menu) or from the secret `token-superuser`.
+
+`helm install pulsar -f dev-values-auth.yaml datastax-pulsar/pulsar`
+
+* dev-values-tls.yaml. Development environment with self-signed certficate created by cert-manager. You need to install the cert-manager CRDs before installing the Helm chart. The chart will install the cert-manager application.
+
+----
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
+helm install pulsar -f dev-values-auth.yaml datastax-pulsar/pulsar
+----
+
+## Tiered Storage
+
+Tiered storage (offload to blob storage) can be configured in the `storageOffload` section of the `values.yaml` file. Instructions for AWS S3 and Google Cloud Storage are provided in the file.
+
+In addition you can configure any S3 compatible storage. There is explicit support for https://tardigrade.io[Tardigrade], which is a provider of secure, decentralized storage. You can enable the Tardigarde S3 gateway in the `extra` configuration. The instructions for configuring the gateway are provided in the `tardigrade` section of the `values.yaml` file.
+
+## Pulsar SQL
+If you enable Pulsar SQL, the cluster provides https://prestodb.io/[Presto] access to the data stored in BookKeeper (and tiered storage, if enabled). Presto is exposed on the service named `<release>-sql`.
 
 The easiest way to access the Presto command line is to log into the bastion host and then connect to the Presto service port, like this:
 
-----
-bin/pulsar sql --server pulsar-sql-svc:8080
-----
+`bin/pulsar sql --server pulsar-sql:8090`
 
-Where the value for the `server` option should be the service name plus port.
-Once you are connected, you can enter Presto commands:
+Where the value for the `server` option should be the service name plus port. Once you are connected, you can enter Presto commands. Example:
 
-----
+```
 presto> SELECT * FROM system.runtime.nodes;
-               node_id                |         http_uri         | node_version | coordinator | state
+               node_id                |         http_uri         | node_version | coordinator | state  
 --------------------------------------+--------------------------+--------------+-------------+--------
- 64b7c5a1-9a72-4598-b494-b140169abc55 | http://10.244.5.164:8080 | 0.206        | true        | active
- 0a92962e-8b44-4bd2-8988-81cbde6bab5b | http://10.244.5.196:8080 | 0.206        | false       | active
+ 64b7c5a1-9a72-4598-b494-b140169abc55 | http://10.244.5.164:8080 | 0.206        | true        | active 
+ 0a92962e-8b44-4bd2-8988-81cbde6bab5b | http://10.244.5.196:8080 | 0.206        | false       | active 
 (2 rows)
 
 Query 20200608_155725_00000_gpdae, FINISHED, 2 nodes
 Splits: 17 total, 17 done (100.00%)
 0:04 [2 rows, 144B] [0 rows/s, 37B/s]
-----
+```
 
-To access Pulsar SQL from outside the cluster, you can enable the `ingress` option which will expose the Presto port on hostname.
-We have tested with the Traefik ingress, but any Kubernetes ingress should work.
-You can then run SQL queries using the Presto CLI and monitoring Presto using the built-in UI (point browser to the ingress hostname).
-It is recommended that you match the Presto CLI version to the version running as part of Pulsar SQL (currently 0.206).
+To access Pulsar SQL from outside the cluster, you can enable the `ingress` option which will expose the Presto port on hostname. We have tested with the Traefik ingress, but any Kubernetes ingress should work. You can then run SQL queries using the Presto CLI and monitoring Presto using the built-in UI (point browser to the ingress hostname). Authentication is not enabled on the UI, so you can log in with any username.
 
-The Presto CLI supports basic authentication, so if you enabled that on the ingress (using annotations), you can have secure Presto access.
+It is recommended that you match the Presto CLI version to the version running as part of Pulsar SQL.
 
-----
+The Presto CLI supports basic authentication, so if you enabled that on the Ingress (using annotations), you can have secure Presto access. Example:
+
+```
 presto --server https://presto.example.com --user admin --password
-Password:
+Password: 
 presto> show catalogs;
- Catalog
+ Catalog 
 ---------
- pulsar
- system
+ pulsar  
+ system  
 (2 rows)
 
 Query 20200610_131641_00027_tzc7t, FINISHED, 1 node
 Splits: 19 total, 19 done (100.00%)
 0:01 [0 rows, 0B] [0 rows/s, 0B/s]
+```
+
+## Dependencies
+
+The Helm chart has the following optional dependencies:
+
+* https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack[kube-prometheus-stack]
+* https://cert-manager.io/[cert-manager]
+
+
+### Authentication
+
+The chart can enable token-based authentication for your Pulsar cluster. For information on token-based
+authentication in Pulsar, go https://pulsar.apache.org/docs/en/security-token-admin/[here].
+
+For authentication to work, the token-generation keys need to be stored in Kubernetes secrets along with some default tokens (for superuser access). 
+
+The chart includes tooling to automatically create the necessary secrets or you can do this manually.
+
+#### Automatic generation of secrets for token authentication
+
+Use the following settings to enable automatic generation of the secrets and enable token-based authentication:
+
+----
+enableTokenAuth: yes
+autoRecovery:
+  enableProvisionContainer: yes
 ----
 
-== Dependencies
+When the provision container is enabled, it will check if the required secrets exist. If they don't exist, it will generate new token keys and use those keys to generate the default set of tokens. 
 
-=== Authentication
+The name of the key secrets are:
 
-The chart can enable token-based authentication for your Pulsar cluster.
-For information on token-based authentication in Pulsar, go https://pulsar.apache.org/docs/en/security-token-admin/[here].
+* `token-private-key`
+* `token-public-key`
 
-For this to work, a number of values need to be stored in secrets prior to enabling token-based authentication.
-First, you need to generate a key-pair for signing the tokens using the Pulsar tokens command:
+Using these keys, it will generate tokens for each role listed in `superUserRoles`. Based on the default settings, the following secrets will be created to store the tokens:
+
+* `token-superuser`
+* `token-admin`
+* `token-proxy`
+* `token-websocket`
+
+#### Manual secret creation for token authentication
+
+A number of values need to be stored in secrets prior to enabling token-based authentication. First, you need to generate a key-pair for signing the tokens using the Pulsar tokens command:
 
 `bin/pulsar tokens create-key-pair --output-private-key my-private.key --output-public-key my-public.key`
 
-NOTE: The names of the files used in this section match the default values in the chart.
-If you used different names, then you will have to update the corresponding values.
+TIP: The names of the files used in this section match the default values in the chart. If you used different names, then you will have to update the corresponding values.
 
 Then you need to store those keys as secrets.
 
@@ -359,22 +456,24 @@ kubectl create secret generic token-private-key \
  --namespace pulsar
 ----
 
+ 
 ----
 kubectl create secret generic token-public-key \
  --from-file=my-public.key \
  --namespace pulsar
 ----
 
-Using those keys, generate tokens with subjects(roles):
+
+Using those keys, generate tokens with subjects(roles): 
 
 `bin/pulsar tokens create --private-key file:///pulsar/token-private-key/my-private.key --subject <subject>`
 
 You need to generate tokens with the following subjects:
 
-* admin
-* superuser
-* proxy
-* websocket (only required if using the standalone WebSocket proxy)
+- `admin`
+- `superuser`
+- `proxy`
+- `websocket` (only required if using the standalone WebSocket proxy)
 
 Once you have created those tokens, add each as a secret:
 
@@ -386,21 +485,20 @@ kubectl create secret generic token-<subject> \
 
 Once you have created the required secrets, you can enable token-based authentication with this setting in the values:
 
-----
-enableTokenAuth: yes
-----
+`enableTokenAuth: yes`
 
-=== TLS
+### TLS
 
-To use https://en.wikipedia.org/wiki/Transport_Layer_Security[Transport Layer Security (TLS)], you must first create a certificate and store it in the secret defined by `tlsSecretName`.
+### Automatically generating certificates using cert-manager
 
+#### Manually configuring certificate secrets for TLS
+
+To use TLS, you must first create a certificate and store it in the secret defined by ```tlsSecretName```.
 You can create the certificate like this:
 
 `kubectl create secret tls <tlsSecretName> --key <keyFile> --cert <certFile>`
 
-The resulting secret will be of type kubernetes.io/tls.
-The key should not be in PKCS 8 format even though that is the format used by Pulsar.
-The format will be converted by chart to PKCS 8.
+The resulting secret will be of type `kubernetes.io/tls`. The key should not be in `PKCS 8` format even though that is the format used by Pulsar.  The format will be converted by the chart to `PKCS 8`. 
 
 You can also specify the certificate information directly in the values:
 
@@ -413,11 +511,14 @@ You can also specify the certificate information directly in the values:
 
 This is useful if you are using a self-signed certificate.
 
-For automated handling of publicly signed certificates, you can use a tool such as https://cert-mananager[cert-manager].
-The following https://github.com/kafkaesque-io/pulsar-helm-chart/blob/master/aws-customer-docs.md[page] describes how to set up cert-manager in AWS.
+For automated handling of publicly signed certificates, you can use a tool
+such as https://cert-mananager[cert-manager]. This https://github.com/datastax/pulsar-helm-chart/blob/master/aws-customer-docs.md[page on GitHub] describes how to set up cert-manager in AWS.
 
-Once you have created the secrets that store the cerficate info (or specified it in the values), you can enable TLS in the values:
+Once you have created the secrets that store the certificate info (or specified it in the values), you can enable TLS in the values:
 
-----
-enableTls: yes
-----
+`enableTls: yes`
+
+
+## Next
+
+To learn about installing Luna Streaming via the Replicated package, see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
