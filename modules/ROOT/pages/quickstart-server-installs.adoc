@@ -151,8 +151,6 @@ Once you have entered the config options, click **Continue**.
 . Let the pre-flight checks complete. Example:
 +
 image::luna-streaming-preflight-checks.png[Luna Streaming preflight checks shows all verifications successfully completed]
-+
-When you're ready, click **Continue** to deploy the Luna Streaming application. 
 
 == Launch the DataStax Luna Streaming Pulsar Admin Console
 
@@ -175,7 +173,7 @@ You can connect a test client (Test Clients) directly from the Pulsar Admin Cons
 
 DataStax Luna Streaming is a Replicated KOTS application. You can update the application by using the **Version history** tab of the Admin Console, or via the KOTS CLI. For KOTS details, see https://kots.io/kotsadm/updating/updating-kots-apps[Updating a KOTS application].
 
-On the **Version history** tab, click **Check for update**. If a newer version of Luna Streaming is available, consider updating the server. Once the update is ready, if you want to proceed, click **Deploy**. Wait a few minutes after the deployment, and check its Ready status on the Applications tab. Example:
+On the **Version history** tab, click **Check for update**. If a newer version of Luna Streaming is available, consider updating the server. Once the update is ready, if you want to proceed, click **Deploy**. Wait a few minutes after the deployment, and check its **Ready** status on the Applications tab. Example:
 
 image::luna-streaming-application-ready.png[Luna Streaming Ready state is shown on the Application tab of Installation Console]
 
