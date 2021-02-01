@@ -85,9 +85,9 @@ To connect using the Pulsar binary protocol, use the following URL format with p
 
 `pulsar+ssl://<dns-name>:6651`
 
-For example, for an installed node with a DNS name ip-10-101-34-161.srv101.dsinternal.org:
+For example, for an installed node with a DNS name ip-10-101-32-250.srv101.dsinternal.org:
 
-`pulsar+ssl://ip-10-101-34-161.srv101.dsinternal.org:6651`
+`pulsar+ssl://ip-10-101-32-250.srv101.dsinternal.org:6651`
 
 
 To connect using the WebSocket API, use the following URL format with port 8001:
@@ -96,7 +96,7 @@ To connect using the WebSocket API, use the following URL format with port 8001:
 
 For example:
 
-`wss://ip-10-101-34-161.srv101.dsinternal.org:8001`
+`wss://ip-10-101-32-250.srv101.dsinternal.org:8001`
 
 
 To connect using HTTP, use the following URL format with port 8085:
@@ -105,7 +105,7 @@ To connect using HTTP, use the following URL format with port 8085:
 
 For example:
 
-`https://ip-10-101-34-161.srv101.dsinternal.org:8085`
+`https://ip-10-101-32-250.srv101.dsinternal.org:8085`
 
 
 == Admin API
@@ -116,16 +116,16 @@ To connect to the admin API, use the following URL format with port 8443:
 
 For example, give a DNS name of ip-10-101-34-161.srv101.dsinternal.org:
 
-`https://ip-10-101-34-161.srv101.dsinternal.org:8443`
+`https://ip-10-101-32-250.srv101.dsinternal.org:8443`
 
 You can list all the tenants like this, for example:
 
-`pulsar-admin --admin-url https://ip-10-101-34-161.srv101.dsinternal.org:8443`
+`pulsar-admin --admin-url https://ip-10-101-32-250.srv101.dsinternal.org:8443`
 
 Or if you have authentication enabled, like this:
 
 ----
-pulsar-admin --admin-url https://ip-10-101-34-161.srv101.dsinternal.org:8443 --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken ----auth-params file:///token.jwt
+pulsar-admin --admin-url https://ip-10-101-32-250.srv101.dsinternal.org:8443 --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken ----auth-params file:///token.jwt
 ----
 
 You can get the token from the Pulsar Admin Console's Credentials page.
