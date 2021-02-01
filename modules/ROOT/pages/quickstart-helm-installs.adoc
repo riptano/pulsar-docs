@@ -284,12 +284,17 @@ pulsarAdminConsole:
 To access Pulsar Admin Console on your local machine, forward port 80:
 
 ----
-kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l component=pulsarAdminConsole -o jsonpath='{.items[0].metadata.name}') 8888:80
+kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l component=adminconsole -o jsonpath='{.items[0].metadata.name}') 8888:80
+----
+
+TIP: While using the Admin Console and Pulsar Monitoring, if the connection to `localhost:3000` is refused, set a port-forward to the Grafana pod. Example:
+----
+kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l app.kubernetes.io/name=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &
 ----
 
 ### Accessing Pulsar Admin Console from a cloud provider
 
-To access Pulsar Admin Console from a cloud provider, the chart supports [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/). Your Kubernetes cluster must have a running Ingress controller, such as Nginx or Traefik.
+To access Pulsar Admin Console from a cloud provider, the chart supports https://kubernetes.io/docs/concepts/services-networking/ingress/[Kubernetes Ingress]. Your Kubernetes cluster must have a running Ingress controller, such as Nginx or Traefik.
 
 Set these values to configure the Ingress for the Pulsar Admin Console:
 
@@ -327,7 +332,6 @@ kube-prometheus-stack:
   defaultRules:
     create: yes
 ----
-
 
 ## Example configurations
 
