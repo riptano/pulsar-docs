@@ -8,7 +8,7 @@ In the Luna Streaming Pulsar Admin Console, you can use Pulsar clients to send a
 
 If you haven't already, launch the Luna Streaming Pulsar Admin Console in a browser by opening the URL that was specified in the Luna Streaming Installation Console. Example:
 
-image::install-to-admin-console.png[Get Pulsar Admin Console URL and password from Config tab of Installation Console]
+image::luna-streaming-install-to-admin-console.png[Get Pulsar Admin Console URL and password from Config tab of Installation Console]
 
 By default, you can log in with username `admin`.  The generated and persisted password was also shown on the Config tab of the Installation Console.
 
