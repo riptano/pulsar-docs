@@ -41,6 +41,15 @@ The following is sample output from an install. Your version will have different
 .
 .
 .
+deployment.apps/cert-manager created
+⚙  Addon metrics-server 0.3.7
+serviceaccount/metrics-server created
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+service/metrics-server created
 deployment.apps/metrics-server created
 apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
 configmap/kurl-config created
@@ -48,8 +57,8 @@ configmap/kurl-config created
 		Installation
 		  Complete ✔
 
-Kotsadm: http://10.101.34.161:8800
-Login with password (will not be shown again): uidMj4Be6
+Kotsadm: http://10.101.32.250:8800
+Login with password (will not be shown again): fNBFUn9AM
 
 To access the cluster with kubectl, ensure the KUBECONFIG environment variable is unset:
 
@@ -61,7 +70,7 @@ Node join commands expire after 24 hours.
 To generate new node join commands, run curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token on this node.
 
 To add worker nodes to this installation, run the following script on your other nodes:
-    curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.34.161:6443 kubeadm-token=cuo1ja.f5iszjdmcwvhx67s kubeadm-token-ca-hash=sha256:9efd7031f508d1dfe651258843908eeb2a2b05a0ff5acfb2f564bddd24d06460 kubernetes-version=1.19.3 docker-registry-ip=10.96.2.35
+    curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.32.250:6443 kubeadm-token=7sdek0.xujj2fo67qh6rs4v kubeadm-token-ca-hash=sha256:28d02e939bfb4fd8d3ea0a9619e9f47e0812773840e0c1e5a72c26b5bfbec08c kubernetes-version=1.19.7 docker-registry-ip=10.96.0.49
 ----
 +
 . If you haven't already, ensure the `KUBECONFIG` environment variable is unset by entering these commands:
@@ -92,7 +101,7 @@ Output from the install command:
   • Waiting for Admin Console to be ready ✓  
 ----
 +
-. Open the Luna Streaming Installation Console's URL in a browser. The URL was displayed after step 1. In the example command output above, it was http://10.101.34.161:8800. Remember to note the generated password, which you'll need soon. 
+. Open the Luna Streaming Installation Console's URL in a browser. The URL was displayed after step 1. In the example command output above, it was http://10.101.32.250:8800. Remember to note the generated password, which you'll need soon. 
 +
 In the browser, you may see a message similar to this:
 +
@@ -109,25 +118,23 @@ Enter the password that was displayed after installing the base system in step 1
 +
 TIP: Due to a Replicated package default, the Luna Streaming Installation Console login screen's text refers to the "admin console" even though DataStax calls the follow-on UI the Pulsar Admin Console. Ignore the overloaded term and know that at this point, you are logging into the Luna Streaming Installation Console.
 . Select the configuration options: 
-The Luna Streaming Installation Console presents its "Configure Luna Streaming" page. Example:
-+
-image::luna-streaming-configure.png[Configure Luna Streaming page]
+The Luna Streaming Installation Console presents its "Configure Luna Streaming" page. 
 + 
 Start by selecting the configuration type: single node or small HA. If you select small HA, make sure you have previously added the required number of nodes.
 +
-In the Hostname field, enter a DNS resolvable name for the cluster. For a single node install, this should resolve to the IP address of the single node. For a multi-node install, the DNS name should resolve to a list of all the IP addresses in the cluster.
+In the **Hostname** field, enter a DNS resolvable name for the cluster. For a single node install, this should resolve to the IP address of the single node. For a multi-node install, the DNS name should resolve to a list of all the IP addresses in the cluster.
 + 
-If you know your node's IP address but not its DNS name, use an `nslookup` command. For example, if the node's IP is 10.101.34.161:
+If you know your node's IP address but not its DNS name, use an `nslookup` command. For example, if the node's IP is 10.101.32.250:
 +
 ----
-nslookup 10.101.34.161
+nslookup 10.101.32.250
 Server:		10.100.6.66
 Address:	10.100.6.66#53
 
-161.34.101.10.in-addr.arpa	name = ip-10-101-34-161.srv101.dsinternal.org.
+250.32.101.10.in-addr.arpa	name = ip-10-101-32-250.srv101.dsinternal.org.
 ----
 +
-The DNS name in this example is `ip-10-101-34-161.srv101.dsinternal.org` and you would enter this in the required Hostname field. 
+The DNS name in this example is `ip-10-101-34-250.srv101.dsinternal.org` and you would enter this in the required Hostname field. 
 +
 Optionally enable TLS enabled for Pulsar clients. If you entered TLS information in step 6, that certificate will be used. The certificate should be signed by a trusted certificate authority (for example, Let’s Encrypt). If you want to use a self-signed certificate, select “Generate Self-Signed Certificate”.
 +
@@ -135,44 +142,68 @@ Optionally enable token-based authentication for Pulsar admin and clients. The i
 +
 The BookKeeper storage settings allow you to optionally use attached volumes for the BookKeeper journal and ledgers. By default, they will use the OS volume of the servers. However, if you have attached devices, the installation will automatically detect them and map them to BookKeeper. The journal device should be 20 GB. The ledger device can be any size, but defaults to 50 GB. Make sure the attached volume device is at least as large as the specified size. If it is not large enough, it will not be successfully mapped. 
 +
-Scroll down the Configure Luna Streaming page. In the Values section, if you'll authenticate with username/password, copy the credentials for a subsequent Pulsar Admin Console login. Example:
+Scroll down the Installation Console's Config page. In the **Admin Console Values** section, if you'll authenticate with username/password, copy the credentials for a subsequent Pulsar Admin Console login. Example:
 +
-image::luna-streaming-admin-console-sample-creds.png[Pulsar Admin Console Values fields as described in surrounding text]
+image::luna-streaming-admin-console-sample-credentials.png[Pulsar Admin Console Values fields as described in surrounding text]
 + 
 Once you have entered the config options, click **Continue**.
 +
 . Let the pre-flight checks complete. Example:
 +
-image:luna-streaming-preflight-checks.png[Luna Streaming preflight checks shows all verifications successfully completed]
+image::luna-streaming-preflight-checks.png[Luna Streaming preflight checks shows all verifications successfully completed]
 +
-When you're ready, click Continue to deploy the Luna Streaming application. 
+When you're ready, click **Continue** to deploy the Luna Streaming application. 
 
 == Launch the DataStax Luna Streaming Pulsar Admin Console
 
 Once the application is deployed and the Application status is green on the Luna Streaming Installation Console's Application tab, open the Pulsar Admin Console in a new browser window or tab. 
 
-For example, if you specified ip-10-101-34-161.srv101.dsinternal.org as the hostname in the Luna Streaming Installation Console's Config tab, and if you did not configure TLS, launch the Pulsar Admin Console in a browser:
+For example, if you specified ip-10-101-32-250.srv101.dsinternal.org as the hostname in the Luna Streaming Installation Console's Config tab, and if you did not configure TLS, launch the Pulsar Admin Console in a browser:
 
-http://ip-10-101-34-161.srv101.dsinternal.org 
+http://ip-10-101-32-250.srv101.dsinternal.org 
 
-Or open https://ip-10-101-34-161.srv101.dsinternal.org if you configured TLS from the Luna Streaming Installation Console. 
+Or in this example, open https://ip-10-101-32-250.srv101.dsinternal.org if you configured TLS from the Luna Streaming Installation Console. 
 
 . Log in to the DataStax Luna Streaming Pulsar Admin Console. 
-The username is `admin`. You can find the password in the Luna Streaming Installation Console's Config tab, under **Values**.
-
+The username is `admin`. You can find the password in the Luna Streaming Installation Console's Config tab, under **Admin Console Values**. 
++
 . Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. 
 +
 You can connect a test client (Test Clients) directly from the Pulsar Admin Console and you can view the built-in Grafana dashboards (Cluster/Monitoring). The Grafana user name is `admin` and the password is the same as for the Admin Console, which can be found under Dashboard/Config tab of the installation interface in the Admin Console Value section.
 
 == Updating DataStax Luna Streaming
 
-DataStax Luna Streaming is a Replicated KOTS application. You can update the application by using the procedures in the Version History tab of the Admin Console, or via the KOTS CLI. 
+DataStax Luna Streaming is a Replicated KOTS application. You can update the application by using the **Version history** tab of the Admin Console, or via the KOTS CLI. For KOTS details, see https://kots.io/kotsadm/updating/updating-kots-apps[Updating a KOTS application].
 
-An example from the Version History tab:
+On the **Version history** tab, click **Check for update**. If a newer version of Luna Streaming is available, consider updating the server. Once the update is ready, if you want to proceed, click **Deploy**. Wait a few minutes after the deployment, and check its Ready status on the Applications tab. Example:
 
-image::luna-streaming-version-history-update.png[Version History update in the Admin Console]
+image::luna-streaming-application-ready.png[Luna Streaming Ready state is shown on the Application tab of Installation Console]
 
-For details, see https://kots.io/kotsadm/updating/updating-kots-apps[Updating a KOTS application].
+You can also check the status of the pods from the command line. Example:
+
+----
+NAME                                                 READY   STATUS      RESTARTS   AGE
+kotsadm-67c8d478f7-xs7mx                             1/1     Running     0          32m
+kotsadm-migrations                                   0/1     Completed   0          44m
+kotsadm-operator-75c844ffdc-k95q6                    1/1     Running     0          44m
+kotsadm-postgres-0                                   1/1     Running     0          44m
+kurl-proxy-kotsadm-79df797c77-jhvjb                  1/1     Running     0          43m
+prometheus-operator-984cbc6b8-g8ggz                  1/1     Running     0          8m45s
+prometheus-pulsar-single-kube-prometh-prometheus-0   2/2     Running     1          6m54s
+pulsar-autorecovery-5596f6464d-wtd22                 1/1     Running     2          8m45s
+pulsar-bastion-5567576b79-jrvjh                      1/1     Running     0          8m45s
+pulsar-bookkeeper-0                                  1/1     Running     0          8m45s
+pulsar-broker-77848bccb8-bj7bj                       1/1     Running     2          8m45s
+pulsar-dashboard-6cd77957b9-mqvd6                    2/2     Running     0          8m45s
+pulsar-function-0                                    2/2     Running     0          8m45s
+pulsar-proxy-59cc75485-88c5b                         3/3     Running     0          8m45s
+pulsar-pulsarmonitor-55c8c5454d-bq88d                1/1     Running     0          8m45s
+pulsar-single-grafana-78bfcd7848-n6jqh               2/2     Running     0          8m45s
+pulsar-single-kube-state-metrics-9c7644667-g9n27     1/1     Running     0          8m45s
+pulsar-single-prometheus-node-exporter-bk52h         1/1     Running     0          8m45s
+pulsar-zookeeper-0                                   1/1     Running     0          8m45s
+pulsar-zookeeper-metadata-r7r42                      0/1     Completed   0          8m45s
+----
 
 == Viewing debug logs
 
