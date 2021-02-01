@@ -179,6 +179,7 @@ image::luna-streaming-application-ready.png[Luna Streaming Ready state is shown 
 
 You can also check the status of the pods from the command line. Example:
 
+`kubectl get pods`
 ----
 NAME                                                 READY   STATUS      RESTARTS   AGE
 kotsadm-67c8d478f7-xs7mx                             1/1     Running     0          32m
