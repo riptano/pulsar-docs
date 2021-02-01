@@ -106,6 +106,8 @@ In development, if you agree, you can click Skip &amp; continue.
 . Login to the Luna Streaming Installation Console. It presents options before you will launch the Luna Streaming Installation Console.
 The user name defaults to `admin`.
 Enter the password that was displayed after installing the base system in step 1 above.
++
+TIP: Due to a Replicated package default, the Luna Streaming Installation Console login screen's text refers to the "admin console" even though DataStax calls the follow-on UI the Pulsar Admin Console. Ignore the overloaded term and know that at this point, you are logging into the Luna Streaming Installation Console.
 . Select the configuration options: 
 The Luna Streaming Installation Console presents its "Configure Luna Streaming" page. Example:
 +
