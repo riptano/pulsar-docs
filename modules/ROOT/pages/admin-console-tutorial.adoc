@@ -114,7 +114,7 @@ To connect to the admin API, use the following URL format with port 8443:
 
 `https://<dns-name>:8443`
 
-For example, give a DNS name of ip-10-101-34-161.srv101.dsinternal.org:
+For example, give a DNS name of ip-10-101-32-250.srv101.dsinternal.org:
 
 `https://ip-10-101-32-250.srv101.dsinternal.org:8443`
 
