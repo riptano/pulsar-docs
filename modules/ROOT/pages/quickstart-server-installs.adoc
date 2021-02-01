@@ -144,7 +144,7 @@ The BookKeeper storage settings allow you to optionally use attached volumes for
 +
 Scroll down the Installation Console's Config page. In the **Admin Console Values** section, if you'll authenticate with username/password, copy the credentials for a subsequent Pulsar Admin Console login. Example:
 +
-image::luna-streaming-admin-console-sample-credentials.png[Pulsar Admin Console Values fields as described in surrounding text]
+image::luna-streaming-admin-console-credentials.png[Pulsar Admin Console Values fields as described in surrounding text]
 + 
 Once you have entered the config options, click **Continue**.
 +
