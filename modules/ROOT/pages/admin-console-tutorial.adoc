@@ -40,13 +40,15 @@ When connecting you may need to provide the connect token for your account. You 
 
 == Sending and receiving Pulsar messages
 
-Go to the Pulsar Admin Console's Test Clients page. The quickest way to try your service is to use the test clients, sending messages from one client to the other. 
+Go to the Pulsar Admin Console's **Test Clients** page. The quickest way to try your service is to use the test clients, sending messages from one client to the other. 
 
-In the WebSocket Test Client 1 section, click Connect. 
+In the WebSocket Test Client 1 section, click **Connect**. This action creates a connection from the Pulsar Admin Console that's running in your browser to the Pulsar instance on your server.
 
-Scroll down to the Consume tab. In this simple example, which verifies that the service is running properly, add a `hello world` message. Example:
+Scroll down to the Consume tab. In this simple example, which verifies that the service is running properly, add a `hello world` message and click Send. Example:
 
 image::test-message.png[Send a message using a test client]
+
+In doing so, you published a message to your server, and in the Test Client you're listening to your own topic. This UI proves that your client is working with the Pulsar server. 
 
 See the <<codeSamples,Code samples>> section for a look at the clients.
 
