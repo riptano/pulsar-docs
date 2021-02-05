@@ -170,7 +170,7 @@ Once you have your storage settings in the values file, install the chart. First
 
 Then run this helm command:
 
-helm install pulsar datastax/pulsar --namespace pulsar --values storage_values.yaml --create-namespace
+`helm install pulsar datastax-pulsar/pulsar --namespace pulsar --values storage_values.yaml --create-namespace`
 
 TIP: To avoid having to specify the `pulsar` namespace on each subsequent command, set the namespace context. Example:
 
