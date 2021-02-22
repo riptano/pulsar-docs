@@ -1,10 +1,9 @@
 site:
   title: DataStax Luna Streaming Documentation
-  url: http://docs.datastax.com/en/luna/streaming
+  url: /docs/luna
   start_page: streaming::index.adoc
 
 content:
-  edit_url: 'https://github.com/riptano/pulsar-docs/blob/main/{path}'
   sources:
   - url: .
     branches: HEAD
@@ -13,3 +12,4 @@ ui:
   bundle:
     url: https://github.com/riptano/antora-ui-pulsar/raw/main/releases/download/v0.1/ui-bundle.zip
     snapshot: true
+  output_dir: assets
