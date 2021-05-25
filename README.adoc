@@ -6,12 +6,11 @@ The docs are written in asciidoc and use Antora to generate the output.
 
 == Dependencies
 
-Antora requires NodeJS. Install NodeJS, and then the project dependencies:
+Antora requires NodeJS. Install NodeJS:
 
 [source,bash]
 ----
 brew install node
-npm install
 ----
 
 == Generating and viewing the HTML output locally
