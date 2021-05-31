@@ -72,12 +72,6 @@ To add worker nodes to this installation, run the following script on your other
     curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.32.250:6443 kubeadm-token=7sdek0.xujj2fo67qh6rs4v kubeadm-token-ca-hash=sha256:28d02e939bfb4fd8d3ea0a9619e9f47e0812773840e0c1e5a72c26b5bfbec08c kubernetes-version=1.19.7 docker-registry-ip=10.96.0.49
 ----
 +
-. If you haven't already, ensure the `KUBECONFIG` environment variable is unset by entering these commands:
-+
-----
-bash -l
-----
-+
 . If you are planning a multi-node installation (small HA), add the worker nodes. The Luna Streaming configuration is for 4 nodes. The command to run **on each node** is displayed in the output; the sample values above are just an example. See the text for your environment following, “To add worker nodes to this installation...” in the output. If necessary, you can regenerate the node install command using the following:
 +
 `curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token`
