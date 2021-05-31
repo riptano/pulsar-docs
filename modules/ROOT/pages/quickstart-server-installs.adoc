@@ -62,7 +62,6 @@ Login with password (will not be shown again): fNBFUn9AM
 
 To access the cluster with kubectl, ensure the KUBECONFIG environment variable is unset:
 
-    echo unset KUBECONFIG >> ~/.profile
     bash -l
 
 Node join commands expire after 24 hours.
@@ -76,7 +75,6 @@ To add worker nodes to this installation, run the following script on your other
 . If you haven't already, ensure the `KUBECONFIG` environment variable is unset by entering these commands:
 +
 ----
-echo unset KUBECONFIG >> ~/.profile
 bash -l
 ----
 +
