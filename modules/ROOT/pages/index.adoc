@@ -3,9 +3,17 @@ John Smart <john.smart@datastax.com>
 
 DataStax Luna Streaming is a production-ready distribution of Apache Pulsar built to run seamlessly on any CNCF conformant version of Kubernetes. DataStax Luna Streaming provides all of the core capabilities included in the Apache Community version of Apache Pulsar, plus a number of additional tools and features to facilitate administration and operational tasks associated with running Apache Pulsar in production.
 
+== Release notes
+
+The latest release of DataStax Luna Streaming is 2.7.2, which matches the supported, distributed Pulsar version numbers. 
+
+The prior Luna Streaming release (numbered 1.0.x or 2.6.2) provided the Pulsar 2.6.2 distribution.
+
+Refer to the DataStax Luna Streaming https://github.com/datastax/release-notes/blob/master/Luna_Streaming_2.7_Release_Notes.md[release notes], which are hosted in our public GitHub repo, for information &amp; linked commit IDs that were implemented in the latest Luna Streaming 2.7.2 release. 
+
 == Components
 
-In addition to the distribution of https://pulsar.apache.org/docs/en/2.6.2/standalone/[Apache Pulsar 2.6.2], DataStax Luna Streaming provides:
+In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache Pulsar 2.7.2], DataStax Luna Streaming provides:
 
 * A replicated.io package installer that can stand up a dev or production cluster on bare metal or VMs without a pre-existing Kubernetes environment
 
@@ -55,4 +63,4 @@ If you've got bare metal or a cloud environment:: To deploy Luna Streaming envir
 
 If you'd like to learn about Pulsar Heartbeat:: See xref::pulsar-monitor.adoc[].
 
-If you've got more questions...:: For additional information about Luna Streaming, see xref::faqs.adoc[].
+If you have more questions...:: For additional information about Luna Streaming, see xref::faqs.adoc[].

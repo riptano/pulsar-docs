@@ -20,7 +20,7 @@ In addition to Apache Pulsar itself, DataStax Luna Streaming provides:
 
 === On which version of Apache Pulsar is DataStax Luna Streaming based?
 
-DataStax Luna Streaming is based on Apache Pulsar 2.6.2, and features additional enhancements from DataStax contributors. 
+DataStax Luna Streaming 2.7.2 is based on its distribution of Apache Pulsar 2.7.2, plus features and additional enhancements from DataStax contributors. 
 
 === What does DataStax Luna Streaming provide that I cannot get with open-source Apache Pulsar?
 
@@ -32,7 +32,7 @@ Yes, DataStax Luna Streaming is open source. See the <<gitHubRepos,repos FAQ>>.
 
 === Which Kubernetes platforms are supported by DataStax Luna Streaming?
 
-They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service, Amazon Kubernetes Service (AKS), and other commonly used platforms. 
+They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service (AKS), Amazon Elasic Kubernetes Service (EKS), and other commonly used platforms. 
 
 [#gitHubRepos]
 === Where are the DataStax Luna Streaming public GitHub repos?
@@ -139,7 +139,7 @@ https://grafana.com/[Grafana] is a visualization tool that helps you make sense 
 === What are the features provided by DataStax Apache Pulsar Connector (`pulsar-sink`) that are not supported in `kafka-sink`?
 
 * Single record acknowledgement and negative acknowledgements.
-* The https://pulsar.apache.org/docs/en/2.6.2/io-overview/[Pulsar IO framework] provides many features that are not possible in Kafka, and has different compression formats and auth/security features. The features are handled by Pulsar.
+* The https://pulsar.apache.org/docs/en/io-overview/[Pulsar IO framework] provides many features that are not possible in Kafka, and has different compression formats and auth/security features. The features are handled by Pulsar.
 
 === What features are missing in DataStax Apache Pulsar Connector (`pulsar-sink`) compared with `kafka-sink`?
 
@@ -155,7 +155,7 @@ There are two packages:
 * The `pulsar-sink` functionality of DataStax Apache Pulsar Connector is included with DataStax Luna Streaming. It's built in!
 * You can optionally download the DataStax Apache Pulsar Connector tarball from the https://downloads.datastax.com/#pulsar-sink[DataStax Downloads] site, and then use it as its own product with your open-source Apache Pulsar install. 
 
-If you're using open-source software (OSS) Apache Pulsar, you can use DataStax Apache Pulsar Connector with the OSS to take advantage of this `pulsar-sink` for Cassandra. See the DataStax Apache Pulsar Connector https://docs.datastax.com/en/pulsar-connector/connector/1/[documentation].
+If you're using open-source software (OSS) Apache Pulsar, you can use DataStax Apache Pulsar Connector with the OSS to take advantage of this `pulsar-sink` for Cassandra. See the DataStax Apache Pulsar Connector https://docs.datastax.com/en/pulsar-connector/[documentation].
 
 == APIs
 
