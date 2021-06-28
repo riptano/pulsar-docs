@@ -1,5 +1,8 @@
-* xref:faqs.adoc[]
-* xref:quickstart-helm-installs.adoc[]
-* xref:quickstart-server-installs.adoc[]
-* xref:admin-console-tutorial.adoc[]
-* xref:pulsar-monitor.adoc[]
+* xref:index.adoc[Luna Streaming]
+** Getting Started
+*** xref:quickstart-helm-installs.adoc[Installing using Helm charts]
+*** xref:quickstart-server-installs.adoc[Installing using replicated.io packaging]
+** Guides and Examples
+*** xref:admin-console-tutorial.adoc[]
+*** xref:pulsar-monitor.adoc[]
+*** xref:faqs.adoc[]
