@@ -3,6 +3,6 @@
 *** xref:quickstart-helm-installs.adoc[Installing using Helm charts]
 *** xref:quickstart-server-installs.adoc[Installing using replicated.io packaging]
 ** Guides and Examples
-*** xref:admin-console-tutorial.adoc[]
-*** xref:pulsar-monitor.adoc[]
+*** xref:admin-console-tutorial.adoc[Using the Pulsar Admin Console]
+*** xref:pulsar-monitor.adoc[Monitoring Luna using Pulsar Heartbeat]
 *** xref:faqs.adoc[]
