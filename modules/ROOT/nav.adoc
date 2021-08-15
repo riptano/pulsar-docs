@@ -2,6 +2,6 @@
 ** xref:quickstart-helm-installs.adoc[]
 ** xref:quickstart-server-installs.adoc[]
 ** xref:faqs.adoc[]
-* Guides and exmaples
+* Guides and examples
 ** xref:admin-console-tutorial.adoc[]
 ** xref:pulsar-monitor.adoc[]
