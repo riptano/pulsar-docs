@@ -1,5 +1,7 @@
-* xref:faqs.adoc[]
-* xref:quickstart-helm-installs.adoc[]
-* xref:quickstart-server-installs.adoc[]
-* xref:admin-console-tutorial.adoc[]
-* xref:pulsar-monitor.adoc[]
+* Getting started 
+** xref:quickstart-helm-installs.adoc[]
+** xref:quickstart-server-installs.adoc[]
+** xref:faqs.adoc[]
+* Guides and exmaples
+** xref:admin-console-tutorial.adoc[]
+** xref:pulsar-monitor.adoc[]
