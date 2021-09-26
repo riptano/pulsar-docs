@@ -190,7 +190,7 @@ Use that values file or one like it to start the cluster.
 
 Then run this command:
 
-`helm install pulsar datastax/pulsar --namespace pulsar --values dev-values.yaml --create-namespace`
+`helm install pulsar datastax-pulsar/pulsar --namespace pulsar --values dev-values.yaml --create-namespace`
 
 == Accessing the Pulsar cluster in cloud
 
