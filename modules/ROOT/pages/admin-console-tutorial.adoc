@@ -1,6 +1,4 @@
 = Pulsar Admin Console tutorial
-:luna-version: 2.8
-:pulsar-version: 2.8.1
 
 The Luna Streaming Pulsar Admin Console is a web-based UI from DataStax that administers topics, namespaces, sources, sinks, and various aspects of Apache Pulsar features.
 
