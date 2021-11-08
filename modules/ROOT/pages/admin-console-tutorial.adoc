@@ -139,7 +139,7 @@ Alternatively, you can save the URL authentication parameters in your `client.co
 
 === Connect token
 
-When connecting clients, you'll need too provide your connect token to identify your account. In all the Pulsar APIs, you specify the token when creating the client object. The token is your password to your account, so keep it safe.
+When connecting clients, you'll need to provide your connect token to identify your account. In all the Pulsar APIs, you specify the token when creating the client object. The token is your password to your account, so keep it safe.
 
 The code samples automatically add your client token as part of the source code for convenience. However, a more secure practice would be to read the token from an environment variable or a file.
 
