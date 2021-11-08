@@ -20,7 +20,7 @@ In addition to Apache Pulsar itself, DataStax Luna Streaming provides:
 
 === On which version of Apache Pulsar is DataStax Luna Streaming based?
 
-DataStax Luna Streaming 2.7.2 is based on its distribution of Apache Pulsar 2.7.2, plus features and additional enhancements from DataStax contributors. 
+DataStax Luna Streaming 2.8.0 is based on its distribution of Apache Pulsar 2.8.0, plus features and additional enhancements from DataStax contributors. 
 
 === What does DataStax Luna Streaming provide that I cannot get with open-source Apache Pulsar?
 
@@ -32,7 +32,7 @@ Yes, DataStax Luna Streaming is open source. See the <<gitHubRepos,repos FAQ>>.
 
 === Which Kubernetes platforms are supported by DataStax Luna Streaming?
 
-They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service (AKS), Amazon Elasic Kubernetes Service (EKS), and other commonly used platforms. 
+They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service (AKS), Amazon Elastic Kubernetes Service (EKS), and other commonly used platforms. 
 
 [#gitHubRepos]
 === Where are the DataStax Luna Streaming public GitHub repos?
@@ -97,7 +97,7 @@ See the system requirements in the https://kurl.sh/docs/install-with-kurl/system
 See the following topics:
 
 * If you installed Luna Streaming via the Helm Chart for a Kubernetes environment residing on your laptop or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].  
-* If you installed Luna Streaming via the Replicated package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. First set up the environment via the Installation Console; its URL and password for your environment were displayed in the output from Step 1, as covered in that topic. Then when the application has been deployed and is running, open the node's host DNS name in a browser. To login to the Luna Streaming Admin Console, by default the username is `admin` and you can find the generated password on the Intallation Console's Config tab. 
+* If you installed Luna Streaming via the Replicated package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. First set up the environment via the Installation Console; its URL and password for your environment were displayed in the output from Step 1, as covered in that topic. Then when the application has been deployed and is running, open the node's host DNS name in a browser. To login to the Luna Streaming Admin Console, by default the username is `admin` and you can find the generated password on the Installation Console's Config tab. 
 
 === What task can I perform in the DataStax Luna Streaming Installation Console?
 

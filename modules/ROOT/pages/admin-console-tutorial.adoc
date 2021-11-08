@@ -57,7 +57,7 @@ See the <<codeSamples,Code samples>> section for a look at the clients.
 
 On the Pulsar Admin Console's Code Samples page, there are examples of Java, Python, Golang, Node.js, WebSocket, and HTTP clients.  Each example shows Producer, Consumer, and Reader code; plus language-specific examples of setting project properties and dependencies. For example with Java, if you are using Maven in your project, add the following to the `<properties>` section of your `pom.xml` file:
 
-`<pulsar.version>2.6.2</pulsar.version>`
+`<pulsar.version>2.8.1</pulsar.version>`
 
 And add the following to the `pom.xml` file's `<dependencies>` section:
 
@@ -72,7 +72,7 @@ And add the following to the `pom.xml` file's `<dependencies>` section:
 If you are using Gradle, add this to your `build.gradle` file:
 
 ----
-def pulsarVersion = '2.6.2'
+def pulsarVersion = '2.8.1'
 
 dependencies {
     compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
@@ -137,7 +137,7 @@ Alternatively, you can save the URL authentication parameters in your `client.co
 
 === Connect token
 
-When connecting clients, you'll need too provide your connect token to identify your account. In all the Pulsar APIs, you specify the token when creating the client object. The token is your password to your account, so keep it safe.
+When connecting clients, you'll need to provide your connect token to identify your account. In all the Pulsar APIs, you specify the token when creating the client object. The token is your password to your account, so keep it safe.
 
 The code samples automatically add your client token as part of the source code for convenience. However, a more secure practice would be to read the token from an environment variable or a file.
 
