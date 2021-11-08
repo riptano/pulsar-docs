@@ -57,7 +57,7 @@ See the <<codeSamples,Code samples>> section for a look at the clients.
 
 On the Pulsar Admin Console's Code Samples page, there are examples of Java, Python, Golang, Node.js, WebSocket, and HTTP clients.  Each example shows Producer, Consumer, and Reader code; plus language-specific examples of setting project properties and dependencies. For example with Java, if you are using Maven in your project, add the following to the `<properties>` section of your `pom.xml` file:
 
-`<pulsar.version>2.8.0</pulsar.version>`
+`<pulsar.version>2.8.1</pulsar.version>`
 
 And add the following to the `pom.xml` file's `<dependencies>` section:
 
@@ -72,7 +72,7 @@ And add the following to the `pom.xml` file's `<dependencies>` section:
 If you are using Gradle, add this to your `build.gradle` file:
 
 ----
-def pulsarVersion = '2.8.0'
+def pulsarVersion = '2.8.1'
 
 dependencies {
     compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
