@@ -19,5 +19,7 @@ ui:
 asciidoc:
   attributes:
     source-highlighter: highlightjs
+    luna-version: '2.8'
+    pulsar-version: '2.8.1'
   extensions:
   - ./lib/tabs-block.js

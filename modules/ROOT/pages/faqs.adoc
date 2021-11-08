@@ -20,7 +20,7 @@ In addition to Apache Pulsar itself, DataStax Luna Streaming provides:
 
 === On which version of Apache Pulsar is DataStax Luna Streaming based?
 
-DataStax Luna Streaming 2.8.0 is based on its distribution of Apache Pulsar 2.8.0, plus features and additional enhancements from DataStax contributors. 
+DataStax Luna Streaming {luna-version} is based on its distribution of Apache Pulsar {pulsar-version}, plus features and additional enhancements from DataStax contributors. 
 
 === What does DataStax Luna Streaming provide that I cannot get with open-source Apache Pulsar?
 
