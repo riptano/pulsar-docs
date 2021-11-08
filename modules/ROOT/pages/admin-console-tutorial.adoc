@@ -74,7 +74,7 @@ And add the following to the `pom.xml` file's `<dependencies>` section:
 If you are using Gradle, add this to your `build.gradle` file:
 //pulsarVersion has to be manually changed
 ----
-def pulsarVersion = 2.8.1
+def pulsarVersion = \{pulsar-version}
 
 dependencies {
     compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
