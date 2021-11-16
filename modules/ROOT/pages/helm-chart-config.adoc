@@ -1,0 +1,77 @@
+= Helm Chart Configuration Values
+
+This page will explain configuration values included in the Helm chart https://github.com/datastax/pulsar-helm-chart/blob/master/helm-chart-sources/pulsar/values.yaml[values file].
+
+You can override chart configurations during installation as necessary if you’re an advanced user, or make changes after a default installation using `helm upgrade` at a later time.
+
+For example, when using `helm install` to install K8ssandra, you can point to the example configuration file using the `-f` flag:
+
+----
+helm install -f k8ssandra.yaml k8ssandra k8ssandra/k8ssandra
+----
+
+## Values
+
+[cols=4*]
+|===
+|*Key*
+|*Type*
+|*Default*
+|*Description*
+
+// | Key | Type | Default | Description |
+// |-----|------|-------------|------------------|
+// #| cassandra.enabled | bool | `true` | Enables installation of Cassandra cluster. Set to false if you only wish to install operators. |
+| fullnameOverride | string | `pulsar` | Overrides the name of the helm deployment 
+| dnsName | string | `pulsar.example.com` | DNS name for load balancer 
+| rbac | bool | `true` | use `ClusterRole` and `ClusterRoleBinding` resources when set to `true``, use namespace Role and RoleBinding resources when set to `false` 
+| persistence | bool | `true`| If persistence is enabled, components that have state will be deployed with `PersistentVolumeClaims`, otherwise, for test purposes, they will be deployed with emptDir 
+| priorityClass| bool, string | `false`, `1000000` | If enabled, a new priority class will be created and applied to all Pulsar core pods. Priority indicates the importance of a Pod relative to other Pods. If you are running Pulsar with other pods that depend on it (ex. microservices), using a higher priority will ensure it gets scheduled first. 
+| enableWaitContainers: | bool | `true` | Enable `initContainers` that wait for dependent components to be enabled. Provides a graceful initial install. However, it could lead to some failure scenarios because it can prevent containers from starting even though they could operate. 
+| default_storage | bool | `existingStorageClassName: default` | If `default_storage` is set, that storage class is the default for all persistent volumes created by the chart. 
+| enableTls | bool | `false` | By default, TLS is enabled on the client- or admin-facing components (broker, proxy, websocket proxy, standalone function worker). For added security, you can also enable TLS between the internal components (zookeeper, bookkeeper, function worker [connect to broker]) 
+| tlsSecretName | string | `pulsar-tls` | 
+| tls | bool | `` | Enable TLS between ZooKeeper nodes (quorum TLS), between BookKeeper and ZooKeeper, and between broker and ZooKeeper. 
+| tlsCaPath | string | `/etc/ssl/certs` | Path for TLS Certificate if your certificate is signed by public CA like Let's Encrypt 
+| tlsCaCert | string | `ca-certificates.crt` | Name of TLS Certificate file
+| superUserRoles | string | | Role names that are treated as “super-user”, meaning they will be able to do all admin operations and publish/consume from all topics. Superuser,admin,websocket,proxy 
+| proxyRoles | string | `proxy` | If a client that is authenticated with a broker is one of its proxyRoles, all requests from that client must also carry information about the role of the client that is authenticated with the proxy. Can be specified in `conf/broker.conf` 
+| enableTokenAuth | bool | `false` | Enable token-based authentication and authorization 
+| tokenPrivateKeyFile | string | my-private.key | Token private key file name 
+| enableAntiAffinity | bool | true | Settings for anti-affinity. Host antiAffinity ensures that replica pods are scheduled on different hosts. 
+| antiAffinity | Object | `{host: enabled: true, mode: "required", zone: enabled: false}`` | Zone antiAffinity distributes replica pods across availability zones. This is a "soft" requirement, so that in the event of a failure of a zone, pods will run in a different zone. 
+| fixRootlessPermissions | Object | `false` | When upgrading to Luna Streaming version 2.7.2 (or higher) from any prior version, the 2.7.2 containers do not run as root for enhanced security. Because of this, the containers may not have the correct permissions to read files. This is remediated by fixing the file system permissions in an init container. 
+| restartOnConfigMapChange | bool | `false` | By default, Kubernetes will not restart pods when only their configmap is changed. This setting will restart pods when their configmap is changed using an annotation that calculates the checksum of the configmap 
+| extra | Object | | Add extra components. `broker: true` for broker as deployment, `brokerSts: false` for broker as stateful set, `proxy:true` for Pulsar proxy, `wsproxy:true` for Websocket proxy. 
+| image | Object | | Defines which images to use when upgrading. When upgrading a Pulsar cluster, it is recommended to upgrade the components one at a time (zookeeper, bookkeeper, broker, etc). 
+| zookeeper | Object | `{component: zookeeper, replicaCount:3, updateStrategy: type: RollingUpdate, podManagementPolicy: OrderedReady}`` | Pulsar Zookeeper cluster `templates/zookeeper-statefulset.yaml` 
+| annotations | Object | `{prometheus.io/scrape: "true", prometheus.io/port: "8000"}`` | Add annotations to deployed resources 
+| tolerations | Object | `[]`` | Tolerations for pod assignment 
+| gracePeriod | string | `60`` | Grace period for pod termination, set to `60` 
+| probe | Object | `{enabled: true, initial: 10, period: 30}`` | Probe determines when the cluster is ready to accept requests 
+| resources | Object | `{requests: memory: 1Gi, cpu: 0.3}`` | Resources for your cluster 
+| volumes | Object | `{data: name: data, size: 5Gi}`` | Volumes for your cluster 
+| configData| Object | `{PULSAR_MEM: "-Xms1g -Xmx1g -Dcom.sun.management.jmxremote -Djute.maxbuffer=10485760", PULSAR_GC: "-XX:+UseG1GC", PULSAR_LOG_LEVEL: "info", PULSAR_LOG_ROOT_LEVEL: "info", PULSAR_EXTRA_OPTS: "-Dpulsar.log.root.level=info"}`` | Proxy config map `templates/zookeepernp-configmap.yaml` 
+| wsProxyPort | string | `8000`` | websocket proxy port 
+| wsProxyPortTls| string | `8001`` | websocket proxy port TLS 
+| autoPortAssign| bool | `"enablePlainTextWithTLS: false, matchingNodePort: false"`` |
+| service | Object | `"annotations: {}, type: LoadBalancer, autoPortAssign:, enabled: false, ports: name: http, port: 8080, protocol: TCP, name: pulsar, port: 6650, protocol: TCP, name: ws, port: 8000, protocol: TCP"`` | Proxy cluster service `templates/zookeeper-service.yaml` 
+| extraService| Object| `"extraService: , enabled: false, annotations: {}, autoPortAssign:, enabled: true, type: ClusterIP, ports:, name: http, port: 8080, protocol: TCP, name: pulsar, port: 6650, protocol: TCP, name: ws, port: 8000, protocol: TCP"`` | For creating an extra service pointing to the proxy 
+| ingress| Object |  `"enabled: false, host: admin.host.com, enableWebSocket: false, wssPortOnProxy: 8001, enableBurnell: false"`` | API object that manages external access to the services in a cluster. 
+| pdb | Object | `"usePolicy: true, maxUnavailable: 1"`` | Proxy PodDisruptionBudget - limits the number of Pods of a replicated application that are down simultaneously from voluntary disruptions `templates/zookeeper-pdb.yaml` 
+| dns | Object | `"component: dns, provider: aws, domainFilter: example.com, hostAnnotations:"`` | Pulsar Component:  DNS on proxy RBAC 
+| autoRecovery | Object | `"component: autorecovery, replicaCount: 1, enableProvisionContainer: false"`` | Pulsar Component: Bookkeeper auto-recovery `templates/autorecovery-deployment.yaml`
+| bastion | Bool | `True` |  bastion pod for administrative commands 
+| pulsarBeam | Bool | `False` | Pulsar Beam for HTTP interface Pulsar Beam depends on the proxy pod, so you must enable that to use Beam. You need to expose the Pulsar Beam port on the proxy. See the proxy section for details. 
+| burnell | Bool | `False`` | various Pulsar proxies 
+| burnellLogCollector | Bool | `False`` | Burnell log collector for functions when using process runtime 
+| zoonavigator | Bool | `False` | Zoonavigator for debugging Zookeeper 
+| tardigrade| Bool | `False` | Tardigrade for decentralized blob storage. This runs the S3 gateway that connects to Tardigrade. 
+| pulsarHeartbeat| Bool | `False` | Pulsar Heartbeat enabled or disabled 
+| pulsarAdmin | Bool | `False` | Pulsar Admin enabled or disabled 
+
+|===
+
+
+
+
