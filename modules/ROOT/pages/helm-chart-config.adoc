@@ -4,10 +4,10 @@ This page will explain configuration values included in the Helm chart https://g
 
 You can override chart configurations during installation as necessary if you’re an advanced user, or make changes after a default installation using `helm upgrade` at a later time.
 
-For example, when using `helm install` to install K8ssandra, you can point to the example configuration file using the `-f` flag:
+For example, when using `helm install` to install Luna Streaming, you can point to the example configuration file using the `-f` flag:
 
 ----
-helm install -f k8ssandra.yaml k8ssandra k8ssandra/k8ssandra
+helm install pulsar -f dev-values.yaml datastax-pulsar/pulsar
 ----
 
 ## Values
