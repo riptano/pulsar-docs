@@ -1,8 +1,8 @@
 = Helm Chart Configuration Values
 
-This page will explain configuration values included in the Helm chart https://github.com/datastax/pulsar-helm-chart/blob/master/helm-chart-sources/pulsar/values.yaml[values file].
+This page explains configuration values included in the Helm chart https://github.com/datastax/pulsar-helm-chart/blob/master/helm-chart-sources/pulsar/values.yaml[values file].
 
-You can override chart configurations during installation as necessary if you’re an advanced user, or make changes after a default installation using `helm upgrade` at a later time.
+If you are an advanced user, you can override chart configurations during installation as necessary or make changes after a default installation using `helm upgrade` at a later time.
 
 For example, when using `helm install` to install Luna Streaming, you can point to the example configuration file using the `-f` flag:
 
