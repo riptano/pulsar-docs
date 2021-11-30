@@ -1,0 +1,66 @@
+= Scaling Luna Streaming Cluster
+
+== Setup Minikube
+
+First we'll set up a minikube and connect to the loadbalancer with `tunnel`.
+
+$ minikube start --disk-size 50000mb
+$ minikube tunnel
+
+== Install
+
+Our installation will use this https://github.com/datastax/pulsar-helm-chart[Helm Chart]. 
+
+To start the cluster, use this https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[YAML file].
+
+$ diff ~/dev-values.yaml ~/dev-values_large.yaml 
+40c40,47
+<   replicaCount: 1
+---
+>   replicaCount: 4
+>   volumes:
+>     journal:
+>       size: 2Gi
+>     ledgers:
+>       size: 10Gi
+>     ranges:
+>       size: 1Gi
+52,54c59,61
+<     defaultEnsembleSize: 1
+<     defaultAckQuorum: 1
+<     defaultWriteQuorum: 1
+---
+>     defaultEnsembleSize: 3
+>     defaultAckQuorum: 2
+>     defaultWriteQuorum: 3
+
+To install from the above YAML:
+
+$ helm install pulsar -f ~/dev-values_large.yaml --wait datastax-pulsar/pulsar
+
+== Generate data
+
+Now, we generate data in our namespaces:
+
+$ bin/pulsar-admin namespaces set-retention public/default -t -1 -s 100M
+$ bin/pulsar-client produce test1 -n 500 -m "sdasdsdsadsadsad"
+$ bin/pulsar-client produce test2 -n 500 -m "sdasdsdsadsadsad"
+$ bin/pulsar-client produce test3 -n 500 -m "sdasdsdsadsadsad"
+
+== Scaling Clusters
+
+To scale down, lower the `replicaCount` value in the YAML file:
+
+ bookkeeper:
+    replicaCount: 3
+
+And run `helm upgrade pulsar -f ~/dev-values_large.yaml --wait`.
+
+To scale up, raise the `replicaCount` value in the YAML file:
+
+ bookkeeper:
+    replicaCount: 5
+
+And run `helm upgrade pulsar -f ~/dev-values_large.yaml --wait`.
+
+
