@@ -6,4 +6,5 @@
 *** xref:admin-console-tutorial.adoc[Using the Pulsar Admin Console]
 *** xref:pulsar-monitor.adoc[Monitoring Luna using Pulsar Heartbeat]
 *** xref:tools-and-ui.adoc[Tools and UI]
+*** xref:auth.adoc[Authentication]
 *** xref:faqs.adoc[Luna Streaming FAQs]
