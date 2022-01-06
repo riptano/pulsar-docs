@@ -192,6 +192,7 @@ Then run this command:
 
 `helm install pulsar datastax-pulsar/pulsar --namespace pulsar --values dev-values.yaml --create-namespace`
 
+[#manage-pulsar-cluster]
 == Accessing the Pulsar cluster in cloud
 
 The default values will create a ClusterIP for all components. ClusterIPs are only accessible within the Kubernetes cluster. The easiest way to work with Pulsar is to log into the bastion host (assuming it is in the `pulsar` namespace):
