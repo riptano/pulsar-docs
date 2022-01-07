@@ -6,3 +6,5 @@
 *** xref:admin-console-tutorial.adoc[Using the Pulsar Admin Console]
 *** xref:pulsar-monitor.adoc[Monitoring Luna using Pulsar Heartbeat]
 *** xref:faqs.adoc[Luna Streaming FAQs]
+** Installing Luna Streaming
+*** xref:install-eks.adoc[Install to EKS]
