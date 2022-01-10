@@ -1,0 +1,33 @@
+= Troubleshooting
+
+Find troubleshooting tips in these sections:
+
+* [Check quotas]({{< relref "#check-quotas" >}})
+* [Bucket region or name for backups is misconfigured]({{< relref "#bucket-region-or-name-for-backups-is-misconfigured" >}}) 
+* [Incorrect credentials are configured for backups]({{< relref "#incorrect-credentials-are-configured-for-backups" >}}) 
+* [Check dependencies in Helm charts]({{< relref "#check-dependencies-in-helm-charts" >}}) 
+* [Collect useful information]({{< relref "#collect-useful-information" >}})
+
+== Check quotas
+
+In some cases, pods can become "unhealthy" and the root cause may be an insufficient quota. You can check quotas in the cloud provider's UI. For example, in the Google Cloud Platform (GCP) console, check for any unhealthy pods in your GKE project. Then in the IAM &amp; Admin section of the GCP console, navigate to Quotas. Look for any reported issues with backend services:
+
+image::gcp-quota-example.png[GCP Quota]
+
+From the GCP Admin Quotas display:
+
+1. Select the row for the service name that is reporting a quota issue
+2. Click **All Quotas** from the Details column
+3. Check the box for the affected quota, and click **Edit Quota**. 
+4. The dialog indicates: "Enter a new quota limit. Your request will be sent to your service provider for approval." Examine the displayed current value and set a new value. 
+5. Enter a brief request description and click **Next**.
+6. Verify your contact information, and click **Submit Request**.
+
+Notice how in the following example the Backend services quota is set to '5', and we're changing it to '50'. For the K8ssandra deployments (Stargate, cass-operator, Reaper, Medusa, and so on), actually `10` might be a sufficient quota.
+
+![Quota UI showing change in Backend service quota from 5 to 50](gcp-quota-example2.png)
+
+image::(gcp-quota-example2.png)[GCP Backend Quota]
+
+== Next
+
