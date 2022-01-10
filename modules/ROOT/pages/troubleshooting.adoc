@@ -1,12 +1,6 @@
 = Troubleshooting
 
-Find troubleshooting tips in these sections:
-
-* [Check quotas]({{< relref "#check-quotas" >}})
-* [Bucket region or name for backups is misconfigured]({{< relref "#bucket-region-or-name-for-backups-is-misconfigured" >}}) 
-* [Incorrect credentials are configured for backups]({{< relref "#incorrect-credentials-are-configured-for-backups" >}}) 
-* [Check dependencies in Helm charts]({{< relref "#check-dependencies-in-helm-charts" >}}) 
-* [Collect useful information]({{< relref "#collect-useful-information" >}})
+Find troubleshooting tips in these sections.
 
 == Check quotas
 
