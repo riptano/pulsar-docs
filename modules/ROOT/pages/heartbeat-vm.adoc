@@ -1,0 +1,38 @@
+= Heartbeat on VM/Server
+
+This document describes how to install Pulsar Heartbeat on a virtual machine (VM) or server. For installation with the Docker image, see xref:quickstart-helm-installs.adoc[Helm Chart].
+
+== Installing Heartbeat Binary
+
+The release page is at https://github.com/datastax/pulsar-heartbeat/releases. The latest version is 1.0.12. The version matches the same git release tag and Docker image.
+
+Download the binary gz file matching your OS and process architecture. Use BSD/Linux/Unix/Solaris command `uname -m` to determine the process architecture.
+
+For example, my environment is Windows and AMD processor. The link to download the matching binary would be https://github.com/datastax/pulsar-heartbeat/releases/download/1.0.12/pulsar-heartbeat-1.0.12-windows-amd64.gz from the page.
+
+Once the file is downloaded, uncompress the file. It will become a binary that can be executed. The file name is `pulsar-heartbeat-{version}-{os}-{arch}`. Here is an example:
+
+----
+$ gunzip ~/Downloads/pulsar-heartbeat-1.0.12-darwin-amd64.gz 
+$ ls ~/Downloads/pulsar-heartbeat-1.0.12-darwin-amd64 
+/Users/username/Downloads/pulsar-heartbeat-1.0.12-darwin-amd64
+----
+
+=== Execute the binary
+
+Pulsar Heartbeat is a data driven application. The configuration is defined by a yaml file. A yaml for Heartbeat is available at https://github.com/datastax/pulsar-heartbeat/tree/master/config[].
+
+An environmental variable `PULSAR_OPS_MONITOR_CFG` tells the application where to source the file. 
+
+Run the binary file `pulsar-heartbeat-{version}-{os}-{arch}`. Here is an example of how to set up and run the application:
+
+----
+$ export PULSAR_OPS_MONITOR_CFG=/Users/{username}/go/src/github.com/datastax/pulsar-heartbeat/config/runtime.yml 
+
+$ ./pulsar-heartbeat-1.0.12-darwin-amd64 
+2022/01/11 15:16:57  info config file /Users/{username}/go/src/github.com/datastax/pulsar-heartbeat/config/runtime.yml
+----
+
+== Next
+
+
