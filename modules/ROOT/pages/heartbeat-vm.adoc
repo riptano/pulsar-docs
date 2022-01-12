@@ -1,16 +1,18 @@
 = Heartbeat on VM/Server
 
-This document describes how to install Pulsar Heartbeat on a virtual machine (VM) or server. For installation with the Docker image, see xref:quickstart-helm-installs.adoc[Helm Chart].
+This document describes how to install Pulsar Heartbeat on a virtual machine (VM) or server. For installation with the Docker image, see xref:quickstart-helm-installs.adoc[Helm Chart Installation].
 
-== Installing Heartbeat Binary
+== Install Heartbeat Binary
 
-The release page is at https://github.com/datastax/pulsar-heartbeat/releases. The latest version is 1.0.12. The version matches the same git release tag and Docker image.
+The release page is at https://github.com/datastax/pulsar-heartbeat/releases. The latest version is 1.0.12, which matches with the Git release tag and Docker image.
 
-Download the binary gz file matching your OS and process architecture. Use BSD/Linux/Unix/Solaris command `uname -m` to determine the process architecture.
+Download the binary `.gz` file matching your OS and process architecture. Use the Linux commands `uname -m` and `uname -o` to determine your process architecture.
 
-For example, my environment is Linux and AMD processor. The link to download the matching binary would be https://github.com/datastax/pulsar-heartbeat/releases/download/1.0.12/pulsar-heartbeat-1.0.12-linux-amd64.gz from the release page.
+For example, if I run the command `uname -m` in Ubuntu, my system returns `x86_64`, and `uname -o` returns `GNU/Linux`. The link to download the matching binary would be https://github.com/datastax/pulsar-heartbeat/releases/download/1.0.12/pulsar-heartbeat-1.0.12-linux-amd64.gz from the release page.
 
-Once the file is downloaded, uncompress the file with Gunzip. It will become a binary that can be executed. The file name is `pulsar-heartbeat-{version}-{os}-{arch}`. Here is an example:
+Once the file is downloaded, uncompress the file with Gunzip. It will become a binary that can be executed. The filename structure is `pulsar-heartbeat-{version}-{os}-{arch}`. 
+
+Here is an example:
 
 ----
 $ gunzip ~/Downloads/pulsar-heartbeat-1.0.12-linux-amd64 
@@ -18,11 +20,11 @@ $ ls ~/Downloads/pulsar-heartbeat-1.0.12-linux-amd64
 /Users/username/Downloads/pulsar-heartbeat-1.0.12-linux-amd64
 ----
 
-=== Execute the binary
+== Execute Heartbeat binary
 
-Pulsar Heartbeat is a data driven application. The configuration is defined by a yaml file. A yaml for Heartbeat is available at https://github.com/datastax/pulsar-heartbeat/tree/master/config[].
+The Pulsar Heartbeat configuration is defined by a `.yaml` file. A yaml template for Heartbeat is available at https://github.com/datastax/pulsar-heartbeat/blob/master/config/runtime-template.yml[].
 
-An environmental variable `PULSAR_OPS_MONITOR_CFG` tells the application where to source the file. 
+The environmental variable `PULSAR_OPS_MONITOR_CFG` tells the application where to source the file. 
 
 Run the binary file `pulsar-heartbeat-{version}-{os}-{arch}`. Here is an example of how to set up and run the application:
 
@@ -35,4 +37,5 @@ $ ./pulsar-heartbeat-1.0.12-linux-amd64
 
 == Next
 
+To install Heartbeat packaged with the Luna Streaming Helm chart, see xref:quickstart-helm-installs.adoc[Helm Chart Installation].
 
