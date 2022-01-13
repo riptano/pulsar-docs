@@ -6,3 +6,4 @@
 *** xref:admin-console-tutorial.adoc[Using the Pulsar Admin Console]
 *** xref:pulsar-monitor.adoc[Monitoring Luna using Pulsar Heartbeat]
 *** xref:faqs.adoc[Luna Streaming FAQs]
+** xref:admin-console-VM.adoc[Install Admin Console on Server/VM]
