@@ -4,20 +4,18 @@ This document describes how to install Pulsar Heartbeat on a virtual machine (VM
 
 == Install Heartbeat Binary
 
-The release page is at https://github.com/datastax/pulsar-heartbeat/releases. The latest version is 1.0.12, which matches with the Git release tag and Docker image.
+Download the heartbeat binary `.gz` file matching your OS and process architecture from the https://github.com/datastax/pulsar-heartbeat/releases[releases page]. Use the Linux commands `uname -m` and `uname -o` to determine your process architecture.
 
-Download the binary `.gz` file matching your OS and process architecture. Use the Linux commands `uname -m` and `uname -o` to determine your process architecture.
-
-For example, if I run the command `uname -m` in Ubuntu, my system returns `x86_64`, and `uname -o` returns `GNU/Linux`. The link to download the matching binary would be https://github.com/datastax/pulsar-heartbeat/releases/download/1.0.12/pulsar-heartbeat-1.0.12-linux-amd64.gz from the release page.
+For example, if I run the command `uname -m` in Ubuntu, my system returns `x86_64`, and `uname -o` returns `GNU/Linux`. I would select the Linux-AMD64 binary from the https://github.com/datastax/pulsar-heartbeat/releases[releases page].
 
 Once the file is downloaded, uncompress the file with Gunzip. It will become a binary that can be executed. The filename structure is `pulsar-heartbeat-{version}-{os}-{arch}`. 
 
 Here is an example:
-
+[subs=attributes+]
 ----
-$ gunzip ~/Downloads/pulsar-heartbeat-1.0.12-linux-amd64 
-$ ls ~/Downloads/pulsar-heartbeat-1.0.12-linux-amd64
-/Users/username/Downloads/pulsar-heartbeat-1.0.12-linux-amd64
+$ gunzip ~/Downloads/pulsar-heartbeat-{heartbeat-version}-linux-amd64 
+$ ls ~/Downloads/pulsar-heartbeat-{heartbeat-version}-linux-amd64
+/Users/username/Downloads/pulsar-heartbeat-{heartbeat-version}-linux-amd64
 ----
 
 == Execute Heartbeat binary
@@ -27,12 +25,12 @@ The Pulsar Heartbeat configuration is defined by a `.yaml` file. A yaml template
 The environmental variable `PULSAR_OPS_MONITOR_CFG` tells the application where to source the file. 
 
 Run the binary file `pulsar-heartbeat-{version}-{os}-{arch}`. Here is an example of how to set up and run the application:
-
+[subs=attributes+]
 ----
-$ export PULSAR_OPS_MONITOR_CFG=/Users/{username}/go/src/github.com/datastax/pulsar-heartbeat/config/runtime.yml 
+$ export PULSAR_OPS_MONITOR_CFG=/Users/username/go/src/github.com/datastax/pulsar-heartbeat/config/runtime.yml 
 
-$ ./pulsar-heartbeat-1.0.12-linux-amd64 
-2022/01/11 15:16:57  info config file /Users/{username}/go/src/github.com/datastax/pulsar-heartbeat/config/runtime.yml
+$ ./pulsar-heartbeat-{heartbeat-version}-linux-amd64 
+2022/01/11 15:16:57  info config file /Users/username/go/src/github.com/datastax/pulsar-heartbeat/config/runtime.yml
 ----
 
 == Next
