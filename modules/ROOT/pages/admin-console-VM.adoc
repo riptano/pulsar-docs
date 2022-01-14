@@ -9,14 +9,14 @@ Technically, the two processes do not need to be collocated, but we recommend ru
 
 == Install Pulsar Admin Console
 
-. Download and install the Node version 11.15.0 tarball to the VM. 
+. Download and install the Node version 11.15.0 tarball to the VM. You can find the most recent Node release https://nodejs.org/en/download/[here].
 
 ----
 wget https://nodejs.org/dist/v11.15.0/node-v11.15.0-linux-x64.tar.xz / 
 tar -xf node-v11.15.0-linux-x64.tar.xz
 ----
 [start=2]
-. Download and install the Pulsar Admin console tarball to the VM.  
+. Download and install the Pulsar Admin console tarball to the VM. You can find the most recent Pulsar Admin Console release https://github.com/datastax/pulsar-admin-console/releases[here].
 
 ----
 wget https://github.com/datastax/pulsar-admin-console/releases/download/1.1.5/pulsar-admin-console-1.1.5.tar.gz
