@@ -38,5 +38,5 @@ $ ./pulsar-heartbeat-{heartbeat-version}-linux-amd64
 
 == Next
 
-To install Heartbeat packaged with the Luna Streaming Helm chart, see xref:quickstart-helm-installs.adoc[Helm Chart Installation].
+Learn more about monitoring your cluster with Heartbeat xref::pulsar-monitor.adoc[here].
 
