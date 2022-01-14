@@ -1,11 +1,11 @@
 = Install Pulsar Admin Console on Server/VM
 
-The Pulsar Admin Console has 2 main components: 
+The Pulsar Admin Console has two main components: 
 
 * A Node.js application that runs the server and serves the dashboard client code to browsers. 
 * An NGINX server that routes network traffic to different locations within the Pulsar Cluster. 
 
-Technically, the two processes do not need to be collocated, but we recommend running them on the same host/VM.
+Technically, the two processes do not need to be collocated, but we recommend running them on the same host/virtual machine (VM).
 
 == Install Pulsar Admin Console
 
@@ -21,6 +21,7 @@ tar -xf node-v11.15.0-linux-x64.tar.xz
 ----
 wget https://github.com/datastax/pulsar-admin-console/releases/download/1.1.5/pulsar-admin-console-1.1.5.tar.gz
 ----
+
 [start=3]
 . Decompress and unzip the tarball in the desired location.
 
@@ -33,9 +34,9 @@ tar -xf pulsar-admin-console-1.1.5.tar.gz
 
 == Modify Admin Console Configuration
 
-You can modify the configuration for the Console here: `dest/dashboard/dest/config.js`. 
+You can modify the configuration for the console in `dest/dashboard/dest/config.js`. 
 
-Alternatively, you can override configuration values by creating a file named `config-override.js` in the same directory (`dest/dashboard/dest/config-override.js`). See below for an example.
+Alternatively, you can override configuration values by creating a file named `config-override.js` in the `dest/dashboard/dest/` directory. See below for an example:
 
 ----
 var globalConf = {
@@ -93,7 +94,8 @@ var globalConf = {
 == Install Nginx
 
 You must install nginx on the same host. You can find installation instructions https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/[here].
-It’s essential to configure Nginx to route traffic appropriately. Below is a sample configuration. There are comments for each section to help decide how to build the `nginx.conf` file. Put the configuration file in `/etc/nginx/nginx.conf`.
+
+It’s essential to configure Nginx to route traffic appropriately with the configuration file in `/etc/nginx/nginx.conf` file. In the sample configuration below, there are comments for each section to help decide how to build the `nginx.conf` file:
 
 === Sample nginx.conf
 ----
