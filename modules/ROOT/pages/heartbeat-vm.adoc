@@ -38,5 +38,5 @@ $ ./pulsar-heartbeat-{heartbeat-version}-linux-amd64
 
 == Next
 
-Learn more about monitoring your cluster with Heartbeat xref::pulsar-monitor.adoc[here].
+Learn more about monitoring your cluster with Heartbeat xref:pulsar-monitor.adoc[here].
 
