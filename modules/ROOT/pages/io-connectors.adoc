@@ -10,7 +10,7 @@ Explore source connector configurations and code examples https://pulsar.apache.
 
 == Sink Connectors
 
-Sink connectors are used to pull messages _from_ Pulsar topics and persist the messages _to_ external topics.
+Sink connectors are used to pull messages _from_ Pulsar topics and persist the messages _to_ external systems.
 
 Explore sink connector configurations and code examples https://pulsar.apache.org/docs/en/io-connectors/#sink-connector[here].
 
