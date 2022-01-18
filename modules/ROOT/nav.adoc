@@ -4,7 +4,6 @@
 *** xref:quickstart-server-installs.adoc[Installing using replicated.io packaging]
 ** Guides and Examples
 *** xref:admin-console-tutorial.adoc[Using the Pulsar Admin Console]
+*** xref:heartbeat-vm.adoc[Installing Heartbeat on Server/VM]
 *** xref:pulsar-monitor.adoc[Monitoring Luna using Pulsar Heartbeat]
 *** xref:faqs.adoc[Luna Streaming FAQs]
-** xref:tools-and-ui.adoc[Tools and UI]
-*** xref:starlight.adoc[Starlight]
