@@ -1,6 +1,6 @@
 = Luna Streaming IO Connectors
 
-When you have Luna Streaming installed and running, add IO connectors to your deployment to interact with external systems, such as Apache Cassandra, Aerospike, and many others.
+When you have Luna Streaming installed and running, add IO connectors to your deployment to interact with external systems, such as Apache Cassandra, Elastic Search, and many others.
 
 == Source Connectors
 
