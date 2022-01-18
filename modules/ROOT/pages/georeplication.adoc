@@ -41,6 +41,20 @@ $ bin/pulsar-admin clusters create \
 
 . Run similar commands on `us-east` and `us-cent` to create connections among clusters.
 
+== Grant permissions to properties
+
+To replicate to a cluster, the tenant needs permission to use that cluster. You can grant permission to the tenant when you create the tenant or grant later.
+
+Specify all the intended clusters when you create a tenant:
+
+----
+$ bin/pulsar-admin tenants create my-tenant \
+  --admin-roles my-admin-role \
+  --allowed-clusters us-west,us-east,us-cent
+----
+
+To update permissions of an existing tenant, use `update` instead of `create`.
+
 == Enable georeplication at namespace level
 
 ----
@@ -54,6 +68,10 @@ Once you create a geo-replication namespace, any topics that producers or consum
 ----
 $ bin/pulsar-admin topics set-replication-clusters --clusters us-west,us-east,us-cent my-tenant/my-namespace/my-topic
 ----
+
+== More
+
+For more information on georeplication in Luna Streaming, see https://pulsar.apache.org/docs/en/administration-geo/[Pulsar Georeplication].
 
 
 
