@@ -22,30 +22,7 @@ Processing guarantees are used to handle errors when writing messages to Pulsar 
 * *ATMOST_ONCE*: The message sent to the source is processed at most once. Therefore, there is a chance that the message is not processed.
 * *EFFECTIVELY_ONCE*: Each message sent to the source will have one output associated with it.
 
-Processing guarantees for connectors not only rely on the Pulsar guarantees but also relate to external systems, that is, the implementation of source and sink.
-
-* *Source*: Pulsar ensures that writing messages to Pulsar topics respects the processing guarantees. It is within Pulsar's control.
-
-* *Sink*: The processing guarantees rely on the sink implementation. If the sink implementation does not handle retries in an idempotent way, the sink does not respect the processing guarantees.
-
-== Set Processing Guarantee 
-
-When creating a connector, you can set the processing guarantee with the Admin CLI:
-
-----
-$ bin/pulsar-admin sources create \
-  --processing-guarantees ATMOST_ONCE 
-----
-
-NOTE: If `--processing-guarantees` is not specified when creating a connector, the default semantic is ATLEAST_ONCE.
-
-Existing processor guarantees can be updated with the Admin CLI:
-
-----
-$ bin/pulsar-admin sources update \
-  --processing-guarantees EFFECTIVELY_ONCE 
-----
-
+Learn more about processing guarantees https://pulsar.apache.org/docs/en/io-overview/#processing-guaranteehere].
 == Next
 
 Learn more about Pulsar IO connectors https://pulsar.apache.org/docs/en/io-overview/[here].
