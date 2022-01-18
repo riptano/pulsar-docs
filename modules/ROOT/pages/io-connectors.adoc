@@ -23,6 +23,7 @@ Processing guarantees are used to handle errors when writing messages to Pulsar 
 * *EFFECTIVELY_ONCE*: Each message sent to the source will have one output associated with it.
 
 Learn more about processing guarantees https://pulsar.apache.org/docs/en/io-overview/#processing-guaranteehere].
+
 == Next
 
 Learn more about Pulsar IO connectors https://pulsar.apache.org/docs/en/io-overview/[here].
