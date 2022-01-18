@@ -23,21 +23,18 @@ Luna Streaming takes care of the deployment for you. The resulting deployment in
 == Installation steps
 
 . Install the base system.
-+
+
 ----
 curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
 ----
-+
+
 This will take about 10 minutes to complete.
-+
+
 TIP: Near the conclusion of the command output, be sure to note (for later steps) **the URL displayed for connecting to the Luna Streaming Installation Console and the password**, and other tips. 
-+
+
 The following is sample output from an install. Your version will have different values - copy them for use in later steps:
-+
+
 ----
-.
-.
-.
 deployment.apps/cert-manager created
 ⚙  Addon metrics-server 0.3.7
 serviceaccount/metrics-server created
@@ -57,65 +54,69 @@ configmap/kurl-config created
 Kotsadm: http://10.101.32.250:8800
 Login with password (will not be shown again): fNBFUn9AM
 
-To access the cluster with kubectl, ensure the KUBECONFIG environment variable is unset:
-
-    bash -l
+To access the cluster with kubectl, ensure the `KUBECONFIG` environment variable is unset with `bash -l`.
 
 Node join commands expire after 24 hours.
 
-----
-
-To generate new node join commands, run curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token on this node.
+To generate new node join commands, run `curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token` on this node.
 
 To add worker nodes to this installation, run the following script on your other nodes:
-    curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.32.250:6443 kubeadm-token=7sdek0.xujj2fo67qh6rs4v kubeadm-token-ca-hash=sha256:28d02e939bfb4fd8d3ea0a9619e9f47e0812773840e0c1e5a72c26b5bfbec08c kubernetes-version=1.19.7 docker-registry-ip=10.96.0.49
 
-+
+    curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.32.250:6443 kubeadm-token=7sdek0.xujj2fo67qh6rs4v kubeadm-token-ca-hash=sha256:28d02e939bfb4fd8d3ea0a9619e9f47e0812773840e0c1e5a72c26b5bfbec08c kubernetes-version=1.19.7 docker-registry-ip=10.96.0.49
+----
+
+[start=2]
 . If you are planning a multi-node installation (small HA), add the worker nodes. The Luna Streaming configuration is for 4 nodes. The command to run **on each node** is displayed in the output; the sample values above are just an example. See the text for your environment following, “To add worker nodes to this installation...” in the output. If necessary, you can regenerate the node install command using the following:
-+
+
 `curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token`
-+
+
+[start=3]
 . Download and install the Community license.
-+
+
 ----
 curl -s https://downloads.datastax.com/license/luna-streaming/Community.yaml -o Community.yaml
 bash -l
 kubectl kots install luna-streaming --namespace default --license-file ./Community.yaml
 ----
-+ 
+ 
 TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
-+
+
 Output from the install command:
-+
+
 ----
   • Deploying Admin Console
   • Waiting for Admin Console to be ready ✓  
 ----
-+
+
+[start=4]
 . Open the Luna Streaming Installation Console's URL in a browser. The URL was displayed after step 1. In the example command output above, it was http://10.101.32.250:8800. Remember to note the generated password, which you'll need soon. 
-+
+
 In the browser, you may see a message similar to this:
-+
+
 image::luna-streaming-tls-warning.png[TLS warning dialog]
-+
+
 Note the browser security advice, and click the Continue to Setup button. If you encounter a "Your connection is not private" dialog, you can (if you agree) click the Advanced section and click "Proceed to <your IP address>". 
-+
+
+[start=5]
 . The Luna Streaming Installation Console displays an "HTTPS for Luna Streaming admin console" message. It includes an explanation that we're currently using a self-signed TLS certificate to secure the communication between your browser and the Luna Streaming Installation Console. If you don't upload your own TLS cert, you'll see a warning about this scenario in your browser every time you access the Luna Streaming Installation Console.
-+
+
 In development, if you agree, you can click Skip &amp; continue. 
+
+[start=6]
 . Login to the Luna Streaming Installation Console. It presents options before you will launch the Luna Streaming Installation Console.
 The user name defaults to `admin`.
 Enter the password that was displayed after installing the base system in step 1 above.
-+
+
+[start=7]
 . Select the configuration options: 
 The Luna Streaming Installation Console presents its "Configure Luna Streaming" page. 
-+ 
+ 
 Start by selecting the configuration type: single node or small HA. If you select small HA, make sure you have previously added the required number of nodes.
-+
+
 In the **Hostname** field, enter a DNS resolvable name for the cluster. For a single node install, this should resolve to the IP address of the single node. For a multi-node install, the DNS name should resolve to a list of all the IP addresses in the cluster.
-+ 
+ 
 If you know your node's IP address but not its DNS name, use an `nslookup` command. For example, if the node's IP is 10.101.32.250:
-+
+
 ----
 nslookup 10.101.32.250
 Server:		10.100.6.66
@@ -123,23 +124,24 @@ Address:	10.100.6.66#53
 
 250.32.101.10.in-addr.arpa	name = ip-10-101-32-250.srv101.dsinternal.org.
 ----
-+
+
 The DNS name in this example is `ip-10-101-34-250.srv101.dsinternal.org` and you would enter this in the required Hostname field. 
-+
+
 Optionally enable TLS enabled for Pulsar clients. If you entered TLS information in step 6, that certificate will be used. The certificate should be signed by a trusted certificate authority (for example, Let’s Encrypt). If you want to use a self-signed certificate, select “Generate Self-Signed Certificate”.
-+
+
 Optionally enable token-based authentication for Pulsar admin and clients. The installation will automatically generate keys and tokens. The superuser token can be retrieved from the Pulsar Admin Console.
-+
+
 The BookKeeper storage settings allow you to optionally use attached volumes for the BookKeeper journal and ledgers. By default, they will use the OS volume of the servers. However, if you have attached devices, the installation will automatically detect them and map them to BookKeeper. The journal device should be 20 GB. The ledger device can be any size, but defaults to 50 GB. Make sure the attached volume device is at least as large as the specified size. If it is not large enough, it will not be successfully mapped. 
-+
+
 Scroll down the Installation Console's Config page. In the **Admin Console Values** section, if you'll authenticate with username/password, copy the credentials for a subsequent Pulsar Admin Console login. Example:
-+
+
 image::luna-streaming-admin-console-credentials.png[Pulsar Admin Console Values fields as described in surrounding text]
-+ 
+ 
 Once you have entered the config options, click **Continue**.
-+
+
+[start=8]
 . Let the pre-flight checks complete. Example:
-+
+
 image::luna-streaming-preflight-checks.png[Luna Streaming preflight checks shows all verifications successfully completed]
 
 == Launch the DataStax Luna Streaming Pulsar Admin Console
@@ -154,9 +156,9 @@ Or in this example, open https://ip-10-101-32-250.srv101.dsinternal.org if you c
 
 . Log in to the DataStax Luna Streaming Pulsar Admin Console. 
 The username is `admin`. You can find the password in the Luna Streaming Installation Console's Config tab, under **Admin Console Values**. 
-+
+
 . Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. 
-+
+
 You can connect a test client (Test Clients) directly from the Pulsar Admin Console and you can view the built-in Grafana dashboards (Cluster/Monitoring). The Grafana user name is `admin` and the password is the same as for the Admin Console, which can be found under Dashboard/Config tab of the installation interface in the Admin Console Value section.
 
 == Updating DataStax Luna Streaming
@@ -211,3 +213,7 @@ To view the logs of a specific pod, for example:
 If the pods has multiple containers, use the following command to view the logs for one of the containers:
 
 `kubectl logs <podname> -c <containername>`
+
+== Next
+
+Learn how to install Luna Streaming with Helm with the xref:quickstart-helm-installs.adoc[Helm Install Quickstart].
