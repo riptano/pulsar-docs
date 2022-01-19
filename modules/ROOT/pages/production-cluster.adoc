@@ -1,0 +1,57 @@
+= Luna Streaming production cluster
+
+This document will help you set up a Luna Streaming production cluster. 
+
+== Prerequisite
+
+* Helm version 3
+* A Kubernetes cluster 
+* No less than 16 gigs of RAM and 8 virtual processor cores (4 physical cores)
+
+For details on Helm, refer to its https://helm.sh/docs/[documentation].
+For details on Minikube, see its https://minikube.sigs.k8s.io/docs/start/[documentation]. 
+
+== Download and install yaml file
+
+For an example set of production cluster values, download this https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[values] file. Use that values file or one like it to start the cluster:
+
+----
+helm install pulsar -f dev-values.yaml datastax-pulsar/pulsar
+----
+
+== Storage Class Requirements
+
+If you have specific storage class requirement, for example fixed IOPS disks in AWS, you can have the chart configure the storage classes for you.
+Here are examples from the cloud providers:
+
+----
+# For AWS
+# default_storage:
+#  provisioner: kubernetes.io/aws-ebs
+#  type: gp2
+#  fsType: ext4
+#  extraParams:
+#     iopsPerGB: "10"
+
+
+# For GCP
+# default_storage:
+#   provisioner: kubernetes.io/gce-pd
+#   type: pd-ssd
+#   fsType: ext4
+#   extraParams:
+#      replication-type: none
+
+# For Azure
+# default_storage:
+#   provisioner: kubernetes.io/azure-disk
+#   fsType: ext4
+#   type: managed-premium
+#   extraParams:
+#     storageaccounttype: Premium_LRS
+#     kind: Managed
+#     cachingmode: ReadOnly
+----
+
+
+
