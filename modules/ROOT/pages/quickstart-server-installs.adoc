@@ -1,6 +1,6 @@
 = Quick Start for Server/VM installs
 
-:page-tag: luna-streaming,dev,install,curl,kubectl
+:page-tag: luna-streaming,dev,admin,install
 
 You have two options for installing DataStax Luna Streaming (Pulsar):
 
