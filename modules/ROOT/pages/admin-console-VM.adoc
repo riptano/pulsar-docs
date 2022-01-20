@@ -1,6 +1,6 @@
 = Install Pulsar Admin Console on Server/VM
 
-:page-tag: luna-streaming,dev,install,admin,pulsar,javascript
+:page-tag: luna-streaming,dev,install,admin,pulsar
 
 The Pulsar Admin Console has two main components: 
 
