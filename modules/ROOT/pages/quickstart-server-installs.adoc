@@ -1,5 +1,7 @@
 = Quick Start for Server/VM installs
 
+:page-tag: luna-streaming,dev,install,curl,kubectl
+
 You have two options for installing DataStax Luna Streaming (Pulsar):
 
 * Via the provided Helm chart for an existing Kubernetes environment on a laptop or with a cloud provider. See xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. 
