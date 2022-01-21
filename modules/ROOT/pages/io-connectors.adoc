@@ -24,7 +24,84 @@ Processing guarantees are used to handle errors when writing messages to Pulsar 
 
 Learn more about processing guarantees https://pulsar.apache.org/docs/en/io-overview/#processing-guarantee[here].
 
-== Next
+== Kafka Connectors
+
+Datastax offers https://github.com/datastax/pulsar-3rdparty-connector[third-party connector support] for creating Pulsar connectors on the base of existing Kafka connectors. This allows developers to quickly move connectors from their Apache Kafka infrastructure into Apache Pulsar.
+
+**Prerequisites:**
+
+* Ensure you have **JDK 11+** and **Maven 3.8** installed.
+
+* Clone the connector's repo and `run mvn clean install` from the root.
+
+* The connector's `.nar` files can be found at `pulsar-connectors/<connector name>>/target/pulsar-3rdparty-pulsar-connectors-<connector name>-0.1.0-SNAPSHOT.nar`.
+
+=== Configuring connectors
+
+Follow the documentation https://pulsar.apache.org/docs/en/io-use/[here] to initialize your connector. Then, modify its `config.yaml` file as below to create an adapter for the connector. For further information on shading and troubleshooting, see the https://github.com/datastax/pulsar-3rdparty-connector[GitHub readme].
+
+==== Sink Connectors
+
+----
+# Pulsar KCA Sink expects "processingGuarantees" to be "EFFECTIVELY_ONCE"`
+processingGuarantees: "EFFECTIVELY_ONCE"
+configs:
+  # Size of messages in bytes the sink will attempt to batch messages together before flush.
+  # batchSize: 16384
+  # Time interval in milliseconds the sink will attempt to batch messages together before flush.
+  # lingerTimeMs: 2147483647
+  # In case of Record<KeyValue<>> data use key from KeyValue<> instead of one from Record.
+  # unwrapKeyValueIfAvailable: "true"
+  # The Kafka topic name that passed to Kafka sink.
+  topic: "my-topic"
+  # Pulsar topic to store offsets at.
+  offsetStorageTopic: "kafka-connect-sink-offsets"
+  # A Kafka connector sink class to use.
+  kafkaConnectorSinkClass: "com.third.party.CoolSinkConnector"
+  # Config properties to pass to the Kafka connector.
+  kafkaConnectorConfigProperties:
+    # The following properties passed directly to Kafka Connect Sink and defined by it or by
+    # https://github.com/apache/kafka/blob/2.7/connect/runtime/src/main/java/org/apache/kafka/connect/runtime/ConnectorConfig.java
+    name: "test-sink"
+    connector.class: "com.third.party.CoolSinkConnector"
+    tasks.max: "1"
+    topics: "my-topic"
+    ...
+----
+
+==== Source Connectors
+
+----
+tenant: "public"
+namespace: "default"
+name: "test-source"
+topicName: "test-topic"
+parallelism: 1
+# A Kafka connector source class to use.
+className: "com.third.party.CoolSourceConnector"
+configs:
+  # Present the message only consist of payload.
+  # json-with-envelope: "false"
+
+  # Pulsar topic to store Kafka connector offsets at
+  offset.storage.topic: "kafka-connect-source-offsets"
+  # Pulsar namespace to store the output topics
+  topic.namespace: "public/default"
+  
+  # Config properties to pass to the Kafka connector.
+  # The following properties passed directly to Kafka Connect Sink and defined by it or by
+  # https://github.com/apache/kafka/blob/2.7/connect/runtime/src/main/java/org/apache/kafka/connect/runtime/ConnectorConfig.java
+
+  # A Kafka connector source class to use.
+  task.class: "com.third.party.CoolSourceConnector"
+  # The converter provided by Kafka Connect to convert record value.
+  value.converter: "org.apache.kafka.connect.json.JsonConverter"
+  # The converter provided by Kafka Connect to convert record key.
+  key.converter: "org.apache.kafka.connect.json.JsonConverter"
+  ...
+----
+
+=== Next
 
 Learn more about Pulsar IO connectors https://pulsar.apache.org/docs/en/io-overview/[here].
 
