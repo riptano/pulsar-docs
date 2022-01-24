@@ -2,11 +2,16 @@
 
 Find troubleshooting help in these sections.
 
+* xref:troubleshooting.adoc#checkquotas[**Insufficient Quota**]
+* xref:troubleshooting.adoc#containerspending[**Containers in Pending State**]
+* xref:troubleshooting.adoc#bastionpod[**Using the Bastion Pod**]
+
+[#checkquotas]
 == Check quotas
 
 In some cases, pods can become "unhealthy" and the root cause may be an insufficient quota. You can check quotas in the cloud provider's UI. For example, in the Google Cloud Platform (GCP) console, check for any unhealthy pods in your GKE project. Then in the IAM &amp; Admin section of the GCP console, navigate to Quotas. Look for any reported issues with backend services:
 
-image::gcp-quota-example.png[GCP Quota]
+image::gcp-quota-example1.png[GCP Quota]
 
 From the GCP Admin Quotas display:
 
@@ -19,11 +24,10 @@ From the GCP Admin Quotas display:
 
 Notice how in the following example the Backend services quota is set to '5', and we're changing it to '50'. For the K8ssandra deployments (Stargate, cass-operator, Reaper, Medusa, and so on), actually `10` might be a sufficient quota.
 
-![Quota UI showing change in Backend service quota from 5 to 50](gcp-quota-example2.png)
+image::gcp-quota-example2.png[GCP Backend Quota]
 
-image::(gcp-quota-example2.png)[GCP Backend Quota]
-
-=== Containers in pending state 
+[#containerspending]
+== Containers in pending state 
 
 If your pods are stuck in Pending state after installation, or your cloud provider is warning you about Unschedulable Pods, there are a few ways to work through this.
 
@@ -31,21 +35,29 @@ If your pods are stuck in Pending state after installation, or your cloud provid
 
 * To examine a specific pod, use `kubectl describe`. For example, if your `pulsar-bookkeeper-0` pod is not scheduling, use `kubectl describe pods/pulsar-bookkeeper-0` to view detailed output on the pod's state, dependencies, and events. 
 
-* To view log output for a specific pod, use `kubectl logs`. Continuing with the previous example with `pulsar-bookkeeper-0`, to get logs for this pod use `kubectl logs pulsar-bookkeeper-0`. If this pod spans multiple containers, add the flag `--all-containers=true`. 
+* To view log output for a specific pod, use `kubectl logs`. Continuing with the `pulsar-bookkeeper-0` example, to get logs for this pod use `kubectl logs pulsar-bookkeeper-0`. If this pod spans multiple containers, add the flag `--all-containers=true`. 
 
+[#bastionpod]
 == Bastion Pod
 
-The bastion pod deploys with Luna Streaming and allows a user to execute administrative commands in a bash shell of the cluster. This can be a handy troubleshooting tool for testing the health of your . 
+The bastion pod deploys with Luna Streaming and allows a user to execute administrative commands in a bash shell of the cluster. This can be a handy troubleshooting tool for testing the health of your cluster. 
 
 === Set up bastion pod
 
-This section covers setting up the bastion pod after installation. To access the shell of the bastion pod:
+To use the bastion pod after installation, access the shell of the bastion pod (here we are using namespace `default`):
 
 ----
 kubectl -n default exec $(kubectl get pods --namespace default -l "app=pulsar,component=bastion" -o jsonpath="{.items[0].metadata.name}") -it -- bash`
 ----
 
-This sets you up in a bash shell that looks something like this: `pulsar@pulsar-bastion-78d4cd74ff-ctvvh:/pulsar$`
+This sets you up in a bash shell that looks like this: 
+
+----
+pulsar@pulsar-bastion-78d4cd74ff-ctvvh:/pulsar$
+----
+
+=== Test bastion pod
+
 Ensure your bastion pod sees your cluster with `pulsar admin namespaces list public`. It should return a list of your public namespaces:
 
 ----
@@ -53,16 +65,16 @@ Ensure your bastion pod sees your cluster with `pulsar admin namespaces list pub
 "public/functions"
 ----
 
-If you get `bash: admin: command not found`, try moving into the `bin` directory with `cd bin`. You may need to append your command with `./`. For example `./pulsar-admin get pods`.
+If you get `bash: admin: command not found`, try moving into the `bin` directory with `cd bin`. You may need to append your command with `./`, for example `./pulsar-admin get pods`.
 If the shell finds no resources, you may not have any public namespaces. Create a public namespace with `pulsar-admin namespaces create public/default`. 
 
-=== Test Bastion Pod
+=== Publish a message
 
-To test your Pulsar cluster with the bastion pod, we will publish a message with `pulsar-client` through the bastion pod shell: 
+To test your Pulsar cluster with the bastion pod, produce a message with `pulsar-client` through the bastion pod shell: 
 
 `pulsar-client produce my-test-topic --messages "hello-pulsar"`
 
-You should receive a confirmation the message was published:
+You should receive a confirmation the message was produced:
 
 `00:16:37.970 [main] INFO  org.apache.pulsar.client.cli.PulsarClientTool - 1 messages successfully produced`
 
