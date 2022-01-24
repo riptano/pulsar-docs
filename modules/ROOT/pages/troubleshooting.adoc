@@ -31,7 +31,7 @@ If your pods are stuck in Pending state after installation, or your cloud provid
 
 * To examine a specific pod, use `kubectl describe`. For example, if your `pulsar-bookkeeper-0` pod is not scheduling, use `kubectl describe pods/pulsar-bookkeeper-0` to view detailed output on the pod's state, dependencies, and events. 
 
-* To view log output for a specific pod, use `kubectl logs`. Continuing with the previous example with `pulsar-bookkeeper-0, to get logs for this pod use `kubectl logs pulsar-bookkeeper-0`. If this pod spans multiple containers, add the flag `--all-containers=true`.
+* To view log output for a specific pod, use `kubectl logs`. Continuing with the previous example with `pulsar-bookkeeper-0`, to get logs for this pod use `kubectl logs pulsar-bookkeeper-0`. If this pod spans multiple containers, add the flag `--all-containers=true`. 
 
 == Bastion Pod
 
