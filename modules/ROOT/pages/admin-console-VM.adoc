@@ -1,5 +1,7 @@
 = Install Pulsar Admin Console on Server/VM
 
+:page-tag: luna-streaming,dev,install,admin,pulsar
+
 The Pulsar Admin Console has two main components: 
 
 * A Node.js application that runs the server and serves the dashboard client code to browsers. 
