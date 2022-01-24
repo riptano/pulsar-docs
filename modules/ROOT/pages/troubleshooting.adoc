@@ -47,7 +47,7 @@ The bastion pod deploys with Luna Streaming and allows a user to execute adminis
 To use the bastion pod after installation, access the shell of the bastion pod (here we are using namespace `default`):
 
 ----
-kubectl -n default exec $(kubectl get pods --namespace default -l "app=pulsar,component=bastion" -o jsonpath="{.items[0].metadata.name}") -it -- bash`
+kubectl -n default exec $(kubectl get pods --namespace default -l "app=pulsar,component=bastion" -o jsonpath="{.items[0].metadata.name}") -it -- bash
 ----
 
 This sets you up in a bash shell that looks like this: 
