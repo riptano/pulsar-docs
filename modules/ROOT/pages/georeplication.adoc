@@ -30,9 +30,7 @@ $ bin/pulsar-admin clusters create \
   us-east
 ----
 [start=2]
-. Configure the connection from `us-west` to `us-cent`.
-
-Run the following command on `us-west`:
+. To configure the connection from `us-west` to `us-cent`, run the following command on `us-west`:
 
 ----
 $ bin/pulsar-admin clusters create \
