@@ -21,9 +21,7 @@ To replicate data among clusters, you need to configure each cluster to connect 
 
 Suppose that you have 3 replication clusters: `us-west`, `us-cent`, and `us-east`.
 
-Configure the connection from `us-west` to `us-east`.
-
-Run the following command on `us-west`.
+1. To configure the connection from `us-west` to `us-east`, run the following command on `us-west`.
 
 ----
 $ bin/pulsar-admin clusters create \
@@ -31,7 +29,7 @@ $ bin/pulsar-admin clusters create \
   --url http://<DNS-OF-US-EAST>:<PORT> \
   us-east
 ----
-
+[start=2]
 . Configure the connection from `us-west` to `us-cent`.
 
 Run the following command on `us-west`:
@@ -42,12 +40,12 @@ $ bin/pulsar-admin clusters create \
   --url http://<DNS-OF-US-CENT>:<PORT> \
   us-cent
 ----
-
+[start=3]
 . Run similar commands on `us-east` and `us-cent` to create connections among clusters.
 
 === Grant permissions to properties
 
-To replicate to a cluster, the tenant needs permission to use that cluster. You can grant permission to the tenant when you create the tenant or grant later.
+To replicate to a cluster, the tenant needs permission to use that cluster. You can grant permission to the tenant when you create the tenant or grant permission later.
 
 Specify all the intended clusters when you create a tenant:
 
