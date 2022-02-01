@@ -11,24 +11,24 @@ Technically, the two processes do not need to be collocated, but we recommend ru
 
 == Install Pulsar Admin Console
 
-. Download and install the Node version 11.15.0 tarball to the VM. You can find the most recent Node release https://nodejs.org/en/download/[here].
+. Download and install the Node version 14.18.3 tarball to the VM. You can find the most recent Node release https://nodejs.org/en/download/[here].
 
 ----
-wget https://nodejs.org/dist/v11.15.0/node-v11.15.0-linux-x64.tar.xz / 
-tar -xf node-v11.15.0-linux-x64.tar.xz
+wget https://nodejs.org/dist/v14.18.3/node-v14.18.3-linux-x64.tar.xz /
+tar -xf node-v14.18.3-linux-x64.tar.xz
 ----
 [start=2]
 . Download and install the Pulsar Admin console tarball to the VM. You can find the most recent Pulsar Admin Console release https://github.com/datastax/pulsar-admin-console/releases[here].
 
 ----
-wget https://github.com/datastax/pulsar-admin-console/releases/download/1.1.5/pulsar-admin-console-1.1.5.tar.gz
+wget https://github.com/datastax/pulsar-admin-console/releases/download/1.2.2/pulsar-admin-console-1.2.2.tar.gz
 ----
 
 [start=3]
 . Decompress and unzip the tarball in the desired location.
 
 ----
-tar -xf pulsar-admin-console-1.1.5.tar.gz
+tar -xf pulsar-admin-console-1.2.2.tar.gz
 ----
 [start=4]
 . This will create a `dest/` directory that contains all necessary dependencies for the Pulsar Admin Console (except node).
@@ -38,58 +38,58 @@ tar -xf pulsar-admin-console-1.1.5.tar.gz
 
 You can modify the configuration for the console in `dest/dashboard/dest/config.js`. 
 
-Alternatively, you can override configuration values by creating a file named `config-override.js` in the `dest/dashboard/dest/` directory. See below for an example:
+Alternatively, you can override configuration values by creating a file named `config-override.js` in the `dest/dashboard/dest/` directory. For configuration options, see the project https://github.com/datastax/pulsar-admin-console#pulsar-admin-console[README] and see below:
 
 ----
 var globalConf = {
-    	"template_directory_uri": "",
-    	"ajax_url": "",
-    	"rest_url": "",
-    	"tenant": "{{ .Values.pulsarAdminConsole.defaultTenant }}",
-    	"polling_interval": "10000",
-    	"wss_url": "",
-    	"disable_billing": "",
-    	"home_cluster": "{{ template "pulsar.fullname" . }}",
-    	"test": "",
-    	"client_token": "",
-    	"admin_token": "",
-    	"login": "admin",
-    	"email": "",
-    	"client_role": "",
-    	"plan": "",
-    	"need_to_create_plan": "",
-    	"plan_to_create": "",
-    	"admin_role": "",
-    	"cluster_list": [],
-    	"api_base_url": "",
-    	"ca_certificate": "",
-    	"api_version": "”,
-    	"default_plan": "",
-    	"notice_text": "",
-    	"grafana_url": "”,
-    	"user_role": "administrator",
-    	"feature_flags": {
-        	"function": true,
-        	"sink": true,
-        	"source": true,
-        	"tenantStats": false
-    	},
-    	"security": "",
-    	"chargebee_site": "",
-    	"billing_provider": "",
-    	"multi_user_org": "",
-    	"private_org": "true",
-    	"functions_disabled": "false",
-    	"clients_disabled": "false",
-    	"running_env": "k8s",
-    	"use_token_list": "false",
-    	"auth_mode": "",
-    	"oauth_client_id": "",
-    	"host_overrides": {
-        	"pulsar": "",
-        	"ws": "”,
-        	"http": "”
-    	}
+        "tenant": "public", // Default tenant to use
+        "home_cluster": "pulsar", // Name of the default Pulsar Cluster
+        "cluster_list": ["pulsar"],
+        "user_role": "administrator", // Options: customer-admin or administrator
+        "template_directory_uri": "",
+        "ajax_url": "",
+        "rest_url": "",
+        "polling_interval": "10000",
+        "wss_url": "",
+        "disable_billing": "",
+        "test": "",
+        "client_token": "",
+        "admin_token": "",
+        "login": "",
+        "email": "",
+        "client_role": "",
+        "plan": "",
+        "need_to_create_plan": "",
+        "plan_to_create": "",
+        "admin_role": "",
+        "api_base_url": "api/v1/",
+        "ca_certificate": "",
+        "api_version": "2.7.2",
+        "default_plan": "",
+        "notice_text": "",
+        "grafana_url": "”,
+        "feature_flags": {
+            "function": true,
+            "sink": true,
+            "source": true,
+            "tenantStats": false
+        },
+        "security": "",
+        "chargebee_site": "",
+        "billing_provider": "",
+        "multi_user_org": "",
+        "private_org": "true",
+        "functions_disabled": "false",
+        "clients_disabled": "false",
+        "running_env": "web",
+        "use_token_list": "false",
+        "auth_mode": "none",
+        "oauth_client_id": "",
+        "host_overrides": {
+            "pulsar": "pulsar+ssl://pulsar.example.com:6651", // Assuming you're running with TLS enabled
+            "ws": "wss://pulsar.example.com:8001", // Assuming you're running with TLS enabled
+            "http": "https://pulsar.example.com:8085" // Assuming you're running with TLS enabled
+        }
 	}
 ----
 
