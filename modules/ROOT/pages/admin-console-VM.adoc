@@ -237,7 +237,7 @@ http {
          rewrite  ^.*$ <<Identity Provider Token Endpoint>> break;
          proxy_pass http://$uri$is_args$args;
        }
-d
+
        listen 8080 default_server;
 
        # When using SSL/TLS, add the below block.
