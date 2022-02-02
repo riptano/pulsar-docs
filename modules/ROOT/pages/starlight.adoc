@@ -1,14 +1,12 @@
 = Starlight for Luna Streaming
 
-Starlight for RabbitMQ™ combines the industry-standard AMQP 0.9.1 (RabbitMQ) API with the cloud-native and horizontally scalable Apache Pulsar™ streaming platform, providing a powerful way to modernize your RabbitMQ infrastructure, improve performance, and reduce costs.
-
-Starlight for RabbitMQ™ is open source and is included in DataStax’s Luna Streaming Enterprise support for Pulsar. 
-
-For implementation with JMS or Kafka on a Pulsar cluster, we also offer Starlight for JMS and Starlight for Kafka 
+Starlight for Luna Streaming allows enterprises to take advantage of the scalability and resiliency of a modern streaming platform with various connectors for Apache Pulsar™.
 
 == Starlight for RabbitMQ
 
-Starlight for RabbitMQ™ is open source and is included in DataStax’s Luna Streaming Enterprise support for Pulsar.
+Starlight for RabbitMQ™ combines the industry-standard AMQP 0.9.1 (RabbitMQ) API with the cloud-native and horizontally scalable Apache Pulsar™ streaming platform, providing a powerful way to modernize your RabbitMQ infrastructure, improve performance, and reduce costs.
+
+Starlight for RabbitMQ™ is open source and is included in DataStax’s Luna Streaming Enterprise support for Pulsar. 
 
 For more information on Starlight for Rabbit MQ, check out 
 https://docs.datastax.com/en/starlight-rabbitmq/docs/1.0/getting-started.html[Starlight for Rabbit MQ Quickstart].
@@ -20,8 +18,8 @@ Starlight for JMS allows enterprises to take advantage of the scalability and re
 To get started with Starlight for JMS in Luna Streaming, check out 
 https://docs.datastax.com/en/fast-pulsar-jms/docs/1.1/pulsar-jms-install.html[Starlight for JMS Quickstart].
 
-== Starlight for Kafka
-
-Starlight for Kafka allows your Apache Kafka® clients to use an Apache Pulsar® cluster.
-
-To get started with Starlight for Kafka in Luna Streaming, check out the https://github.com/datastax/starlight-kafka-docs[Starlight for Kafka repo]. 
+// == Starlight for Kafka
+// 
+// Starlight for Kafka allows your Apache Kafka® clients to use an Apache Pulsar® cluster.
+// 
+// To get started with Starlight for Kafka in Luna Streaming, check out the https://github.com/datastax/starlight-kafka-docs[Starlight for Kafka repo]. 
