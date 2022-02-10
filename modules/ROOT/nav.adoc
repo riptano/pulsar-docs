@@ -1,7 +1,7 @@
 * xref:index.adoc[Luna Streaming]
 ** Getting Started
-*** xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart Installs]
-*** xref:quickstart-server-installs.adoc[Quickstart for Bare Metal/VM Installs]
+*** xref:quickstart-helm-installs.adoc[QuickStart for Helm chart installations]
+*** xref:quickstart-server-installs.adoc[QuickStart for Bare Metal/VM installations]
 ** Guides and Examples
 *** xref:admin-console-tutorial.adoc[Using the Pulsar Admin Console]
 *** xref:pulsar-monitor.adoc[Monitoring Luna using Pulsar Heartbeat]

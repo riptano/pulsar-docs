@@ -1,15 +1,13 @@
 = Luna Streaming Authentication
 
-== Authentication
 
-The Helm chart can enable token-based authentication for your Pulsar cluster. For information on token-based
-authentication in Pulsar, go https://pulsar.apache.org/docs/en/security-token-admin/[here].
+The Helm chart can enable token-based authentication for your Pulsar cluster. For more, see https://pulsar.apache.org/docs/en/security-token-admin/[Pulsar token authentication].
 
 For authentication to work, the token-generation keys need to be stored in Kubernetes secrets along with some default tokens (for superuser access). 
 
 The Helm chart includes tooling to automatically create the necessary secrets, or you can do this manually.
 
-=== Automatic generation of secrets for Pulsar token authentication
+== Automatic generation of secrets for Pulsar token authentication
 
 Use the following settings to enable automatic generation of the secrets and enable token-based authentication:
 
@@ -35,48 +33,57 @@ Using these keys, it will generate tokens for each role listed in `superUserRole
 
 === Manual secret creation for Pulsar token authentication
 
-A number of values need to be stored in secrets prior to enabling token-based authentication. First, you need to generate a key-pair for signing the tokens using the Pulsar tokens command:
+A number of values need to be stored in secrets prior to enabling token-based authentication.
 
-`bin/pulsar tokens create-key-pair --output-private-key my-private.key --output-public-key my-public.key`
+. Generate a key-pair for signing the tokens using the Pulsar tokens command:
++
+----
+bin/pulsar tokens create-key-pair --output-private-key my-private.key --output-public-key my-public.key
+----
++
+[TIP]
+====
+The names of the files used in this section match the default values in the chart. If you used different names, then you will have to update the corresponding values.
+====
 
-TIP: The names of the files used in this section match the default values in the chart. If you used different names, then you will have to update the corresponding values.
-
-Then you need to store those keys as secrets.
-
+. Store those keys as secrets.
++
 ----
 kubectl create secret generic token-private-key \
  --from-file=my-private.key \
  --namespace pulsar
 ----
-
++
 ----
 kubectl create secret generic token-public-key \
  --from-file=my-public.key \
  --namespace pulsar
 ----
 
-Using those keys, generate tokens with subjects(roles): 
+. Using those keys, generate tokens for the following subjects (roles): 
++
+* `admin`
+* `superuser`
+* `proxy`
+* `websocket` (only required if using the standalone WebSocket proxy)
++
+----
+bin/pulsar tokens create --private-key file:///pulsar/token-private-key/my-private.key --subject <subject>
+----
 
-`bin/pulsar tokens create --private-key file:///pulsar/token-private-key/my-private.key --subject <subject>`
-
-You need to generate tokens with the following subjects:
-
-- `admin`
-- `superuser`
-- `proxy`
-- `websocket` (only required if using the standalone WebSocket proxy)
-
-Once you have created those tokens, add each as a secret:
-
+. Add each token as a secret:
++
 ----
 kubectl create secret generic token-<subject> \
  --from-file=<subject>.jwt \
  --namespace pulsar
 ----
 
-Once you have created the required secrets, you can enable token-based authentication with this setting in the values:
-
-`enableTokenAuth: yes`
+. Enable token-based authentication with this setting in `devvalues.yaml:
++
+----
+enableTokenAuth: yes
+----
 
 == TLS
 
