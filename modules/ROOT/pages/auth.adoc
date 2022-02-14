@@ -1,15 +1,14 @@
 = Luna Streaming Authentication
 
-
 The Helm chart can enable token-based authentication for your Pulsar cluster. For more, see https://pulsar.apache.org/docs/en/security-token-admin/[Pulsar token authentication].
 
-For authentication to work, the token-generation keys need to be stored in Kubernetes secrets along with some default tokens (for superuser access). 
+For authentication to work, the token-generation keys need to be stored in Kubernetes secrets along with superuser default tokens. 
 
 The Helm chart includes tooling to automatically create the necessary secrets, or you can do this manually.
 
-== Automatic generation of secrets for Pulsar token authentication
+== Automatically generating secrets for Pulsar token authentication
 
-Use the following settings to enable automatic generation of the secrets and enable token-based authentication:
+Use the following settings in your `values.yaml` file to enable automatic generation of the secrets and enable token-based authentication:
 
 ----
 enableTokenAuth: yes
@@ -17,21 +16,21 @@ autoRecovery:
   enableProvisionContainer: yes
 ----
 
-When the provision container is enabled, it will check if the required secrets exist. If they don't exist, it will generate new token keys and use those keys to generate the default set of tokens. 
+When `enableProvisionContainer` is enabled, Pulsar will check if the required secrets exist. If they don't exist, it will generate new token keys and use those keys to generate the default set of tokens. 
 
 The name of the key secrets are:
 
 * `token-private-key`
 * `token-public-key`
 
-Using these keys, it will generate tokens for each role listed in `superUserRoles`. Based on the default settings, the following secrets will be created to store the tokens:
+Using these keys will generate tokens for each role listed in `superUserRoles` in the `values.yaml` file. Based on the default settings, the following secrets will be created to store the tokens:
 
 * `token-superuser`
 * `token-admin`
 * `token-proxy`
 * `token-websocket`
 
-=== Manual secret creation for Pulsar token authentication
+== Manually generating secrets for Pulsar token authentication
 
 A number of values need to be stored in secrets prior to enabling token-based authentication.
 
@@ -43,7 +42,7 @@ bin/pulsar tokens create-key-pair --output-private-key my-private.key --output-p
 +
 [TIP]
 ====
-The names of the files used in this section match the default values in the chart. If you used different names, then you will have to update the corresponding values.
+The names of the files used in this section match the default values in the Helm chart's `values.yaml` file. If you used different names, then you will have to update the corresponding values.
 ====
 
 . Store those keys as secrets.
@@ -79,7 +78,7 @@ kubectl create secret generic token-<subject> \
  --namespace pulsar
 ----
 
-. Enable token-based authentication with this setting in `devvalues.yaml:
+. Enable token-based authentication with this setting in `values.yaml`:
 +
 ----
 enableTokenAuth: yes
@@ -89,18 +88,19 @@ enableTokenAuth: yes
 
 === Automatically generating certificates using cert-manager
 
-To automatically generate certificates using cert-manager, see its documentation https://cert-manager.io/docs/(here).
+To automatically generate certificates using cert-manager, see https://cert-manager.io/docs/[Cert-Manager Documentation].
 
 === Manually configuring certificate secrets for TLS
 
-To use TLS, you must first create a certificate and store it in the secret defined by ```tlsSecretName```.
-You can create the certificate like this:
+To use TLS, you must first create a certificate and store it in the secret defined by `tlsSecretName`.
+
+Create the certificate:
 
 `kubectl create secret tls <tlsSecretName> --key <keyFile> --cert <certFile>`
 
-The resulting secret will be of type `kubernetes.io/tls`. The key should not be in `PKCS 8` format even though that is the format used by Pulsar.  The format will be converted by the chart to `PKCS 8`. 
+The resulting secret will be of type `kubernetes.io/tls`. The key should *not* be in `PKCS 8` format, even though that is the format used by Pulsar. The `kubernetes.io/tls` format will be converted by the chart to `PKCS 8`. 
 
-You can also specify the certificate information directly in the values:
+If you have a self-signed certificate, manually specify the certificate information directly in https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values-keycloak-auth.yaml[values]:
 
 ----
 # secrets:
@@ -109,38 +109,36 @@ You can also specify the certificate information directly in the values:
   # caCertificate: |
 ----
 
-This is useful if you are using a self-signed certificate.
-
-For automated handling of publicly signed certificates, you can use a tool
-such as https://cert-mananager[cert-manager]. This https://github.com/datastax/pulsar-helm-chart/blob/master/aws-customer-docs.md[page on GitHub] describes how to set up cert-manager in AWS.
-
-Once you have created the secrets that store the certificate info (or specified it in the values), you can enable TLS in the values:
+Once you have created the secrets that store the certificate info (or manually specified it in https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values-keycloak-auth.yaml[values]), enable TLS in the values:
 
 `enableTls: yes`
 
 == Token Authentication via Keycloak Integration
 
-In order to provide a more dynamic authentication option for Pulsar, DataStax created the OpenID Connect Authentication Plugin. This plugin integrates with Keycloak to dynamically retrieve Public Keys from a running Keycloak instance for token validation. This dynamic public key retrieval enables support for key rotation and multiple authentication/identity providers by configuring multiple allowed token issuers. It also means that token secret keys will not be stored in Kubernetes secrets.
+DataStax created the https://github.com/datastax/pulsar-openid-connect-plugin[Pulsar OpenID Connect Authentication Plugin] to provide a more dynamic authentication option for Pulsar. This plugin integrates with Keycloak to dynamically retrieve Public Keys from a running Keycloak instance for token validation. This dynamic public key retrieval enables support for key rotation and multiple authentication/identity providers by configuring multiple allowed token issuers. It also means that token secret keys will *not* be stored in Kubernetes secrets.
 
-In order to simplify deployment for Pulsar cluster components, the plugin provides the option to use Keycloak in conjunction with Pulsar's basic token based authentication. See the plugin project for information about configuration https://github.com/datastax/pulsar-openid-connect-plugin(here).
+In order to simplify deployment for Pulsar cluster components, the plugin provides the option to use Keycloak in conjunction with Pulsar's basic token based authentication. For more, see https://github.com/datastax/pulsar-openid-connect-plugin[Pulsar OpenID Connect Authentication Plugin].
 
-Here is an example helm values file for deploying a working cluster that integrates with keycloak. By default, the helm chart creates a pulsar realm within keycloak and sets up the client used by the Pulsar Admin Console as well as a sample client and some sample groups. The configuration for the broker side auth plugin should be placed in the `.Values.<component>.configData` maps.
+See the example https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values-keycloak-auth.yaml[Keycloak Helm chart] for deploying a working cluster that integrates with Keycloak. By default, the Helm chart creates a Pulsar realm within Keycloak and sets up the client used by the Pulsar Admin Console as well as a sample client and some sample groups. The configuration for the broker side auth plugin should be placed in the `.Values.<component>.configData` maps.
 
 === Configuring Keycloak for Token Generation
 
-First deploy the cluster:
-
+. Deploy the cluster:
++
 ----
 $ helm install test --values ../../examples/dev-values-keycloak-auth.yaml 
 ----
 
-The name of the deployment is very important for a working cluster. The values file assumes that the cluster's name is test, as shown above. Once the cluster is operational, you can start configuring keycloak. Port forward to keycloak:
+. Ensure your deployment name matches the working cluster's name. The name of the deployment is *very important* for a working cluster. The https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values-keycloak-auth.yaml[values] file assumes that the cluster's name is `test`.
 
+. Once the cluster is operational, port forward to Keycloak:
++
 ----
 $ kubectl port-forward test-keycloak-0 8080:8080
 ----
-Then, using a browser, navigate to `localhost:8080`. At this point, you will need to retrieve the configured username and password for the admin user in keycloak. The values file configures them here:
 
+. Retrieve the configured username and password for the admin user in Keycloak. The `dev-values-keycloak-auth.yaml` file configures them here:
++
 ----
 keycloak:
   auth:
@@ -148,14 +146,20 @@ keycloak:
     adminPassword: "F3LVqnxqMmkCQkvyPdJiwXodqQncK@"
 ----
 
-Once in to the keycloak UI, you can view the pulsar realm. Note that the realm name must match the configured realm name (`.Values.keycloak.realm`) for the OpenID Connect plugin to work properly.
+. Navigate to `localhost:8080` in a browser and view the Pulsar realm in the Keycloak UI. Note that the realm name must match the configured realm name (`.Values.keycloak.realm`) for the OpenID Connect plugin to work properly.
 
-The OpenID Connect plugin uses the sub (subject) claim from the JWT as the role used for authorization within Pulsar. In order to get Keycloak to generate the JWT for a client with the right sub, you can create a special "mapper" that is a "Hardcoded claim" mapping claim name sub to a claim value that is the desired role, like `superuser`. The default config installed by this helm chart provides examples of how to add custom mapper protocols to clients.
+The OpenID Connect plugin uses the `sub` (subject) claim from the JWT as the role used for authorization within Pulsar. To get Keycloak to generate the JWT for a client with the right `sub`, create a special "mapper" that is a "Hardcoded claim" mapping claim name sub to a claim value that is the desired role, like `superuser`. The default config installed by https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values-keycloak-auth.yaml[this helm chart] provides examples of how to add custom mapper protocols to clients.
 
-=== Retrieving and Using a token from Keycloak with Pulsar Admin CLI
+=== Retrieving and using a token from Keycloak with Pulsar Admin CLI
 
-After creating your realm and client, you can retrieve a token. In order to generate a token that will have an allowed issuer, you should exec into a pod in the k8s cluster. Exec'ing into a bastion host will give you immediate access to a pulsar-admin cli tool that you can use to verify that you have access. The following is run from a bastion pod.
+. After creating your realm and client, retrieve a token with the Pulsar Admin CLI. To generate a token that will have an allowed issuer, you should exec into a bastion pod in the k8s cluster. Exec'ing into a bastion host will give you immediate access to a `pulsar-admin` cli tool that you can use to verify that you have access. 
++
+----
+kubectl -n default exec $(kubectl get pods --namespace default -l "app=pulsar,component=bastion" -o jsonpath="{.items[0].metadata.name}") -it -- bash
+----
 
+. Run the following from a bastion pod to generate an allowed issuer token.
++
 ----
 pulsar@pulsar-bastion-85c9b777f6-gt9ct:/pulsar$ curl -d "client_id=test-client" \
        -d "client_secret=19d9f4a2-65fb-4695-873c-d0c1d6bdadad" \
@@ -164,14 +168,20 @@ pulsar@pulsar-bastion-85c9b777f6-gt9ct:/pulsar$ curl -d "client_id=test-client" 
 {"access_token":"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJDY3c3ZXcwQ0hKMThfbWpCQzYxb2xOSU1wT0d3TkEyd1ZFbHBZLUdzb2tvIn0.eyJleHAiOjE2MjY5NzUwNzIsImlhdCI6MTYyNjk3NDQ3MiwianRpIjoiYTExZmFkY2YtYTJkZi00NmNkLTk0OWEtNDdkNzdmNDYxMDMxIiwiaXNzIjoiaHR0cDovL3Rlc3Qta2V5Y2xvYWsvYXV0aC9yZWFsbXMvcHVsc2FyIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImQwN2UxOGIxLTE4YzQtNDZhMC1hNGU0LWE3YTZjNmRiMjFkYyIsInR5cCI6IkJlYXJlciIsImF6cCI6InRlc3QtY2xpZW50IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtcHVsc2FyIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzdWIiOiJzdXBlcnVzZXIiLCJjbGllbnRIb3N0IjoiMTcyLjE3LjAuMSIsImNsaWVudElkIjoidGVzdC1jbGllbnQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC10ZXN0LWNsaWVudCIsImNsaWVudEFkZHJlc3MiOiIxNzIuMTcuMC4xIn0.FckQLOD64ZTKmx2uutP75QBpZAqHaqWyEE6jRUXvbSzsiXTAQyz-30zKsUSEjOMJp97NlTy3NZECVo_GdZ7oPcneFdglmFY62btWj-5s6ELcazj-AGQhyt0muGD4VP71xjpjCUpVxhyBIQlltGZLu7Rgw4trfh3LS8YjaY74vGg_BjOzZ8VI4S352lyGOULou7_dRbaeKhv43OfU7e_Y_ro_m_9UaDARypcj3uqSllhZdifA4YbHyaBCCu5eH19GCLtFm3I00PvWkOy3iTyOkkTcayqJ-Vlraf95qCZFN-sooIIU6o8L-wS-Zr7EvkoDJ-II9q49WHJJLIIvnCE2ug","expires_in":600,"refresh_expires_in":0,"token_type":"Bearer","not-before-policy":0,"scope":"email profile"}
 ----
 
-Then, you can copy the `access_token` contents and use it here:
-
+. Copy the `access_token` contents and use it here:
++
 ----
 pulsar@pulsar-bastion-85c9b777f6-gt9ct:/pulsar$ bin/pulsar-admin --auth-params "token:eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJDY3c3ZXcwQ0hKMThfbWpCQzYxb2xOSU1wT0d3TkEyd1ZFbHBZLUdzb2tvIn0.eyJleHAiOjE2MjY5NzUwNzIsImlhdCI6MTYyNjk3NDQ3MiwianRpIjoiYTExZmFkY2YtYTJkZi00NmNkLTk0OWEtNDdkNzdmNDYxMDMxIiwiaXNzIjoiaHR0cDovL3Rlc3Qta2V5Y2xvYWsvYXV0aC9yZWFsbXMvcHVsc2FyIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImQwN2UxOGIxLTE4YzQtNDZhMC1hNGU0LWE3YTZjNmRiMjFkYyIsInR5cCI6IkJlYXJlciIsImF6cCI6InRlc3QtY2xpZW50IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtcHVsc2FyIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzdWIiOiJzdXBlcnVzZXIiLCJjbGllbnRIb3N0IjoiMTcyLjE3LjAuMSIsImNsaWVudElkIjoidGVzdC1jbGllbnQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC10ZXN0LWNsaWVudCIsImNsaWVudEFkZHJlc3MiOiIxNzIuMTcuMC4xIn0.FckQLOD64ZTKmx2uutP75QBpZAqHaqWyEE6jRUXvbSzsiXTAQyz-30zKsUSEjOMJp97NlTy3NZECVo_GdZ7oPcneFdglmFY62btWj-5s6ELcazj-AGQhyt0muGD4VP71xjpjCUpVxhyBIQlltGZLu7Rgw4trfh3LS8YjaY74vGg_BjOzZ8VI4S352lyGOULou7_dRbaeKhv43OfU7e_Y_ro_m_9UaDARypcj3uqSllhZdifA4YbHyaBCCu5eH19GCLtFm3I00PvWkOy3iTyOkkTcayqJ-Vlraf95qCZFN-sooIIU6o8L-wS-Zr7EvkoDJ-II9q49WHJJLIIvnCE2ug" \
       tenants list
 "public"
 "pulsar"
 ----
+
+You're now using Keycloak tokens with `pulsar-admin` CLI.
+
+== Next
+
+To connect with the Pulsar Admin console and start sending and consuming messages, see xref:admin-console-tutorial.adoc[Admin Console].
 
 
 
