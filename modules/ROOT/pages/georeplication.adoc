@@ -13,7 +13,7 @@ You must enable geo-replication on a per-tenant basis in Pulsar. You can enable 
 
 Although geo-replication must be enabled between two clusters, actually geo-replication is managed at the namespace level. 
 
-== Configuring georeplication
+== Enabling georeplication
 
 The following example connects three clusters: *us-east*, *us-west*, and *us-cent*.
 
@@ -21,49 +21,51 @@ To replicate data among clusters, you need to configure each cluster to connect 
 
 Suppose that you have 3 replication clusters: `us-west`, `us-cent`, and `us-east`.
 
-1. To configure the connection from `us-west` to `us-east`, run the following command on `us-west`.
-
+. To configure the connection from `us-west` to `us-east`, run the following command on `us-west`.
++
 ----
 $ bin/pulsar-admin clusters create \
   --broker-url pulsar://<DNS-OF-US-EAST>:<PORT> \
   --url http://<DNS-OF-US-EAST>:<PORT> \
   us-east
 ----
-[start=2]
-. To configure the connection from `us-west` to `us-cent`, run the following command on `us-west`:
 
+. To configure the connection from `us-west` to `us-cent`, run the following command on `us-west`:
++
 ----
 $ bin/pulsar-admin clusters create \
   --broker-url pulsar://<DNS-OF-US-CENT>:<PORT> \
   --url http://<DNS-OF-US-CENT>:<PORT> \
   us-cent
 ----
-[start=3]
+
 . Run similar commands on `us-east` and `us-cent` to create connections among clusters.
 
-=== Grant permissions to properties
+=== Grant permissions to tenant
 
-To replicate to a cluster, the tenant needs permission to use that cluster. You can grant permission to the tenant when you create the tenant or grant permission later.
+Once the clusters are connected, the tenant needs permission to use that cluster for georeplication. You can grant permission to the tenant when you create the tenant or grant permission later.
 
-Specify all the intended clusters when you create a tenant:
-
+. Specify all the intended clusters when you create a tenant:
++
 ----
 $ bin/pulsar-admin tenants create my-tenant \
   --admin-roles my-admin-role \
   --allowed-clusters us-west,us-east,us-cent
 ----
 
-To update permissions of an existing tenant, use `update` instead of `create`.
+. To update permissions of an existing tenant, use `update` instead of `create`.
 
 === Enable georeplication at namespace level
+
+Once you create a georeplicated namespace, any topics that producers or consumers create within that namespace is replicated across clusters. Typically, each application uses the `serviceUrl` for the local cluster.
 
 ----
 $ bin/pulsar-admin namespaces create my-tenant/my-namespace
 ----
 
-Once you create a geo-replication namespace, any topics that producers or consumers create within that namespace is replicated across clusters. Typically, each application uses the `serviceUrl` for the local cluster.
-
 === Enable georeplication at topic level
+
+To enable georeplication at topic level, use `set-replication-clusters` to replicate the topic. 
 
 ----
 $ bin/pulsar-admin topics set-replication-clusters --clusters us-west,us-east,us-cent my-tenant/my-namespace/my-topic
@@ -71,7 +73,7 @@ $ bin/pulsar-admin topics set-replication-clusters --clusters us-west,us-east,us
 
 == Sending a message with georeplication
 
-To see georeplication in action, produce a message:
+Once georeplication is enabled, produce a message to see georeplication in action:
 
 ----
 ./pulsar-client produce -m "Hello world" \
