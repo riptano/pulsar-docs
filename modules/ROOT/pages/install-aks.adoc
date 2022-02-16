@@ -8,8 +8,8 @@ This document will cover installation of Luna Streaming on the Azure Kubernetes 
 * A Kubernetes cluster 
 * No less than 16 gigs of RAM and 8 virtual processor cores (4 physical cores)
 
-For details on Helm, refer to its https://helm.sh/docs/[documentation].
-For details on Minikube, see its https://minikube.sigs.k8s.io/docs/start/[documentation]. 
+For more on Helm, see https://helm.sh/docs/[Helm documentation].
+For more on Minikube, see https://minikube.sigs.k8s.io/docs/start/[Minikube documentation]. 
 
 == Provision Your AKS Cluster
 
@@ -36,21 +36,28 @@ Additional provisioning set-up options are available https://docs.k8ssandra.io/i
 
 == Install Luna Streaming to AKS
 
-Once you have added your storage settings to the values file, install the Helm chart. 
+Once you have added your storage settings to the `storage-values.yaml` file, install the Helm chart. 
 
-First, create the namespace; in this example, we use `pulsar`.
+. Create the namespace; in this example, we use `pulsar`:
++
+----
+kubectl create namespace pulsar
+----
 
-`kubectl create namespace pulsar` 
+. Run this Helm command using the `storage-values.yaml` provisioning:
++
+----
+helm install pulsar datastax-pulsar/pulsar --namespace pulsar --values storage_values.yaml --create-namespace`
+----
 
-Then run this helm command:
+. To avoid having to specify the `pulsar` namespace on each subsequent command, set the namespace context:
++
+----
+kubectl config set-context $(kubectl config current-context) --namespace=pulsar
+----
 
-`helm install pulsar datastax-pulsar/pulsar --namespace pulsar --values storage_values.yaml --create-namespace`
-
-TIP: To avoid having to specify the `pulsar` namespace on each subsequent command, set the namespace context. Example:
-
-`kubectl config set-context $(kubectl config current-context) --namespace=pulsar`
-
-Once Pulsar is installed, continue to xref:quickstart-helm-installs.adoc#manage-pulsar-cluster[Accessing Pulsar Cluster in Cloud] to access and manage your cluster. 
+. Execute `kubectl get pods -A` to view your running pods. 
+. Once your pods are up and running, continue to xref:quickstart-helm-installs.adoc#manage-pulsar-cluster[Accessing Pulsar Cluster in Cloud] to access and manage your cluster. 
 
 == Next
 
