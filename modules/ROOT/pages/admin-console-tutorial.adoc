@@ -6,11 +6,13 @@ The Luna Streaming Pulsar Admin Console is a web-based UI from DataStax that adm
 
 In the Luna Streaming Pulsar Admin Console, you can use Pulsar clients to send and receive pub/sub messages.
 
-If you haven't already, launch the Luna Streaming Pulsar Admin Console in a browser by opening the URL that was specified in the Luna Streaming Installation Console. Example:
+Launch the Luna Streaming Pulsar Admin Console in a browser by opening the URL that was specified in the Luna Streaming Installation Console. Log in with username `admin`. The generated and persisted password is also displayed on the Config tab of the Installation Console.
 
 image::luna-streaming-install-to-admin-console.png[Get Pulsar Admin Console URL and password from Config tab of Installation Console]
 
-By default, you can log in with username `admin`.  The generated and persisted password was also shown on the Config tab of the Installation Console.
+You can also access the Admin Console via the external load balancer endpoint in your cloud provider:
+
+image::GCP-all-pods.png[GCP Pods]
 
 === Pulsar Admin Console features
 
@@ -18,7 +20,15 @@ To try out your service right now, use the built-in WebSocket test clients. See 
 
 To see interactive code samples, go to Code Samples.
 
-To see the available namespaces, go to Namespaces. Messages published to namespaces are automatically replicated to all node(s) in the cluster.
+To see the available namespaces, go to Namespaces, or select the button in the upper right corner.
+
+image::luna-streaming-select-namespace.png[Select Namespace]
+
+Messages published to namespaces are automatically replicated to all node(s) in the cluster.
+
+image::luna-streaming-admin-console.png[Luna Streaming Admin Console]
+
+== Topics
 
 Topics are automatically created, by default, when you first try to publish or subscribe. To manually create a topic or to create a partitioned topic, go to Topics.
 
@@ -28,7 +38,9 @@ Here is an example of a topic using its full name:
 
 `public/namespace/my-topic`
 
-You can select your current tenant using the drop-down at the top right of the Topics page. To create a new tenant, go to Tenants.
+You can select your current tenant using the drop-down at the top right of the Topics page. v
+
+To create a new tenant, go to Tenants.
 
 To see detailed information about your topics, go to Topics.
 
@@ -91,6 +103,7 @@ For example, for an installed node with a DNS name ip-10-101-32-250.srv101.dsint
 
 `pulsar+ssl://ip-10-101-32-250.srv101.dsinternal.org:6651`
 
+=== Connect with WebSocket API
 
 To connect using the WebSocket API, use the following URL format with port 8001:
 
@@ -100,6 +113,7 @@ For example:
 
 `wss://ip-10-101-32-250.srv101.dsinternal.org:8001`
 
+=== Connect with HTTP
 
 To connect using HTTP, use the following URL format with port 8085:
 
