@@ -1,20 +1,20 @@
 = Luna Streaming IO Connectors
 
-When you have Luna Streaming installed and running, add IO connectors to your deployment to interact with external systems, such as Apache Cassandra, Elastic Search, and many others.
+When you have Luna Streaming installed and running, add IO connectors to your deployment to interact with external systems, such as Apache Cassandra®, Elasticsearch, and others.
 
-== Source Connectors
+== Source connectors
 
-Source connectors pull messages _from_ external topics and persist the messages _to_ Pulsar topics.
+Source connectors pull messages from external topics and persist the messages to Apache Pulsar™ topics.
 
-Explore source connector configurations and code examples https://pulsar.apache.org/docs/en/io-connectors/#source-connector[here].
+For more source connector configurations and code examples, see https://pulsar.apache.org/docs/en/io-connectors/#source-connector[Pulsar built-in connectors^].
 
-== Sink Connectors
+== Sink connectors
 
-Sink connectors are used to pull messages _from_ Pulsar topics and persist the messages _to_ external systems.
+Sink connectors pull messages from Pulsar topics and persist the messages to external systems.
 
-Explore sink connector configurations and code examples https://pulsar.apache.org/docs/en/io-connectors/#sink-connector[here].
+For more sink connector configurations and code examples, see https://pulsar.apache.org/docs/en/io-connectors/#sink-connector[Pulsar built-in connectors^].
 
-== Processing Guarantees
+== Processing guarantees
 
 Processing guarantees are used to handle errors when writing messages to Pulsar topics.
 
@@ -22,26 +22,35 @@ Processing guarantees are used to handle errors when writing messages to Pulsar 
 * *ATMOST_ONCE*: The message sent to the source is processed at most once. Therefore, there is a chance that the message is not processed.
 * *EFFECTIVELY_ONCE*: Each message sent to the source will have one output associated with it.
 
-Learn more about processing guarantees https://pulsar.apache.org/docs/en/io-overview/#processing-guarantee[here].
+For more about processing guarantees, see https://pulsar.apache.org/docs/en/io-overview/#processing-guarantee[processing guarantees^].
 
-== Kafka Connectors
+== Adding third party connectors
 
-Datastax offers https://github.com/datastax/pulsar-3rdparty-connector[third-party connector support] for creating Pulsar connectors on the base of existing Kafka connectors. This allows developers to quickly move connectors from their Apache Kafka infrastructure into Apache Pulsar.
+Datastax offers https://github.com/datastax/pulsar-3rdparty-connector[third-party connector support^] for creating Pulsar connectors on the base of existing Kafka connectors. This allows developers to quickly move connectors from their Apache Kafka infrastructure into Apache Pulsar.
 
-**Prerequisites:**
+=== Prerequisites
 
-* Ensure you have **JDK 11+** and **Maven 3.8** installed.
+. https://www.oracle.com/java/technologies/downloads/[JDK 11+^] installed.
 
-* Clone the connector's repo and `run mvn clean install` from the root.
+. https://maven.apache.org/download.cgi?Preferred=ftp://ftp.osuosl.org/pub/apache/[Maven 3.8^] installed.
 
-* The connector's `.nar` files can be found at `pulsar-connectors/<connector name>>/target/pulsar-3rdparty-pulsar-connectors-<connector name>-0.1.0-SNAPSHOT.nar`.
+== Building connectors
 
-=== Configuring connectors
+. Clone the connector's repo. 
 
-Follow the documentation https://pulsar.apache.org/docs/en/io-use/[here] to initialize your connector. Then, modify its `config.yaml` file as below to create an adapter for the connector. For further information on shading and troubleshooting, see the https://github.com/datastax/pulsar-3rdparty-connector[GitHub readme].
+. Run `mvn clean install` from the root.
 
-==== Sink Connectors
+. The connector's `.nar` files can be found at `pulsar-connectors/<connector name>>/target/pulsar-3rdparty-pulsar-connectors-<connector name>-0.1.0-SNAPSHOT.nar`.
 
+. Copy the connector's `.nar` file to the `connectors` directory in the Pulsar director. 
+
+. Modify the connector's `config.yaml` file to match the connector YAML files below. This creates an adapter for the connector. 
+
+For more, see https://pulsar.apache.org/docs/en/standalone/#install-builtin-connectors-optional[Install built-in connectors^].
+
+=== Sink connector `config.yaml` example
+
+[SOURCE, shell]
 ----
 # Pulsar KCA Sink expects "processingGuarantees" to be "EFFECTIVELY_ONCE"`
 processingGuarantees: "EFFECTIVELY_ONCE"
@@ -69,8 +78,9 @@ configs:
     ...
 ----
 
-==== Source Connectors
+=== Source connector `config.yaml` example
 
+[SOURCE, shell]
 ----
 tenant: "public"
 namespace: "default"
@@ -101,9 +111,39 @@ configs:
   ...
 ----
 
+== Troubleshooting
+
+Some common problems encountered while using KCA to create a new connector:
+
+. Ensure the connector's license allows its use and redistribution. For more, see the https://www.apache.org/legal/resolved.html[Apache third-party license policy^].
+. Maven dependency conflict of transitive dependencies in build time, or dependency conflict in runtime caused by third-party dependencies packaged with the connector. To resolve third-party dependencies, see xref:io-connectors.adoc#shading[Shading third-party connectors^].
+
+[#shading]
+=== Shading third-party connectors
+
+If your connector includes third-party dependencies, you may need to rename some classes. This is called "shading".
+
+. Copy `shaded-dependencies/template-shaded/` to `shaded-dependencies/<connector name>` and add the new module into `shaded-dependencies/pom.xml`.
+
+. Ensure that third-party dependencies are renamed as specified in `shaded-dependencies/<connector name>/pom.xml` 
+
+. Build with `mvn clean install`.
+
+. Copy `pulsar-connectors/template/` to `pulsar-connectors/<connector name>/`.
+
+. Add the new module into `pulsar-connectors/pom.xml`.
+
+. Update the `pulsar-connectors/<connector name>/README.md`.
+
+. Build  with `mvn clean install`. 
+
+. Run `mvn dependency:tree -verbose` to review how Maven auto-resolved potential dependency conflicts. Fix as needed.
+
+For further information on shading and troubleshooting, see the https://github.com/datastax/pulsar-3rdparty-connector[Third party connectors GitHub readme^].
+
 === Next
 
-Learn more about Pulsar IO connectors https://pulsar.apache.org/docs/en/io-overview/[here].
+Learn more about Pulsar IO connectors https://pulsar.apache.org/docs/en/io-overview/[here^].
 
 
 
