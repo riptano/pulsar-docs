@@ -2,21 +2,19 @@
 
 Starlight for Luna Streaming allows enterprises to take advantage of the scalability and resiliency of a modern streaming platform with various connectors for Apache Pulsar™.
 
+Starlight is open source and is included in DataStax’s https://www.datastax.com/products/luna-streaming[Luna Streaming Enterprise^] support for Pulsar. 
+
 == Starlight for RabbitMQ
 
-Starlight for RabbitMQ™ combines the industry-standard AMQP 0.9.1 (RabbitMQ) API with the cloud-native and horizontally scalable Apache Pulsar streaming platform, providing a powerful way to modernize your RabbitMQ infrastructure, improve performance, and reduce costs.
+Starlight for RabbitMQ™ combines the industry-standard AMQP 0.9.1 (RabbitMQ) API with the cloud-native and horizontally scalable Pulsar streaming platform, providing a powerful way to modernize your RabbitMQ infrastructure, improve performance, and reduce costs.
 
-Starlight for RabbitMQ is open source and is included in DataStax’s Luna Streaming Enterprise support for Pulsar. 
-
-For more information on Starlight for Rabbit MQ, see  
-https://docs.datastax.com/en/starlight-rabbitmq/docs/1.0/getting-started.html[Starlight for Rabbit MQ Quickstart^].
+For more, see https://docs.datastax.com/en/starlight-rabbitmq/docs/1.0/getting-started.html[getting started with Starlight for RabbitMQ^].
 
 == Starlight for JMS
 
-Starlight for JMS allows enterprises to take advantage of the scalability and resiliency of a modern streaming platform to run their existing JMS applications. Because Apache Pulsar is open-source and cloud-native, Starlight for JMS enables enterprises to move their JMS applications to run on-premises and in any cloud environment.
+Starlight for JMS allows enterprises to take advantage of the scalability and resiliency of a modern streaming platform to run their existing JMS applications. Because Pulsar is open-source and cloud-native, Starlight for JMS enables enterprises to move their JMS applications to run on-premises and in any cloud environment.
 
-To get started with Starlight for JMS in Luna Streaming, see 
-https://docs.datastax.com/en/fast-pulsar-jms/docs/1.1/pulsar-jms-install.html[Starlight for JMS Quickstart^].
+For more, see https://docs.datastax.com/en/fast-pulsar-jms/docs/1.1/pulsar-jms-install.html[Starlight for JMS installation^].
 
 // == Starlight for Kafka
 // 
