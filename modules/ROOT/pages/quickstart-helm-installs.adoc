@@ -412,7 +412,7 @@ The Helm chart has the following optional dependencies:
 * https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack[kube-prometheus-stack]
 * https://cert-manager.io/[cert-manager]
 
-[#Authentication]
+[#authentication]
 ### Authentication
 
 The chart can enable token-based authentication for your Pulsar cluster. For information on token-based
@@ -493,7 +493,7 @@ Once you have created the required secrets, you can enable token-based authentic
 
 `enableTokenAuth: yes`
 
-[#TLS]
+[#tls]
 ### TLS
 
 ### Automatically generating certificates using cert-manager
