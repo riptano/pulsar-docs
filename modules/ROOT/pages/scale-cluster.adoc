@@ -1,17 +1,24 @@
-= Scaling Luna Streaming Cluster
+= Scaling your Luna Streaming cluster
 
-== Setup Minikube
+== Setting up `minikube`
 
-First we'll set up a minikube and connect to the loadbalancer with `tunnel`.
-
+. Set up a `minikube`.
++
+[source,shell]
 ----
 $ minikube start --disk-size 50000mb
+----
+
+. Connect to the load balancer with `tunnel`.
++
+[source,shell]
+----
 $ minikube tunnel
 ----
 
 == Install
 
-Our installation will use this https://github.com/datastax/pulsar-helm-chart[Helm Chart]. 
+For our installation, use this https://github.com/datastax/pulsar-helm-chart[Helm chart]. 
 
 To start the cluster, use this https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[YAML file].
 
@@ -38,30 +45,30 @@ $ diff ~/dev-values.yaml ~/dev-values_large.yaml
 >     defaultWriteQuorum: 3
 ----
 
-To install from the above YAML:
-
+. Create the cluster by installing Pulsar with `dev-values_large.yaml`:
++
 ----
 $ helm install pulsar -f ~/dev-values_large.yaml --wait datastax-pulsar/pulsar
 ----
 
-== Generate data
+== Generating data
 
 . Generate data in our namespaces:
-
++
 ----
 $ bin/pulsar-admin namespaces set-retention public/default -t -1 -s 100M
 $ bin/pulsar-client produce test1 -n 500 -m "sdasdsdsadsadsad"
 $ bin/pulsar-client produce test2 -n 500 -m "sdasdsdsadsadsad"
 $ bin/pulsar-client produce test3 -n 500 -m "sdasdsdsadsadsad"
 ----
-[start=2]
-. Ensure all bookies have some ledgers assigned to them:
 
+. Ensure all bookies have some ledgers assigned to them:
++
 ----
 $ ./bin/bookkeeper shell listledgers -meta | grep pulsar-bookkeeper-3
 ----
 
-== Destroy Persistent Volume Claim (PVC)
+== Destroying Persistent Volume Claim (PVC)
 
 To downscale a bookie and destroy its persistent volume claim (PVC):
 
@@ -79,8 +86,11 @@ To delete the PVC:
 $ kubectl delete pvc pulsar-bookkeeper-ledgers-pulsar-bookkeeper-3
 ----
 
-== Scale Back Cluster
-To scale back the cluster:
+== Scaling back your cluster
+
+To scale back your cluster:
+
+[source,shell]
 ----
  bookkeeper:
     replicaCount: 4
@@ -91,37 +101,57 @@ $ helm upgrade pulsar -f ~/dev-values_large.yaml --wait datastax-pulsar/pulsar
 Now, bookkeeper-3 will fail to start with
 `org.apache.bookkeeper.bookie.BookieException$InvalidCookieException`.
 
-== Recovery from lost PVC
+== Recovering from lost PVC
 
 . Track under-replicated ledgers from any live bookie:
++
+[source,shell]
 ----
 $ ./bin/bookkeeper shell listunderreplicated
 ----
-[start=2]
+
 . Double-check bookie id of the failing bookie:
++
+[source,shell]
 ----
 $ ./bin/bookkeeper shell listbookies -a
 ----
++
+This command returns `Cannot resolve pulsar-bookkeeper-3.pulsar-bookkeeper.default.svc.cluster.local:3181, bookie is unknown`.
 
-This should return `Cannot resolve pulsar-bookkeeper-3.pulsar-bookkeeper.default.svc.cluster.local:3181, bookie is unknown`.
 [start=3]
 . Decommission the bookie:
-
++
+[source,shell]
 ----
 $ ./bin/bookkeeper shell decommissionbookie -bookieid pulsar-bookkeeper-3.pulsar-bookkeeper.default.svc.cluster.local:3181
 ----
-[start=4]
-. Cookie of the decommissioned bookie: `pulsar-bookkeeper-3.pulsar-bookkeeper.default.svc.cluster.local:3181` is deleted successfully.
-. Restart failing bookie with Ctrl-K in k9s, or wait for k8s to restart it again.
-. The bookie should come up and rejoin the cluster (data is lost, as expected with deleted PVC).
++
+The cookie of the decommissioned bookie: `pulsar-bookkeeper-3.pulsar-bookkeeper.default.svc.cluster.local:3181` is deleted.
+
+. Restart failing bookie with Ctrl-K in k8s or wait for k8s to restart it again.
++
+The bookie should restart and rejoin the cluster. As expected with deleted PVC, data is lost.
 
 == Better scale down procedure
 
-1. Ensure there are no under replicated ledgers
-2. Downscale the cluster. New under replicated ledgers will appear.
-3. Decommission the removed bookie (bookie has to be down). This will take some time because it triggers the audit and autorecovery, and blocks until autorecovery completes. 
-4. There is an option to scale back if something fails
-5. Delete the PVCs of decommissioned bookie (both ledger and journal).
+. Ensure there are no under-replicated ledgers.
+. Downscale the cluster.
++ 
+New under replicated ledgers will appear.
+. Decommission the removed bookie.
++
+[NOTE]
+====
+The decommissioning will take some time because it triggers the audit and auto-recovery and blocks until auto-recovery completes. 
+====
++
+[NOTE]
+====
+There is an option to scale back if something fails.
+====
+
+. Delete the ledger and journal PVCs of decommissioned bookie.
 
 
 
