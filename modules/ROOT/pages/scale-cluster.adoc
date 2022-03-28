@@ -70,7 +70,6 @@ $ helm upgrade pulsar -f ~/dev-values_large.yaml --wait datastax-pulsar/pulsar
 ----
 +
 Now, `bookkeeper-3` will fail to start with `org.apache.bookkeeper.bookie.BookieException$InvalidCookieException`.
-+
 . Destroy the bookie's PVC:
 ----
 $ kubectl delete pvc pulsar-bookkeeper-ledgers-pulsar-bookkeeper-3
