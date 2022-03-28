@@ -85,7 +85,6 @@ To scale up your cluster, change the `replicaCount` value in the YAML file to a 
  bookkeeper:
     replicaCount: 5
 ----
-+
 . Upgrade the Helm chart to use the new value in the Pulsar cluster:
 +
 ----
