@@ -109,7 +109,6 @@ $ ./bin/bookkeeper shell listbookies -a
 ----
 +
 This command will return `Cannot resolve pulsar-bookkeeper-3.pulsar-bookkeeper.default.svc.cluster.local:3181, bookie is unknown`.
-+
 . Decommission the bookie:
 +
 [source,shell]
