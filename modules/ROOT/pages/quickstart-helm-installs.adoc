@@ -1,5 +1,7 @@
 = Quick Start for Helm Chart installs
 
+:page-tag: luna-streaming,dev,admin,install,pulsar
+
 You have two options for installing DataStax Luna Streaming (Pulsar):
 
 * Via the provided Helm chart for an existing Kubernetes environment on a laptop or with a cloud provider, as covered in this topic. 
@@ -10,13 +12,13 @@ It is designed for production use, but can also be used in local development env
 
 The resulting configuration includes support for:
 
-* xref:quickstart-helm-installs.adoc#tls[TLS]
-* xref:quickstart-helm-installs.adoc#authentication[Authentication]
+* xref:quickstart-helm-installs.adoc#_tls[TLS]
+* xref:quickstart-helm-installs.adoc#_authentication[Authentication]
 * WebSocket Proxy
 * Standalone Functions Workers
 * Pulsar IO Connectors
-* xref:quickstart-helm-installs.adoc#tiered-storage[Tiered Storage] including Tardigarde distributed cloud storage
-* xref:quickstart-helm-installs.adoc#pulsar-sql[Pulsar SQL Workers]
+* xref:quickstart-helm-installs.adoc#_tiered_storage[Tiered Storage] including Tardigarde distributed cloud storage
+* xref:quickstart-helm-installs.adoc#_pulsar_sql[Pulsar SQL Workers]
 * Pulsar Admin Console for managing the cluster
 * Pulsar heartbeat
 * Burnell for API-based token generation
@@ -353,13 +355,13 @@ TIP: With message/state persistence disabled, the cluster will not survive a res
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
 helm install pulsar -f dev-values-auth.yaml datastax-pulsar/pulsar
 ----
-
+[#tiered-storage]
 ## Tiered Storage
 
 Tiered storage (offload to blob storage) can be configured in the `storageOffload` section of the `values.yaml` file. Instructions for AWS S3 and Google Cloud Storage are provided in the file.
 
 In addition you can configure any S3 compatible storage. There is explicit support for https://tardigrade.io[Tardigrade], which is a provider of secure, decentralized storage. You can enable the Tardigarde S3 gateway in the `extra` configuration. The instructions for configuring the gateway are provided in the `tardigrade` section of the `values.yaml` file.
-
+[#pulsar-sql]
 ## Pulsar SQL
 If you enable Pulsar SQL, the cluster provides https://prestodb.io/[Presto] access to the data stored in BookKeeper (and tiered storage, if enabled). Presto is exposed on the service named `<release>-sql`.
 
@@ -410,7 +412,7 @@ The Helm chart has the following optional dependencies:
 * https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack[kube-prometheus-stack]
 * https://cert-manager.io/[cert-manager]
 
-
+[#authentication]
 ### Authentication
 
 The chart can enable token-based authentication for your Pulsar cluster. For information on token-based
@@ -491,6 +493,7 @@ Once you have created the required secrets, you can enable token-based authentic
 
 `enableTokenAuth: yes`
 
+[#tls]
 ### TLS
 
 ### Automatically generating certificates using cert-manager

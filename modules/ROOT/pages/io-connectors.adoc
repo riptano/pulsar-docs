@@ -1,0 +1,137 @@
+= Luna Streaming IO connectors
+
+When you have Luna Streaming installed and running, add IO connectors to your deployment to interact with external systems, such as Apache Cassandra®, Elasticsearch, and others.
+
+* *Source connectors:* Source connectors pull messages from external topics and persist the messages to Apache Pulsar™ topics. For more, see https://pulsar.apache.org/docs/en/io-connectors/#source-connector[Pulsar built-in connectors^].
+
+* *Sink connectors:* Sink connectors pull messages from Pulsar topics and persist the messages to external systems. For more, see https://pulsar.apache.org/docs/en/io-connectors/#sink-connector[Pulsar built-in connectors^].
+== Processing guarantees
+
+Processing guarantees handle errors when writing messages to Pulsar topics:
+
+* *ATLEAST_ONCE*: Each message sent to the source can be processed more than once.
+* *ATMOST_ONCE*: The message sent to the source is processed at most once. Therefore, there is a chance that the message is not processed.
+* *EFFECTIVELY_ONCE*: Each message sent to the source will have one output associated with it.
+
+For more about processing guarantees, see https://pulsar.apache.org/docs/en/io-overview/#processing-guarantee[processing guarantees^].
+
+== Adding third-party connectors
+
+Datastax offers https://github.com/datastax/pulsar-3rdparty-connector[third-party connector support^] for creating Pulsar connectors on the base of existing Kafka connectors. This allows developers to quickly move connectors from their Apache Kafka infrastructure into Apache Pulsar.
+
+=== Prerequisites
+
+. https://www.oracle.com/java/technologies/downloads/[JDK 11+^] installed.
+. https://maven.apache.org/download.cgi?Preferred=ftp://ftp.osuosl.org/pub/apache/[Maven 3.8^] installed.
+
+=== Building connectors
+
+. Clone the connector's repo. 
+. Run `mvn clean install` from the root.
+. Copy the connector's `.nar` file to the `connectors` directory in the Pulsar director.
++
+[NOTE]
+====
+The connector's `.nar` files can be found at `pulsar-connectors/<connector_name>/target/pulsar-3rdparty-pulsar-connectors-<connector_name>-0.1.0-SNAPSHOT.nar`.
+====
+
+. Modify the connector's `config.yaml` file to match the connector YAML files below. 
++
+This creates an adapter for the connector. 
+
+For more, see https://pulsar.apache.org/docs/en/standalone/#install-builtin-connectors-optional[Install built-in connectors^].
+
+=== Sink connector `config.yaml` example
+
+[source, shell]
+----
+# Pulsar KCA Sink expects "processingGuarantees" to be "EFFECTIVELY_ONCE"`
+processingGuarantees: "EFFECTIVELY_ONCE"
+configs:
+  # Size of messages in bytes the sink will attempt to batch messages together before flush.
+  # batchSize: 16384
+  # Time interval in milliseconds the sink will attempt to batch messages together before flush.
+  # lingerTimeMs: 2147483647
+  # In case of Record<KeyValue<>> data use key from KeyValue<> instead of one from Record.
+  # unwrapKeyValueIfAvailable: "true"
+  # The Kafka topic name that passed to Kafka sink.
+  topic: "my-topic"
+  # Pulsar topic to store offsets at.
+  offsetStorageTopic: "kafka-connect-sink-offsets"
+  # A Kafka connector sink class to use.
+  kafkaConnectorSinkClass: "com.third.party.CoolSinkConnector"
+  # Config properties to pass to the Kafka connector.
+  kafkaConnectorConfigProperties:
+    # The following properties passed directly to Kafka Connect Sink and defined by it or by
+    # https://github.com/apache/kafka/blob/2.7/connect/runtime/src/main/java/org/apache/kafka/connect/runtime/ConnectorConfig.java
+    name: "test-sink"
+    connector.class: "com.third.party.CoolSinkConnector"
+    tasks.max: "1"
+    topics: "my-topic"
+    ...
+----
+
+=== Source connector `config.yaml` example
+
+[source, shell]
+----
+tenant: "public"
+namespace: "default"
+name: "test-source"
+topicName: "test-topic"
+parallelism: 1
+# A Kafka connector source class to use.
+className: "com.third.party.CoolSourceConnector"
+configs:
+  # Present the message only consist of payload.
+  # json-with-envelope: "false"
+
+  # Pulsar topic to store Kafka connector offsets at
+  offset.storage.topic: "kafka-connect-source-offsets"
+  # Pulsar namespace to store the output topics
+  topic.namespace: "public/default"
+  
+  # Config properties to pass to the Kafka connector.
+  # The following properties passed directly to Kafka Connect Sink and defined by it or by
+  # https://github.com/apache/kafka/blob/2.7/connect/runtime/src/main/java/org/apache/kafka/connect/runtime/ConnectorConfig.java
+
+  # A Kafka connector source class to use.
+  task.class: "com.third.party.CoolSourceConnector"
+  # The converter provided by Kafka Connect to convert record value.
+  value.converter: "org.apache.kafka.connect.json.JsonConverter"
+  # The converter provided by Kafka Connect to convert record key.
+  key.converter: "org.apache.kafka.connect.json.JsonConverter"
+  ...
+----
+
+== Troubleshooting
+
+These are common solutions for problems encountered while using KCA to create a new connector:
+
+. Ensure the connector's license allows its use and redistribution. For more, see the https://www.apache.org/legal/resolved.html[Apache third-party license policy^].
+. Resolve third-party dependencies if there is a Maven dependency conflict of transitive dependencies in build time or dependency conflict in runtime caused by third-party dependencies packaged with the connector. To resolve third-party dependencies, see xref:io-connectors.adoc#shading[Shading third-party connectors^].
+
+[#shading]
+=== Shading third-party connectors
+
+If your connector includes third-party dependencies, you may need to rename some classes. This is called "shading."
+
+. Copy `shaded-dependencies/template-shaded/` to `shaded-dependencies/<connector_name>`. 
+. Add the new module into `shaded-dependencies/pom.xml`.
+. Ensure third-party dependencies are renamed as specified in `shaded-dependencies/<connector name>/pom.xml` 
+. Build with `mvn clean install`.
+. Copy `pulsar-connectors/template/` to `pulsar-connectors/<connector_name>/`.
+. Add the new module into `pulsar-connectors/pom.xml`.
+. Update the `pulsar-connectors/<connector name>/README.md`.
+. Build with `mvn clean install`. 
+. Run `mvn dependency:tree -verbose` to review how Maven auto-resolved potential dependency conflicts. Fix as needed.
+
+For more information on shading and troubleshooting, see the https://github.com/datastax/pulsar-3rdparty-connector[Third-party connectors GitHub readme^].
+
+=== Next
+
+Learn more about Pulsar IO connectors https://pulsar.apache.org/docs/en/io-overview/[here^].
+
+
+
+
