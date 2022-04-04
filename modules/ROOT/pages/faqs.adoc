@@ -1,5 +1,7 @@
 = Luna Streaming FAQs
 
+:page-tag: luna-streaming,dev,admin,pulsar
+
 If you are new to DataStax Luna Streaming and its Apache Pulsar enhancements, these FAQs are for you.
 
 == Introduction

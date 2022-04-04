@@ -1,6 +1,7 @@
 = Quick Start for Bare Metal/VM installs
+:page-tag: luna-streaming,dev,admin,install
 
-This document covers installation of Luna Streaming for Bare Metal/VM with a Pulsar tarball. For installation to existing Kubernetes environments or with a cloud provider, see  xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. 
+This document covers installation of Luna Streaming for Bare Metal/VM with a Pulsar tarball. For installation to existing Kubernetes environments or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. 
 
 Luna Streaming takes care of the deployment for you. The resulting deployment includes:
 

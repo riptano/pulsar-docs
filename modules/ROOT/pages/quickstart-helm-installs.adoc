@@ -1,5 +1,7 @@
 = Quick Start for Helm Chart installs
 
+:page-tag: luna-streaming,dev,admin,install,pulsar
+
 You have two options for installing DataStax Luna Streaming (Pulsar):
 
 * Via the provided Helm chart for an existing Kubernetes environment locally or with a cloud provider, as covered in this topic. 
@@ -328,7 +330,7 @@ The Helm chart has the following optional dependencies:
 * https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack[kube-prometheus-stack]
 * https://cert-manager.io/[cert-manager]
 
-
+[#authentication]
 === Authentication
 
 The chart can enable token-based authentication for your Pulsar cluster. For information on token-based
@@ -409,6 +411,7 @@ Once you have created the required secrets, you can enable token-based authentic
 
 `enableTokenAuth: yes`
 
+[#tls]
 == TLS
 
 === Automatically generating certificates using cert-manager

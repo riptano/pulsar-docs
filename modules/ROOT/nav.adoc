@@ -4,6 +4,11 @@
 *** xref:quickstart-server-installs.adoc[Quickstart for Bare Metal/VM Installs]
 ** Guides and Examples
 *** xref:admin-console-tutorial.adoc[Using the Pulsar Admin Console]
+*** xref:heartbeat-vm.adoc[Installing Heartbeat on Server/VM]
 *** xref:pulsar-monitor.adoc[Monitoring Luna using Pulsar Heartbeat]
 ** xref:tools-and-ui.adoc[Tools and UI]
 *** xref:faqs.adoc[Luna Streaming FAQs]
+*** xref:starlight.adoc[Starlight for Luna]
+** xref:scale-cluster.adoc[Scaling clusters]
+** xref:admin-console-VM.adoc[Install Admin Console on Server/VM]
+
