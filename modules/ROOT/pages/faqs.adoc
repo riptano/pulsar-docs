@@ -55,7 +55,7 @@ The DataStax Luna Streaming distribution is designed for Java 11. However, becau
 === What are the install options for DataStax Luna Streaming?
 
 * Use the provided Helm Chart to install DataStax Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
-* Use the tarball provided at https://github.com/datastax/pulsar[https://github.com/datastax/pulsar, window=_blank]
+* Use the tarball provided at https://github.com/datastax/pulsar/releases[https://github.com/datastax/pulsar/releases^]
 
 === How do I install DataStax Luna Streaming in my Kubernetes cluster?
 
