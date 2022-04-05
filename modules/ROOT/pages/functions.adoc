@@ -1,12 +1,12 @@
 = Luna Streaming Functions
 
-Functions are lightweight compute processes that enable you to process each message received on a topic. You can apply custom logic to that message, transforming or enriching it, and then output it to a different topic.
+Functions are lightweight compute processes that enable you to process each message received on a topic or multiple topics. You can apply custom logic to that message, transforming or enriching it, and then output it to a different topic.
 
-Functions run inside Luna Streaming and are therefore serverless. You write the code for your function in Java, Python, or Go, then upload the code. It will be automatically run for each message published to the specified input topic. See https://pulsar.apache.org/docs/en/functions-overview/[Pulsar Functions overview] for more information about Apache Pulsar(R) functions.
+Functions run inside Luna Streaming and are therefore serverless. You write the code for your function in Java, Python, or Go, then upload the code to the Pulsar cluster and deploy the function. It will be automatically run for each message published to the specified input topic. See https://pulsar.apache.org/docs/en/functions-overview/[Pulsar Functions overview] for more information about Apache Pulsar(R) functions.
 
 == Manage functions using Pulsar Admin CLI 
 
-You can also add functions using the Pulsar CLI. We will create a new Python function to consume a message from one topic, add an exclamation point, and publish the results to another topic. 
+Add functions using the Pulsar Admin CLI. We will create a new Python function to consume a message from one topic, add an exclamation point, and publish the results to another topic. 
 
 . Create the following Python function in `function.py`:
 +
@@ -22,7 +22,7 @@ class ExclamationFunction(Function):
     return input + '!'
 ----
 +
-. Deploy `function.py` to your Pulsar cluster using the Pulsar CLI:
+. Deploy `function.py` to your Pulsar cluster using the Pulsar Admin CLI:
 +
 [source, bash]
 ----
@@ -36,14 +36,15 @@ $ ./pulsar-admin functions create \
   --output persistent:///default/
 ----
 +
-+
 If the function is set up and ready to accept messages, you should see "Created Successfully!"
 
 . Use `./pulsar-admin functions list --tenant <tenant-name>` to list the functions in your tenant and confirm your new function was created.  
 
 === Trigger with CLI
 
-To test a function with the Pulsar CLI instead of the Admin Console, send a test value with Pulsar CLI's `trigger`.
+Triggering a function is a convenient way to test that the function is working. When you trigger a function, you are publishing a message on the function’s input topic, which triggers the function to run. 
+
+To test a function with the Pulsar CLI, send a test value with Pulsar CLI's `trigger`.
 
 . Listen for messages on the output topic: 
 +
@@ -69,7 +70,7 @@ The trigger sends the string `Hello world` to your exclamation function. Your fu
 
 == Add Functions using Pulsar Admin Console
 
-Add functions in the *Functions* tab of the Admin Console. 
+If the Pulsar Admin Console is deployed, you can also add and manage the Pulsar functions in the *Functions* tab of the Admin Console web UI. 
 
 . Select *Choose File* to choose a local Function. In this example, we chose `exclamation_function.py`. Choose the file you want to pull the function from and which function you want to use within that file.
 +
@@ -85,11 +86,11 @@ Java functions are added by loading a Java jar file (.jar). When adding Java fil
 
 Go functions are added by loading a Go file (.go). For more information on packaging a Go function, see https://pulsar.apache.org/docs/en/functions-package/#go[Packaging Functions in Go^].
 
-[start=3]
+[start=2]
 . Choose your function's name and namespace. 
 . Your input topics, output topics, log topics, and processing guarantees will auto-populate. 
 
-. Provide a *Configuration Key* in the dropdown menu. For a list of configuration keys, see the https://pulsar.apache.org/functions-rest-api/#[Pulsar Docs].
+. Provide a *Configuration Key* in the dropdown menu. For a list of configuration keys, see the https://pulsar.apache.org/functions-rest-api/#operation/registerFunction[Pulsar Functions API Docs^].
 
 . Select *Add* to add your function. 
 
@@ -109,7 +110,7 @@ image::admin-console-logs.png[Function Log]
 
 === Update your function
 
-A function that is already running can be updated with new configuration. The following settings can be updated:
+A function that is already running can be updated with a new configuration. The following settings can be updated:
 
 * Function code
 * Output topic
@@ -129,9 +130,7 @@ A *Function-name Deleted Successfully!* flag will appear to let you know you've 
 
 === Trigger your function
 
-Triggering a function is a convenient way to test that the function is working. When you trigger a function, you are publishing a message on the function’s input topic, which triggers the function to run. 
-
-To trigger a function, select *Trigger* in the *Manage* dashboard.
+To trigger a function in the Pulsar Admin Console, select *Trigger* in the *Manage* dashboard.
 
 image::admin-console-trigger-function.png[Trigger Function]
 
@@ -139,4 +138,4 @@ Enter your message in the *Message to Send* field, and select the output topic. 
 
 == Next
 
-Learn more about developing functions for Luna Streaming and Pulsar https://pulsar.apache.org/docs/en/functions-develop/[here].
+For more about developing functions for Luna Streaming and Pulsar, see https://pulsar.apache.org/docs/en/functions-develop/[here].
