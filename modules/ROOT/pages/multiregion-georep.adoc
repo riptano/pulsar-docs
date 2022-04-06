@@ -1,0 +1,330 @@
+= Multi-region Pulsar deployment
+
+A key differentiating component of Apache Pulsar(R) is how it handles geo-replication. While other pub-sub messaging systems require additional processes to mirror messages between data centers, geo-replication is automatically performed by Pulsar brokers and can be enabled, disabled, or dynamically changed at runtime. 
+
+Apache Pulsar comes with multi-datacenter replication as an integrated feature that supports both synchronous and asynchronous geo-replication strategies. 
+
+The serving layer (brokers) and storage layer (bookies) are decoupled in Pulsar architecture, allowing seamless message replication across data centers in different regions. 
+
+This doc provides an overview of multi-region geo-replication in Pulsar, outlines the geo-replication options available to Pulsar users, and guides users in setting up their own geo-replicated clusters. If you're familiar with Pulsar's xref:multiregion-georep.adoc#overview[messaging architecture] and just want to get started, you can skip ahead to instructions for xref:multiregion-georep.adoc#synchronous[synchronous] or xref:multiregion-georep.adoc#asynchronous[asynchronous] geo-replication.
+
+[#overview]
+== Overview of message replication in Pulsar
+
+In Pulsar, cross-cluster message replication can be implemented in different ways, with synchronous or asynchronous message replication, or with or without a global configuration store in ZooKeeper. 
+
+For example, in asynchronous replication without a global configuration store, each region has its own local Pulsar cluster. Messages published in a cluster of one region are automatically replicated asynchronously to remote clusters in other regions. This is achieved through Pulsar’s built-in geo-replication capability. 
+
+In Pulsar, message replication is mainly configured through the following 3 settings in `broker.conf`. By default, they all have the same value of 2. 
+
+* EnsembleSize (E)
+`managedLedgerDefaultEnsembleSize=2`
+* WriteQuorum(Qw)
+`managedLedgerDefaultWriteQuorum=2`
+* AckQuorum(Qa)
+`managedLedgerDefaultAckQuorum=2`
+
+EnsembleSize (E) represents the number of bookkeeper nodes a ledger is actually stored on. When the ledger is created, E bookies are (randomly) picked up for that ledger as the ledger’s initial ensemble. The ledger may have multiple ensembles. An ensemble is added to the ledger when a new ledger fragment is created, e.g. when replacing a failed node.
+
+Each message in Pulsar is written to WriteQuorum (Qw) bookie nodes that are chosen from E. Qw is the message replication factor in Pulsar. When E is greater than Qw, read/write striping is achieved for a particular ledger because each bookie need only serve a subset of read/write requests. Striping may not always improve performance. 
+
+AckQuorum (Qa) is the number of bookies that must acknowledge a Pulsar write before acknowledging success of the write. When Qa is less than Qw, it will improve message publishing performance by reducing latency. 
+
+The general relationship among the above 3 settings is: E >= Qw >= Qa. There are two options to set this up:
+
+* Option 1:  E == Qw == Qa
+* Option 2:  E == Qw and Qa == (Qw - 1)
+
+Option 2 will reduce message publishing latency, but Option 1 acts more stable in heavy write scenarios, especially with large message payloads.
+
+For simplicity, we can use 3/3/3 as the starting point, then tune these settings based on analysis of performance testing results.
+
+The above message replication related settings (E/Qw/Qa) can be set at the namespace or topic levels using the Pulsar Admin CLI.
+
+To set by namespace:
+[source,bash]
+----
+$ <PULSAR_HOME>/bin/pulsar-admin namespaces set-persistence <tenant>/<namespace> [-e <ensemble_size>] [-w <write_quorum>] [-a <ack_quorum>]
+----
+
+To set by topic:
+[source,bash]
+----
+$ <PULSAR_HOME>/bin/pulsar-admin topics set-persistence persistent://<tenant>/<namespace>/<topic> [-e <ensemble_size>] [-w <write_quorum>] [-a <ack_quorum>]
+----
+
+[#multi-region]
+== Synchronous vs asynchronous geo-replication
+
+=== Synchronous geo-replication
+
+A synchronous geo-replicated Pulsar installation consists of a cluster of bookies running across multiple regions, a cluster of brokers distributed across regions, and a single global ZooKeeper to form a single global logical instance across all available regions. The global ZooKeeper supports this approach by storing managed ledgers.
+When a client issues a write request to a Pulsar cluster in one geographical logcation, the data is written to multiple bookies in different geographical locations within the same call. The write request is only acknowledged when the configured number of the data centers have issued a confirmation that the data has been persisted. While this approach offeres the highest level of data guarantees, it also incurs the cost of cross-datacenter network latency for each message. 
+To set up synchronous geo-replication, see xref:multiregion-georep.adoc#synchronous[Synchronous Geo-replication].
+
+=== Asynchronous geo-replication
+
+An asynchronous geo-replication cluster consists of two or more independent Pulsar clusters running in different regions. Each Pulsar cluster contains its own respective set of brokers, bookies, and ZooKeeper nodes that are completely isolated from one another. In asynchronous geo-replication, when messages are produced on a Pulsar topic, they are first persisted to the local cluster, and are then replicated asynchronously to the remote clusters. Replication occurs via inter-broker communication. The message producer doesn't wait for confirmation from multiple Pulsar clusters, as it does in synchronous geo-replication. Instead, the producer receives a response immediately after the nearest cluster successfully persists the data. The data is then asynchronously replicated to the other Pulsar clusters in the background. This approach offers lower latency than synchronous geo-replication, but weaker consistency guarantees. There will always be some amount of data that hasn't been replicated from source to destination, so your application must be able to tolerate some data loss in exchange for lower latency. 
+In Pulsar, asynchronous geo-replication is enabled on a per-tenant basis and managed at the namespace level. This means you can enable asynchronous geo-replication on topics where it is needed, while controlling which datasets are replicated by namespace. 
+To set up asynchronous geo-replication, see xref:multiregion-georep.adoc#asynchronous[Asynchronous Geo-replication].
+
+[#awareness]
+== Region awareness and rack awareness
+
+Virtual machines within each data center of a specific region can be physically organized by availability zones (AZs), and within each availability zone, organized by physical racks. To maximize availability of a Pulsar cluster within a specific region, the Pulsar server host VMs need to be distributed as below:
+
+* The VMs for each server host type (ZooKeeper, broker, bookkeeper, etc.) should be evenly distributed among the available availability zones within that region. 
+* Within each availability zone, if there is more than 1 VM for any server host type, they should be evenly distributed among the available physical racks.
+
+With such a server host VM distribution, it is also recommended to configure the Pulsar cluster with a xref:multiregion-georep.adoc#rack-aware[rack-aware] data placement policy. 
+
+[NOTE]
+The rack-aware policy is ONLY relevant with bookkeepers for message replication. 
+
+In Pulsar, each incoming message will be persisted in bookies with several replicas. When a rack-aware policy is in place, the message replicas will be spread across different availability zones, which will increase the high availability of the Pulsar cluster and also makes disaster recovery easier.
+
+Configure the rack-aware policy so that the 3 replicas of each message always reside in 3 different availability zones, with one replica per availability zone, as illustrated in the following diagram. 
+
+To set up a rack-aware data placement policy in Pulsar, see xref:multiregion-georep.adoc#rack-aware[Rack Awareness].
+
+[#region-aware]
+== Region-aware data placement policy
+
+In a region-aware placement policy, BookKeeper will choose bookies from different regions when forming a new bookie ensemble, which ensures that topic data will be distributed evenly across all available regions. Modify Pulsar's `broker.conf` file to enable region awareness:
+
+[cols=2*,options=header]
+[%autowidth]
+|===
+|Config Setting
+|Note
+
+| `bookkeeperClientRegionAwarePolicyEnabled=true`
+| Set this to true if your cluster is spread across multiple datacenters or cloud provider regions.
+|===
+
+[#rack-aware]
+== Rack-aware data placement policy
+
+This section covers how to set up a rack-aware data placement policy to maximize availability in a Pulsar cluster.
+
+Messages published to a topic in Pulsar are replicated to multiple bookies that are selected from an *ensemble*. How the bookkeeper nodes are chosen from an ensemble for message replication is determined by the bookkeeper's `EnsemblePlacementPolicy`. 
+
+. Set the required configuration settings in Pulsar's `broker.conf` and `bookkeeper.conf` files:
++
+[cols=3*,options=header]
+[%autowidth]
+|===
+|Config File
+|Config Setting
+|Note
+
+| `broker.conf`
+| `bookkeeperClientRackawarePolicyEnabled=true`
+| Default value +
+Enable rack-aware bookie selection policy (default setting)
+
+| `bookkeeper.conf`
+| `autoRecoveryDaemonEnable=true` +
+`ensemblePlacementPolicy=org.apache.bookkeeper.client.RackawareEnsemblePlacementPolicy`
+| Default value
+|===
+
+
+. Assign the bookie to a rack. By default, when a bookie is added to a Pulsar cluster, there is no rack placement information associated with it. In the Pulsar Admin CLI:
++
+[source,bash]
+----
+$ <PULSAR_HOME>/bin/pulsar-admin bookies set-bookie-rack \
+        --bookie <bookie_address_in_format_’address:port’> \
+        --rack <bookie_rack_name> \
+        --group <group_name> \
+        --hostname <bookie_hostname>
+----
++
+In the above command, the `--bookie` and `--rack` options are mandatory. The `--group` option defaults to `default`, and can be used to specify bookie xref:multiregion-georep.adoc#affinity[affinity].
++
+[NOTE]
+The "bookie rack" is a logical grouping unit, not a physical rack. 
+
+. Name the bookie rack. To distribute the message replicas in different availability zones, we should map each “bookie rack” to a unique VMWare availability zone within a specific region, and the naming of the bookie racks should reflect this principle. For example, assuming there are 3 availability zones of “us-west” region, then the 3 bookie racks should be named:
+
+* us-west-az1
+* us-west-az2
+* us-west-az3
+
+. Assign the bookies to the racks.
+* All bookies that are physically deployed in AZ 1 of “us-west” region should be mapped to the rack with the name “us-west-az1”.
+* All bookies that are physically deployed in AZ 2 of “us-west” region should be mapped to the rack with the name “us-west-az2”.
+* All bookies that are physically deployed in AZ 3 of “us-west” region should be mapped to the rack with the name “us-west-az3”.
++
+[NOTE]
+With the above bookie rack naming and mapping, the Pulsar message replicas will reside in different AZs, but could be on any physical rack with the availability zone. If there is more than one replica within one availability zone, it is not guaranteed that they will always be on the same physical racks.
+
+. Declare minimum racks per write quorum in `broker.conf`. When `RackawareEnsemblePlacementPolicy` is in place, Pulsar can control whether or not to enforce picking bookies from different racks to acknowledge the write quorum. This is achieved through the following configuration settings in the `broker.conf` file.
++
+[cols=2*,options=header]
+|===
+|Config Setting
+|Note
+
+| bookkeeperClientMinNumRacksPerWriteQuorum=<minimum_num>
+| Minimum number of racks per write quorum (default value 2) +
+Should be no larger than the value of the Qw setting (‘managedLedgerDefaultWriteQuorum’) 
+
+| bookkeeperClientEnforceMinNumRacksPerWriteQuorum=true
+| Whether or not to enforce rack-aware bookie selection policy to pick bookies from the number of racks as specified by 'bookkeeperClientMinNumRacksPerWriteQuorum' +
+If `true`, throw `BKNotEnoughBookiesException` if proper bookies can’t be found. +
+If `false` (default value), a random bookkeeper node will be picked.
+|===
+
+For example, if you have 3 availability zones/racks per cluster, and the E/Qw/Qa replication setting is 3/3/3, it is recommended to have the following values for the above configuration parameters:
+
+* `bookkeeperClientMinNumRacksPerWriteQuorum=2`
+* `bookkeeperClientEnforceMinNumRacksPerWriteQuorum=true`
+
+This setting combination guarantees that if a Pulsar message write is successful, then there must be 2 message replicas successfully persisted in 2 separate AZs. This setting can tolerate 1 AZ being down at any time, but no more.
+
+[#affinity]
+=== Bookie affinity group
+
+When assigning a bookie to a rack, a group can be optionally associated with the bookie via the `--group` configuration option. If associated group information is provided, Pulsar will assign a set of bookies to a particular namespace using bookie affinity groups.
+
+[source,bash]
+----
+$ <PULSAR_HOME>/bin/pulsar-admin namespaces set-bookie-affinity-group <tenant>/<namespace> \
+        --primary-group <list of primary bookie group name> [\
+        --secondary-group <list of secondary bookie group name>]
+----
+
+[NOTE]
+If a `--group` option is not provided, the bookie is associated with a default group named `default`. 
+
+When the bookie affinity group for a particular namespace is assigned, messages written in this namespace will be persisted to the bookies that are associated with the specified primary group. If there are not enough bookies in the primary group, bookies from the secondary group will be used if specified. Otherwise, the topics that the messages are written to can’t be created.
+
+[#isolation]
+=== Bookie isolation policy
+
+Similarly, Pulsar can also associate a set of brokers with a set of namespaces using broker isolation policies. For more details, see the Pulsar documentation https://pulsar.apache.org/docs/en/administration-isolation/#broker-isolation[here] and https://pulsar.apache.org/docs/en/pulsar-admin/#set[here].
+
+[source,bash]
+----
+$ <PULSAR_HOME>/bin/pulsar-admin ns-isolation-policy set <cluster_name> <policy_name> \
+        --auto-failover-policy-type min_available
+        --auto-failover-policy-params <comma separated parameters>
+        --namespaces <comma separated namespaces-regex list> \
+        --primary <comma separated  primary-broker-regex list> [\
+        --secondary <comma separated secondary-broker-regex list>]
+----
+
+When a broker isolation policy is set on a set of namespaces, Pulsar will try to assign brokers from the primary group to the topics that belong to these namespaces. If there are not enough brokers in the primary group, brokers from the secondary group will be assigned if specified. Otherwise, the topics can’t be created.
+
+[#synchronous]
+== Synchronous geo-replication: with or without Global Zookeper
+
+When the client issues a write request to a Pulsar cluster in one geographic location, the data is written to multiple bookies in different geographical locations within the same call. The write request is only acknowledged to the client when the configured number of the data centers have issues a confirmation that the data has been persisted. While this approach provides the highest level of data guarantees, it also incurs the cost of the cross-datacenter network latency for each message. 
+
+From the geo-replication perspective, having a global ZooKeeper has the benefit that the relevant metadata information (eg. clusters, tenants, etc.) will be automatically synchronized among all the clusters that participate in the geo-replication. But there are a few challenges with a global ZooKeeper.
+
+* A global ZooKeeper cluster is a single point of failure. If the global ZooKeeper cluster fails, all Pulsar clusters that are managed by it will not function properly.
+
+* Setting up a global ZooKeeper cluster is not easy and may not be always feasible. For example, to manage an even number of Pulsar clusters (meaning an even number of data centers), an extra deal break data center just for hosting some global ZooKeeper nodes is needed. 
+
+* The global ZooKeeper nodes need to be distributed in all these data centers (Pulsar cluster data centers plus a possible deal break data center) in a way that losing any data center will still guarantee the majority of global ZooKeeper nodes are still available.
+
+* A global ZooKeeper automatically synchronizes any namespace level or topic level policies across all Pulsar clusters. This may not be ideal if each Pulsar cluster needs to maintain its independence regarding the policy settings.
+
+=== Set up synchronous geo-replication with a global ZooKeeper
+
+Configuring a single ZooKeeper cluster to implement synchronous geo-replication requires modifying the broker, bookie, and ZooKeeper components to work together as a single cluster. These changes synchronize the components with up-to-date metadata about the Pulsar cluster from ZooKeeper.
+
+. Add a `server.N` line to the `zookeeper.conf` file for each node in the ZooKeeper cluster, where `N` is the number of ZooKeeper nodes. This example uses one ZooKeeper node per region:
++
+----
+server.1=zk1.us-west.example.com:2888:3888
+server.2=zk1.us-central.example.com:2888:3888
+server.3=zk1.us-east.example.com:2888:3888
+----
+
+. Modify the `zkServers` property in the `bookkeeper.conf` file to list all of the ZooKeeper servers:
++
+----
+zkServers= zk1.us-west.example.com:2181, zk1.us-central.example.com:2181, zk1.us-east.example.com:2181
+----
+
+. Modify the `zookeeperServers` property in `discovery.conf` and `proxy.conf` to be a comma-separated list of the ZooKeeper servers. This enables the Pulsar proxy and service discovery mechanism to get up-to-date metadata about the Pulsar cluster from ZooKeeper.
+
+=== Set up synchronous geo-replication without a global ZooKeeper
+
+Some manual work is needed to enable geo-replication without a global ZooKeeper, but it can also be automated via https://github.com/datastax/pulsar-ansible[script based automation^]. 
+
+Instructions for manually enabling geo-replication can be found https://pulsar.apache.org/docs/en/administration-geo/#configure-replication[here^].
+
+[#asynchronous]
+== Asynchronous geo-replication
+
+Configuring asynchronous georeplication requires deploying a separate ZooKeeper quorum to use as the configuration store. This configuration store should be implemented with its own dedicated ZooKeeper quorum across at least three regions. Deploying a replicated ZooKeeper quorum is documented https://zookeeper.apache.org/doc/r3.1.2/zookeeperStarted.html#sc_RunningReplicatedZooKeeper[here^]. 
+
+. Modify the `zoo.cfg` configuration file to deploy a ZooKeeper configuration store. Similar to synchronous georeplication, we will have three servers in different regions listening on the same port. The ports specified in the example `zoo.cfg` below allow peers to communicate to achieve quorum. For example:
++
+----
+tickTime=2000
+dataDir=/var/zookeeper
+clientPort=2181
+initLimit=5
+syncLimit=2
+server.1=zoo1:2888:3888
+server.2=zoo2:2888:3888
+server.3=zoo3:2888:3888
+----
+
+. Initialize the cluster metadata. This command associates all the connection URLs to a given cluster name and stores that information in ZooKeeper's configuration store. This information is used to connect the brokers that need to exchange data across regions.
++
+----
+$ /pulsar/bin/pulsar initialize-cluster-metadata \
+    --cluster us-west \
+    --zookeeper zk1.us-west.example.com:2181 \
+    --configuration-store zk1.us-west.example.com:2184 \
+    --web-service-url https://pulsar.us-west.example.com:8080/ \
+    --web-service-url-tls https://pulsar-us-west.example.com/8443/ \
+    --broker-service-url pulsar://pulsar.us-west.example.com:6650/ \
+    --broker-service-url-tls pulsar+ssl://pulsar.us-west.example.com:6651/
+----
+
+. Configure services to use the configuration store. The `broker.conf` will have to be modified on every cluster to enable geo-replication with the following values:
++
+[cols=2*,options=header]
+[%autowidth]
+|===
+|Config Setting
+|Value
+
+|zookeeperServers
+|zk1.us-west.example.com:2181, zk1.us-central.example.com:2181, zk1.us-east.example.com:2181
+
+|configurationStoreServers
+|zk2.us-west.example.com:2185,zk2.us-central.example.com:2185,zk2.us-east.example.com:2185
+
+|clusterName
+|us-west
+|===
+
+. Finally, as with synchronous ZooKeeper, you will need to modify the `zookeeperServers` property in `discovery.conf` and `proxy.conf` to point to the ZooKeeper quorum connection and configuration store.
++
+[cols=2*,options=header]
+[%autowidth]
+|===
+|Config Setting
+|Value
+
+|zookeeperServers
+|zk1.us-west.example.com:2181,zk1.us-central.example.com:2181,zk1.us-east.example.com:2181
+
+|configurationStoreServers
+|zk2.us-west.example.com:2185,zk2.us-central.example.com:2185,zk2.us-east.example.com:2185
+|===
+
+This enables the Pulsar proxy and service discovery mechanism to get up-to-date metadata about the Pulsar cluster from ZooKeeper.
+
+[#semantics]
+== Message processing semantics with geo-replication
+
