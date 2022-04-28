@@ -1,57 +1,206 @@
-= Luna Streaming production cluster
+= Luna Streaming production cluster sizing
 
-This document will help you set up a Luna Streaming production cluster. 
+This document outlines DataStax hardware recommendations for deploying CDC-enabled, production-ready Pulsar clusters. 
 
-== Prerequisite
+* xref:production-cluster.adoc#cdc[CDC-enabled deployments]
+* xref:production-cluster.adoc#helm[Helm chart recommendations]
+
+[#cdc]
+== CDC-enabled cluster deployment recommendations
+
+Our recommendations are based on the following preconditions: +
+
+* C* replication factor for all CDC tables: 3 +
+* Pulsar message replication factor: 3 +
+* Pulsar message retention and TTL period is *3 hours*. All acked or unacked CDC messages will be kept in the Pulsar cluster for one day. This means: +
+** Any unacknowledged messages will be deleted after being kept in the cluster for *3 hours* (TTL period) +
+** Any acknowledged messages will continue staying in the cluster for up to *3 hours* (retention period) +
+
+.Pulsar Kubernetes cluster node specifications
+[cols=6*,options=header]
+|===
+|Name
+|Description
+|Instance Type
+|vCPU
+|RAM
+|Node count
+
+|Pulsar-group
+|Managed node group dedicated to Pulsar components (Pulsar proxies, zookeepers, brokers, and bookkeepers)
+|m6a.2xlarge
+|8 vCPU
+|32 GB memory
+|(min.) 6 
+
+|Function-worker-group
+|Managed node group dedicated to Pulsar function workers (including source and sink I/O connectors)
+|m6a.xlarge
+|4 vCPU
+|16 GB memory
+|(min.) 3
+
+|Default-group
+|Default managed node group (for other Pods that are don’t belong to the above managed node groups)
+|m6a.large
+|2 vCPU
+|8 GB memory
+|3
+
+|===
+
+[NOTE]
+====
+All managed node groups (auto-scaling groups) should be configured as region-bound across 3 availability zones. The nodes within each managed node group should be evenly distributed among the 3 availability zones.
+====
+
+== Disk space requirements per Kubernetes pod
+
+Pulsar's Zookeeper and Bookkeeper components require persistent disk space. For Zookeeper data disks, Bookkeeper journal disks, and ledger disks: 
+
+* SSD-based EBS volume is *required*
+* Provisioned IOPS SSD (e.g. io1 or io2) type is preferred over General Purpose SSD (e.g. gp2 or gp3) for better and more consistent performance, especially for production deployment.
+* Different EBS volume types (e.g. gp2, gp3, io1, io2) have different IOPS baselines, and the actual IOPS numbers are closely related to the provisioned EBS volume sizes. IOPS requirements may require increased disk size.
+
+=== Zookeeper 
+
+Zookeeper stores the metadata of the Pulsar cluster, so its disk requirement is mainly determined by the size of the Pulsar cluster. The size of the Pulsar cluster is determined by the number of broker and bookkeeper nodes, the number of tenants, namespaces, and topics, and namespace- or topic-level policies. 
+
+For a CDC-enabled Pulsar deployment with a small number of tenants, namespaces, and topics, a *64 GB SSD*-based EBS volume is sufficient for each Zookeeper Kubernetes pod.
+
+=== Bookkeeper
+
+For each Bookkeeper Kubernetes pod, we recommended always using separate hard disks for ledgers and journals. +
+Bookkeeper *journals* are “commit logs” for persisting message data into disks. A journal's disk requirements are relatively stable (meaning it won’t grow proportionally with the increase of the incoming workload size). A *256 GB SSD*-based EBS volume is sufficient as the journal disk for each Bookkeeper pod. +
+Bookkeeper *ledgers* are where messages are actually stored. The total disk requirement for Bookkeeper pods is determined by the total workload size for Bookkeeper. For a Bookkeeper pod, a *2 TB SSD*-based EBS volume is recommended to get good IOPS performance. For more on Bookkeeper pod sizing, see xref:production-cluster.adoc#pod-count[Pulsar pod count].
+
+== Pulsar workload analysis and Pulsar pod count
+
+Below is a high level architecture diagram of the CDC for Apache Cassandra solution with Apache Pulsar. 
+
+image::cdc-for-cassandra-overview.png[CDC for Cassandra diagram]
+
+Based on this diagram, the Pulsar workload is mainly determined by the following factors:
+
+* The throughput of the C* write workload
+** For each incoming C* write, there are 3 Event Topic messages (C* RF is 3)
+** For each incoming C* write, there is 1 Data Topic message
+* The message size of the Events Topic is relatively standard and small because it contains the C* commitlog MD5 digest string
+* The message size of the Data Topic is closely related to the C* table schema, because each message in this topic is an Apache Avro format representation of a C* record value (which corresponds to a particular primary key)
+
+For our example CDC-enabled deployment, the message size of the Data Topic is estimated to be at least 100KB per message, which is much bigger than the message size of the Event Topic. +
+For this reason, the Pulsar workload analysis below will focus on the resource requirements of the Data Topic. +
+
+The Pulsar workload analysis is based on the following information:
+
+.CDC-enabled C* Table Write Operation Throughput
+[cols="3*",options=header]
+|===
+|Dataset Name
+|C* Table Name
+|C* Write Operation Throughput
+
+|Reservation
+|reservation_base +
+association_guest
+|1000 +
+500
+
+|Property
+|property_base +
+financial_setup +
+reservation_source_setup +
+folio_setup +
+|100 +
+25 +
+10 +
+50 
+
+|Financial
+|financial_transaction +
+invoice +
+|450 +
+30
+
+|===
+
+=== Workload analysis
+
+. The total C* write operation throughput all tables is *2,165 TPS*.
+
+. C* record size (converted as AVRO/JSON format) for every C* tables above is *100 KB per message*.
+
+. Since each C* table has the same record size of 100 KB, the total raw incoming message size of all the Data Topics (one per CDC-enabled C* table) in the Pulsar cluster is as below, with the previously listed assumptions of a message rentention/TTL period of 3 hours, and a replication factor of 3 for every Pulsar topic.
+
+[literal]
+....
+Total size= 3   // message replication factor of 3 
+100K            // average message payload size of 100K
+2165            // average message throughput of 2165 TPS
+(3 * 3600)      // TTL and retention period: 3 hours
+= 7014,600 MB
+= 6.7 TB
+....
+
+[#pod-count]
+== Pulsar pod count calculation
+
+The raw workload calculation will mainly impact the Bookkeeper pod count, because each Bookkeeper pod has 2 TB as the ledger disk. +
+So, to host *6.7 TB* raw workload, at least *4 Bookkeeper pods* are needed. +
+In a rack-aware deployment with 3 availability zones, *6 Bookkeeper pods* are needed, with 2 pods per availability zone (so that data is evenly distributed among all AZs). +
+For production deployment, *3 pods* are needed for both Zookeeper and Broker.
+
+[#cdc-commit-log]
+== C* CDC commit log disk space considerations
+
+When C* CDC is enabled (`cdc_enabled=true`) the total disk space that is allowed for all CDC commit logs is determined by the following configuration parameter in the `cassandra.yaml` file:
+
+[source,bash]
+----
+cdc_total_space_in_mb=min4096 
+----
+
+[NOTE]
+====
+In this sample, 4096 MB is 1/8th of the total space of the CDC disk.
+====
+
+The CDC disk is the disk on which the CDC raw directory (as specified by `cdc_raw_directory`) is mounted. For CDC disk management, we recommend: +
+
+* The CDC disk should be the same as the disk for regular C* commit logs (as determined by the `commitlog_directory` configuration parameter) +
+* The CDC disk should be a separate disk from C* data disks (as determined by the `data_file_directories` configuration parameter) +
+
+When CDC commit logs are generated and stored on the CDC disk, C* will not delete them. It is a client daemon application's responsibility to remove CDC commit logs, as a consumer of the CDC commit logs. +
+In cases when there is no such client daemon application or it is in a state that can’t consume the commit log properly, the CDC commit logs will accumulate on the CDC disk. When the threshold of the total CDC disk space is reached, any C* write to CDC enabled tables will fail. +
+
+For DataStax C* CDC with Pulsar solution, the client daemon application to consume the CDC commit logs is the CDC agent. As long as the CDC agent is able to keep up with the generation rate of the CDC commit logs, the actual disk space requirement for CDC commit logs should be minimal, because the CDC commit logs would be deleted almost right away. +
+In rare failure situations (the Pulsar cluster is down, or the network connection between the CDC agent and the Pulsar cluster is broken), the CDC agent will not delete the CDC commit logs until the failure issue is resolved. If the failure takes a long time to be resolved, the CDC commit logs *could* use up all allowed disk spaces. When this happens, increase the total allowed CDC disk space size in `cdc_total_space_in_mb` to avoid CDC write table failure.
+
+[#helm]
+== Production Helm chart recommendations
+
+For an example set of production cluster values, check out the DataStax production-ready https://github.com/datastax/pulsar-helm-chart[Helm chart]. We recommend the following resources:
 
 * Helm version 3
 * A Kubernetes cluster 
-* No less than 16 gigs of RAM and 8 virtual processor cores (4 physical cores)
+* Two node pools
+** `function-worker` node pool for deploying sink and source connectors, and the other node pool for everything else
+* Must use SSD disks
+* Depending on the cloud provider, the latest 'Storage Driver' should be used, along with the fastest disk type (for example, GP3 in AWS)
+* 5 Zookeeper replicas
+* 3 Bookies
+* 3 Brokers
+* 3 Proxies
 
 For details on Helm, refer to its https://helm.sh/docs/[documentation].
 For details on Minikube, see its https://minikube.sigs.k8s.io/docs/start/[documentation]. 
 
-== Download and install yaml file
+== What's Next?
 
-For an example set of production cluster values, download this https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[values] file. Use that values file or one like it to start the cluster:
-
-----
-helm install pulsar -f dev-values.yaml datastax-pulsar/pulsar
-----
-
-== Storage Class Requirements
-
-If you have specific storage class requirement, for example fixed IOPS disks in AWS, you can have the chart configure the storage classes for you.
-Here are examples from the cloud providers:
-
-----
-# For AWS
-# default_storage:
-#  provisioner: kubernetes.io/aws-ebs
-#  type: gp2
-#  fsType: ext4
-#  extraParams:
-#     iopsPerGB: "10"
+For more on Helm installations of Luna Streaming, see xref:quickstart-helm-installs.adoc[Helm Installations].
+For more on VM-based installations, see xref:quickstart-server-installs.adoc[VM-based Installations].
 
 
-# For GCP
-# default_storage:
-#   provisioner: kubernetes.io/gce-pd
-#   type: pd-ssd
-#   fsType: ext4
-#   extraParams:
-#      replication-type: none
-
-# For Azure
-# default_storage:
-#   provisioner: kubernetes.io/azure-disk
-#   fsType: ext4
-#   type: managed-premium
-#   extraParams:
-#     storageaccounttype: Premium_LRS
-#     kind: Managed
-#     cachingmode: ReadOnly
-----
 
 
 
