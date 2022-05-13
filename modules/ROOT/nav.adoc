@@ -1,9 +1,14 @@
-* xref:index.adoc[Luna Streaming]
-** Getting Started
-*** xref:quickstart-helm-installs.adoc[QuickStart for Helm chart installations]
-*** xref:quickstart-server-installs.adoc[QuickStart for Bare Metal/VM installations]
-** Guides and Examples
-*** xref:admin-console-tutorial.adoc[Using the Pulsar Admin Console]
-*** xref:pulsar-monitor.adoc[Monitoring Luna using Pulsar Heartbeat]
-*** xref:auth.adoc[Authentication]
-*** xref:faqs.adoc[Luna Streaming FAQs]
+* xref:index.adoc[About Luna Streaming]
+** xref:faqs.adoc[Luna Streaming FAQs]
+* Getting Started
+** xref:quickstart-helm-installs.adoc[Install using Helm charts]
+** xref:quickstart-server-installs.adoc[Install on Server/VM]
+** xref:admin-console-VM.adoc[Install Admin Console on Server/VM]
+* Guides and Examples
+** xref:admin-console-tutorial.adoc[Pulsar Admin Console]
+** xref:heartbeat-vm.adoc[Install Heartbeat on Server/VM]
+** xref:pulsar-monitor.adoc[Monitor Luna with Pulsar Heartbeat]
+** xref:scale-cluster.adoc[Scale clusters]
+** xref:functions.adoc[Functions]
+** xref:starlight.adoc[Starlight for Luna]
+** xref:io-connectors.adoc[I/O Connectors]
