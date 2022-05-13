@@ -156,7 +156,6 @@ With the prerequisites listed above met, enter these commands:
 helm repo add datastax-pulsar https://datastax.github.io/pulsar-helm-chart
 helm repo update
 curl -LOs https://datastax.github.io/pulsar-helm-chart/examples/dev-values.yaml
-k
 ----
 
 The `dev-values.yaml` file can be viewed (https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[here]).
