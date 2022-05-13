@@ -2,11 +2,11 @@
 
 Functions are lightweight compute processes that enable you to process each message received on a topic or multiple topics. You can apply custom logic to that message, transforming or enriching it, and then output it to a different topic.
 
-Functions run inside Luna Streaming and are therefore serverless. You write the code for your function in Java, Python, or Go, then upload the code to the Pulsar cluster and deploy the function. It will be automatically run for each message published to the specified input topic. See https://pulsar.apache.org/docs/en/functions-overview/[Pulsar Functions overview] for more information about Apache Pulsar(R) functions.
+Functions run inside Luna Streaming and are therefore serverless. Write the code for your function in Java, Python, or Go, then upload the code to the Pulsar cluster and deploy the function. The function will be automatically run for each message published to the specified input topic. See https://pulsar.apache.org/docs/en/functions-overview/[Pulsar Functions overview] for more information about Apache Pulsar(R) functions.
 
 == Manage functions using Pulsar Admin CLI 
 
-Add functions using the Pulsar Admin CLI. We will create a new Python function to consume a message from one topic, add an exclamation point, and publish the results to another topic. 
+Add functions using the Pulsar Admin CLI. Create a new Python function to consume a message from one topic, add an exclamation point, and publish the results to another topic.
 
 . Create the following Python function in `function.py`:
 +
@@ -76,21 +76,22 @@ If the Pulsar Admin Console is deployed, you can also add and manage the Pulsar 
 +
 image::admin-console-add-function.png[Add Function in Admin Console]
 +
-To specify the class name, it depends on the programming language (or runtime) of the function. Python, Java, and Go functions are added differently from each other.
-
-Python functions are added by loading a Python file (.py) or a zipped Python file (.zip). When adding Python files, the Class Name is specified as the name of the Python file without the extension plus the class you want to execute. 
-
-For example, if the Python file is called `function.py` and the class is `exclamation`, then the class name would be `function.exclamation`. The file can contain multiple classes, but only one will be used. If there is no class in the Python file (when using a basic function, for example) just specify the filename without the extension (ex. `function`).
-
-Java functions are added by loading a Java jar file (.jar). When adding Java files, you also need to specify the name of the class to execute as the function. 
-
+To specify the class name, it depends on the programming language or runtime of the function. Python, Java, and Go functions are added differently from each other.
++
+Python functions are added by loading a Python file (.py) or a zipped Python file (.zip). When adding Python files, the Class Name is specified as the name of the Python file without the extension plus the class you want to execute. For example, if the Python file is called `function.py` and the class is `exclamation`, then the class name would be `function.exclamation`. The file can contain multiple classes, but only one will be used. If there is no class in the Python file (when using a basic function, for example) just specify the filename without the extension (ex. `function`).
++
+Java functions are added by loading a Java jar file (.jar). When adding Java files, also specify the name of the class to execute as the function. 
++
 Go functions are added by loading a Go file (.go). For more information on packaging a Go function, see https://pulsar.apache.org/docs/en/functions-package/#go[Packaging Functions in Go^].
 
 [start=2]
-. Choose your function's name and namespace. 
-. Your input topics, output topics, log topics, and processing guarantees will auto-populate. 
+. Choose your function name and namespace. 
++
+Your input topics, output topics, log topics, and processing guarantees will auto-populate. 
 
-. Provide a *Configuration Key* in the dropdown menu. For a list of configuration keys, see the https://pulsar.apache.org/functions-rest-api/#operation/registerFunction[Pulsar Functions API Docs^].
+. Provide a *Configuration Key* in the dropdown menu.
++
+For a list of configuration keys, see the https://pulsar.apache.org/functions-rest-api/#operation/registerFunction[Pulsar Functions API Docs^].
 
 . Select *Add* to add your function. 
 
