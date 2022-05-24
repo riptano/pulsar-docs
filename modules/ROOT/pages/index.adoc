@@ -16,13 +16,13 @@ Refer to the DataStax Luna Streaming https://github.com/datastax/release-notes/b
 
 In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache Pulsar {pulsar-version}], DataStax Luna Streaming provides:
 
-* A helm chart that can deploy and manage Pulsar on your current CNCF conformant Kubernetes infrastructure
+* A xref:quickstart-helm-installs.adoc[Helm chart] that deploys and manages Pulsar on your current CNCF-conformant Kubernetes infrastructure
 
-* Cassandra, Elastic, Kinesis, Kafka, and JDBC connectors
+* Cassandra, Elastic, Kinesis, Kafka, and JDBC xref:io-connectors.adoc[connectors]
 
-* Pulsar Admin Console for simplified administration of your Pulsar environment
+* xref:admin-console-VM.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
 
-* Pulsar Heartbeat to improve observability and monitoring of your Pulsar instances
+* xref:heartbeat-vm.adoc[Pulsar Heartbeat] to observe and monitor your Pulsar instances
 
 == Features
 
