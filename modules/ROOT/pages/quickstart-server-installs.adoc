@@ -1,7 +1,7 @@
 = Quick Start for Bare Metal/VM installs
 :page-tag: luna-streaming,dev,admin,install
 
-This document explains xref:quickstart-server-installs.adoc#install[installation] of Luna Streaming for Bare Metal/VM with a Pulsar tarball. +
+This document explains xref:quickstart-server-installs.adoc#install[installation] of Luna Streaming for Bare Metal/VM deployments with a Pulsar tarball. +
 
 The resulting Luna Streaming deployment includes:
 
@@ -39,7 +39,7 @@ The resulting Luna Streaming deployment includes:
 |Contains the core Pulsar modules: zookeeper, broker, bookkeeper, and function
 
 |lunastreaming-<version>-bin.tar.gz
-|Contains all components from lunastreaming-core as well as the  support Pulsar SQL
+|Contains all components from lunastreaming-core as well as support for Pulsar SQL
 
 |lunastreaming-all-<version>-bin.tar.gz
 |Contains all components from lunastreaming as well as the NAR files for all Pulsar I/O connectors and offloaders
@@ -75,7 +75,9 @@ drwxr-xr-x@  25 firstname.lastname  staff    800 Jan 22  2020 licenses
 
 You have succesfully installed the DataStax Luna Streaming tarball. +
 
-For more on installing optional builtin connectors or tiered storage included in `lunastreaming-all`, see the https://pulsar.apache.org/docs/deploy-bare-metal#install-builtin-connectors-optional[Pulsar documentation].
+For more on initializing Pulsar components like BookKeeper and ZooKeeper, see the https://pulsar.apache.org/docs/deploy-bare-metal[Pulsar documentation^].
+
+For more on installing optional builtin connectors or tiered storage included in `lunastreaming-all`, see the https://pulsar.apache.org/docs/deploy-bare-metal#install-builtin-connectors-optional[Pulsar documentation^].
 
 == Additional tooling
 
