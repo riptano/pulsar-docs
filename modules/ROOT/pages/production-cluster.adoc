@@ -12,7 +12,7 @@ Our recommendations are based on the following preconditions: +
 
 * C* replication factor for all CDC tables: 3 +
 * Pulsar message replication factor: 3 +
-* Pulsar message retention and TTL period is *3 hours*. All acked or unacked CDC messages will be kept in the Pulsar cluster for one day. This means: +
+* Pulsar message retention and TTL period is *3 hours*. All *acked* or *unacked* CDC messages will be kept in the Pulsar cluster for one day. This means: +
 ** Any unacknowledged messages will be deleted after being kept in the cluster for *3 hours* (TTL period) +
 ** Any acknowledged messages will continue staying in the cluster for up to *3 hours* (retention period) +
 
@@ -31,14 +31,14 @@ Our recommendations are based on the following preconditions: +
 |m6a.2xlarge
 |8 vCPU
 |32 GB memory
-|(min.) 6 
+|>=6 
 
 |Function-worker-group
 |Managed node group dedicated to Pulsar function workers (including source and sink I/O connectors)
 |m6a.xlarge
 |4 vCPU
 |16 GB memory
-|(min.) 3
+|>=3
 
 |Default-group
 |Default managed node group (for other Pods that are don’t belong to the above managed node groups)
@@ -179,18 +179,10 @@ In rare failure situations (the Pulsar cluster is down, or the network connectio
 [#helm]
 == Production Helm chart recommendations
 
-For an example set of production cluster values, check out the DataStax production-ready https://github.com/datastax/pulsar-helm-chart[Helm chart]. We recommend the following resources:
+For an example set of production cluster values, check out the DataStax production-ready https://github.com/datastax/pulsar-helm-chart[Helm chart]. +
+DataStax recommends the following resources:
 
-* Helm version 3
-* A Kubernetes cluster 
-* Two node pools
-** `function-worker` node pool for deploying sink and source connectors, and the other node pool for everything else
-* Must use SSD disks
-* Depending on the cloud provider, the latest 'Storage Driver' should be used, along with the fastest disk type (for example, GP3 in AWS)
-* 5 Zookeeper replicas
-* 3 Bookies
-* 3 Brokers
-* 3 Proxies
+include::partial$helm-chart-recommendations.adoc[]
 
 For details on Helm, refer to its https://helm.sh/docs/[documentation].
 For details on Minikube, see its https://minikube.sigs.k8s.io/docs/start/[documentation]. 
