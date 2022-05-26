@@ -189,7 +189,7 @@ An alternative method for retrieving and using a Keycloak token from the bastion
 ----
 {
  "client_id": "pulsar-admin-example-client",
- "client_secret": "c549da4c-8fd9-4200-a526-6afe85c476ed",
+ "client_secret": "<client-secret-key>",
  "grant_type": "client_credentials"
 }
 ----
@@ -197,10 +197,12 @@ An alternative method for retrieving and using a Keycloak token from the bastion
 . In the bastion pod, issue the command to use the Keycloak token:
 +
 ----
-pulsar@pulsar-broker-79b87f786d-tjvm7:/pulsar$ bin/pulsar-admin --auth-plugin "org.apache.pulsar.client.impl.auth.oauth2.AuthenticationOAuth2" --auth-params '{"privateKey":"file:///pulsar/creds.json","issuerUrl":"http://test-keycloak:8081/auth/realms/pulsar","audience":"I dont matter"}' tenants list
-
-"public"
-"pulsar"
+pulsar@pulsar-broker-79b87f786d-tjvm7:/pulsar$ bin/pulsar-admin \
+--auth-plugin "org.apache.pulsar.client.impl.auth.oauth2.AuthenticationOAuth2" 
+--auth-params '{"privateKey":"file:///pulsar/creds.json","issuerUrl":"http://test-keycloak:8081/auth/realms/pulsar","audience":"I dont matter"}' 
+--tenants list 
+public
+pulsar
 ----
 
 You're now using Keycloak tokens with `pulsar-admin` CLI.
