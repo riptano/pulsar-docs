@@ -4,6 +4,7 @@
 
 You have three options for installing DataStax Luna Streaming (Pulsar):
 
+
 * Via the provided *DataStax Helm chart* for an existing Kubernetes environment locally or with a cloud provider, as covered in this topic. +
 * Via the *DataStax Luna Streaming tarball* for deployment to a single server/VM, or to multiple servers/VMs. See xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. +
 * Via the *DataStax Ansible scripts* provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^].
@@ -34,7 +35,6 @@ https://helm.sh[Helm] v3 must be installed and initialized to use the chart. Hel
 * https://helm.sh/docs/[Helm v3]
 * A Kubernetes cluster
 * No less than 16 gigs of RAM and 8 virtual processor cores (4 physical cores)
-
 
 === Storage Class Settings
 
@@ -141,13 +141,7 @@ If you are using a load balancer on the proxy, you can find the IP address using
 
 `kubectl get service -n pulsar`
 
-== Accessing the Pulsar cluster on localhost
-
-To port forward the proxy admin and Pulsar ports to your local machine:
-
-`kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l component=proxy -o jsonpath='{.items[0].metadata.name}') 8080:8080`
-
-`kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l component=proxy -o jsonpath='{.items[0].metadata.name}') 6650:6650`
+=== Manage Luna Streaming with Pulsar Admin Console
 
 Or if you would rather go directly to the broker:
 
@@ -357,6 +351,10 @@ The Helm chart has the following optional dependencies:
 
 * https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack[kube-prometheus-stack]
 * https://cert-manager.io/[cert-manager]
+
+== Next
+
+To learn about installing Luna Streaming for Bare Metal/VM, see xref:quickstart-server-installs.adoc[Quickstart for Bare Metal/VM Installs].
 
 [#authentication]
 === Authentication
