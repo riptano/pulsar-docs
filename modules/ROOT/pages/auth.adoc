@@ -8,81 +8,11 @@ The Helm chart includes tooling to automatically create the necessary secrets, o
 
 == Automatically generating secrets for Pulsar token authentication
 
-Use the following settings in your `values.yaml` file to enable automatic generation of the secrets and enable token-based authentication:
-
-----
-enableTokenAuth: yes
-autoRecovery:
-  enableProvisionContainer: yes
-----
-
-When `enableProvisionContainer` is enabled, Pulsar will check if the required secrets exist. If they don't exist, it will generate new token keys and use those keys to generate the default set of tokens. 
-
-The name of the key secrets are:
-
-* `token-private-key`
-* `token-public-key`
-
-Using these keys will generate tokens for each role listed in `superUserRoles` in the `values.yaml` file. Based on the default settings, the following secrets will be created to store the tokens:
-
-* `token-superuser`
-* `token-admin`
-* `token-proxy`
-* `token-websocket`
+include::partial$auto-create-credentials.adoc[]
 
 == Manually generating secrets for Pulsar token authentication
 
-A number of values need to be stored in secrets prior to enabling token-based authentication.
-
-. Generate a key-pair for signing the tokens using the Pulsar tokens command:
-+
-----
-bin/pulsar tokens create-key-pair --output-private-key my-private.key --output-public-key my-public.key
-----
-+
-[TIP]
-====
-The names of the files used in this section match the default values in the Helm chart's `values.yaml` file. If you used different names, then you will have to update the corresponding values.
-====
-
-. Store those keys as secrets.
-+
-----
-kubectl create secret generic token-private-key \
- --from-file=my-private.key \
- --namespace pulsar
-----
-+
-----
-kubectl create secret generic token-public-key \
- --from-file=my-public.key \
- --namespace pulsar
-----
-
-. Using those keys, generate tokens for the following subjects (roles): 
-+
-* `admin`
-* `superuser`
-* `proxy`
-* `websocket` (only required if using the standalone WebSocket proxy)
-+
-----
-bin/pulsar tokens create --private-key file:///pulsar/token-private-key/my-private.key --subject <subject>
-----
-
-. Add each token as a secret:
-+
-----
-kubectl create secret generic token-<subject> \
- --from-file=<subject>.jwt \
- --namespace pulsar
-----
-
-. Enable token-based authentication with this setting in `values.yaml`:
-+
-----
-enableTokenAuth: yes
-----
+include::partial$manually-create-credentials.adoc[]
 
 == TLS
 
@@ -207,7 +137,7 @@ pulsar
 
 You're now using Keycloak tokens with `pulsar-admin` CLI.
 
-== Next
+== What's next?
 
 To connect with the Pulsar Admin console and start sending and consuming messages, see xref:admin-console-tutorial.adoc[Admin Console].
 
