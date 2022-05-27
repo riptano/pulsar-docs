@@ -227,7 +227,7 @@ kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l app.kubernetes.io
 
 There are several example configurations in the https://github.com/datastax/pulsar-helm-chart/blob/master/examples[examples] directory:
 
-* https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[dse-values.yaml example file]. A configuration for setting up a development environment to run in a local Kubernetes environment (for example, https://minikube.sigs.k8s.io/docs/start/[minikube], or https://kind.sigs.k8s.io/[kind]). Message/state persistence, redundancy, authentication, and TLS are disabled. 
+* https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[dev-values.yaml example file]. A configuration for setting up a development environment to run in a local Kubernetes environment (for example, https://minikube.sigs.k8s.io/docs/start/[minikube], or https://kind.sigs.k8s.io/[kind]). Message/state persistence, redundancy, authentication, and TLS are disabled. 
 
 TIP: With message/state persistence disabled, the cluster will not survive a restart of the ZooKeeper or BookKeeper.
 
