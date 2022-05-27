@@ -57,51 +57,24 @@ The DataStax Luna Streaming distribution is designed for Java 11. However, becau
 === What are the install options for DataStax Luna Streaming?
 
 * Use the provided Helm Chart to install DataStax Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
-* Use the provided replicated.io packaging to install on a single or multiple server(s) or VM(s).
+* Use the tarball provided at https://pulsar.apache.org/docs/en/standalone/
 
 === How do I install DataStax Luna Streaming in my Kubernetes cluster?
 
-DataStax Luna Streaming provides a Helm Chart (version 3) to add the datastax-pulsar repo and install DataStax Luna Streaming on your laptop or cloud-provided Kubernetes cluster. Example:
-
-----
-helm repo add datastax-pulsar https://datastax.github.io/pulsar-helm-chart
-curl -LOs https://datastax.github.io/pulsar-helm-chart/examples/dev-values.yaml
-helm install pulsar -f dev-values.yaml datastax-pulsar/pulsar
-----
-
-You can set additional options in the values file, but the commands above represent the quick start approach. For more, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].
+Follow the full instructions in xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].
 
 === How do I install DataStax Luna Streaming on my server or VM?
 
-DataStax Luna Streaming provide a pre-configured https://www.replicated.com/[Replicated kURL, window=_blank] package to install Luna Streaming on a single server/VM or multiple (4) servers/VMs. Example initial setup commands:
+Follow the full instructions in xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
 
-----
-curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
-curl -s https://downloads.datastax.com/license/luna-streaming/Community.yaml -o Community.yaml
-bash -l
-kubectl kots install luna-streaming --namespace default --license-file ./Community.yaml
-----
-
-Then follow the full instructions in xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
-
-== Tools and UIs
-
-=== What is Replicated?
-
-https://www.replicated.com/[Replicated] provides a container-based platform to deploy cloud-native applications inside your on-prem environment, which gives you greater security and control. DataStax Luna Streaming uses Replicated to install on a large server/VM (minimum 8 CPUs, 32 GB RAM), or on a small HA comprised of 4 nodes, each with the same minimum 8 CPUs and 32 GB RAM requirement. By design, the details of the Replicated packaging and its configuration are abstracted away by DataStax Luna Streaming, so that instead you can get started quickly and focus on building pub/sub apps with this enhanced distribution of Pulsar.
-
-=== What are the system requirements for the server/VM installs that use Replicated KOTS?
-
-See the system requirements in the https://kurl.sh/docs/install-with-kurl/system-requirements[kURL documentation], which is used with Replicated Kubernetes Off The Shelf (KOTS).
-
-=== How do I start the DataStax Luna Streaming Admin Console?
+== How do I start the DataStax Luna Streaming Admin Console?
 
 See the following topics:
 
 * If you installed Luna Streaming via the Helm Chart for a Kubernetes environment residing on your laptop or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].  
-* If you installed Luna Streaming via the Replicated package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. First set up the environment via the Installation Console; its URL and password for your environment were displayed in the output from Step 1, as covered in that topic. Then when the application has been deployed and is running, open the node's host DNS name in a browser. To login to the Luna Streaming Admin Console, by default the username is `admin` and you can find the generated password on the Installation Console's Config tab. 
+* If you installed Luna Streaming via the tarball package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. 
 
-=== What task can I perform in the DataStax Luna Streaming Installation Console?
+== What task can I perform in the DataStax Luna Streaming Installation Console?
 
 From the Installation Console, you can:
 
@@ -113,7 +86,7 @@ From the Installation Console, you can:
 * Sync the license that enables DataStax Luna Streaming software
 * View upstream, midstream, and downstream files used by DataStax Luna Streaming
 
-=== What task can I perform in the DataStax Luna Streaming Admin Console?
+== What task can I perform in the DataStax Luna Streaming Admin Console?
 
 From the Admin Console, you can:
 
@@ -124,15 +97,15 @@ From the Admin Console, you can:
 * Control namespaces used by Pulsar
 * Use the Admin API
 
-=== What is Pulsar Heartbeat?
+== What is Pulsar Heartbeat?
 
 https://github.com/datastax/pulsar-heartbeat[Pulsar Heartbeat] monitors the availability, tracks the performance, and reports failures of the Pulsar cluster. It produces synthetic workloads to measure end-to-end message pubsub latency.  Pulsar Heartbeat is a cloud-native application that can be installed by Helm within the Pulsar Kubernetes cluster.
 
-=== What is Prometheus?
+== What is Prometheus?
 
 https://prometheus.io/docs/introduction/overview/[Prometheus] is an open-source tool to collect metrics on a running app, providing real-time monitoring and alerts.
 
-=== What is Grafana?
+== What is Grafana?
 
 https://grafana.com/[Grafana] is a visualization tool that helps you make sense of metrics and related data coming from your apps via Prometheus, for example. 
 
@@ -167,4 +140,4 @@ The same as for Apache Pulsar. See https://pulsar.apache.org/docs/en/client-libr
 
 == Next
 
-Learn now to install DataStax Luna Streaming via the xref:quickstart-helm-installs.adoc[Helm Chart] or via the xref:quickstart-server-installs.adoc[Replicated] package.
+Learn how to install DataStax Luna Streaming via the xref:quickstart-helm-installs.adoc[Helm Chart] or for the xref:quickstart-server-installs.adoc[Server/VM Installs].

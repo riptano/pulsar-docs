@@ -1,13 +1,9 @@
-= Quick Start for Server/VM installs
-
+= Quick Start for Bare Metal/VM installs
 :page-tag: luna-streaming,dev,admin,install
 
-You have two options for installing DataStax Luna Streaming (Pulsar):
+This document covers deployment of Luna Streaming for Bare Metal/VM with a Pulsar tarball. For installation to existing Kubernetes environments or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. 
 
-* Via the provided Helm chart for an existing Kubernetes environment on a laptop or with a cloud provider. See xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. 
-* Via replicated.io packaging for deployment to a single server/VM, or to multiple servers/VMs, as covered in this topic.
-
-Luna Streaming takes care of the replicated.io packaging details and deployment for you. The resulting deployment includes:
+The resulting deployment includes:
 
 * The DataStax distribution of Apache Pulsar
 * Pulsar Admin Console
@@ -68,11 +64,13 @@ To access the cluster with kubectl, ensure the KUBECONFIG environment variable i
 
 Node join commands expire after 24 hours.
 
+----
+
 To generate new node join commands, run curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token on this node.
 
 To add worker nodes to this installation, run the following script on your other nodes:
     curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.32.250:6443 kubeadm-token=7sdek0.xujj2fo67qh6rs4v kubeadm-token-ca-hash=sha256:28d02e939bfb4fd8d3ea0a9619e9f47e0812773840e0c1e5a72c26b5bfbec08c kubernetes-version=1.19.7 docker-registry-ip=10.96.0.49
-----
+
 +
 . If you are planning a multi-node installation (small HA), add the worker nodes. The Luna Streaming configuration is for 4 nodes. The command to run **on each node** is displayed in the output; the sample values above are just an example. See the text for your environment following, “To add worker nodes to this installation...” in the output. If necessary, you can regenerate the node install command using the following:
 +
@@ -110,7 +108,6 @@ In development, if you agree, you can click Skip &amp; continue.
 The user name defaults to `admin`.
 Enter the password that was displayed after installing the base system in step 1 above.
 +
-TIP: Due to a Replicated package default, the Luna Streaming Installation Console login screen's text refers to the "admin console" even though DataStax calls the follow-on UI the Pulsar Admin Console. Ignore the overloaded term and know that at this point, you are logging into the Luna Streaming Installation Console.
 . Select the configuration options: 
 The Luna Streaming Installation Console presents its "Configure Luna Streaming" page. 
 + 
@@ -165,7 +162,7 @@ You can connect a test client (Test Clients) directly from the Pulsar Admin Cons
 
 == Updating DataStax Luna Streaming
 
-DataStax Luna Streaming is a Replicated KOTS application. You can update the application by using the **Version history** tab of the Admin Console, or via the KOTS CLI. For KOTS details, see https://kots.io/kotsadm/updating/updating-kots-apps[Updating a KOTS application].
+In the **Version history** tab of the Admin Console, or via the KOTS CLI. For KOTS details, see https://kots.io/kotsadm/updating/updating-kots-apps[Updating a KOTS application].
 
 On the **Version history** tab, click **Check for update**. If a newer version of Luna Streaming is available, consider updating the server. Once the update is ready, if you want to proceed, click **Deploy**. Wait a few minutes after the deployment, and check its **Ready** status on the Applications tab. Example:
 

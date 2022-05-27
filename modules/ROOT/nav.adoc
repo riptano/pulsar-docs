@@ -12,4 +12,3 @@
 ** xref:functions.adoc[Functions]
 ** xref:starlight.adoc[Starlight for Luna]
 ** xref:io-connectors.adoc[I/O Connectors]
-

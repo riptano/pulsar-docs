@@ -16,8 +16,6 @@ Refer to the DataStax Luna Streaming https://github.com/datastax/release-notes/b
 
 In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache Pulsar {pulsar-version}], DataStax Luna Streaming provides:
 
-* A replicated.io package installer that can stand up a dev or production cluster on bare metal or VMs without a pre-existing Kubernetes environment
-
 * A helm chart that can deploy and manage Pulsar on your current CNCF conformant Kubernetes infrastructure
 
 * Cassandra, Elastic, Kinesis, Kafka, and JDBC connectors
@@ -58,10 +56,10 @@ In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache
 
 == Where to go next
 
-If you've got an existing Kubernetes environment:: To deploy Luna Streaming in your existing Kubernetes environment, see xref::quickstart-helm-installs.adoc[].
+If you've got an existing Kubernetes environment:: To deploy Luna Streaming in your existing Kubernetes environment, see xref::quickstart-helm-installs.adoc[Helm Installation].
 
-If you've got bare metal or a cloud environment:: To deploy Luna Streaming environment from scratch on bare metal or in a cloud environment, see xref::quickstart-server-installs.adoc[].
+If you've got bare metal or a cloud environment:: To deploy Luna Streaming environment from scratch on bare metal or in a cloud environment, see xref::quickstart-server-installs.adoc[Server/VM Installation].
 
-If you'd like to learn about Pulsar Heartbeat:: See xref::pulsar-monitor.adoc[].
+If you'd like to learn about Pulsar Heartbeat:: See xref::pulsar-monitor.adoc[Pulsar Heartbeat].
 
-If you have more questions...:: For additional information about Luna Streaming, see xref::faqs.adoc[].
+If you have more questions...:: For additional information about Luna Streaming, see xref::faqs.adoc[Luna Streaming FAQs].
