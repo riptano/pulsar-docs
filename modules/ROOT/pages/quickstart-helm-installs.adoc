@@ -43,38 +43,35 @@ Here are examples from the cloud providers:
 
 ==== AWS 
 ----
-# For AWS
-# default_storage:
-#  provisioner: kubernetes.io/aws-ebs
-#  type: gp2
-#  fsType: ext4
-#  extraParams:
-#     iopsPerGB: "10"
+default_storage:
+  provisioner: kubernetes.io/aws-ebs
+  type: gp2
+  fsType: ext4
+  extraParams:
+    iopsPerGB: "10"
 ----
 
 ==== Google Cloud Provider
 ----
-# For GCP
-# default_storage:
-#   provisioner: kubernetes.io/gce-pd
-#   type: pd-ssd
-#   fsType: ext4
-#   extraParams:
-#      replication-type: none
+default_storage:
+  provisioner: kubernetes.io/gce-pd
+  type: pd-ssd
+  fsType: ext4
+  extraParams:
+    replication-type: none
 ----
 
 ==== Azure 
 
 ----
-# For Azure
-# default_storage:
-#   provisioner: kubernetes.io/azure-disk
-#   fsType: ext4
-#   type: managed-premium
-#   extraParams:
-#     storageaccounttype: Premium_LRS
-#     kind: Managed
-#     cachingmode: ReadOnly
+default_storage:
+  provisioner: kubernetes.io/azure-disk
+  fsType: ext4
+  type: managed-premium
+  extraParams:
+    storageaccounttype: Premium_LRS
+    kind: Managed
+    cachingmode: ReadOnly
 ----
 
 See this https://github.com/datastax/pulsar-helm-chart/blob/master/helm-chart-sources/pulsar/values.yaml[values file] for more details on the settings.
