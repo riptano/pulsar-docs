@@ -279,7 +279,7 @@ You can enable a full Prometheus stack (Prometheus, Alertmanager, Grafana) from 
 
 In an addition, this chart can deploy Grafana dashboards for Pulsar as well as Pulsar-specific rules for Prometheus. 
 
-To deploy the Prometheus stack, use the following setting in your values file:
+To enable the Prometheus stack, use the following setting in your values file:
 
 ----
 kube-prometheus-stack:
