@@ -2,7 +2,7 @@
 
 :page-tag: luna-streaming,dev,admin,install,pulsar
 
-You have three options for installing DataStax Luna Streaming (Pulsar):
+You have options for installing DataStax Luna Streaming:
 
 
 * Via the provided *DataStax Helm chart* for an existing Kubernetes environment locally or with a cloud provider, as covered in this topic. +
