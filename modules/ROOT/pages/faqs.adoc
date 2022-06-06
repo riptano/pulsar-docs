@@ -56,8 +56,9 @@ The DataStax Luna Streaming distribution is designed for Java 11. However, becau
 
 === What are the install options for DataStax Luna Streaming?
 
-* Use the provided Helm Chart to install DataStax Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
-* Use the tarball provided at https://pulsar.apache.org/docs/en/standalone/
+* Use the Helm chart provided at https://github.com/apache/pulsar-helm-chart[https://github.com/datastax/pulsar-helm-chart^] to install DataStax Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
+* Use the tarball provided at https://github.com/datastax/pulsar/releases[https://github.com/datastax/pulsar/releases^] to install DataStax Luna Streaming on a server or VM. 
+* Use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^] to install DataStax Luna Streaming on a server or VM with our provided playbooks.
 
 === How do I install DataStax Luna Streaming in my Kubernetes cluster?
 
@@ -66,25 +67,6 @@ Follow the full instructions in xref:quickstart-helm-installs.adoc[Quick Start f
 === How do I install DataStax Luna Streaming on my server or VM?
 
 Follow the full instructions in xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
-
-== How do I start the DataStax Luna Streaming Admin Console?
-
-See the following topics:
-
-* If you installed Luna Streaming via the Helm Chart for a Kubernetes environment residing on your laptop or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].  
-* If you installed Luna Streaming via the tarball package on a large server/VM or in a small HA (4 node cluster), see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. 
-
-== What task can I perform in the DataStax Luna Streaming Installation Console?
-
-From the Installation Console, you can:
-
-* Configure the DataStax Luna Streaming environment
-* View and update the DataStax Luna Streaming version and application status
-* Get the host URL and generated password to launch the DataStax Luna Streaming Admin Console
-* Set up and view Grafana graphs, which display metrics collected by the provided Prometheus Operator
-* Analyze DataStax Luna Streaming to collect information you could provide for Support
-* Sync the license that enables DataStax Luna Streaming software
-* View upstream, midstream, and downstream files used by DataStax Luna Streaming
 
 == What task can I perform in the DataStax Luna Streaming Admin Console?
 
@@ -113,8 +95,9 @@ https://grafana.com/[Grafana] is a visualization tool that helps you make sense 
 
 === What are the features provided by DataStax Apache Pulsar Connector (`pulsar-sink`) that are not supported in `kafka-sink`?
 
-* Single record acknowledgement and negative acknowledgements.
-* The https://pulsar.apache.org/docs/en/io-overview/[Pulsar IO framework] provides many features that are not possible in Kafka, and has different compression formats and auth/security features. The features are handled by Pulsar.
+The https://pulsar.apache.org/docs/en/io-overview/[Pulsar IO framework] provides many features that are not possible in Kafka, and has different compression formats and auth/security features. The features are handled by Pulsar. For more, see xref:io-connectors.adoc[Luna Streaming IO Connectors].
+
+The DataStax Apache Pulsar Connector allows single-record acknowledgement and negative acknowledgements.
 
 === What features are missing in DataStax Apache Pulsar Connector (`pulsar-sink`) compared with `kafka-sink`?
 
@@ -138,6 +121,4 @@ If you're using open-source software (OSS) Apache Pulsar, you can use DataStax A
 
 The same as for Apache Pulsar. See https://pulsar.apache.org/docs/en/client-libraries/. 
 
-== Next
 
-Learn how to install DataStax Luna Streaming via the xref:quickstart-helm-installs.adoc[Helm Chart] or for the xref:quickstart-server-installs.adoc[Server/VM Installs].

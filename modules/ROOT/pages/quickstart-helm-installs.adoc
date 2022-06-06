@@ -2,24 +2,39 @@
 
 :page-tag: luna-streaming,dev,admin,install,pulsar
 
-You have two options for installing DataStax Luna Streaming (Pulsar):
+You have options for installing DataStax Luna Streaming:
 
-* Via the provided Helm chart for an existing Kubernetes environment locally or with a cloud provider, as covered in this topic. 
-* Via Pulsar tarball for deployment to a single server/VM, or to multiple servers/VMs. See xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
+
+* Via the provided *DataStax Helm chart* for an existing Kubernetes environment locally or with a cloud provider, as covered in this topic. +
+* Via the *DataStax Luna Streaming tarball* for deployment to a single server/VM, or to multiple servers/VMs. See xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. +
+* Via the *DataStax Ansible scripts* provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^].
 
 The Helm chart and options described below configure an Apache Pulsar cluster.
 It is designed for production use, but can also be used in local development environments with the proper settings.
 
-https://helm.sh[Helm] version 3 must be installed and initialized to use the chart. Version 2 of Helm is not supported.
+The resulting configuration includes support for:
+
+* xref:quickstart-helm-installs.adoc#_tls[TLS]
+* xref:quickstart-helm-installs.adoc#_authentication[Authentication]
+* WebSocket Proxy
+* Standalone Functions Workers
+* Pulsar IO Connectors
+* xref:quickstart-helm-installs.adoc#_tiered_storage[Tiered Storage] including Tardigarde distributed cloud storage
+* xref:quickstart-helm-installs.adoc#_pulsar_sql[Pulsar SQL Workers]
+* Pulsar Admin Console for managing the cluster
+* Pulsar heartbeat
+* Burnell for API-based token generation
+* Prometheus, Grafana, and Alertmanager stack with default Grafana dashboards and Pulsar-specific alerting rules
+* cert-manager with support for self-signed certificates as well as public certificates using ACME; such as Let's Encrypt
+* Ingress for all HTTP ports (Pulsar Admin Console, Prometheus, Grafana, others)
+
+https://helm.sh[Helm] v3 must be installed and initialized to use the chart. Helm v2 is not supported.
 
 == Prerequisites 
 
-* Helm version 3
+* https://helm.sh/docs/[Helm v3]
 * A Kubernetes cluster
 * No less than 16 gigs of RAM and 8 virtual processor cores (4 physical cores)
-
-For details on Helm, refer to its https://helm.sh/docs/[documentation].
-For details on Minikube, see its https://minikube.sigs.k8s.io/docs/start/[documentation]. 
 
 === Storage Class Settings
 
@@ -38,42 +53,40 @@ For each volume of each component (Zookeeper, Bookkeeper), you can override the 
 This allows you to match the optimum storage type to the volume.
 
 If you have specific storage class requirement, for example fixed IOPS disks in AWS, you can have the chart configure the storage classes for you.
+
 Here are examples from the cloud providers:
 
 ==== AWS 
 ----
-# For AWS
-# default_storage:
-#  provisioner: kubernetes.io/aws-ebs
-#  type: gp2
-#  fsType: ext4
-#  extraParams:
-#     iopsPerGB: "10"
+default_storage:
+  provisioner: kubernetes.io/aws-ebs
+  type: gp2
+  fsType: ext4
+  extraParams:
+    iopsPerGB: "10"
 ----
 
 ==== Google Cloud Provider
 ----
-# For GCP
-# default_storage:
-#   provisioner: kubernetes.io/gce-pd
-#   type: pd-ssd
-#   fsType: ext4
-#   extraParams:
-#      replication-type: none
+default_storage:
+  provisioner: kubernetes.io/gce-pd
+  type: pd-ssd
+  fsType: ext4
+  extraParams:
+    replication-type: none
 ----
 
 ==== Azure 
 
 ----
-# For Azure
-# default_storage:
-#   provisioner: kubernetes.io/azure-disk
-#   fsType: ext4
-#   type: managed-premium
-#   extraParams:
-#     storageaccounttype: Premium_LRS
-#     kind: Managed
-#     cachingmode: ReadOnly
+default_storage:
+  provisioner: kubernetes.io/azure-disk
+  fsType: ext4
+  type: managed-premium
+  extraParams:
+    storageaccounttype: Premium_LRS
+    kind: Managed
+    cachingmode: ReadOnly
 ----
 
 See this https://github.com/datastax/pulsar-helm-chart/blob/master/helm-chart-sources/pulsar/values.yaml[values file] for more details on the settings.
@@ -94,7 +107,7 @@ TIP: To avoid having to specify the `pulsar` namespace on each subsequent comman
 
 `kubectl config set-context $(kubectl config current-context) --namespace=pulsar`
 
-Once Pulsar is installed, continue to access your cluster. 
+Once Pulsar is installed, you can now access your Luna Streaming cluster. 
 
 === Access the Luna Streaming cluster 
 
@@ -130,6 +143,14 @@ If you are using a load balancer on the proxy, you can find the IP address using
 
 === Manage Luna Streaming with Pulsar Admin Console
 
+Or if you would rather go directly to the broker:
+
+`kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l component=broker -o jsonpath='{.items[0].metadata.name}') 8080:8080`
+
+`kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l component=broker -o jsonpath='{.items[0].metadata.name}') 6650:6650`
+
+=== Manage Luna Streaming with Pulsar Admin Console
+
 The Pulsar Admin Console is installed in your cluster by enabling the console with this values setting:
 
 ----
@@ -156,7 +177,6 @@ With the prerequisites listed above met, enter these commands:
 helm repo add datastax-pulsar https://datastax.github.io/pulsar-helm-chart
 helm repo update
 curl -LOs https://datastax.github.io/pulsar-helm-chart/examples/dev-values.yaml
-k
 ----
 
 The `dev-values.yaml` file can be viewed (https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[here]).
@@ -165,7 +185,9 @@ To list the version of the chart in the local Helm repository:
 
 `helm search repo datastax-pulsar`
 
-It may take 10 or more minutes for all the pods to reach a Ready state in your Kubernetes environment. Example of checking the pods' status:
+It may take 10 or more minutes for all the pods to reach a *Ready* state in your Kubernetes environment.
+
+Example of checking the pods' status:
 
 ----
 kubectl get pods
@@ -228,18 +250,18 @@ kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l app.kubernetes.io
 
 There are several example configurations in the https://github.com/datastax/pulsar-helm-chart/blob/master/examples[examples] directory:
 
-* https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[dse-values.yaml example file]. A configuration for setting up a development environment to run in a local Kubernetes environment (for example, https://minikube.sigs.k8s.io/docs/start/[minikube], or https://kind.sigs.k8s.io/[kind]). Message/state persistence, redundancy, authentication, and TLS are disabled. 
-
+* https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[dev-values.yaml example file]. A configuration for setting up a development environment to run in a local Kubernetes environment (for example, https://minikube.sigs.k8s.io/docs/start/[minikube], or https://kind.sigs.k8s.io/[kind]). Message/state persistence, redundancy, authentication, and TLS are disabled. 
++
 TIP: With message/state persistence disabled, the cluster will not survive a restart of the ZooKeeper or BookKeeper.
 
-* dev-values-persistence. Same as above, but persistence is enabled. This will allow for the cluster to survive the restarts of the pods, but requires persistent volume claims (PVC) to be supported by the Kubernetes environment. 
+* `dev-values-persistence.yaml`. Same as above, but persistence is enabled. This will allow for the cluster to survive the restarts of the pods, but requires persistent volume claims (PVC) to be supported by the Kubernetes environment. 
 
-* dev-values-auth.yaml. A development environment with authentication enabled. New keys and tokens from those keys are automatically generated and stored in Kubernetes secrets. You can retrieve the superuser token from the admin console (Credentials menu) or from the secret `token-superuser`.
-
+* `dev-values-auth.yaml`. A development environment with authentication enabled. New keys and tokens from those keys are automatically generated and stored in Kubernetes secrets. You can retrieve the superuser token from the admin console (*Credentials* menu) or from the secret `token-superuser`.
++
 `helm install pulsar -f dev-values-auth.yaml datastax-pulsar/pulsar`
 
-* dev-values-tls.yaml. Development environment with self-signed certificate created by cert-manager. You need to install the cert-manager CRDs before installing the Helm chart. The chart will install the cert-manager application.
-
+* `dev-values-tls.yaml`. Development environment with self-signed certificate created by cert-manager. You need to install the cert-manager CRDs before installing the Helm chart. The chart will install the cert-manager application.
++
 ----
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
 helm install pulsar -f dev-values-auth.yaml datastax-pulsar/pulsar
@@ -251,7 +273,7 @@ You can enable a full Prometheus stack (Prometheus, Alertmanager, Grafana) from 
 
 In an addition, this chart can deploy Grafana dashboards for Pulsar as well as Pulsar-specific rules for Prometheus. 
 
-To deploy the Prometheus stack, use the following setting in your values file:
+To enable the Prometheus stack, use the following setting in your values file:
 
 ----
 kube-prometheus-stack:
@@ -335,16 +357,16 @@ The Helm chart has the following optional dependencies:
 To learn about installing Luna Streaming for Bare Metal/VM, see xref:quickstart-server-installs.adoc[Quickstart for Bare Metal/VM Installs].
 
 [#authentication]
-### Authentication
+=== Authentication
 
 The chart can enable token-based authentication for your Pulsar cluster. For information on token-based
-authentication in Pulsar, go https://pulsar.apache.org/docs/en/security-token-admin/[here].
+authentication in Pulsar, see https://pulsar.apache.org/docs/en/security-token-admin/[Pulsar token authentication admin documentation].
 
 For authentication to work, the token-generation keys need to be stored in Kubernetes secrets along with some default tokens (for superuser access). 
 
 The chart includes tooling to automatically create the necessary secrets or you can do this manually.
 
-#### Automatic generation of secrets for token authentication
+=== Automatic generation of secrets for token authentication
 
 Use the following settings to enable automatic generation of the secrets and enable token-based authentication:
 
@@ -368,7 +390,7 @@ Using these keys, it will generate tokens for each role listed in `superUserRole
 * `token-proxy`
 * `token-websocket`
 
-#### Manual secret creation for token authentication
+=== Manual secret creation for token authentication
 
 A number of values need to be stored in secrets prior to enabling token-based authentication. First, you need to generate a key-pair for signing the tokens using the Pulsar tokens command:
 
@@ -416,11 +438,7 @@ Once you have created the required secrets, you can enable token-based authentic
 `enableTokenAuth: yes`
 
 [#tls]
-### TLS
-
-### Automatically generating certificates using cert-manager
-
-#### Manually configuring certificate secrets for TLS
+== Manually configuring certificate secrets for TLS
 
 To use TLS, you must first create a certificate and store it in the secret defined by ```tlsSecretName```.
 You can create the certificate like this:
@@ -447,6 +465,6 @@ Once you have created the secrets that store the certificate info (or specified 
 
 `enableTls: yes`
 
-## Next
+== What's next?
 
-To learn about installing Luna Streaming, see xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
+To learn about installing Luna Streaming for Bare Metal/VM, see xref:quickstart-server-installs.adoc[Quickstart for Bare Metal/VM Installs].

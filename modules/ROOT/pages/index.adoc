@@ -16,13 +16,13 @@ Refer to the DataStax Luna Streaming https://github.com/datastax/release-notes/b
 
 In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache Pulsar {pulsar-version}], DataStax Luna Streaming provides:
 
-* A helm chart that can deploy and manage Pulsar on your current CNCF conformant Kubernetes infrastructure
+* A xref:quickstart-helm-installs.adoc[Helm chart] that deploys and manages Pulsar on your current CNCF-conformant Kubernetes infrastructure
 
-* Cassandra, Elastic, Kinesis, Kafka, and JDBC connectors
+* Cassandra, Elastic, Kinesis, Kafka, and JDBC xref:io-connectors.adoc[connectors]
 
-* Pulsar Admin Console for simplified administration of your Pulsar environment
+* xref:admin-console-VM.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
 
-* Pulsar Heartbeat to improve observability and monitoring of your Pulsar instances
+* xref:heartbeat-vm.adoc[Pulsar Heartbeat] to observe and monitor your Pulsar instances
 
 == Features
 
@@ -54,12 +54,9 @@ In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache
 
 * Transparent batching of messages
 
-== Where to go next
+== What's next?
 
-If you've got an existing Kubernetes environment:: To deploy Luna Streaming in your existing Kubernetes environment, see xref::quickstart-helm-installs.adoc[Helm Installation].
-
-If you've got bare metal or a cloud environment:: To deploy Luna Streaming environment from scratch on bare metal or in a cloud environment, see xref::quickstart-server-installs.adoc[Server/VM Installation].
-
-If you'd like to learn about Pulsar Heartbeat:: See xref::pulsar-monitor.adoc[Pulsar Heartbeat].
-
-If you have more questions...:: For additional information about Luna Streaming, see xref::faqs.adoc[Luna Streaming FAQs].
+* If you have an existing Kubernetes environment, deploy Luna Streaming with a xref::quickstart-helm-installs.adoc[Helm Installation].
+* If you have a bare metal or a cloud environment, see xref::quickstart-server-installs.adoc[Server/VM Installation].
+* If you want to learn about monitoring with Pulsar Heartbeat, see xref::pulsar-monitor.adoc[Pulsar Heartbeat].
+* If you have questions about Luna Streaming, see xref::faqs.adoc[Luna Streaming FAQs].

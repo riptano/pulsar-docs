@@ -106,7 +106,7 @@ configs:
 
 == Troubleshooting
 
-These are common solutions for problems encountered while using KCA to create a new connector:
+These are common solutions for problems encountered when creating a new connector:
 
 . Ensure the connector's license allows its use and redistribution. For more, see the https://www.apache.org/legal/resolved.html[Apache third-party license policy^].
 . Resolve third-party dependencies if there is a Maven dependency conflict of transitive dependencies in build time or dependency conflict in runtime caused by third-party dependencies packaged with the connector. To resolve third-party dependencies, see xref:io-connectors.adoc#shading[Shading third-party connectors^].
