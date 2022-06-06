@@ -25,7 +25,7 @@ The resulting Luna Streaming deployment includes:
 * BookKeeper should use one volume device for the journal, and one volume device for the ledgers. The journal device should be 20GB. The ledger volume device should be sized to hold the expected amount of stored message data. +
 * DataStax recommends a separate data disk volume for ZooKeeper. +
 * Operating System Settings
-  Disable Swap and set Linux Transparent Huge Pages (THP) to `madvice`. Check this setting with “cat /sys/kernel/mm/transparent_hugepage/enabled” and “cat /sys/kernel/mm/transparent_hugepage/defrag” +
+  Disable Swap and set Linux Transparent Huge Pages (THP) to `madvice`. Check this setting with `cat /sys/kernel/mm/transparent_hugepage/enabled` and `cat /sys/kernel/mm/transparent_hugepage/defrag` +
 
 [#install]
 == Installation 
@@ -84,7 +84,7 @@ You have successfully installed the DataStax Luna Streaming tarball. +
 
 Once the DataStax Luna Streaming tarball is installed, you may want to add additional tooling to your server/VM deployment.
 
-* Pulsar Admin Console - Web-based UI that administrates Pulsar. +
+* *Pulsar Admin Console:* Web-based UI that administrates Pulsar. +
 Download the latest version from the https://github.com/datastax/pulsar-heartbeat/releases/[DataStax GitHub repo^] and follow the instructions xref:admin-console-VM.adoc[here]. +
 +
 [NOTE]
@@ -92,15 +92,15 @@ Download the latest version from the https://github.com/datastax/pulsar-heartbea
 Admin Console requires https://nodejs.org/download/release/latest-v14.x/[NodeJS 14 LTS] and Nginx version 1.17.9+.
 ====
 
-* Pulsar Heartbeat - Monitors Pulsar cluster availability. +
+* *Pulsar Heartbeat:* Monitors Pulsar cluster availability. +
 Download the latest version from the https://github.com/datastax/pulsar-heartbeat/releases/[DataStax GitHub repo^] and follow the instructions xref:heartbeat-vm.adoc[here]. +
 
 == What's next?
 
-For initializing Pulsar components like BookKeeper and ZooKeeper, see the https://pulsar.apache.org/docs/deploy-bare-metal[Pulsar documentation^].
+* For initializing Pulsar components like BookKeeper and ZooKeeper, see the https://pulsar.apache.org/docs/deploy-bare-metal[Pulsar documentation^].
 
-For installing optional built-in connectors or tiered storage included in `lunastreaming-all`, see the https://pulsar.apache.org/docs/deploy-bare-metal#install-builtin-connectors-optional[Pulsar documentation^]. +
+* For installing optional built-in connectors or tiered storage included in `lunastreaming-all`, see the https://pulsar.apache.org/docs/deploy-bare-metal#install-builtin-connectors-optional[Pulsar documentation^]. +
 
-For installation to existing Kubernetes environments or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. +
+* For installation to existing Kubernetes environments or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. +
 
-For Ansible deployment, use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^]. +
+* For Ansible deployment, use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^]. +
