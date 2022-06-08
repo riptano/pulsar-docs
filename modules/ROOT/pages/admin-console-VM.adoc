@@ -2,269 +2,156 @@
 
 :page-tag: luna-streaming,dev,install,admin,pulsar
 
-The Pulsar Admin Console has two main components: 
+*Pulsar Admin Console* is a web-based UI that administrates topics, namespaces, sources, sinks and various aspects of Apache Pulsar&trade; features. +
 
-* A Node.js application that runs the server and serves the dashboard client code to browsers. 
-* An NGINX server that routes network traffic to different locations within the Pulsar Cluster. 
+The Admin Console is a VueJS application that runs in a browser. It also includes a web server that serves up the files for the admin console as well as providing configuration and authentication services. +
 
-Technically, the two processes do not need to be collocated, but we recommend running them on the same host/virtual machine (VM).
+Technically, the two processes do not need to be co-located, but we recommend running them on the same host/virtual machine (VM). +
 
+This document covers: +
+
+* xref:admin-console-vm.adoc#install[*Installation*] +
+
+* xref:admin-console-vm.adoc#configuration[*Configuration*] +
+
+* xref:admin-console-vm.adoc#configuration-reference[*Configuration Reference*] +
+
+* xref:admin-console-vm.adoc#auth-modes[*Auth Modes*] +
+
+[#install]
 == Install Pulsar Admin Console
 
-. Download and install the Node version 14.18.3 tarball to the VM. You can find the most recent Node release https://nodejs.org/en/download/[here].
-
+. Ensure Node version 14.18 or higher is installed. You can find the most recent Node release https://nodejs.org/en/download/[here].
++
+[source,bash]
 ----
 wget https://nodejs.org/dist/v14.18.3/node-v14.18.3-linux-x64.tar.xz /
 tar -xf node-v14.18.3-linux-x64.tar.xz
 ----
-[start=2]
+
 . Download and install the Pulsar Admin console tarball to the VM. You can find the most recent Pulsar Admin Console release https://github.com/datastax/pulsar-admin-console/releases[here].
 
+.. The tarball is also available with `wget`:
++
+[source,bash]
 ----
-wget https://github.com/datastax/pulsar-admin-console/releases/download/1.2.2/pulsar-admin-console-1.2.2.tar.gz
-----
-
-[start=3]
-. Decompress and unzip the tarball in the desired location.
-
-----
-tar -xf pulsar-admin-console-1.2.2.tar.gz
-----
-[start=4]
-. This will create a `dest/` directory that contains all necessary dependencies for the Pulsar Admin Console (except node).
-. From `dest/server`, run `npm start` to start up the Pulsar Admin Console. By default, this will start the server running listening at `localhost:6454`.
-
-== Modify Admin Console Configuration
-
-You can modify the configuration for the console in `dest/dashboard/dest/config.js`. 
-
-Alternatively, you can override configuration values by creating a file named `config-override.js` in the `dest/dashboard/dest/` directory. For configuration options, see the project https://github.com/datastax/pulsar-admin-console#pulsar-admin-console[README] and see below:
-
-----
-var globalConf = {
-        "tenant": "public", // Default tenant to use
-        "home_cluster": "pulsar", // Name of the default Pulsar Cluster
-        "cluster_list": ["pulsar"],
-        "user_role": "administrator", // Options: customer-admin or administrator
-        "template_directory_uri": "",
-        "ajax_url": "",
-        "rest_url": "",
-        "polling_interval": "10000",
-        "wss_url": "",
-        "disable_billing": "",
-        "test": "",
-        "client_token": "",
-        "admin_token": "",
-        "login": "",
-        "email": "",
-        "client_role": "",
-        "plan": "",
-        "need_to_create_plan": "",
-        "plan_to_create": "",
-        "admin_role": "",
-        "api_base_url": "api/v1/",
-        "ca_certificate": "",
-        "api_version": "2.7.2",
-        "default_plan": "",
-        "notice_text": "",
-        "grafana_url": "”,
-        "feature_flags": {
-            "function": true,
-            "sink": true,
-            "source": true,
-            "tenantStats": false
-        },
-        "security": "",
-        "chargebee_site": "",
-        "billing_provider": "",
-        "multi_user_org": "",
-        "private_org": "true",
-        "functions_disabled": "false",
-        "clients_disabled": "false",
-        "running_env": "web",
-        "use_token_list": "false",
-        "auth_mode": "none",
-        "oauth_client_id": "",
-        "host_overrides": {
-            "pulsar": "pulsar+ssl://pulsar.example.com:6651", // Assuming you're running with TLS enabled
-            "ws": "wss://pulsar.example.com:8001", // Assuming you're running with TLS enabled
-            "http": "https://pulsar.example.com:8085" // Assuming you're running with TLS enabled
-        }
-	}
+wget https://github.com/datastax/pulsar-admin-console/releases/download/2.0.0/pulsar-admin-console-2.0.0.tar.gz
 ----
 
-== Install Nginx
-
-You must install nginx on the same host. You can find installation instructions https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/[here].
-
-It’s essential to configure Nginx to route traffic appropriately with the configuration file in `/etc/nginx/nginx.conf` file. In the sample configuration below, there are comments for each section to help decide how to build the `nginx.conf` file:
-
-=== Sample nginx.conf
+. Extract the tarball:
++
+[source,bash]
 ----
-worker_processes  3;
-error_log  /var/log/nginx/error.log;
-pid        /tmp/nginx.pid;
-events {
- worker_connections  10240;
-}
-http {
- proxy_temp_path /tmp/proxy_temp;
- client_body_temp_path /tmp/client_temp;
- fastcgi_temp_path /tmp/fastcgi_temp;
- uwsgi_temp_path /tmp/uwsgi_temp;
- scgi_temp_path /tmp/scgi_temp;
-
- log_format  main
-         'remote_addr:$remote_addr\t'
-         'time_local:$time_local\t'
-         'method:$request_method\t'
-         'uri:$uri\t'
-         'host:$host\t'
-         'status:$status\t'
-         'bytes_sent:$body_bytes_sent\t'
-         'referer:$http_referer\t'
-         'useragent:$http_user_agent\t'
-         'forwardedfor:$http_x_forwarded_for\t'
-         'request_time:$request_time';
- access_log        /var/log/nginx/access.log main;
-
- upstream backend {
-   server localhost:6454;
- }
-
- # Only required if running with HTTP
- upstream http-pulsar-proxy {
-   server <<Pulsar HTTP Proxy DNS Entry and Port>>;
- }
-
- # Only required if running with HTTPS
- upstream https-pulsar-proxy {
-   server <<Pulsar HTTPS Proxy DNS Entry and Port>>;
- }
-
- # Only required if running Pulsar Burnell
- # Burnell is meant to run collocated with the Pulsar Proxy and the Pulsar Websocket Proxy
- # https://github.com/datastax/burnell
- upstream pulsar-burnell {
-   server <<Pulsar Burnell DNS Entry and Port>>;
- }
-
- # Only required if running websocket on Pulsar Proxy
- # Should target either the ws or the wss port depending on the upstream scheme
- upstream ws-pulsar-proxy {
-   server <<Pulsar Websocket Proxy DNS Entry and Port>>
- }
-
- ## Only required if using Open ID Connect for authenticating the Pulsar Admin Console
- upstream identity-provider {
-    server <<Identity Provider DNS Entry and Port>>;
- }
-
- # For all location blocks, use the correct scheme for upstream targets
- server {
-
-       location /ruok {
-         access_log off;
-         return 200 "I'm good\n";
-       }
-
-       # Routes traffic to the Pulsar Admin Console server
-       location / {
-          proxy_set_header Host $host;
-          proxy_set_header X-Forwarded-For $remote_addr;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_pass_header Set-Cookie;
-          proxy_pass http://backend;
-       }
-
-       # Routes traffic to the websocket proxy
-       location /ws/ {
-         # Use https or http depending on configuration
-         proxy_pass https://ws-pulsar-proxy;
-         proxy_http_version 1.1;
-         proxy_set_header Upgrade $http_upgrade;
-         proxy_set_header Connection "Upgrade";
-         proxy_set_header Host $host;
-       }
-
-       # General cluster forwarding rule for functions
-       # Use the correct scheme in the proxy_pass
-       location ^~ /api/v1/<<Pulsar cluster name>>/functions {
-         proxy_set_header Accepts application/json;
-         rewrite ^/api/v1/<<Pulsar cluster name>>/functions/(.*)$ /admin/v3/functions/$1 break;
-         proxy_pass http://http-pulsar-proxy$uri$is_args$args;
-       }
-
-       # Cluster forwarding rule for sinks
-       # Use the correct scheme in the proxy_pass
-       location ^~ /api/v1/<<Pulsar cluster name>>/sinks {
-         rewrite ^/api/v1/<<Pulsar cluster name>>/sinks/(.*)$ /admin/v3/sinks/$1 break;
-         proxy_pass http://http-pulsar-proxy$uri$is_args$args;
-       }
-
-       # Cluster forwarding rule for sources
-       # Use the correct scheme in the proxy_pass
-       location ^~ /api/v1/<<Pulsar cluster name>>/sources {
-         rewrite ^/api/v1/<<Pulsar cluster name>>/sources/(.*)$ /admin/v3/sources/$1 break;
-         proxy_pass http://http-pulsar-proxy$uri$is_args$args;
-       }
-
-       # Cluster forwarding rule for Burnell
-       # Use the correct scheme in the proxy_pass
-       location ^~ /api/v2/<<Pulsar cluster name>>/br/ {
-         rewrite ^/api/v2/<<Pulsar cluster name>>/br/(.*)$ /$1 break;
-         proxy_pass https://pulsar-burnell$uri$is_args$args;
-       }
-
-       # Forwarding rule api v2 (Burnell)
-       # Use the correct scheme in the proxy_pass
-       location ^~ /api/v2/<<Pulsar cluster name>> {
-         rewrite ^/api/v2/<<Pulsar cluster name>>/(.*)$ /admin/v2/$1 break;
-         proxy_pass http://pulsar-burnell$uri$is_args$args;
-       }
-
-       # Forwarding rule api v1
-       # Use the correct scheme in the proxy_pass
-       location ^~ /api/v1/<<Pulsar cluster name>> {
-         rewrite ^/api/v1/<<Pulsar cluster name>>/(.*)$ /admin/v2/$1 break;
-         proxy_pass http://http-pulsar-proxy$uri$is_args$args;
-       }
-
-       # For use when keycloak is the authentication/identity provider
-       # Use the correct scheme in the proxy_pass
-       # For Okta, use /token for <<Identity Provider Token Endpoint>>. https://developer.okta.com/docs/reference/api/oidc/#token
-       location ^~ /api/v1/auth/token {
-         rewrite  ^.*$ <<Identity Provider Token Endpoint>> break;
-         proxy_pass http://$uri$is_args$args;
-       }
-
-       listen 8080 default_server;
-
-       # When using SSL/TLS, add the below block.
-       listen 8443 ssl;
-       ssl_certificate <</path/to/tls.crt>>;
-       ssl_certificate_key <</path/to/tls.key>>;
-       ssl_protocols TLSv1.2 TLSv1.3;
-
- }
-
- server {
-
-   location = /nginx_status {
-     stub_status;
-
-     access_log off;
-     allow 127.0.0.1;
-     deny all;
-
-   }
-
-   listen 8081 ;
-
- }
-
-}
+tar xfvz pulsar-admin-console-<version>.tar.gz
 ----
+
+. This will create a `/pulsar-admin-console-<version>` directory that contains all necessary dependencies for the Pulsar Admin Console (except node).
+. Change directory to the `server` subdirectory: `cd pulsar-admin-console-<version>/server`.
+. Run `npm start` to start the Admin Console. This will start the server listening at `localhost:6454`.
+. Open the Admin Console at `http://localhost:6454`.
+
+Port 6454 is specified in `pulsar-admin-console-<version>/config/default.json`. To change the default Admin Console configuration, see xref:admin-console-vm.adoc#configuration[Configuration] below.
+
+[#configuration]
+== Configuration
+
+The `default.json` configuration file contains a set of general configs for the Admin Console, plus a server-specific set under `server_config`. The Admin Console server proxies all requests from the Admin Console to the Pulsar broker (or Pulsar proxy). +
+
+You can modify the configuration for the Admin Console in `pulsar-admin-console-<version>/config/default.json`, or place additional configuration files (for example, `local.json`) in the `/config` subdirectory to override parameters. +
+
+You need to configure `pulsar_url` to point to one of your brokers or a proxy/loadbalancer in front of the brokers (can be Pulsar proxy). The Admin Console server must be able to directly reach each broker by the IP/hostname that is returned by the Pulsar CLI command `pulsar-admin brokers list <clustername>`. +
+
+[NOTE]
+====
+The cluster name can be retrieved with the CLI command `pulsar-admin clusters list`. +
+====
+
+In a geo-replication configuration, use the cluster name for the local cluster. Set this cluster name in the `cluster_name` setting of the configuration file.
+
+[#configuration-reference]
+== Configuration reference
+
+These values can be modified in the JSON configuration file. 
+
+[cols="1,1,1"]
+|===
+|Setting | Default | Description
+
+| api_version | 2.8.3 | Version of the Pulsar client API to recommend under Samples. 
+| auth_mode | none | Authentication mode. One of `none`, `user`, `k8s`, or `openidconnect`. See xref:admin-console-vm.adoc#auth-modes[Auth modes] for details.
+| ca_certificate | | String of CA certificate to display in the console under Credentials. 
+| clients_disabled | false | Disable test clients. Test clients depend on WebSocket proxy, so if this is not running in Pulsar cluster you may want to disable them.
+| cluster_name | standalone | Name of Pulsar cluster connecting to.  The cluster name can be retrieved with the CLI command `pulsar-admin clusters list`.  
+| functions_disabled | false | If functions are not enabled in the cluster, disable the function sections (Functions, Sinks, Sources).
+| grafana_url | | If `render_monitoring_tab` is enabled, URL for Grafana. 
+| host_overrides.http | http://localhost:8964 | URL to display in console to connect to Pulsar Beam HTTP proxy. 
+| host_overrides.pulsar | http://localhost:6650 | URL to display in console to connect to Pulsar. 
+| host_overrides.ws | //localhost:8080 | URL to display in console to connect to WebSocket proxy. 
+| notice_text | | Custom notice to appear at top of console. 
+| oauth_client_id || This is the client ID that the console will use when authenticating with authentication provider. 
+| polling_interval | 10000 | How often the console polls Pulsar for updated values. In milliseconds. 
+| render_monitoring_tab | false | Enable tab that includes links to Grafana dashboards. 
+| server_config.admin_token | | When using `user` or `k8s` auth mode, a Pulsar token is used to connect to the Pulsar cluster. This specifies the token as a string. For full access, a superuser token is recommended. The `token_path` setting will override this value if present.
+| server_config.log_level | info | Log level for the console server.
+| server_config.port | 6454 | The listen port for the console server.
+| server_config.pulsar_url | http://localhost:8080 | URL for connecting to the Pulsar cluster. Should point to either a broker or Pulsar proxy. The console server must be able to reach this URL.  
+| server_config.ssl.ca_path | | Path to the CA certificate. To enable HTTPS, `ca_path`, `cert_path`, and `key_path` must all be set. 
+| server_config.ssl.cert_path | | Path to the server certificate. To enable HTTPS, `ca_path`, `cert_path`, and `key_path` must all be set.
+| server_config.ssl.hostname_validation | | Verify hostname matches the TLS certificate.  
+| server_config.ssl.key_path | | Path to the TLS key. To enable HTTPS, `ca_path`, `cert_path`, and `key_path` must all be set. 
+| server_config.ssl.verify_certs | false | Verify TLS certificate is trusted.
+| server_config.kubernetes.k8s_namespace | pulsar | When using `k8s` auth_mode, Kubernetes namespace that contains the username/password secrets. 
+| server_config.kubernetes.service_host| | When using `k8s` auth_mode, specify a custom Kubernetes host name. 
+| server_config.kubernetes.service_port | | When using `k8s` auth_mode, specify a custom Kubernetes port. 
+| server_config.token_path |  | When using `user` or `k8s` auth mode, a Pulsar token is used to connect to the Pulsar cluster. This specifies the path to a file that contains the token to use. For full access, a superuser token is recommended. Alternatively, use `admin_token`. 
+| server_config.token_secret| | Secret used when signing access token for logging into the console. If not specified, a default secret is used.
+| server_config.user_auth.username | | When using `user` auth_mode, the login user name. 
+| server_config.user_auth.password | | When using `user` auth_mode, the login password.
+| server_config.websocket_url | https://websocket.example.com:8500 | URL for WebSocket proxy. Used by Test Clients to connect to Pulsar. The console server must be able to reach this URL.
+| tenant | public | The default Pulsar tenant to view when starting the console.
+|===
+
+[#auth-modes]
+== Auth modes
+
+The `auth_mode` setting has four available configurations. 
+
+=== "auth_mode": "none"
+
+No login screen is presented. Authentication must be disabled in Pulsar because the Admin Console will not attempt to authenticate. 
+
+=== "auth_mode": "user"
+
+The Admin Console is protected by a login screen. Credentials are configured using the `username` and `password` settings in the `/config/default.json` file. +
+Once authenticated with these credentials, the token for connecting to Pulsar is retrieved from the server (configured using `token_path` or `admin_token`) and used to authenticate with the Pulsar cluster.
+
+=== "auth_mode": "k8"
+
+The Admin Console is protected by a login screen. The credentials are retrieved from a Kubernetes secret. +
+
+The Admin Console server *must* have access to a Kubernetes API, either using a `kubeconfig` file in the environment, or by having local access (for example, by running as a pod in a Kubernetes cluster).
+
+The namespace for the secret is set using `k8s_namespace` in the `/config/default.json` file. +
+The secret name must have a prefix of `dashboard-user-` followed by the `username`. +
+For example, the admin user would have a secret name of `dashboard-user-admin`. +
+The password must be stored in the secret with a key of `password` and a value of the password itself. +
+
+Multiple secrets with the prefix can be configured to set up multiple users for the Admin Console. A password can be reset by patching the corresponding Kubernetes secret. +
+
+Once the user is authenticated using one of the Kubernetes secrets, the token for connecting to Pulsar is retrieved from the server (configured using `token_path` or `admin_token`) and used to authenticate with the Pulsar cluster.
+
+=== "auth_mode": "openidconnect"
+
+In this auth mode, the dashboard will use your login credentials to retrieve a JWT from an authentication provider. +
+
+In the *DataStax Pulsar Helm Chart*, this is implemented by integrating the Pulsar Admin Console with Keycloak. Upon successful retrieval of the JWT, the Admin Console will use the retrieved JWT as the bearer token when making calls to Pulsar. +
+
+In addition to configuring the `auth_mode`, you must also configure the `oauth_client_id` (see xref:admin-console-vm.adoc#configuration-reference[*Configuration Reference*]). This is the client id that the Console will use when authenticating with Keycloak. Note that in Keycloak, it is important that this client exists and that it has the sub claim properly mapped to your desired Pulsar subject. Otherwise, the JWT won't work as desired.
+
+==== *Connecting to an OpenID Connect Auth/Identity Provider*
+
+When opening the Admin Console, the first page is the login page. When using the `openidconnect` auth mode, the auth call needs to go to the Provider's server. +
+In the current design, nginx must be configured to route the call to the provider. The *DataStax Pulsar Helm Chart* does this automatically.
 
 == Next 
 
