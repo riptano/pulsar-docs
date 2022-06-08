@@ -4,9 +4,7 @@
 
 *Pulsar Admin Console* is a web-based UI that administrates topics, namespaces, sources, sinks and various aspects of Apache Pulsar&trade; features. +
 
-The Admin Console is a VueJS application that runs in a browser. It also includes a web server that serves up the files for the admin console as well as providing configuration and authentication services. +
-
-Technically, the two processes do not need to be co-located, but we recommend running them on the same host/virtual machine (VM). +
+The Admin Console is a VueJS application that runs in a browser. It also includes a web server that serves up the files for the Admin Console as well as providing configuration and authentication services. +
 
 This document covers: +
 
@@ -21,7 +19,7 @@ This document covers: +
 [#install]
 == Install Pulsar Admin Console
 
-. Ensure Node version 14.18 or higher is installed. You can find the most recent Node release https://nodejs.org/en/download/[here].
+. Ensure Node version 14.18 or higher is installed. You can find the most recent Node release https://nodejs.org/en/download/[here], or use wget:
 +
 [source,bash]
 ----
@@ -33,31 +31,37 @@ tar -xf node-v14.18.3-linux-x64.tar.xz
 
 .. The tarball is also available with `wget`:
 +
-[source,bash]
+[source,bash,subs="attributes+"]
 ----
-wget https://github.com/datastax/pulsar-admin-console/releases/download/2.0.0/pulsar-admin-console-2.0.0.tar.gz
+wget https://github.com/datastax/pulsar-admin-console/releases/download/{admin-console-version}/pulsar-admin-console-2.0.0.tar.gz
 ----
 
 . Extract the tarball:
 +
-[source,bash]
+[source,bash,subs="attributes+"]
 ----
-tar xfvz pulsar-admin-console-<version>.tar.gz
+tar xfvz pulsar-admin-console-{admin-console-version}.tar.gz
 ----
 
-. This will create a `/pulsar-admin-console-<version>` directory that contains all necessary dependencies for the Pulsar Admin Console (except node).
-. Change directory to the `server` subdirectory: `cd pulsar-admin-console-<version>/server`.
-. Run `npm start` to start the Admin Console. This will start the server listening at `localhost:6454`.
+. This will create a `/pulsar-admin-console-<version>` directory that contains all necessary dependencies for the Admin Console (except node).
+. Change directory to the `server` subdirectory and run `npm start` to start the Admin Console. This will start the server listening at `localhost:6454`.
++
+[source=bash,subs="attributes+"]
+----
+cd pulsar-admin-console-{admin-console-version}/server
+npm start
+----
+
 . Open the Admin Console at `http://localhost:6454`.
 
-Port 6454 is specified in `pulsar-admin-console-<version>/config/default.json`. To change the default Admin Console configuration, see xref:admin-console-vm.adoc#configuration[Configuration] below.
+Port 6454 is specified in `pulsar-admin-console/config/default.json`. To change the default Admin Console configuration, see xref:admin-console-vm.adoc#configuration[Configuration] below.
 
 [#configuration]
 == Configuration
 
 The `default.json` configuration file contains a set of general configs for the Admin Console, plus a server-specific set under `server_config`. The Admin Console server proxies all requests from the Admin Console to the Pulsar broker (or Pulsar proxy). +
 
-You can modify the configuration for the Admin Console in `pulsar-admin-console-<version>/config/default.json`, or place additional configuration files (for example, `local.json`) in the `/config` subdirectory to override parameters. +
+You can modify the configuration for the Admin Console in `pulsar-admin-console/config/default.json`, or place additional configuration files (for example, `local.json`) in the `/config` subdirectory to override parameters. +
 
 You need to configure `pulsar_url` to point to one of your brokers or a proxy/loadbalancer in front of the brokers (can be Pulsar proxy). The Admin Console server must be able to directly reach each broker by the IP/hostname that is returned by the Pulsar CLI command `pulsar-admin brokers list <clustername>`. +
 
@@ -155,4 +159,4 @@ In the current design, nginx must be configured to route the call to the provide
 
 == Next 
 
-To install the admin console in a cloud environment, see the xref::admin-console-tutorial.adoc[Admin Console Tutorial].
+To install the Admin Console in a cloud environment, see the xref::admin-console-tutorial.adoc[Admin Console Tutorial].
