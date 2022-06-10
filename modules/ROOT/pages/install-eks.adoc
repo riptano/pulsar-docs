@@ -1,0 +1,66 @@
+= Luna Streaming Installation on Amazon Elastic Kubernetes Environment
+
+This document covers installation of Luna Streaming on the Amazon Elastic Kubernetes Environment (EKS). 
+
+== Prerequisites 
+
+* Helm version 3
+* A Kubernetes cluster 
+* No less than 16 gigs of RAM and 8 virtual processor cores (4 physical cores)
+
+For more on Helm, see https://helm.sh/docs/[Helm documentation].
+
+== Provision Your EKS Cluster
+
+. Configure the storage class settings for your cloud provider before you install the Helm chart. The handling of storage varies from cloud provider to cloud provider.
+
+. Create a new file called `storage_values.yaml` for the storage class settings. This allows you to match the optimum storage type to the volume.
++
+If you have specific storage class requirement, for example fixed input/output operations per second (IOPS) disks in AWS, you can have the chart configure the storage classes for you.
++
+Here is an example `storage-values.yaml` for EKS:
++
+----
+# For AWS
+# default_storage:
+#  provisioner: kubernetes.io/aws-ebs
+#  type: gp2
+#  fsType: ext4
+#  extraParams:
+#     iopsPerGB: "10"
+----
+
+See this https://github.com/datastax/pulsar-helm-chart/blob/master/helm-chart-sources/pulsar/values.yaml[values file] for more details on the settings in `values.yaml`.
+
+For additional provisioning options, see https://docs.k8ssandra.io/install/eks/[Install K8ssandra on EKS].
+
+== Install Luna Streaming to EKS
+
+Once you have added your storage settings to the `storage-values.yaml` file, install the Helm chart using the `storage-values.yaml` provisioning. 
+
+. Create the namespace. In this example, we use `pulsar`:
++
+----
+kubectl create namespace pulsar
+----
+
+. Run this Helm command using the `storage-values.yaml` provisioning:
++
+----
+helm install pulsar datastax-pulsar/pulsar --namespace pulsar --values storage_values.yaml --create-namespace
+----
+
+. To avoid having to specify the `pulsar` namespace on each subsequent command, set the namespace context. Example:
++
+----
+`kubectl config set-context $(kubectl config current-context) --namespace=pulsar`
+----
+
+. Execute `kubectl get pods -A` to view your running pods. 
+
+== What's next?
+
+Once your pods are up and running, continue to xref:quickstart-helm-installs.adoc#manage-pulsar-cluster[Accessing Pulsar Cluster in Cloud] to access and manage your cluster. 
+
+* To learn more about using the Pulsar Admin Console, see xref:admin-console-tutorial.adoc[Admin Console Tutorial].
+* To learn more about installing Pulsar on a server or virtual machine, see xref:quickstart-server-installs.adoc[Quickstart for Server/VM Install].
