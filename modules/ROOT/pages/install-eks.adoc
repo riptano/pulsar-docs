@@ -9,7 +9,6 @@ This document covers installation of Luna Streaming on the Amazon Elastic Kubern
 * No less than 16 gigs of RAM and 8 virtual processor cores (4 physical cores)
 
 For more on Helm, see https://helm.sh/docs/[Helm documentation].
-For more on Minikube, see https://minikube.sigs.k8s.io/docs/start/[Minikube documentation]. 
 
 == Provision Your EKS Cluster
 
