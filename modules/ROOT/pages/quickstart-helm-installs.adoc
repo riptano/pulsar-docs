@@ -2,8 +2,7 @@
 
 :page-tag: luna-streaming,dev,admin,install,pulsar
 
-You have options for installing DataStax Luna Streaming:
-
+You have options for installing *DataStax Luna Streaming*:
 
 * Via the provided *DataStax Helm chart* for an existing Kubernetes environment locally or with a cloud provider, as covered in this topic. +
 * Via the *DataStax Luna Streaming tarball* for deployment to a single server/VM, or to multiple servers/VMs. See xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. +
@@ -28,70 +27,105 @@ The resulting configuration includes support for:
 * cert-manager with support for self-signed certificates as well as public certificates using ACME; such as Let's Encrypt
 * Ingress for all HTTP ports (Pulsar Admin Console, Prometheus, Grafana, others)
 
-https://helm.sh[Helm] v3 must be installed and initialized to use the chart. Helm v2 is not supported.
-
 == Prerequisites 
 
-* https://helm.sh/docs/[Helm v3]
-* A Kubernetes cluster
-* No less than 16 gigs of RAM and 8 virtual processor cores (4 physical cores)
+For an example set of production cluster values, see the DataStax production-ready https://github.com/datastax/pulsar-helm-chart[Helm chart]. +
+
+DataStax recommends these hardware resources for running Luna Streaming in a Kubernetes environment: +
+
+include::partial$helm-chart-recommendations.adoc[]
+
+For the local machine running the Helm chart, you will need: +
+
+* https://helm.sh/docs/[Helm] version 3 +
+* A Google, AWS, or Azure account with privileges to install and configure Kubernetes resources. 
 
 === Storage Class Settings
 
-Before you can install the Helm chart, you need to configure the storage class settings for your cloud provider, such as AWS, GCP, or Azure.
-The handling of storage varies from cloud provider to cloud provider.
+The `default_storage` parameter in `values.yaml` controls the default storage class for all persistent volumes created by the Helm chart. +
 
-Create a new file called `storage_values.yaml` for the storage class settings.
-To use an existing storage class (including the default one) set this value:
-
+[source,yaml]
 ----
 default_storage:
-  existingStorageClassName: default or <name of storage class>
+  existingStorageClassName: default
 ----
 
-For each volume of each component (Zookeeper, Bookkeeper), you can override the `default_storage` setting by specifying a different `existingStorageClassName`.
-This allows you to match the optimum storage type to the volume.
+For a component like BookKeeper, which requires stateful storage, we need to override the `default_storage` class when the BookKeeper Persistent Volume Claims (PVCs) are created.
 
-If you have specific storage class requirement, for example fixed IOPS disks in AWS, you can have the chart configure the storage classes for you.
+There are two ways to override `default_storage`:
 
-Here are examples from the cloud providers:
-
-==== AWS 
+* Leave `existingStorageClassName` blank and specify the storage class parameters below.
++
+[tabs]
+====
+GKE::
++
+--
+[source,yaml]
 ----
-default_storage:
-  provisioner: kubernetes.io/aws-ebs
-  type: gp2
-  fsType: ext4
-  extraParams:
-    iopsPerGB: "10"
+  volumes:
+    journal:
+      name: journal
+      size: 20Gi
+        existingStorageClassName: 
+        storageClass:
+         provisioner: kubernetes.io/gce-pd
+         type: pd-ssd
+         fsType: ext4
+         extraParams:
+            replication-type: none
 ----
-
-==== Google Cloud Provider
+--
++
+EKS::
++
+--
+[source,yaml]
 ----
-default_storage:
-  provisioner: kubernetes.io/gce-pd
-  type: pd-ssd
-  fsType: ext4
-  extraParams:
-    replication-type: none
+  volumes:
+    journal:
+      name: journal
+      size: 20Gi
+        existingStorageClassName: 
+        storageClass:
+         provisioner: kubernetes.io/aws-ebs
+         type: gp2
+         fsType: ext4
+         extraParams:
+            iopsPerGB: "10"
 ----
-
-==== Azure 
-
+--
++
+AKS::
++
+--
+[source,yaml]
 ----
-default_storage:
-  provisioner: kubernetes.io/azure-disk
-  fsType: ext4
-  type: managed-premium
-  extraParams:
-    storageaccounttype: Premium_LRS
-    kind: Managed
-    cachingmode: ReadOnly
+  volumes:
+    journal:
+      name: journal
+      size: 20Gi
+        existingStorageClassName: 
+        storageClass:
+         provisioner: kubernetes.io/azure-disk
+         type: pd-ssd
+         fsType: ext4
+         extraParams:
+            replication-type: none
 ----
+--
+====
 
-See this https://github.com/datastax/pulsar-helm-chart/blob/master/helm-chart-sources/pulsar/values.yaml[values file] for more details on the settings.
-
-Once you have added your storage settings to the values file, install the Helm chart. 
+* Create a custom storage configuration as a `yaml` file (https://github.com/datastax/pulsar-helm-chart/blob/master/helm-chart-sources/pulsar/templates/bookkeeper/bookkeeper-storageclass.yaml[like the DataStax example]) and tell the Helm chart to use that storage configuration when it creates the BookKeeper PVCs.
++
+[source,yaml]
+----
+  volumes:
+    journal:
+      name: journal
+      size: 20Gi
+        existingStorageClassName: bookkeeper-storageclass.yaml
+----
 
 == Install Luna Streaming in a cloud provider
 
@@ -352,10 +386,6 @@ The Helm chart has the following optional dependencies:
 * https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack[kube-prometheus-stack]
 * https://cert-manager.io/[cert-manager]
 
-== Next
-
-To learn about installing Luna Streaming for Bare Metal/VM, see xref:quickstart-server-installs.adoc[Quickstart for Bare Metal/VM Installs].
-
 [#authentication]
 === Authentication
 
@@ -392,50 +422,7 @@ Using these keys, it will generate tokens for each role listed in `superUserRole
 
 === Manual secret creation for token authentication
 
-A number of values need to be stored in secrets prior to enabling token-based authentication. First, you need to generate a key-pair for signing the tokens using the Pulsar tokens command:
-
-`bin/pulsar tokens create-key-pair --output-private-key my-private.key --output-public-key my-public.key`
-
-TIP: The names of the files used in this section match the default values in the chart. If you used different names, then you will have to update the corresponding values.
-
-Then you need to store those keys as secrets.
-
-----
-kubectl create secret generic token-private-key \
- --from-file=my-private.key \
- --namespace pulsar
-----
-
- 
-----
-kubectl create secret generic token-public-key \
- --from-file=my-public.key \
- --namespace pulsar
-----
-
-
-Using those keys, generate tokens with subjects(roles): 
-
-`bin/pulsar tokens create --private-key file:///pulsar/token-private-key/my-private.key --subject <subject>`
-
-You need to generate tokens with the following subjects:
-
-- `admin`
-- `superuser`
-- `proxy`
-- `websocket` (only required if using the standalone WebSocket proxy)
-
-Once you have created those tokens, add each as a secret:
-
-----
-kubectl create secret generic token-<subject> \
- --from-file=<subject>.jwt \
- --namespace pulsar
-----
-
-Once you have created the required secrets, you can enable token-based authentication with this setting in the values:
-
-`enableTokenAuth: yes`
+include::partial$manually-create-credentials.adoc[]
 
 [#tls]
 == Manually configuring certificate secrets for TLS
