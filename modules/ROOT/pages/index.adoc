@@ -20,7 +20,7 @@ In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache
 
 * Cassandra, Elastic, Kinesis, Kafka, and JDBC xref:io-connectors.adoc[connectors]
 
-* xref:admin-console-VM.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
+* xref:admin-console-vm.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
 
 * xref:heartbeat-vm.adoc[Pulsar Heartbeat] to observe and monitor your Pulsar instances
 
