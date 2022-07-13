@@ -45,16 +45,18 @@ If your pods are stuck in a *Pending* state after installation or your cloud pro
 
 The bastion pod deploys with Luna Streaming and allows a user to execute administrative commands in a bash shell of the cluster. This can be a helpful troubleshooting tool for testing the health of your cluster. 
 
-=== Set up bastion pod
+=== Access bastion pod
 
 To use the bastion pod after installation, access the shell of the bastion pod. Let's use the namespace `default`:
 
+[source,bash]
 ----
 kubectl -n default exec $(kubectl get pods --namespace default -l "app=pulsar,component=bastion" -o jsonpath="{.items[0].metadata.name}") -it -- bash
 ----
 
 Your bash shell will then show that you are in your bastion pod: 
 
+[source,bash]
 ----
 pulsar@pulsar-bastion-78d4cd74ff-ctvvh:/pulsar$
 ----
@@ -63,6 +65,7 @@ pulsar@pulsar-bastion-78d4cd74ff-ctvvh:/pulsar$
 
 Ensure your bastion pod sees your cluster with `pulsar admin namespaces list public`. It should return a list of your public namespaces:
 
+[source,bash]
 ----
 "public/default"
 "public/functions"
