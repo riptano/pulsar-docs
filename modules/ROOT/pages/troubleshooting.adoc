@@ -1,6 +1,6 @@
 = Troubleshooting
 
-Find troubleshooting help in these sections.
+To troubleshoot Luna Streaming, look at these potential issues:
 
 * xref:troubleshooting.adoc#checkquotas[**Insufficient Quota**]
 * xref:troubleshooting.adoc#containerspending[**Containers in Pending State**]
@@ -9,48 +9,51 @@ Find troubleshooting help in these sections.
 [#checkquotas]
 == Check quotas
 
-In some cases, pods can become "unhealthy" and the root cause may be an insufficient quota. You can check quotas in the cloud provider's UI. For example, in the Google Cloud Platform (GCP) console, check for any unhealthy pods in your GKE project. Then in the IAM &amp; Admin section of the GCP console, navigate to Quotas. Look for any reported issues with backend services:
+In some cases, pods can become unhealthy. The root cause might be an insufficient quota. You can check quotas in the cloud provider's user interface. For example, in the Google Cloud (GCP) console, check for any unhealthy pods in your GKE project. Then in the *IAM & Admin* section of the GCP console, navigate to *Quotas*. Look for any reported issues with backend services:
 
 image::gcp-quota-example1.png[GCP Quota]
 
-From the GCP Admin Quotas display:
+From the GCP Console *Quotas* display:
 
-1. Select the row for the service name that is reporting a quota issue
-2. Click **All Quotas** from the Details column
-3. Check the box for the affected quota, and click **Edit Quota**. 
-4. The dialog indicates: "Enter a new quota limit. Your request will be sent to your service provider for approval." Examine the displayed current value and set a new value. 
-5. Enter a brief request description and click **Next**.
-6. Verify your contact information, and click **Submit Request**.
+. Select the row for the service name that is reporting a quota issue.
+. Select **All Quotas** from the *Details* column.
+. Check the box for the affected quota, and select **Edit Quota**. 
++
+The dialog indicates: "Enter a new quota limit. Your request will be sent to your service provider for approval." 
 
-Notice how in the following example the Backend services quota is set to '5', and we're changing it to '50'. For the K8ssandra deployments (Stargate, cass-operator, Reaper, Medusa, and so on), actually `10` might be a sufficient quota.
+. Examine the displayed current value and set a new value. 
+. Enter a brief request description, and select **Next**.
+. Verify your contact information, and select **Submit Request**.
+
+In the following example, the Backend services quota is set to '5'. We're changing it to '50'. For the K8ssandra deployments, such as Stargate, cass-operator, Reaper, and Medusa, `10` might be a sufficient quota.
 
 image::gcp-quota-example2.png[GCP Backend Quota]
 
 [#containerspending]
-== Containers in pending state 
+== Containers in *Pending* state 
 
-If your pods are stuck in Pending state after installation, or your cloud provider is warning you about Unschedulable Pods, there are a few ways to work through this.
+If your pods are stuck in a *Pending* state after installation or your cloud provider is warning you about *Unschedulable Pods*, there are a few ways to work through this:
 
-* If some of your pods start, but others like `pulsar-adminconsole` and `pulsar-grafana` are left in an unschedulable state, you might need to add CPUs to your existing nodes, or add an additional node pool. Luna Streaming requires more resources than Pulsar. 
+* If some of your pods start, but others like `pulsar-adminconsole` and `pulsar-grafana` are left in an *Unschedulable* state, you might need to add CPUs to your existing nodes or an additional node pool. Luna Streaming requires more resources than Apache Pulsar. 
 
 * To examine a specific pod, use `kubectl describe`. For example, if your `pulsar-bookkeeper-0` pod is not scheduling, use `kubectl describe pods/pulsar-bookkeeper-0` to view detailed output on the pod's state, dependencies, and events. 
 
 * To view log output for a specific pod, use `kubectl logs`. Continuing with the `pulsar-bookkeeper-0` example, to get logs for this pod use `kubectl logs pulsar-bookkeeper-0`. If this pod spans multiple containers, add the flag `--all-containers=true`. 
 
 [#bastionpod]
-== Bastion Pod
+== Bastion pod
 
-The bastion pod deploys with Luna Streaming and allows a user to execute administrative commands in a bash shell of the cluster. This can be a handy troubleshooting tool for testing the health of your cluster. 
+The bastion pod deploys with Luna Streaming and allows a user to execute administrative commands in a bash shell of the cluster. This can be a helpful troubleshooting tool for testing the health of your cluster. 
 
 === Set up bastion pod
 
-To use the bastion pod after installation, access the shell of the bastion pod (here we are using namespace `default`):
+To use the bastion pod after installation, access the shell of the bastion pod. Let's use the namespace `default`:
 
 ----
 kubectl -n default exec $(kubectl get pods --namespace default -l "app=pulsar,component=bastion" -o jsonpath="{.items[0].metadata.name}") -it -- bash
 ----
 
-This sets you up in a bash shell that looks like this: 
+Your bash shell will then show that you are in your bastion pod: 
 
 ----
 pulsar@pulsar-bastion-78d4cd74ff-ctvvh:/pulsar$
@@ -65,8 +68,8 @@ Ensure your bastion pod sees your cluster with `pulsar admin namespaces list pub
 "public/functions"
 ----
 
-If you get `bash: admin: command not found`, try moving into the `bin` directory with `cd bin`. You may need to append your command with `./`, for example `./pulsar-admin get pods`.
-If the shell finds no resources, you may not have any public namespaces. Create a public namespace with `pulsar-admin namespaces create public/default`. 
+If you get `bash: admin: command not found`, move into the `bin` directory with `cd bin`. You might need to append your command with `./`, for example `./pulsar-admin get pods`.
+If the shell finds no resources, you might not have any public namespaces. Create a public namespace with `pulsar-admin namespaces create public/default`. 
 
 === Publish a message
 
@@ -80,7 +83,7 @@ You should receive a confirmation the message was produced:
 
 This means your Pulsar cluster is functional. 
 
-== Next
+== What's next?
 
-To view your cluster, brokers, and connectors in a UI, see the xref::admin-console-tutorial.adoc[Admin Console Tutorial].
+To view your cluster, brokers, and connectors in a user interface, see the xref::admin-console-tutorial.adoc[Admin Console Tutorial].
 
