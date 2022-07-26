@@ -2,22 +2,41 @@
 
 When you have Luna Streaming xref:quickstart-server-installs[installed] and running, add IO connectors to connect your deployment to external systems like https://cassandra.apache.org/_/index.html[Apache Cassandra], https://www.elastic.co/[ElasticSearch], and more. +
 
-* *Source connectors:* Source connectors pull messages from external topics and persist the messages to Apache Pulsar™ topics. For more, see https://pulsar.apache.org/docs/en/io-connectors/#source-connector[Pulsar built-in connectors^]. +
+* *Source connectors:* Source connectors read messages from external topics and persist the messages to Apache Pulsar™ topics. For more, see https://pulsar.apache.org/docs/en/io-connectors/#source-connector[Pulsar built-in connectors^]. +
 
-* *Sink connectors:* Sink connectors pull messages from Pulsar topics and persist the messages to external systems. For more, see https://pulsar.apache.org/docs/en/io-connectors/#sink-connector[Pulsar built-in connectors^]. +
+* *Sink connectors:* Sink connectors read messages from Pulsar topics and persist the messages to external systems. For more, see https://pulsar.apache.org/docs/en/io-connectors/#sink-connector[Pulsar built-in connectors^]. +
 
 This doc lists the connectors supported by *Luna Streaming*. 
 
 == Sink Connectors
 
-*Sink connectors* pull messages from Pulsar topics and persist the messages to external systems. +
+*Sink connectors* read messages from Pulsar topics and persist the messages to external systems. +
 
 The following sink connectors are included in the `<luna-streaming-all>` deployment and are supported by DataStax Luna Streaming. +
 
 [#datastax-pulsar-sink]
-=== DataStax pulsar-sink
+=== DataStax enhanced Cassandra sink connector
 
-To configure, deploy, and use the DataStax Pulsar sink connector, see the https://docs.datastax.com/en/pulsar-connector/1.4/index.html[DataStax Pulsar connector documentation^].
+To configure, deploy, and use the DataStax enhanced Cassandra sink connector, see the https://docs.datastax.com/en/pulsar-connector/1.4/index.html[DataStax Pulsar connector documentation^]. +
+
+The DataStax enhanced Cassandra sink connector offers the following advantages over the OSS Pulsar Cassandra sink connector: +
+
+* Flexibility in mapping Apache Pulsar™ messages to DSE and Cassandra tables. +
+
+* Enterprise grade security support including built-in SSL, and LDAP integration. +
+
+* Consumes all Apache Pulsar™ primitives including primitives, JSON and Avro formats. +
+
+* Flexible time/date formatting. +
+
+* Configurable consistency level. +
+
+* Row-level Time-to-Live (TTL). +
+
+* Distributed mode, high availability (HA) support. +
+
+* Standalone mode support for development. +
+
 [#elasticsearch-sink]
 === ElasticSearch sink
 
@@ -50,7 +69,7 @@ To configure, deploy, and use the Kinesis sink connector, see the https://pulsar
 
 == Source Connectors
 
-*Source connectors* pull messages from external topics and persist the messages to Pulsar topics. +
+*Source connectors* read messages from external topics and persist the messages to Pulsar topics. +
 
 The following sink connectors are included in the `<luna-streaming-all>` deployment and are supported by DataStax Luna Streaming. +
 
