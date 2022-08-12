@@ -7,6 +7,8 @@ asciidoc:
   attributes:
     luna-version: '2.8'
     pulsar-version: '2.8.1'
+    heartbeat-version: '1.0.12'
+    admin-console-version: '2.0.4'
 
 nav:
 - modules/ROOT/nav.adoc

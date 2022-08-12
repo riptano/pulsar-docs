@@ -1,215 +1,106 @@
-= Quick Start for Server/VM installs
+= Quick Start for Bare Metal/VM installs
+:page-tag: luna-streaming,dev,admin,install
 
-You have two options for installing DataStax Luna Streaming (Pulsar):
+This document explains xref:quickstart-server-installs.adoc#install[installation] of Luna Streaming for Bare Metal/VM deployments with a Pulsar tarball. +
 
-* Via the provided Helm chart for an existing Kubernetes environment on a laptop or with a cloud provider. See xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. 
-* Via replicated.io packaging for deployment to a single server/VM, or to multiple servers/VMs, as covered in this topic.
+The resulting Luna Streaming deployment includes:
 
-Luna Streaming takes care of the replicated.io packaging details and deployment for you. The resulting deployment includes:
-
-* The DataStax distribution of Apache Pulsar
-* Pulsar Admin Console
-* Prometheus Operator and Grafana Operator
-* Ready-made Grafana dashboards that visualize the metrics collected via Prometheus
-* Support for Transport Layer Security (TLS) and token-based authentication
-* Support for single-node and multi-node (4) installs
-* Luna Streaming Installation Console
+* *Tiered Storage:* Offload historical messages to more cost effective object storages such as AWS S3, Azure Blob, Google Cloud Storage, and HDFS.
+* *Built-in Schema Registry:* Guarantee messaging type safety on a per-topic basis without relying on any external facility.
+* *Pulsar I/O connectors:* Enables Pulsar to exchange data with external systems, either as sources or sinks.
+* *Pulsar Function:* Lightweight compute extensions of Pulsar brokers which enable real-time simple event processing within Pulsar.
+* *Pulsar SQL:* SQL-based interactive query for message data stored in Pulsar.
+* *Pulsar Transactions:* enables event streaming applications to consume, process, and produce messages in one atomic operation.
 
 == Requirements
 
-* A Linux server or VM
-* For a single node install, a server with at least 8 CPU and 32 GB of memory is required
-* For a small HA, 4 servers are required. The servers must be on the same network so they can communicate with each other.
-* The servers should have at least 50 GB in their root disk volume. If you want to retain messages or improve performance, you should add diskl volume devices to the servers to be used by BookKeeper. Ideally BookKeeper uses 2 volumes devices, one for the journal, and one for the ledgers. The journal device should be 20GB. The ledgers' device should be large enough to hold the expected amount of stored message data, such as 500 GB. 
-* The first server must have a DNS name, which you will need to specify during the steps below. 
+* A Linux server or VM +
+* JDK 11 +
+  Pulsar can run with JDK8, but DataStax Luna Streaming is designed for Java 11. Java 17 LTS will be supported in the future. +
+* File System +
+  DataStax recommends XFS, but ext4 will work +
+* For a single node install, a server with at least 8 CPU and 32 GB of memory is required +
+* For a small high-availability server, 4 servers are required. The servers must be on the same network so they can communicate with each other. +
+* Servers should have at least 50 GB in their root disk volume. +
+* BookKeeper should use one volume device for the journal, and one volume device for the ledgers. The journal device should be 20GB. The ledger volume device should be sized to hold the expected amount of stored message data. +
+* DataStax recommends a separate data disk volume for ZooKeeper. +
+* Operating System Settings
+  Disable Swap and set Linux Transparent Huge Pages (THP) to `madvice`. Check this setting with `cat /sys/kernel/mm/transparent_hugepage/enabled` and `cat /sys/kernel/mm/transparent_hugepage/defrag` +
 
-== Installation steps
+[#install]
+== Installation 
 
-. Install the base system.
+. Download the DataStax Luna Streaming tarball from the https://github.com/datastax/pulsar/releases[DataStax GitHub repo]. There are three versions of Luna Streaming currently available: +
 +
+[cols="1,1"]
+[%autowidth]
+|===
+|*Luna Streaming filename*
+|*Included components*
+
+|`lunastreaming-core-<version>-bin.tar.gz`
+|Contains the core Pulsar modules: Zookeeper, Broker, BookKeeper, and function worker
+
+|`lunastreaming-<version>-bin.tar.gz`
+|Contains all components from `lunastreaming-core` as well as support for Pulsar SQL
+
+|`lunastreaming-all-<version>-bin.tar.gz`
+|Contains all components from `lunastreaming` as well as the NAR files for all Pulsar I/O connectors and offloaders
+
+|===
+
+. Untar the tarball and change directory into the resulting file. 
++
+[source,bash]
 ----
-curl -sSL https://k8s.kurl.sh/luna-streaming | sudo bash
-----
-+
-This will take about 10 minutes to complete.
-+
-TIP: Near the conclusion of the command output, be sure to note (for later steps) **the URL displayed for connecting to the Luna Streaming Installation Console and the password**, and other tips. 
-+
-The following is sample output from an install. Your version will have different values - copy them for use in later steps:
-+
-----
-.
-.
-.
-deployment.apps/cert-manager created
-⚙  Addon metrics-server 0.3.7
-serviceaccount/metrics-server created
-clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
-clusterrole.rbac.authorization.k8s.io/system:metrics-server created
-rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
-clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
-clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
-service/metrics-server created
-deployment.apps/metrics-server created
-apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
-configmap/kurl-config created
-
-		Installation
-		  Complete ✔
-
-Kotsadm: http://10.101.32.250:8800
-Login with password (will not be shown again): fNBFUn9AM
-
-To access the cluster with kubectl, ensure the KUBECONFIG environment variable is unset:
-
-    bash -l
-
-Node join commands expire after 24 hours.
-
-To generate new node join commands, run curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token on this node.
-
-To add worker nodes to this installation, run the following script on your other nodes:
-    curl -sSL https://kurl.sh/luna-streaming/join.sh | sudo bash -s kubernetes-master-address=10.101.32.250:6443 kubeadm-token=7sdek0.xujj2fo67qh6rs4v kubeadm-token-ca-hash=sha256:28d02e939bfb4fd8d3ea0a9619e9f47e0812773840e0c1e5a72c26b5bfbec08c kubernetes-version=1.19.7 docker-registry-ip=10.96.0.49
-----
-+
-. If you are planning a multi-node installation (small HA), add the worker nodes. The Luna Streaming configuration is for 4 nodes. The command to run **on each node** is displayed in the output; the sample values above are just an example. See the text for your environment following, “To add worker nodes to this installation...” in the output. If necessary, you can regenerate the node install command using the following:
-+
-`curl -sSL https://kurl.sh/luna-streaming/tasks.sh | sudo bash -s join_token`
-+
-. Download and install the Community license.
-+
-----
-curl -s https://downloads.datastax.com/license/luna-streaming/Community.yaml -o Community.yaml
-bash -l
-kubectl kots install luna-streaming --namespace default --license-file ./Community.yaml
-----
-+ 
-TIP: If necessary on your node, preface the `kubectl` command above with `sudo kubectl`
-+
-Output from the install command:
-+
-----
-  • Deploying Admin Console
-  • Waiting for Admin Console to be ready ✓  
-----
-+
-. Open the Luna Streaming Installation Console's URL in a browser. The URL was displayed after step 1. In the example command output above, it was http://10.101.32.250:8800. Remember to note the generated password, which you'll need soon. 
-+
-In the browser, you may see a message similar to this:
-+
-image::luna-streaming-tls-warning.png[TLS warning dialog]
-+
-Note the browser security advice, and click the Continue to Setup button. If you encounter a "Your connection is not private" dialog, you can (if you agree) click the Advanced section and click "Proceed to <your IP address>". 
-+
-. The Luna Streaming Installation Console displays an "HTTPS for Luna Streaming admin console" message. It includes an explanation that we're currently using a self-signed TLS certificate to secure the communication between your browser and the Luna Streaming Installation Console. If you don't upload your own TLS cert, you'll see a warning about this scenario in your browser every time you access the Luna Streaming Installation Console.
-+
-In development, if you agree, you can click Skip &amp; continue. 
-. Login to the Luna Streaming Installation Console. It presents options before you will launch the Luna Streaming Installation Console.
-The user name defaults to `admin`.
-Enter the password that was displayed after installing the base system in step 1 above.
-+
-TIP: Due to a Replicated package default, the Luna Streaming Installation Console login screen's text refers to the "admin console" even though DataStax calls the follow-on UI the Pulsar Admin Console. Ignore the overloaded term and know that at this point, you are logging into the Luna Streaming Installation Console.
-. Select the configuration options: 
-The Luna Streaming Installation Console presents its "Configure Luna Streaming" page. 
-+ 
-Start by selecting the configuration type: single node or small HA. If you select small HA, make sure you have previously added the required number of nodes.
-+
-In the **Hostname** field, enter a DNS resolvable name for the cluster. For a single node install, this should resolve to the IP address of the single node. For a multi-node install, the DNS name should resolve to a list of all the IP addresses in the cluster.
-+ 
-If you know your node's IP address but not its DNS name, use an `nslookup` command. For example, if the node's IP is 10.101.32.250:
-+
-----
-nslookup 10.101.32.250
-Server:		10.100.6.66
-Address:	10.100.6.66#53
-
-250.32.101.10.in-addr.arpa	name = ip-10-101-32-250.srv101.dsinternal.org.
-----
-+
-The DNS name in this example is `ip-10-101-34-250.srv101.dsinternal.org` and you would enter this in the required Hostname field. 
-+
-Optionally enable TLS enabled for Pulsar clients. If you entered TLS information in step 6, that certificate will be used. The certificate should be signed by a trusted certificate authority (for example, Let’s Encrypt). If you want to use a self-signed certificate, select “Generate Self-Signed Certificate”.
-+
-Optionally enable token-based authentication for Pulsar admin and clients. The installation will automatically generate keys and tokens. The superuser token can be retrieved from the Pulsar Admin Console.
-+
-The BookKeeper storage settings allow you to optionally use attached volumes for the BookKeeper journal and ledgers. By default, they will use the OS volume of the servers. However, if you have attached devices, the installation will automatically detect them and map them to BookKeeper. The journal device should be 20 GB. The ledger device can be any size, but defaults to 50 GB. Make sure the attached volume device is at least as large as the specified size. If it is not large enough, it will not be successfully mapped. 
-+
-Scroll down the Installation Console's Config page. In the **Admin Console Values** section, if you'll authenticate with username/password, copy the credentials for a subsequent Pulsar Admin Console login. Example:
-+
-image::luna-streaming-admin-console-credentials.png[Pulsar Admin Console Values fields as described in surrounding text]
-+ 
-Once you have entered the config options, click **Continue**.
-+
-. Let the pre-flight checks complete. Example:
-+
-image::luna-streaming-preflight-checks.png[Luna Streaming preflight checks shows all verifications successfully completed]
-
-== Launch the DataStax Luna Streaming Pulsar Admin Console
-
-Once the application is deployed and the Application status is green on the Luna Streaming Installation Console's Application tab, open the Pulsar Admin Console in a new browser window or tab. 
-
-For example, if you specified ip-10-101-32-250.srv101.dsinternal.org as the hostname in the Luna Streaming Installation Console's Config tab, and if you did not configure TLS, launch the Pulsar Admin Console in a browser:
-
-http://ip-10-101-32-250.srv101.dsinternal.org 
-
-Or in this example, open https://ip-10-101-32-250.srv101.dsinternal.org if you configured TLS from the Luna Streaming Installation Console. 
-
-. Log in to the DataStax Luna Streaming Pulsar Admin Console. 
-The username is `admin`. You can find the password in the Luna Streaming Installation Console's Config tab, under **Admin Console Values**. 
-+
-. Work with your new Pulsar cluster. You can view/create topics, namespaces, tenants, functions, sinks, and source. 
-+
-You can connect a test client (Test Clients) directly from the Pulsar Admin Console and you can view the built-in Grafana dashboards (Cluster/Monitoring). The Grafana user name is `admin` and the password is the same as for the Admin Console, which can be found under Dashboard/Config tab of the installation interface in the Admin Console Value section.
-
-== Updating DataStax Luna Streaming
-
-DataStax Luna Streaming is a Replicated KOTS application. You can update the application by using the **Version history** tab of the Admin Console, or via the KOTS CLI. For KOTS details, see https://kots.io/kotsadm/updating/updating-kots-apps[Updating a KOTS application].
-
-On the **Version history** tab, click **Check for update**. If a newer version of Luna Streaming is available, consider updating the server. Once the update is ready, if you want to proceed, click **Deploy**. Wait a few minutes after the deployment, and check its **Ready** status on the Applications tab. Example:
-
-image::luna-streaming-application-ready.png[Luna Streaming Ready state is shown on the Application tab of Installation Console]
-
-You can also check the status of the pods from the command line. Example:
-
-`kubectl get pods`
-----
-NAME                                                 READY   STATUS      RESTARTS   AGE
-kotsadm-67c8d478f7-xs7mx                             1/1     Running     0          32m
-kotsadm-migrations                                   0/1     Completed   0          44m
-kotsadm-operator-75c844ffdc-k95q6                    1/1     Running     0          44m
-kotsadm-postgres-0                                   1/1     Running     0          44m
-kurl-proxy-kotsadm-79df797c77-jhvjb                  1/1     Running     0          43m
-prometheus-operator-984cbc6b8-g8ggz                  1/1     Running     0          8m45s
-prometheus-pulsar-single-kube-prometh-prometheus-0   2/2     Running     1          6m54s
-pulsar-autorecovery-5596f6464d-wtd22                 1/1     Running     2          8m45s
-pulsar-bastion-5567576b79-jrvjh                      1/1     Running     0          8m45s
-pulsar-bookkeeper-0                                  1/1     Running     0          8m45s
-pulsar-broker-77848bccb8-bj7bj                       1/1     Running     2          8m45s
-pulsar-dashboard-6cd77957b9-mqvd6                    2/2     Running     0          8m45s
-pulsar-function-0                                    2/2     Running     0          8m45s
-pulsar-proxy-59cc75485-88c5b                         3/3     Running     0          8m45s
-pulsar-pulsarmonitor-55c8c5454d-bq88d                1/1     Running     0          8m45s
-pulsar-single-grafana-78bfcd7848-n6jqh               2/2     Running     0          8m45s
-pulsar-single-kube-state-metrics-9c7644667-g9n27     1/1     Running     0          8m45s
-pulsar-single-prometheus-node-exporter-bk52h         1/1     Running     0          8m45s
-pulsar-zookeeper-0                                   1/1     Running     0          8m45s
-pulsar-zookeeper-metadata-r7r42                      0/1     Completed   0          8m45s
+tar xzvf lunastreaming-2.10.0-bin.tar.gz
+cd lunastreaming-2.10.0
 ----
 
-== Viewing debug logs
+. Enter `ls -al` to view your Luna Streaming files:
++
+[source,bash]
+----
+➜  lunastreaming-2.10.0.3 ls -al
+total 88
+drwxr-xr-x@  11 firstname.lastname  staff    352 May 17 05:58 .
+drwx------+  98 firstname.lastname  staff   3136 May 24 14:15 ..
+-rw-r--r--@   1 firstname.lastname  staff  31209 Jan 22  2020 LICENSE
+-rw-r--r--@   1 firstname.lastname  staff   6612 Jan 22  2020 NOTICE
+-rw-r--r--@   1 firstname.lastname  staff   1269 Jan 22  2020 README
+drwxr-xr-x@  12 firstname.lastname  staff    384 Jan 22  2020 bin
+drwxr-xr-x@  21 firstname.lastname  staff    672 Jan 22  2020 conf
+drwxr-xr-x@   6 firstname.lastname  staff    192 May 17 05:58 examples
+drwxr-xr-x@   5 firstname.lastname  staff    160 May 17 05:58 instances
+drwxr-xr-x@ 277 firstname.lastname  staff   8864 May 17 05:58 lib
+drwxr-xr-x@  25 firstname.lastname  staff    800 Jan 22  2020 licenses
+----
 
-Logs can be viewed from the installation node using the Kubernetes command line interface. To view the logs for each component, use `kubectl` commands.
+You have successfully installed the DataStax Luna Streaming tarball. +
 
-TIP: `kubectl` will only work on the installation node. It will not work on worker nodes.
 
-To list all the pods, enter:
 
-`kubectl get pods`
+== Additional tooling
 
-To view the logs of a specific pod, for example:
+Once the DataStax Luna Streaming tarball is installed, you may want to add additional tooling to your server/VM deployment.
 
-`kubectl logs <podname>`
+* *Pulsar Admin Console:* Web-based UI that administrates Pulsar. +
+Download the latest version from the https://github.com/datastax/pulsar-heartbeat/releases/[DataStax GitHub repo^] and follow the instructions xref:admin-console-vm.adoc[here]. +
++
+[NOTE]
+====
+Admin Console requires https://nodejs.org/download/release/latest-v14.x/[NodeJS 14 LTS] and Nginx version 1.17.9+.
+====
 
-If the pods has multiple containers, use the following command to view the logs for one of the containers:
+* *Pulsar Heartbeat:* Monitors Pulsar cluster availability. +
+Download the latest version from the https://github.com/datastax/pulsar-heartbeat/releases/[DataStax GitHub repo^] and follow the instructions xref:heartbeat-vm.adoc[here]. +
 
-`kubectl logs <podname> -c <containername>`
+== What's next?
+
+* For initializing Pulsar components like BookKeeper and ZooKeeper, see the https://pulsar.apache.org/docs/deploy-bare-metal[Pulsar documentation^].
+
+* For installing optional built-in connectors or tiered storage included in `lunastreaming-all`, see the https://pulsar.apache.org/docs/deploy-bare-metal#install-builtin-connectors-optional[Pulsar documentation^]. +
+
+* For installation to existing Kubernetes environments or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. +
+
+* For Ansible deployment, use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^]. +

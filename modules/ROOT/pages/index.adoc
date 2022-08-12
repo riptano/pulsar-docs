@@ -1,5 +1,6 @@
 = Welcome to DataStax Luna Streaming
-John Smart <john.smart@datastax.com>
+
+:page-tag: luna-streaming,dev,admin,pulsar
 
 DataStax Luna Streaming is a production-ready distribution of Apache Pulsar built to run seamlessly on any CNCF conformant version of Kubernetes. DataStax Luna Streaming provides all of the core capabilities included in the Apache Community version of Apache Pulsar, plus a number of additional tools and features to facilitate administration and operational tasks associated with running Apache Pulsar in production.
 
@@ -15,15 +16,13 @@ Refer to the DataStax Luna Streaming https://github.com/datastax/release-notes/b
 
 In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache Pulsar {pulsar-version}], DataStax Luna Streaming provides:
 
-* A replicated.io package installer that can stand up a dev or production cluster on bare metal or VMs without a pre-existing Kubernetes environment
+* A xref:quickstart-helm-installs.adoc[Helm chart] that deploys and manages Pulsar on your current CNCF-conformant Kubernetes infrastructure
 
-* A helm chart that can deploy and manage Pulsar on your current CNCF conformant Kubernetes infrastructure
+* Cassandra, Elastic, Kinesis, Kafka, and JDBC xref:io-connectors.adoc[connectors]
 
-* Cassandra, Elastic, Kinesis, Kafka, and JDBC connectors
+* xref:admin-console-vm.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
 
-* Pulsar Admin Console for simplified administration of your Pulsar environment
-
-* Pulsar Heartbeat to improve observability and monitoring of your Pulsar instances
+* xref:heartbeat-vm.adoc[Pulsar Heartbeat] to observe and monitor your Pulsar instances
 
 == Features
 
@@ -55,12 +54,9 @@ In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache
 
 * Transparent batching of messages
 
-== Where to go next
+== What's next?
 
-If you've got an existing Kubernetes environment:: To deploy Luna Streaming in your existing Kubernetes environment, see xref::quickstart-helm-installs.adoc[].
-
-If you've got bare metal or a cloud environment:: To deploy Luna Streaming environment from scratch on bare metal or in a cloud environment, see xref::quickstart-server-installs.adoc[].
-
-If you'd like to learn about Pulsar Heartbeat:: See xref::pulsar-monitor.adoc[].
-
-If you have more questions...:: For additional information about Luna Streaming, see xref::faqs.adoc[].
+* If you have an existing Kubernetes environment, deploy Luna Streaming with a xref::quickstart-helm-installs.adoc[Helm Installation].
+* If you have a bare metal or a cloud environment, see xref::quickstart-server-installs.adoc[Server/VM Installation].
+* If you want to learn about monitoring with Pulsar Heartbeat, see xref::pulsar-monitor.adoc[Pulsar Heartbeat].
+* If you have questions about Luna Streaming, see xref::faqs.adoc[Luna Streaming FAQs].
