@@ -4,9 +4,9 @@ This document covers installation of Luna Streaming on the Azure Kubernetes Serv
 
 For an example set of production cluster values, see the DataStax production-ready https://github.com/datastax/pulsar-helm-chart[Helm chart]. +
 
-# DataStax recommends these hardware resources for running Luna Streaming in a Kubernetes environment: +
+DataStax recommends these hardware resources for running Luna Streaming in a Kubernetes environment: +
 
-# include::partial$helm-chart-recommendations.adoc[]
+include::partial$helm-chart-recommendations.adoc[]
 
 For the local machine running the Helm chart, you will need: +
 
