@@ -1,7 +1,7 @@
 = Pulsar Admin Console 
 :page-tag: luna-streaming,admin,dev,pulsar
 
-The Luna Streaming Pulsar Admin Console is a web-based UI from DataStax that administers topics, namespaces, sources, sinks, and various aspects of Apache Pulsar features. 
+The *DataStax Admin Console for Apache Pulsar®* is a web-based UI from DataStax that administers topics, namespaces, sources, sinks, and various aspects of Apache Pulsar features. 
 
 * xref:admin-console-tutorial.adoc#getting-started[]
 * xref:admin-console-tutorial.adoc#features[]
@@ -41,7 +41,7 @@ For interactive code samples, go to *Code Samples*.
 [#send-receive]
 == Sending and receiving Pulsar messages
 
-Go to the Pulsar Admin Console's **Test Clients** page. The quickest way to try your service is to use the test clients, sending messages from one client to the other. 
+Go to the Pulsar Admin Console's **Test Clients** page. The quickest way to try your service is to use the test clients and send messages from one client to the other. 
 
 In the WebSocket Test Client 1 section, click **Connect**. This action creates a connection from the Pulsar Admin Console that's running in your browser to the Pulsar instance on your server.
 
@@ -143,7 +143,7 @@ pulsar-admin --admin-url https://ip-10-101-32-250.srv101.dsinternal.org:8443 \
     --auth-params file:///token.jwt
 ----
 
-You can get the token from the Pulsar Admin Console's Credentials page.
+You can get the token from the Pulsar Admin Console's *Credentials* page.
 
 Alternatively, you can save the URL authentication parameters in your `client.conf` file.
 
