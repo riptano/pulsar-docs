@@ -3,6 +3,14 @@
 
 The Luna Streaming Pulsar Admin Console is a web-based UI from DataStax that administers topics, namespaces, sources, sinks, and various aspects of Apache Pulsar features. 
 
+* xref:admin-console-tutorial.adoc#getting-started[]
+* xref:admin-console-tutorial.adoc#features[]
+* xref:admin-console-tutorial.adoc#send-receive[]
+* xref:admin-console-tutorial.adoc#create-topics[]
+* xref:admin-console-tutorial.adoc#code-samples[]
+* xref:admin-console-tutorial.adoc#connect-to-pulsar[]
+
+[#getting-started]
 == Getting Started in Pulsar Admin Console
 
 In the *Luna Streaming Pulsar Admin Console*, you can use Pulsar clients to send and receive pub/sub messages.
@@ -15,13 +23,12 @@ Log in with username `admin`.
 
 If you're running a xref:quickstart-server-installs.adoc[server or VM] deployment, see xref:admin-console-VM.adoc[Admin Console on Server/VM] for instructions on deploying and accessing the Admin console.
 
-=== Pulsar Admin Console features
+[#features]
+== Pulsar Admin Console features
 
-To try out your service right now, use the built-in WebSocket test clients. See the Pulsar Admin Console's *Test Clients* page. 
+To try out your service, use the built-in WebSocket test clients on the Pulsar Admin Console's *Test Clients* page. 
 
-For interactive code samples, go to *Code Samples*.
-
-To see the available namespaces, go to *Namespaces*, or select the button in the upper right corner.
+To see currently available namespaces, go to *Namespaces*, or select the button in the upper right corner.
 
 image::luna-streaming-select-namespace.png[Select Namespace]
 
@@ -29,6 +36,9 @@ Messages published to namespaces are automatically replicated to all node(s) in 
 
 image::luna-streaming-admin-console.png[Luna Streaming Admin Console]
 
+For interactive code samples, go to *Code Samples*. 
+
+[#send-receive]
 == Sending and receiving Pulsar messages
 
 Go to the Pulsar Admin Console's **Test Clients** page. The quickest way to try your service is to use the test clients, sending messages from one client to the other. 
@@ -43,7 +53,8 @@ In doing so, you published a message to your server, and in the Test Client you'
 
 Your client is working with the Pulsar server. 
 
-=== Topics
+[#create-topics]
+== Create new topics and tenants
 
 By default, topics are automatically created when you first publish or subscribe. To manually create a topic or to create a partitioned topic, go to *Topics*.
 
@@ -57,13 +68,14 @@ To create a new tenant, go to *Tenants*.
 
 To see detailed information about your topics, go to *Topics*.
 
-[#codeSamples]
+[#code-samples]
 == Code samples
 
 On the Pulsar Admin Console's *Code Samples* page, there are examples for Java, Python, Golang, Node.js, WebSocket, and HTTP clients. +
 Each example shows Producer, Consumer, and Reader code, plus language-specific examples of setting project properties and dependencies. +
 For example, selecting Java will show you how to connect your Java project to Pulsar by modifying your Maven's `pom.xml` file.
 
+[#connect-to-pulsar]
 == Connecting to Pulsar
 
 This section describes how to connect Pulsar components to the Admin console. 
@@ -124,8 +136,11 @@ You can list all the tenants like this, for example:
 
 Or if you have authentication enabled, like this:
 
+[source,bash]
 ----
-pulsar-admin --admin-url https://ip-10-101-32-250.srv101.dsinternal.org:8443 --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken ----auth-params file:///token.jwt
+pulsar-admin --admin-url https://ip-10-101-32-250.srv101.dsinternal.org:8443 \
+    --auth-plugin org.apache.pulsar.client.impl.auth.AuthenticationToken \
+    --auth-params file:///token.jwt
 ----
 
 You can get the token from the Pulsar Admin Console's Credentials page.
