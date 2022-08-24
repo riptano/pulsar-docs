@@ -9,6 +9,7 @@ The *DataStax Admin Console for Apache Pulsar®* is a web-based UI from DataStax
 * xref:admin-console-tutorial.adoc#create-topics[]
 * xref:admin-console-tutorial.adoc#code-samples[]
 * xref:admin-console-tutorial.adoc#connect-to-pulsar[]
+* xref:admin-console-tutorial.adoc#video[]
 
 [#getting-started]
 == Getting Started in Pulsar Admin Console
@@ -146,6 +147,13 @@ pulsar-admin --admin-url https://ip-10-101-32-250.srv101.dsinternal.org:8443 \
 You can get the token from the Pulsar Admin Console's *Credentials* page.
 
 Alternatively, you can save the URL authentication parameters in your `client.conf` file.
+
+[#video]
+== Admin console video
+
+You can also follow along with this video from our *Five Minutes About Pulsar* series to get started with the admin console. 
+
+video::1IwblLfPiPQ[youtube, list=PL2g2h-wyI4SqeKH16czlcQ5x4Q_z-X7_m&index=26]
 
 == What's next
 
