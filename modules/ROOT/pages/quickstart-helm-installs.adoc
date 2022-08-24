@@ -457,7 +457,7 @@ Once you have created the secrets that store the certificate info (or specified 
 
 Follow along with this video from our *Five Minutes About Pulsar* series to get started with a Helm installation.
 
-video::hEBP_IVQqQM[youtube, list=PL2g2h-wyI4SqeKH16czlcQ5x4Q_z-X7_m&index=28]
+video::hEBP_IVQqQM[youtube, list=PL2g2h-wyI4SqeKH16czlcQ5x4Q_z-X7_m]
 
 == What's next?
 
