@@ -153,7 +153,7 @@ Alternatively, you can save the URL authentication parameters in your `client.co
 
 You can also follow along with this video from our *Five Minutes About Pulsar* series to get started with the admin console. 
 
-video::1IwblLfPiPQ[youtube, list=PL2g2h-wyI4SqeKH16czlcQ5x4Q_z-X7_m, height=auto,width=100%]
+video::1IwblLfPiPQ[youtube, list=PL2g2h-wyI4SqeKH16czlcQ5x4Q_z-X7_m, height=315,width=560]
 
 == What's next
 
