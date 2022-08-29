@@ -5,6 +5,7 @@ The https://www.elastic.co/elasticsearch/[Elasticsearch] sink connector reads me
 * xref:io-elastic-sink.adoc#configuration[Configuration]
 * xref:io-elastic-sink.adoc#ssl-configuration[ElasticSearchSslConfig properties]
 * xref:io-elastic-sink.adoc#example[Example sink connector]
+* xref:io-elastic-sink.adoc#elastic-tls[Example Elasticsearch sink with TLS]
 
 [#configuration]
 == Configuration
@@ -211,6 +212,7 @@ $ curl -s http://localhost:9200/my_index/_search
 {"took":2,"timed_out":false,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0},"hits":{"total":{"value":1,"relation":"eq"},"max_score":1.0,"hits":[{"_index":"my_index","_type":"_doc","_id":"FSxemm8BLjG_iC0EeTYJ","_score":1.0,"_source":{"a":1}}]}}     
 ----
 
+[#elastic-tls]
 == Example with TLS enabled
 
 Enable Transport Layer Security (TLS) on your Elasticsearch cluster to encrypt network traffic from eavesdropping. 
