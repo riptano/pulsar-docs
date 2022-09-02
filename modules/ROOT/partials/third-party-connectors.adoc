@@ -1,0 +1,91 @@
+== Third-party connectors
+
+These third-party connectors are available for Luna Streaming: 
+[cols=2*]
+|===
+|*Connector name*
+|*Connector Repo*
+
+| azure-documentdb
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/azure-documentdb[]
+
+| azure-kusto
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/azure-kusto[]
+
+| bigquery
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/bigquery[]
+
+| coap
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/coap[]
+
+| couchbase
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/couchbase[]
+
+| datadog
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/datadog[]
+
+| diffusion
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/diffusion[]
+
+| geode
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/geode[]
+
+| hazelcast
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/hazelcast[]
+
+| humio
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/humio[]
+
+| jms
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/jms[]
+
+| kinetica
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/kinetica[]
+
+| kudu
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/kudu[]
+
+| marklogic
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/marklogic[]
+
+| mqtt
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/mqtt[]
+
+| neo4j
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/neo4j[]
+
+| newrelic
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/newrelic[]
+
+| orientdb
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/orientdb[]
+
+| phoenix
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/phoenix[]
+
+| plc4x
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/plc4x[]
+
+| redis
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/redis[]
+
+| sap-hana
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/sap-hana[]
+
+| singlestore
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/singlestore[]
+
+| splunk
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/splunk[]
+
+| template
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/template[]
+
+| xtdb
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/xtdb[]
+
+| zeebe
+| https://github.com/datastax/pulsar-3rdparty-connector/tree/master/pulsar-connectors/zeebe[]
+
+|===
+

@@ -1,0 +1,75 @@
+= Third party connectors
+:page-tag: astra-streaming,dev,develop,pulsar,go
+
+include::partial$third-party-connectors.adoc[]
+
+== Building third-party connectors
+
+Ensure you have JDK11+ and Maven 3.8 installed. 
+
+. Clone the connector's repo.
+
+. Navigate to the root of the repo and build the connectors with Maven. 
++
+[source,bash]
+----
+cd snowflake-connector
+mvn clean install -DskipTests
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for DataStax Snowflake Connector for Apache Pulsar (R) 0.1.11-SNAPSHOT:
+[INFO]
+[INFO] DataStax Snowflake Connector for Apache Pulsar (R) . SUCCESS [ 39.182 s]
+[INFO] Snowflake Kafka Connector Shaded ................... SUCCESS [ 28.553 s]
+[INFO] Pulsar Snowflake Connector ......................... SUCCESS [ 22.513 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:32 min
+[INFO] Finished at: 2022-08-30T14:05:37-04:00
+[INFO] ------------------------------------------------------------------------
+----
+
+. The connector's `.nar` file is now available in your local `.m2` directory.
+
+. Create a configuration file for the conductor. For this example, the configuration is for a Snowflake sink connector.
++
+[source,yaml]
+----
+processingGuarantees: "EFFECTIVELY_ONCE"
+configs:
+  topic: "snowflake-test"
+  offsetStorageTopic: "snowflake-sink-offsets"
+  batchSize: "10"
+  lingerTimeMs: "10"
+  kafkaConnectorConfigProperties:
+     name: "snowflake-sink"
+     connector.class: "com.snowflake.kafka.connector.SnowflakeSinkConnector"
+     tasks.max: "1"
+     topics: "snowflake-test"
+     buffer.count.records: "10"
+     buffer.flush.time: "10"
+     buffer.size.bytes: "10"
+     snowflake.url.name: "<org-name>-<account-name>.snowflakecomputing.com:443"
+     snowflake.user.name: "pulsar_connector_user_1"
+     snowflake.private.key: "PASTE_PRIVATE_KEY"
+     snowflake.database.name: "pulsar_db"
+     snowflake.schema.name: "pulsar_schema"
+     key.converter: "org.apache.kafka.connect.storage.StringConverter"
+     value.converter: "com.snowflake.kafka.connector.records.SnowflakeJsonConverter"
+----
+
+. Start the connector using the configuration yaml. In this example, the Snowflake connector sink connector is using `Connectors/snowflake.yaml`.
++
+[source,bash]
+----
+bin/pulsar-admin sinks localrun \
+--archive Connectors/pulsar-snowflake-connector-0.1.0.nar \
+--name snowflake-sink \
+--namespace public/default \
+--parallelism 1 \
+-i snowflake-test \
+--sink-config-file Connectors/snowflake.yaml
+----
+
+You're now running a third party connector.
