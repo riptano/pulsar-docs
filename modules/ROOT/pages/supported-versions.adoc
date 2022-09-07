@@ -2,8 +2,6 @@
 
 include::partial$supported-versions-tables.adoc[]
 
-Subject to the terms set forth herein, DataStax reserves the right to update the Supported Software at any time by updating this Agreement with at least three (3) months prior notice. Any notice will be provided via update to this Support Policy. In addition, DataStax may choose to designate one or more Apache Pulsar releases as a Long Term Support Release. If Customer’s Subscription Tier includes Extended Support for a Long Term Support Release, DataStax will provide such Support for at least one (1) year after the Apache Software Foundation (“ASF”) ceases support on the version. A Long Term Support Release shall be version 2.7.2 of Apache Pulsar.
 
-Support for other versions of Apache Pulsar or modified by any source other than Apache Software Foundation or DataStax is not provided under this Support Policy. Support for other versions of the Open Source Projects or for software obtained from or modified by any source other than the governing applicable project is not provided under this Support Policy. Support only covers use of the Supported Software installed on platforms or systems in accordance with the Documentation. Support does not cover use of the Supported Software on platforms or systems that are no longer supported by the original vendor.
 
 
