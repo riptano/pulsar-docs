@@ -1,5 +1,6 @@
 * xref:index.adoc[About Luna Streaming]
 ** xref:faqs.adoc[Luna Streaming FAQs]
+** xref:supported-versions.adoc[Supported versions]
 * Getting Started
 ** xref:quickstart-helm-installs.adoc[Install with Helm chart]
 ** xref:quickstart-server-installs.adoc[Install on Server/VM]
