@@ -15,7 +15,7 @@ output:
   dir: '~/work/pulsar-docs/build/site'
 
 content:
-  edit_url: false
+  edit_url: 'https://github.com/datastax/pulsar-docs/blob/main/{path}'
   sources:
   - url: '~/work/pulsar-docs'
     branches: HEAD
