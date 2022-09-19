@@ -1,7 +1,9 @@
 build
-
+.DS_store
 *~
 package-lock.json
+.vscode
+.java-version
 
 # Logs
 logs
@@ -107,3 +109,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# IDE
+.idea/
