@@ -1,6 +1,6 @@
 name: docs
 title: DataStax Luna Streaming
-version: 2.8
+version: '2.10'
 start_page: index.adoc
 
 nav:
