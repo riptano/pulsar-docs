@@ -56,8 +56,8 @@ asciidoc:
     astra_stream: 'Astra Streaming'
     advanced: 'no'
 
-    luna-version: '2.8'
-    pulsar-version: '2.8.1'
+    luna-version: '2.10'
+    pulsar-version: '2.10'
     heartbeat-version: '1.0.12'
     admin-console-version: '2.0.4'
 
