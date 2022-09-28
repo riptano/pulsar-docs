@@ -85,7 +85,7 @@ You have successfully installed the DataStax Luna Streaming tarball. +
 Once the DataStax Luna Streaming tarball is installed, you may want to add additional tooling to your server/VM deployment.
 
 * *Pulsar Admin Console:* Web-based UI that administrates Pulsar. +
-Download the latest version from the https://github.com/datastax/pulsar-admin-console[DataStax GitHub repo^] and follow the instructions xref:admin-console-VM.adoc[here]. +
+Download the latest version from the https://github.com/datastax/pulsar-admin-console[DataStax GitHub repo^] and follow the instructions xref:admin-console-vm.adoc[here]. +
 +
 [NOTE]
 ====
