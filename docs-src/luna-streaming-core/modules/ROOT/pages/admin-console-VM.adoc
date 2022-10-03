@@ -8,13 +8,13 @@ The Admin Console is a VueJS application that runs in a browser. It also include
 
 This document covers: +
 
-* xref:admin-console-vm.adoc#install[*Installation*] +
+* <<install,*Installation*>> +
 
-* xref:admin-console-vm.adoc#configuration[*Configuration*] +
+* <<configuration,*Configuration*>> +
 
-* xref:admin-console-vm.adoc#configuration-reference[*Configuration Reference*] +
+* <<configuration-reference,*Configuration Reference*>> +
 
-* xref:admin-console-vm.adoc#auth-modes[*Auth Modes*] +
+* <<auth-modes,*Auth Modes*>> +
 
 [#install]
 == Install Pulsar Admin Console
