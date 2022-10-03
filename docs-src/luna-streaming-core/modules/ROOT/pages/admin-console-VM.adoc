@@ -54,7 +54,7 @@ npm start
 
 . Open the Admin Console at `http://localhost:6454`.
 
-Port 6454 is specified in `pulsar-admin-console/config/default.json`. To change the default Admin Console configuration, see xref:admin-console-vm.adoc#configuration[Configuration] below.
+Port 6454 is specified in `pulsar-admin-console/config/default.json`. To change the default Admin Console configuration, see <<configuration,*Configuration*>> below.
 
 [#configuration]
 == Configuration
@@ -82,7 +82,7 @@ These values can be modified in the JSON configuration file.
 |Setting | Default | Description
 
 | api_version | 2.8.3 | Version of the Pulsar client API to recommend under Samples. 
-| auth_mode | none | Authentication mode. One of `none`, `user`, `k8s`, or `openidconnect`. See xref:admin-console-vm.adoc#auth-modes[Auth modes] for details.
+| auth_mode | none | Authentication mode. One of `none`, `user`, `k8s`, or `openidconnect`. See <<auth-modes,*Auth Modes*>> for details.
 | ca_certificate | | String of CA certificate to display in the console under Credentials. 
 | clients_disabled | false | Disable test clients. Test clients depend on WebSocket proxy, so if this is not running in Pulsar cluster you may want to disable them.
 | cluster_name | standalone | Name of Pulsar cluster connecting to.  The cluster name can be retrieved with the CLI command `pulsar-admin clusters list`.  
@@ -150,7 +150,7 @@ In this auth mode, the dashboard will use your login credentials to retrieve a J
 
 In the *DataStax Pulsar Helm Chart*, this is implemented by integrating the Pulsar Admin Console with Keycloak. Upon successful retrieval of the JWT, the Admin Console will use the retrieved JWT as the bearer token when making calls to Pulsar. +
 
-In addition to configuring the `auth_mode`, you must also configure the `oauth_client_id` (see xref:admin-console-vm.adoc#configuration-reference[*Configuration Reference*]). This is the client id that the Console will use when authenticating with Keycloak. Note that in Keycloak, it is important that this client exists and that it has the sub claim properly mapped to your desired Pulsar subject. Otherwise, the JWT won't work as desired.
+In addition to configuring the `auth_mode`, you must also configure the `oauth_client_id` (see <<configuration-reference,*Configuration reference*>>). This is the client id that the Console will use when authenticating with Keycloak. Note that in Keycloak, it is important that this client exists and that it has the sub claim properly mapped to your desired Pulsar subject. Otherwise, the JWT won't work as desired.
 
 ==== *Connecting to an OpenID Connect Auth/Identity Provider*
 
