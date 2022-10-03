@@ -22,7 +22,7 @@ image::GCP-all-pods.png[GCP Pods]
 
 Log in with username `admin`. 
 
-If you're running a xref:quickstart-server-installs.adoc[server or VM] deployment, see xref:admin-console-VM.adoc[Admin Console on Server/VM] for instructions on deploying and accessing the Admin console.
+If you're running a xref:quickstart-server-installs.adoc[server or VM] deployment, see xref:admin-console-vm.adoc[Admin Console on Server/VM] for instructions on deploying and accessing the Admin console.
 
 [#features]
 == Pulsar Admin Console features
@@ -157,4 +157,4 @@ video::1IwblLfPiPQ[youtube, list=PL2g2h-wyI4SqeKH16czlcQ5x4Q_z-X7_m]
 
 == What's next
 
-For more on building and running a standalone Pulsar Admin console, see the xref:admin-console-VM.adoc[Admin Console on Server/VM] or the Pulsar Admin console repo https://github.com/datastax/pulsar-admin-console#dev[readme, window=_blank].
+For more on building and running a standalone Pulsar Admin console, see the xref:admin-console-vm.adoc[Admin Console on Server/VM] or the Pulsar Admin console repo https://github.com/datastax/pulsar-admin-console#dev[readme, window=_blank].
