@@ -36,6 +36,7 @@ asciidoc:
     sectlinks: ''
     id-prefix: ''
     id-separator: '-'
+
     company: 'DataStax'
     product_name: 'Luna Streaming'
     evalproduct: 'DB Classic'

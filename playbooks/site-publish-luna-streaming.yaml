@@ -43,6 +43,7 @@ asciidoc:
     # current docset are confirmed not to have underscores in them.
     #id-prefix: ''
     #id-separator: '-'
+
     company: 'DataStax'
     product_name: 'Luna Streaming'
     evalproduct: 'DB Classic'
@@ -135,4 +136,4 @@ asciidoc:
     pulsar-docs: 'ssh://github.com/datastax/pulsar-docs.git'
 
   extensions:
-  - '~/work/pulsar-docs/playbooks/lib/tabs-block.js'
+  - ~/work/pulsar-docs/playbooks/lib/tabs-block.js
