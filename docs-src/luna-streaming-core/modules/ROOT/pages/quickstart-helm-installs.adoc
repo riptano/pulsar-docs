@@ -206,9 +206,9 @@ To learn more about using the Pulsar Admin Console, see xref:admin-console-tutor
 == Install Luna Streaming locally
 
 With the prerequisites listed above met, start minikube with adequate resources. For example:
----
+----
 minikube start --cpus 5 --memory 16G
----
+----
 
 Next, enter these commands:
 ----
