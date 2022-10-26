@@ -1,0 +1,10 @@
+name: luna-streaming
+title: Luna Streaming Documentation
+version: 2.10_1.7
+start_page: luna-streaming::index.adoc
+
+asciidoc:
+  attributes:
+
+nav:
+  - modules/ROOT/nav.adoc
