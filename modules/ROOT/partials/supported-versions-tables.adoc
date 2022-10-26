@@ -1,0 +1,78 @@
+Support covers only the following Software versions for Apache Pulsar:
+
+[cols="2*"]
+|===
+|*Name*
+|*Versions*
+
+|Apache Pulsar
+|2.6.2, 2.7.2 and 2.8.1
+|===
+
+Support covers only the following Software versions for DataStax Luna Streaming Distribution:
+
+[cols="2*"]
+|===
+|*Name*
+|*Version*
+
+|DataStax Luna Streaming Distribution 
+|v.1.0.0 and above
+
+|===
+
+Support covers only the following Software versions for the Open Source Projects:
+
+[cols="2*"]
+|===
+|*Name*
+|*Version*
+
+|Pulsar Admin Console 
+|v.1.0.0 and above
+
+|Pulsar Heartbeat 
+|v.1.0.0 and above
+
+|DataStax pulsar-sink 
+|v.1.0.0 and above
+
+|Starlight for JMS 
+|v.1.0.0 and above
+
+|Starlight for RabbitMQ 
+|v.1.0.0 and above
+
+|===
+
+Support covers only the following Apache Pulsar Connectors (as included in the Apache Pulsar download):
+
+[cols="2*"]
+|===
+|*Name*
+|*Version*
+
+|Elasticsearch sink 
+|v.2.6.2, 2.7.2 and 2.8.1
+|JDBC-Clickhouse sink 
+|v.2.6.2, 2.7.2 and 2.8.1
+|JDBC-MariaDB sink 
+|v.2.6.2, 2.7.2 and 2.8.1
+|JDBC-Postgres sink 
+|v.2.6.2, 2.7.2 and 2.8.1
+|Kafka sink 
+|v.2.6.2, 2.7.2 and 2.8.1
+|Kinesis sink 
+|v.2.6.2, 2.7.2 and 2.8.1
+|Debezium MongoDB source 
+|v.2.6.2, 2.7.2 and 2.8.1
+|Debezium MySQL source 
+|v.2.6.2, 2.7.2 and 2.8.1
+|Debezium Postgres source 
+|v.2.6.2, 2.7.2 and 2.8.1
+|Kafka source 
+|v.2.6.2, 2.7.2 and 2.8.1
+|Kinesis source 
+|v.2.6.2, 2.7.2 and 2.8.1
+
+|===

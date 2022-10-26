@@ -1,3 +1,61 @@
-= Index
+= Welcome to DataStax Luna Streaming
+:page-tag: luna-streaming,dev,admin,pulsar
 
-Here is a page.
+DataStax Luna Streaming is a production-ready distribution of Apache Pulsar built to run seamlessly on any CNCF conformant version of Kubernetes. DataStax Luna Streaming provides all of the core capabilities included in the Apache Community version of Apache Pulsar, plus a number of additional tools and features to facilitate administration and operational tasks associated with running Apache Pulsar in production.
+
+== Release notes
+
+The latest release of DataStax Luna Streaming is {luna-version}, which matches the supported, distributed Pulsar version numbers.
+
+The prior Luna Streaming release (numbered 1.0.x or 2.7.2) provided the Pulsar 2.7.2 distribution.
+
+Refer to the DataStax Luna Streaming https://github.com/datastax/release-notes/blob/master/Luna_Streaming_2.8_Release_Notes.md[release notes], which are hosted in our public GitHub repo, for information &amp; linked commit IDs that were implemented in the latest Luna Streaming {luna-version} release.
+
+== Components
+
+In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache Pulsar {pulsar-version}], DataStax Luna Streaming provides:
+
+* A xref:quickstart-helm-installs.adoc[Helm chart] that deploys and manages Pulsar on your current CNCF-conformant Kubernetes infrastructure
+
+* Cassandra, Elastic, Kinesis, Kafka, and JDBC xref:io-connectors.adoc[connectors]
+
+* xref:admin-console-vm.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
+
+* xref:heartbeat-vm.adoc[Pulsar Heartbeat] to observe and monitor your Pulsar instances
+
+== Features
+
+* Horizontally scalable to millions of independent topics and millions of messages published per second
+
+* Strong ordering and consistency guarantees
+
+* Low latency durable storage
+
+* Topic and queue semantics
+
+* Load balancer
+
+* Designed for being deployed as a hosted service:
+** Multi-tenant
+** Authentication
+** Authorization
+** Quotas
+** Support for mixing very different workloads
+** Optional hardware isolation
+
+* Keeps track of consumer cursor position
+
+* REST API for provisioning, admin and stats
+
+* Geo replication
+
+* Transparent handling of partitioned topics
+
+* Transparent batching of messages
+
+== What's next?
+
+* If you have an existing Kubernetes environment, deploy Luna Streaming with a xref::quickstart-helm-installs.adoc[Helm Installation].
+* If you have a bare metal or a cloud environment, see xref::quickstart-server-installs.adoc[Server/VM Installation].
+* If you want to learn about monitoring with Pulsar Heartbeat, see xref::pulsar-monitor.adoc[Pulsar Heartbeat].
+* If you have questions about Luna Streaming, see xref::faqs.adoc[Luna Streaming FAQs].

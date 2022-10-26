@@ -1,0 +1,106 @@
+= Quick Start for Bare Metal/VM installs
+:page-tag: luna-streaming,dev,admin,install
+
+This document explains xref:quickstart-server-installs.adoc#install[installation] of Luna Streaming for Bare Metal/VM deployments with a Pulsar tarball. +
+
+The resulting Luna Streaming deployment includes:
+
+* *Tiered Storage:* Offload historical messages to more cost effective object storages such as AWS S3, Azure Blob, Google Cloud Storage, and HDFS.
+* *Built-in Schema Registry:* Guarantee messaging type safety on a per-topic basis without relying on any external facility.
+* *Pulsar I/O connectors:* Enables Pulsar to exchange data with external systems, either as sources or sinks.
+* *Pulsar Function:* Lightweight compute extensions of Pulsar brokers which enable real-time simple event processing within Pulsar.
+* *Pulsar SQL:* SQL-based interactive query for message data stored in Pulsar.
+* *Pulsar Transactions:* enables event streaming applications to consume, process, and produce messages in one atomic operation.
+
+== Requirements
+
+* A Linux server or VM +
+* JDK 11 +
+  Pulsar can run with JDK8, but DataStax Luna Streaming is designed for Java 11. Java 17 LTS will be supported in the future. +
+* File System +
+  DataStax recommends XFS, but ext4 will work +
+* For a single node install, a server with at least 8 CPU and 32 GB of memory is required +
+* For a small high-availability server, 4 servers are required. The servers must be on the same network so they can communicate with each other. +
+* Servers should have at least 50 GB in their root disk volume. +
+* BookKeeper should use one volume device for the journal, and one volume device for the ledgers. The journal device should be 20GB. The ledger volume device should be sized to hold the expected amount of stored message data. +
+* DataStax recommends a separate data disk volume for ZooKeeper. +
+* Operating System Settings
+  Disable Swap and set Linux Transparent Huge Pages (THP) to `madvice`. Check this setting with `cat /sys/kernel/mm/transparent_hugepage/enabled` and `cat /sys/kernel/mm/transparent_hugepage/defrag` +
+
+[#install]
+== Installation 
+
+. Download the DataStax Luna Streaming tarball from the https://github.com/datastax/pulsar/releases[DataStax GitHub repo]. There are three versions of Luna Streaming currently available: +
++
+[cols="1,1"]
+[%autowidth]
+|===
+|*Luna Streaming filename*
+|*Included components*
+
+|`lunastreaming-core-<version>-bin.tar.gz`
+|Contains the core Pulsar modules: Zookeeper, Broker, BookKeeper, and function worker
+
+|`lunastreaming-<version>-bin.tar.gz`
+|Contains all components from `lunastreaming-core` as well as support for Pulsar SQL
+
+|`lunastreaming-all-<version>-bin.tar.gz`
+|Contains all components from `lunastreaming` as well as the NAR files for all Pulsar I/O connectors and offloaders
+
+|===
+
+. Untar the tarball and change directory into the resulting file. 
++
+[source,bash]
+----
+tar xzvf lunastreaming-2.10.0-bin.tar.gz
+cd lunastreaming-2.10.0
+----
+
+. Enter `ls -al` to view your Luna Streaming files:
++
+[source,bash]
+----
+➜  lunastreaming-2.10.0.3 ls -al
+total 88
+drwxr-xr-x@  11 firstname.lastname  staff    352 May 17 05:58 .
+drwx------+  98 firstname.lastname  staff   3136 May 24 14:15 ..
+-rw-r--r--@   1 firstname.lastname  staff  31209 Jan 22  2020 LICENSE
+-rw-r--r--@   1 firstname.lastname  staff   6612 Jan 22  2020 NOTICE
+-rw-r--r--@   1 firstname.lastname  staff   1269 Jan 22  2020 README
+drwxr-xr-x@  12 firstname.lastname  staff    384 Jan 22  2020 bin
+drwxr-xr-x@  21 firstname.lastname  staff    672 Jan 22  2020 conf
+drwxr-xr-x@   6 firstname.lastname  staff    192 May 17 05:58 examples
+drwxr-xr-x@   5 firstname.lastname  staff    160 May 17 05:58 instances
+drwxr-xr-x@ 277 firstname.lastname  staff   8864 May 17 05:58 lib
+drwxr-xr-x@  25 firstname.lastname  staff    800 Jan 22  2020 licenses
+----
+
+You have successfully installed the DataStax Luna Streaming tarball. +
+
+
+
+== Additional tooling
+
+Once the DataStax Luna Streaming tarball is installed, you may want to add additional tooling to your server/VM deployment.
+
+* *Pulsar Admin Console:* Web-based UI that administrates Pulsar. +
+Download the latest version from the https://github.com/datastax/pulsar-admin-console[DataStax GitHub repo^] and follow the instructions xref:admin-console-vm.adoc[here]. +
++
+[NOTE]
+====
+Admin Console requires https://nodejs.org/download/release/latest-v14.x/[NodeJS 14 LTS] and Nginx version 1.17.9+.
+====
+
+* *Pulsar Heartbeat:* Monitors Pulsar cluster availability. +
+Download the latest version from the https://github.com/datastax/pulsar-heartbeat/releases/[DataStax GitHub repo^] and follow the instructions xref:heartbeat-vm.adoc[here]. +
+
+== What's next?
+
+* For initializing Pulsar components like BookKeeper and ZooKeeper, see the https://pulsar.apache.org/docs/deploy-bare-metal[Pulsar documentation^].
+
+* For installing optional built-in connectors or tiered storage included in `lunastreaming-all`, see the https://pulsar.apache.org/docs/deploy-bare-metal#install-builtin-connectors-optional[Pulsar documentation^]. +
+
+* For installation to existing Kubernetes environments or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. +
+
+* For Ansible deployment, use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^]. +
