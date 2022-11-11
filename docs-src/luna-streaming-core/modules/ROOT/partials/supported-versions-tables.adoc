@@ -6,7 +6,7 @@ Support covers only the following Software versions for Apache Pulsar:
 |*Versions*
 
 |Apache Pulsar
-|2.6.2, 2.7.2 and 2.8.1
+|2.6.2, 2.7.2, 2.8.1, 2.10.x
 |===
 
 Support covers only the following Software versions for DataStax Luna Streaming Distribution:
@@ -53,26 +53,30 @@ Support covers only the following Apache Pulsar Connectors (as included in the A
 |*Version*
 
 |Elasticsearch sink 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 |JDBC-Clickhouse sink 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 |JDBC-MariaDB sink 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 |JDBC-Postgres sink 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 |Kafka sink 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 |Kinesis sink 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
+|Cassandra source
+|v2.21
+|Data generator source
+|2.10.2.3
 |Debezium MongoDB source 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 |Debezium MySQL source 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 |Debezium Postgres source 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 |Kafka source 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 |Kinesis source 
-|v.2.6.2, 2.7.2 and 2.8.1
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
 
 |===
