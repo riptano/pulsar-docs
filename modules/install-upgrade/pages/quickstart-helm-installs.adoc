@@ -1,6 +1,8 @@
 = Quick Start for Helm Chart installs
 
 :page-tag: luna-streaming,dev,admin,install,pulsar
+:page alias: docs@luna-streaming::quickstart-helm-installs.adoc
+
 
 You have options for installing *DataStax Luna Streaming*:
 
