@@ -1,6 +1,7 @@
 = Scaling your Luna Streaming cluster
 :page alias: docs@luna-streaming::scale-cluster.adoc
 
+
 This page will show you how to scale Luna Streaming clusters up for more compute capacity, or down for less. 
 
 == Installing Pulsar cluster
