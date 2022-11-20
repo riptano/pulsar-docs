@@ -1,5 +1,5 @@
 = Luna Streaming IO connectors
-:page alias: docs@luna-streaming::io-connectors.adoc
+:page-aliases: docs@luna-streaming::io-connectors.adoc
 
 When you have Luna Streaming xref:quickstart-server-installs.adoc[installed] and running, add IO connectors to connect your deployment to external systems like https://cassandra.apache.org/_/index.html[Apache Cassandra], https://www.elastic.co/[ElasticSearch], and more. +
 

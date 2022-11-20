@@ -1,6 +1,6 @@
 = Quick Start for Bare Metal/VM installs
 :page-tag: luna-streaming,dev,admin,install
-:page alias: docs@luna-streaming::quickstart-server-installs.adoc
+:page-aliases: docs@luna-streaming::quickstart-server-installs.adoc
 
 
 This document explains xref:quickstart-server-installs.adoc#install[installation] of Luna Streaming for Bare Metal/VM deployments with a Pulsar tarball. +

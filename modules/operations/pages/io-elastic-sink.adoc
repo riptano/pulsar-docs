@@ -1,5 +1,5 @@
 = Elasticsearch sink connector
-:page alias: docs@luna-streaming::io-elastic-sink.adoc
+:page-aliases: docs@luna-streaming::io-elastic-sink.adoc
 
 
 The https://www.elastic.co/elasticsearch/[Elasticsearch] sink connector reads messages from Pulsar topics and persists messages to indexes.

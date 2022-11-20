@@ -1,7 +1,7 @@
 = Install Pulsar Admin Console on Server/VM
 
 :page-tag: luna-streaming,dev,install,admin,pulsar
-:page alias: docs@luna-streaming::admin-console-vm.adoc
+:page-aliases: docs@luna-streaming::admin-console-vm.adoc
 
 
 *Pulsar Admin Console* is a web-based UI that administrates topics, namespaces, sources, sinks and various aspects of Apache Pulsar&trade; features. +
