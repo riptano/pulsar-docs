@@ -15,13 +15,13 @@ Refer to the DataStax Luna Streaming https://github.com/datastax/release-notes/b
 
 In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache Pulsar {pulsar-version}], DataStax Luna Streaming provides:
 
-* A xref:quickstart-helm-installs.adoc[Helm chart] that deploys and manages Pulsar on your current CNCF-conformant Kubernetes infrastructure
+* A xref:install-upgrade:quickstart-helm-installs.adoc[Helm chart] that deploys and manages Pulsar on your current CNCF-conformant Kubernetes infrastructure
 
-* Cassandra, Elastic, Kinesis, Kafka, and JDBC xref:io-connectors.adoc[connectors]
+* Cassandra, Elastic, Kinesis, Kafka, and JDBC xref:operations:io-connectors.adoc[connectors]
 
-* xref:admin-console-vm.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
+* xref:components:admin-console-vm.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
 
-* xref:heartbeat-vm.adoc[Pulsar Heartbeat] to observe and monitor your Pulsar instances
+* xref:components:heartbeat-vm.adoc[Pulsar Heartbeat] to observe and monitor your Pulsar instances
 
 == Features
 
@@ -55,7 +55,7 @@ In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache
 
 == What's next?
 
-* If you have an existing Kubernetes environment, deploy Luna Streaming with a xref::quickstart-helm-installs.adoc[Helm Installation].
-* If you have a bare metal or a cloud environment, see xref::quickstart-server-installs.adoc[Server/VM Installation].
-* If you want to learn about monitoring with Pulsar Heartbeat, see xref::pulsar-monitor.adoc[Pulsar Heartbeat].
+* If you have an existing Kubernetes environment, deploy Luna Streaming with a xref:install-upgrade:quickstart-helm-installs.adoc[Helm Installation].
+* If you have a bare metal or a cloud environment, see xref:install-upgrade:quickstart-server-installs.adoc[Server/VM Installation].
+* If you want to learn about monitoring with Pulsar Heartbeat, see xref:components:pulsar-monitor.adoc[Pulsar Heartbeat].
 * If you have questions about Luna Streaming, see xref::faqs.adoc[Luna Streaming FAQs].

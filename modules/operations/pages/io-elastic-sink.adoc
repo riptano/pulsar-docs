@@ -233,8 +233,8 @@ JSON::
       "elasticSearchUrl": "http://localhost:9200",
       "indexName": "my_index",
       "username": "username",
-      "password": "password"
-      ssl: {
+      "password": "password",
+      "ssl": {
         "enabled": true
         "truststorePath": "/pulsar/security/truststore.jks"
         "truststorePassword": "truststorepass"

@@ -75,7 +75,7 @@ If the Pulsar Admin Console is deployed, you can also add and manage the Pulsar 
 
 . Select *Choose File* to choose a local Function. In this example, we chose `exclamation_function.py`. Choose the file you want to pull the function from and which function you want to use within that file.
 +
-image::admin-console-add-function.png[Add Function in Admin Console]
+image:admin-console-add-function.png[Add Function in Admin Console]
 +
 To specify the class name, it depends on the programming language or runtime of the function. Python, Java, and Go functions are added differently from each other.
 +

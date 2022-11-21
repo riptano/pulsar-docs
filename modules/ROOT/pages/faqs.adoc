@@ -62,11 +62,11 @@ The DataStax Luna Streaming distribution is designed for Java 11. However, becau
 
 === How do I install DataStax Luna Streaming in my Kubernetes cluster?
 
-Follow the full instructions in xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].
+Follow the full instructions in xref:install-upgrade:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs].
 
 === How do I install DataStax Luna Streaming on my server or VM?
 
-Follow the full instructions in xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
+Follow the full instructions in xref:install-upgrade:quickstart-server-installs.adoc[Quick Start for Server/VM installs].
 
 == What task can I perform in the DataStax Luna Streaming Admin Console?
 
@@ -95,7 +95,7 @@ https://grafana.com/[Grafana] is a visualization tool that helps you make sense 
 
 === What are the features provided by DataStax Apache Pulsar Connector (`pulsar-sink`) that are not supported in `kafka-sink`?
 
-The https://pulsar.apache.org/docs/en/io-overview/[Pulsar IO framework] provides many features that are not possible in Kafka, and has different compression formats and auth/security features. The features are handled by Pulsar. For more, see xref:io-connectors.adoc[Luna Streaming IO Connectors].
+The https://pulsar.apache.org/docs/en/io-overview/[Pulsar IO framework] provides many features that are not possible in Kafka, and has different compression formats and auth/security features. The features are handled by Pulsar. For more, see xref:operations:io-connectors.adoc[Luna Streaming IO Connectors].
 
 The DataStax Apache Pulsar Connector allows single-record acknowledgement and negative acknowledgements.
 

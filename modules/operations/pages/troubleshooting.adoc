@@ -90,5 +90,5 @@ This means your Pulsar cluster is functional. If the message isn't produced, dou
 
 == What's next?
 
-To view your cluster, brokers, and connectors in a user interface, see the xref::admin-console-tutorial.adoc[Admin Console Tutorial].
+To view your cluster, brokers, and connectors in a user interface, see the xref:components:admin-console-tutorial.adoc[Admin Console Tutorial].
 

@@ -3,7 +3,7 @@
 :page-tag: luna-streaming,dev,admin,pulsar
 :page-aliases: docs@luna-streaming::heartbeat-vm.adoc
 
-This document describes how to install Pulsar Heartbeat on a virtual machine (VM) or server. For installation with the Docker image, see xref:quickstart-helm-installs.adoc[Helm Chart Installation].
+This document describes how to install Pulsar Heartbeat on a virtual machine (VM) or server. For installation with the Docker image, see xref:install-upgrade:quickstart-helm-installs.adoc[Helm Chart Installation].
 
 == Install Heartbeat Binary
 

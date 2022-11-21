@@ -140,7 +140,7 @@ You're now using Keycloak tokens with `pulsar-admin` CLI.
 
 == What's next?
 
-To connect with the Pulsar Admin console and start sending and consuming messages, see xref:admin-console-tutorial.adoc[Admin Console].
+To connect with the Pulsar Admin console and start sending and consuming messages, see xref:components:admin-console-tutorial.adoc[Admin Console].
 
 
 

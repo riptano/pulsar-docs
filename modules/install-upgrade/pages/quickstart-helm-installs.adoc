@@ -7,7 +7,7 @@
 You have options for installing *DataStax Luna Streaming*:
 
 * Via the provided *DataStax Helm chart* for an existing Kubernetes environment locally or with a cloud provider, as covered in this topic. +
-* Via the *DataStax Luna Streaming tarball* for deployment to a single server/VM, or to multiple servers/VMs. See xref:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. +
+* Via the *DataStax Luna Streaming tarball* for deployment to a single server/VM, or to multiple servers/VMs. See xref:install-upgrade:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. +
 * Via the *DataStax Ansible scripts* provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^].
 
 The Helm chart and options described below configure an Apache Pulsar cluster.
@@ -15,13 +15,13 @@ It is designed for production use, but can also be used in local development env
 
 The resulting configuration includes support for:
 
-* xref:quickstart-helm-installs.adoc#_tls[TLS]
-* xref:quickstart-helm-installs.adoc#_authentication[Authentication]
+* xref:install-upgrade:quickstart-helm-installs.adoc#tls[TLS]
+* xref:install-upgrade:quickstart-helm-installs.adoc#authentication[Authentication]
 * WebSocket Proxy
 * Standalone Functions Workers
 * Pulsar IO Connectors
-* xref:quickstart-helm-installs.adoc#_tiered_storage[Tiered Storage] including Tardigarde distributed cloud storage
-* xref:quickstart-helm-installs.adoc#_pulsar_sql[Pulsar SQL Workers]
+* xref:install-upgrade:quickstart-helm-installs.adoc#_tiered_storage_configuration[Tiered Storage] including Tardigarde distributed cloud storage
+* xref:install-upgrade:quickstart-helm-installs.adoc#_pulsar_sql_configuration[Pulsar SQL Workers]
 * Pulsar Admin Console for managing the cluster
 * Pulsar heartbeat
 * Burnell for API-based token generation
@@ -69,7 +69,7 @@ GKE::
     journal:
       name: journal
       size: 20Gi
-        existingStorageClassName: 
+      existingStorageClassName:
         storageClass:
          provisioner: kubernetes.io/gce-pd
          type: pd-ssd
@@ -88,7 +88,7 @@ EKS::
     journal:
       name: journal
       size: 20Gi
-        existingStorageClassName: 
+      existingStorageClassName:
         storageClass:
          provisioner: kubernetes.io/aws-ebs
          type: gp2
@@ -107,7 +107,7 @@ AKS::
     journal:
       name: journal
       size: 20Gi
-        existingStorageClassName: 
+      existingStorageClassName:
         storageClass:
          provisioner: kubernetes.io/azure-disk
          type: pd-ssd
@@ -126,7 +126,7 @@ AKS::
     journal:
       name: journal
       size: 20Gi
-        existingStorageClassName: bookkeeper-storageclass.yaml
+      existingStorageClassName: bookkeeper-storageclass.yaml
 ----
 
 == Install Luna Streaming in a cloud provider
@@ -203,7 +203,7 @@ pulsarAdminConsole:
     authMode: k8s
 ----
 
-To learn more about using the Pulsar Admin Console, see xref:admin-console-tutorial.adoc[Admin Console Tutorial].
+To learn more about using the Pulsar Admin Console, see xref:components:admin-console-tutorial.adoc[Admin Console Tutorial].
 
 == Install Luna Streaming locally
 
@@ -351,18 +351,19 @@ The easiest way to access the Presto command line is to log into the bastion hos
 
 Where the value for the `server` option should be the service name plus port. Once you are connected, you can enter Presto commands. Example:
 
-```
+[source,sql]
+---------------------------------------
 presto> SELECT * FROM system.runtime.nodes;
-               node_id                |         http_uri         | node_version | coordinator | state  
+               node_id                |         http_uri         | node_version | coordinator | state
 --------------------------------------+--------------------------+--------------+-------------+--------
- 64b7c5a1-9a72-4598-b494-b140169abc55 | http://10.244.5.164:8080 | 0.206        | true        | active 
- 0a92962e-8b44-4bd2-8988-81cbde6bab5b | http://10.244.5.196:8080 | 0.206        | false       | active 
+ 64b7c5a1-9a72-4598-b494-b140169abc55 | http://10.244.5.164:8080 | 0.206        | true        | active
+ 0a92962e-8b44-4bd2-8988-81cbde6bab5b | http://10.244.5.196:8080 | 0.206        | false       | active
 (2 rows)
 
 Query 20200608_155725_00000_gpdae, FINISHED, 2 nodes
 Splits: 17 total, 17 done (100.00%)
 0:04 [2 rows, 144B] [0 rows/s, 37B/s]
-```
+---------------------------------------
 
 To access Pulsar SQL from outside the cluster, you can enable the `ingress` option which will expose the Presto port on hostname. We have tested with the Traefik ingress, but any Kubernetes ingress should work. You can then run SQL queries using the Presto CLI and monitoring Presto using the built-in UI (point browser to the ingress hostname). Authentication is not enabled on the UI, so you can log in with any username.
 
@@ -370,20 +371,21 @@ It is recommended that you match the Presto CLI version to the version running a
 
 The Presto CLI supports basic authentication, so if you enabled that on the Ingress (using annotations), you can have secure Presto access. Example:
 
-```
+[source,sql]
+----------
 presto --server https://presto.example.com --user admin --password
-Password: 
+Password:
 presto> show catalogs;
- Catalog 
+ Catalog
 ---------
- pulsar  
- system  
+ pulsar
+ system
 (2 rows)
 
 Query 20200610_131641_00027_tzc7t, FINISHED, 1 node
 Splits: 19 total, 19 done (100.00%)
 0:01 [0 rows, 0B] [0 rows/s, 0B/s]
-```
+----------
 
 === Dependencies
 
@@ -467,4 +469,4 @@ video::hEBP_IVQqQM[youtube, list=PL2g2h-wyI4SqeKH16czlcQ5x4Q_z-X7_m]
 
 == What's next?
 
-To learn about installing Luna Streaming for Bare Metal/VM, see xref:quickstart-server-installs.adoc[Quickstart for Bare Metal/VM Installs].
+To learn about installing Luna Streaming for Bare Metal/VM, see xref:install-upgrade:quickstart-server-installs.adoc[Quickstart for Bare Metal/VM Installs].

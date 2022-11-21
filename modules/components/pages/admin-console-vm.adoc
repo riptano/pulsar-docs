@@ -161,4 +161,4 @@ In the current design, nginx must be configured to route the call to the provide
 
 == Next 
 
-To install the Admin Console in a cloud environment, see the xref::admin-console-tutorial.adoc[Admin Console Tutorial].
+To install the Admin Console in a cloud environment, see the xref:components:admin-console-tutorial.adoc[Admin Console Tutorial].

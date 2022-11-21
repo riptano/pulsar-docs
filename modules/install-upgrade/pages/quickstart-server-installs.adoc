@@ -3,7 +3,7 @@
 :page-aliases: docs@luna-streaming::quickstart-server-installs.adoc
 
 
-This document explains xref:quickstart-server-installs.adoc#install[installation] of Luna Streaming for Bare Metal/VM deployments with a Pulsar tarball. +
+This document explains xref:install-upgrade:quickstart-server-installs.adoc#install[installation] of Luna Streaming for Bare Metal/VM deployments with a Pulsar tarball. +
 
 The resulting Luna Streaming deployment includes:
 
@@ -87,7 +87,7 @@ You have successfully installed the DataStax Luna Streaming tarball. +
 Once the DataStax Luna Streaming tarball is installed, you may want to add additional tooling to your server/VM deployment.
 
 * *Pulsar Admin Console:* Web-based UI that administrates Pulsar. +
-Download the latest version from the https://github.com/datastax/pulsar-admin-console[DataStax GitHub repo^] and follow the instructions xref:admin-console-vm.adoc[here]. +
+Download the latest version from the https://github.com/datastax/pulsar-admin-console[DataStax GitHub repo^] and follow the instructions xref:components:admin-console-vm.adoc[here]. +
 +
 [NOTE]
 ====
@@ -95,7 +95,7 @@ Admin Console requires https://nodejs.org/download/release/latest-v14.x/[NodeJS 
 ====
 
 * *Pulsar Heartbeat:* Monitors Pulsar cluster availability. +
-Download the latest version from the https://github.com/datastax/pulsar-heartbeat/releases/[DataStax GitHub repo^] and follow the instructions xref:heartbeat-vm.adoc[here]. +
+Download the latest version from the https://github.com/datastax/pulsar-heartbeat/releases/[DataStax GitHub repo^] and follow the instructions xref:components:heartbeat-vm.adoc[here]. +
 
 == What's next?
 
@@ -103,6 +103,6 @@ Download the latest version from the https://github.com/datastax/pulsar-heartbea
 
 * For installing optional built-in connectors or tiered storage included in `lunastreaming-all`, see the https://pulsar.apache.org/docs/deploy-bare-metal#install-builtin-connectors-optional[Pulsar documentation^]. +
 
-* For installation to existing Kubernetes environments or with a cloud provider, see xref:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. +
+* For installation to existing Kubernetes environments or with a cloud provider, see xref:install-upgrade:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. +
 
 * For Ansible deployment, use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^]. +

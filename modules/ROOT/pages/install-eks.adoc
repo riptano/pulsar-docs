@@ -44,7 +44,7 @@ There are two ways to override `default_storage`:
     journal:
       name: journal
       size: 20Gi
-        existingStorageClassName: 
+      existingStorageClassName:
         storageClass:
          provisioner: kubernetes.io/aws-ebs
          type: gp2
@@ -61,7 +61,7 @@ There are two ways to override `default_storage`:
     journal:
       name: journal
       size: 20Gi
-        existingStorageClassName: bookkeeper-storageclass.yaml
+      existingStorageClassName: bookkeeper-storageclass.yaml
 ----
 
 === EKS-specific storage class 
@@ -72,10 +72,10 @@ Here is an example `storage-values.yaml` as used above for the BookKeeper node. 
 ----
 storage_class:
     provisioner: kubernetes.io/aws-ebs
-        type: gp2
-        fsType: ext4
-        extraParams:
-            iopsPerGB: "10"
+    type: gp2
+    fsType: ext4
+    extraParams:
+      iopsPerGB: "10"
 ----
 
 == Install Luna Streaming to EKS
@@ -104,7 +104,7 @@ helm install pulsar datastax-pulsar/pulsar --namespace pulsar --values storage_v
 
 == What's next?
 
-Once your pods are up and running, continue to xref:quickstart-helm-installs.adoc#manage-pulsar-cluster[Accessing Pulsar Cluster in Cloud] to access and manage your cluster. 
+Once your pods are up and running, continue to xref:install-upgrade:quickstart-helm-installs.adoc[Accessing Pulsar Cluster in Cloud] to access and manage your cluster.
 
-* To learn more about using the Pulsar Admin Console, see xref:admin-console-tutorial.adoc[Admin Console Tutorial].
-* To learn more about installing Pulsar on a server or virtual machine, see xref:quickstart-server-installs.adoc[Quickstart for Server/VM Install].
+* To learn more about using the Pulsar Admin Console, see xref:components:admin-console-tutorial.adoc[Admin Console Tutorial].
+* To learn more about installing Pulsar on a server or virtual machine, see xref:install-upgrade:quickstart-server-installs.adoc[Quickstart for Server/VM Install].

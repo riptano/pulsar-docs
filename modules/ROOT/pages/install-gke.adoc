@@ -103,7 +103,7 @@ kubectl config set-context $(kubectl config current-context) --namespace=pulsar
 . Execute `kubectl get pods -A` to view your running pods. 
 
 == What's next?
-Once your pods are up and running, continue to xref:quickstart-helm-installs.adoc#manage-pulsar-cluster[Accessing Pulsar Cluster in Cloud] to access and manage your cluster. 
+Once your pods are up and running, continue to xref:install-upgrade:quickstart-helm-installs.adoc#manage-pulsar-cluster[Accessing Pulsar Cluster in Cloud] to access and manage your cluster.
 
-* To learn more about using the Pulsar Admin Console, see xref:admin-console-tutorial.adoc[Admin Console Tutorial].
-* To learn more about installing Pulsar on a server or virtual machine, see xref:quickstart-server-installs.adoc[Quickstart for Server/VM Install].
+* To learn more about using the Pulsar Admin Console, see xref:components:admin-console-tutorial.adoc[Admin Console Tutorial].
+* To learn more about installing Pulsar on a server or virtual machine, see xref:install-upgrade:quickstart-server-installs.adoc[Quickstart for Server/VM Install].

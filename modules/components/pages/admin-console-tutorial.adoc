@@ -4,26 +4,26 @@
 
 The *DataStax Admin Console for Apache Pulsar®* is a web-based UI from DataStax that administers topics, namespaces, sources, sinks, and various aspects of Apache Pulsar features. 
 
-* xref:admin-console-tutorial.adoc#getting-started[]
-* xref:admin-console-tutorial.adoc#features[]
-* xref:admin-console-tutorial.adoc#send-receive[]
-* xref:admin-console-tutorial.adoc#create-topics[]
-* xref:admin-console-tutorial.adoc#code-samples[]
-* xref:admin-console-tutorial.adoc#connect-to-pulsar[]
-* xref:admin-console-tutorial.adoc#video[]
+* xref:components:admin-console-tutorial.adoc#getting-started[]
+* xref:components:admin-console-tutorial.adoc#features[]
+* xref:components:admin-console-tutorial.adoc#send-receive[]
+* xref:components:admin-console-tutorial.adoc#create-topics[]
+* xref:components:admin-console-tutorial.adoc#code-samples[]
+* xref:components:admin-console-tutorial.adoc#connect-to-pulsar[]
+* xref:components:admin-console-tutorial.adoc#video[]
 
 [#getting-started]
 == Getting Started in Pulsar Admin Console
 
 In the *Luna Streaming Pulsar Admin Console*, you can use Pulsar clients to send and receive pub/sub messages.
 
-If you installed the Admin console with the xref:quickstart-helm-installs.adoc[DataStax Helm chart], access the Admin console via the `pulsar-adminconsole` external load balancer endpoint in your cloud provider:
+If you installed the Admin console with the xref:install-upgrade:quickstart-helm-installs.adoc[DataStax Helm chart], access the Admin console via the `pulsar-adminconsole` external load balancer endpoint in your cloud provider:
 
 image::GCP-all-pods.png[GCP Pods]
 
 Log in with username `admin`. 
 
-If you're running a xref:quickstart-server-installs.adoc[server or VM] deployment, see xref:admin-console-vm.adoc[Admin Console on Server/VM] for instructions on deploying and accessing the Admin console.
+If you're running a xref:install-upgrade:quickstart-server-installs.adoc[server or VM] deployment, see xref:admin-console-vm.adoc[Admin Console on Server/VM] for instructions on deploying and accessing the Admin console.
 
 [#features]
 == Pulsar Admin Console features

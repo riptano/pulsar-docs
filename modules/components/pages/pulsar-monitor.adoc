@@ -9,7 +9,7 @@ It produces synthetic workloads to measure end-to-end message pubsub latency.
 
 Pulsar Heartbeat is a cloud native application that can be installed by Helm within a Pulsar Kubernetes cluster. It can also monitor multiple Pulsar clusters.
 
-TIP: Pulsar Heartbeat is installed automatically for server/VM installations as described in xref::quickstart-server-installs.adoc[].
+TIP: Pulsar Heartbeat is installed automatically for server/VM installations as described in xref:install-upgrade:quickstart-server-installs.adoc[].
 
 Pulsar Heartbeat supports the following features:
 
