@@ -1,0 +1,6 @@
+.Components
+** xref:admin-console-tutorial.adoc[]
+** xref:admin-console-vm.adoc[]
+** xref:heartbeat-vm.adoc[]
+** xref:pulsar-monitor.adoc[]
+** xref:starlight.adoc[]

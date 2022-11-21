@@ -1,16 +1,5 @@
-* xref:index.adoc[About Luna Streaming]
-** xref:faqs.adoc[Luna Streaming FAQs]
-** xref:install-upgrade:supported-versions.adoc[Supported versions]
-* Getting Started
-** xref:install-upgrade:quickstart-helm-installs.adoc[Install with Helm chart]
-** xref:install-upgrade:quickstart-server-installs.adoc[Install on Server/VM]
-* Guides and Examples
-** xref:components:admin-console-tutorial.adoc[Pulsar Admin Console]
-** xref:components:admin-console-vm.adoc[Install Admin Console on Server/VM]
-** xref:components:heartbeat-vm.adoc[Install Heartbeat on Server/VM]
-** xref:components:pulsar-monitor.adoc[Monitor Luna with Pulsar Heartbeat]
-** xref:operations:scale-cluster.adoc[Scale clusters]
-** xref:operations:functions.adoc[Functions]
-** xref:components:starlight.adoc[Starlight for Luna]
-** xref:operations:io-connectors.adoc[I/O Connectors]
-** xref:operations:auth.adoc[Authentication]
+
+** xref:faqs.adoc[]
+** xref:install-aks.adoc[]
+** xref:install-eks.adoc[]
+** xref:install-gke.adoc[]
