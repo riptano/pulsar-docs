@@ -1,4 +1,5 @@
 = Luna Streaming Installation on Google Kubernetes Environment
+:page-aliases: docs@luna-streaming::install-gke.adoc
 
 This document will cover installation of Luna Streaming on the Google Kubernetes Environment (GKE). 
 
