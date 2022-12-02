@@ -1,4 +1,4 @@
-.Operations
+* xref:auth.adoc[Operations]
 ** xref:auth.adoc[]
 ** xref:functions.adoc[]
 ** xref:io-connectors.adoc[]
