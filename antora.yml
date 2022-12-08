@@ -1,6 +1,6 @@
 name: luna-streaming
 title: Luna Streaming Documentation
-version: 2.10_1.7
+version: '2.10_1.x'
 start_page: index.adoc
 
 asciidoc:
