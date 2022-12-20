@@ -1,0 +1,239 @@
+= Using Pulsar SQL with Luna Streaming
+:navtitle: Pulsar SQL with DataStax Luna Streaming
+:description: This guide installs the luna streaming helm chart using minimum values for a working Pulsar cluster that includes SQL workers
+:title: Pulsar SQL with DataStax Luna Streaming
+
+Have you ever wanted to use this new feature? Well look no further than this guide to get started. We will be implementing it from scratch and you will find a set of links at the bottom to continue use of the feature.
+
+== Pre-req's
+
+You will need the following things in place to complete this guide:
+
+* Pulsar cli
+* https://helm.sh/docs/intro/install/[Helm 3 cli^]{external-link-icon}
+* Enough access to a K8s cluster to create a namespace, deployments, and pods
+* https://prestodb.io/docs/current/installation/cli.html[Presto cli^]{external-link-icon}
+
+NOTE: Prestodb is being replaced by Trino but Apache Pulsar is using Presto’s version. The Trino cli uses the `X-TRINO-USER` header for authentications but Presto expects `X-PRESTO-USER`, which is why we use the Presto cli.
+
+== Install Luna Streaming helm chart
+
+First add the DataStax Helm chart repo to your Helm store.
+
+[source,shell]
+----
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=helm-repo-add]
+----
+
+Now install the chart using a minimalist values file. This command creates a Helm release named “my-pulsar-cluster” of a DataStax Luna Pulsar cluster in the K8s namespace “datastax-pulsar”. The minimal cluster has no ingress or LoadBalanced services, and only the essential components are created.
+
+[source,shell]
+----
+export VALUES_URL="https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/values.yaml"
+
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=helm-install]
+----
+
+Wait for the broker pod to be running (you might see a few restarts as everything syncs up).
+
+[source,shell]
+----
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=wait-for-broker]
+----
+
+== Forward service port
+
+We will need to interact with a few of the services in the K8s cluster. Let’s map a few ports to those services.
+
+In a separate terminal window, port forward the Presto SQL service.
+
+[source,shell]
+----
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/forward-pulsar-sql-service.sh[]
+----
+
+Then port forward Pulsar’s admin service (in a third terminal). There’s no need to forward Pulsar’s messaging service.
+
+[source,shell]
+----
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/forward-broker-web-service.sh[]
+----
+
+== Confirm Presto is available
+
+In your browser navigate to http://localhost:8090. You should be greeted with Presto’s login.
+
+image::presto-sql-login.png[Presto SQL login]
+
+There is no authentication hooked up. Input whatever user name you prefer and “Log In”. This will greet you with a blank dashboard. That’s your confirmation that Presto is up and running.
+
+image::presto-sql-dashboard.png[Presto SQL dashboard]
+
+== Use the data-generator source to fill a topic
+
+The minimalist helm chart values used the `datastax/lunastreaming-all` image to gain use of all the Pulsar connectors. We can use the “data-generator” source connector to create a topic and add sample data all at once. Note the use of the “public” tenant and “default” namespace. You can use whatever tenant and namespace you are comfortable with.
+
+First, download the minimalist Pulsar client. This conf assumes the port forwarding addresses we will do in the next step.
+
+[source,shell]
+----
+wget https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/client.conf
+----
+
+Then set the client environment var and create the source connector.
+
+[source,shell]
+----
+# the client conf path must be an absolute path to the downloaded conf file
+export PULSAR_CLIENT_CONF=/path/to/client.conf
+
+./bin/pulsar-admin sources create --name generator --destination-topic-name public/default/mytopic --source-type data-generator
+----
+
+NOTE: the topic name will become a table name in Trino, so SQL naming rules apply. Names can contain only alphanumeric characters and must begin with an alphabetic character or an underscore (_).
+
+Next, confirm the topic was created.
+
+[source,shell]
+----
+./bin/pulsar-admin topics list public/default
+----
+
+== Interact with the topic data
+
+Now the moment of truth. Open a Presto shell session using the cli. Remember the server’s port number should match the forwarded port number from the previous step. The user can match the name you used to login but doesn’t have to.
+
+[source,shell]
+----
+./presto --user test --server localhost:8090
+----
+
+Once inside the shell, let’s have a look around. First list the catalogs Presto has loaded.
+
+[source,shell]
+----
+presto> show catalogs;
+----
+
+Output
+
+[source,shell]
+----
+Schema
+--------------------
+ information_schema
+ public/default
+ public/functions
+ pulsar/system
+(4 rows)
+----
+
+Notice similarities between your Pulsar tenant/namespaces and Presto’s output?!
+
+List the tables within the pulsar.”public/default” catalog/schema.
+
+[source,shell]
+----
+presto> show tables in pulsar."public/default";
+----
+
+Output
+
+[source,shell]
+----
+Table
+---------
+ mytopic
+(1 row)
+----
+
+Hey! There’s our topic that was created from the data-generator source connector earlier in the guide.
+
+You might ask why there are quotes (“”) around the schema name. This is a result of mapping Presto primitives to Pulsar’s primitives. Presto has catalogs, schemas, and tables. Pulsar has tenants, namespaces, and topics. The Pulsar Presto plugin assumes the catalog name which leaves schema and table, so the tenant and namespace are combined with a forward slash delimited string. Presto has to see that combination as a single string, which means it needs to be wrapped in quotes.
+
+Finally, query the table to see the first 10 rows of data.
+
+[source,shell]
+----
+presto> select * from pulsar."public/default".mytopic limit 10;
+----
+
+Success! (hopefully) The output should be the 10 messages that were added to the Pulsar topic previously.
+
+NOTE: If you didn’t want to download the Presto cli, you could also interact with the Presto client REST API. In fact thats what the cli uses to interact with the service. Here’s an example HTTP command. The response will include a “nextUri”. Follow that link to see the results.
+
+[source,httprequest]
+----
+POST http://localhost:8090/v1/statement  HTTP/1.1
+content-type: application/json
+X-Presto-User: test
+
+select * from pulsar."public/default".mytopic limit 10
+----
+
+== Connect with JDBC
+
+If you are an overachiever, try querying messages from a Java app using the Presto JDBC client. You’ll need the Java runtime for the next steps.
+
+Create a file named “PrestoExample.java” with the following contents. Make sure to update the JDBC connection with the correct values for you environment.
+
+[source,java]
+----
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/PrestoExample.java[]
+----
+
+Build the java class.
+
+[source,shell]
+----
+javac PrestoExample.java
+----
+
+Download https://repo1.maven.org/maven2/io/prestosql/presto-jdbc/334/presto-jdbc-334.jar[version 334 Presto JDBC driver^]{external-link-icon} to the same folder as the java class.
+
+Run the client and observe the output.
+
+[source,shell]
+----
+java -cp .:presto-jdbc-334.jar PrestoExample
+----
+
+Output
+
+[source,shell]
+----
+Connection established......
+{apartmentNumber=235, city=San Francisco, postalCode=29223, street=Tabor Court, streetNumber=94}
+{apartmentNumber=260, city=Miami, postalCode=42228, street=Tabor Court, streetNumber=92}
+{apartmentNumber=279, city=Washington, postalCode=22821, street=Summer Place, streetNumber=126}
+{apartmentNumber=220, city=Miami, postalCode=71871, street=Tabor Court, streetNumber=64}
+{apartmentNumber=294, city=Miami, postalCode=69067, street=Highland Place, streetNumber=167}
+{apartmentNumber=142, city=Washington, postalCode=32774, street=Aster Court, streetNumber=189}
+{apartmentNumber=233, city=Miami, postalCode=43499, street=Atkins Avenue, streetNumber=30}
+{apartmentNumber=, city=Washington, postalCode=92651, street=Tabor Court, streetNumber=49}
+{apartmentNumber=225, city=Washington, postalCode=64877, street=Tabor Court, streetNumber=160}
+{apartmentNumber=66, city=New York, postalCode=45519, street=Stillwell Avenue, streetNumber=23}
+----
+
+== Clean up
+
+To completely remove all traces of this example, delete the K8s namespace.
+
+[source,shell]
+----
+kubectl delete namespace datastax-pulsar
+----
+
+If you wanted to keep the data we added to the topic, just uninstall the Helm Chart.
+
+[source,shell]
+----
+helm uninstall --namespace datastax-pulsar my-pulsar-cluster
+----
+
+== Next steps
+
+Here are links to other guides you might be interested in:
+
+* Something
+* Something else
