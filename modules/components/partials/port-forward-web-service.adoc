@@ -1,0 +1,6 @@
+Then port forward Pulsar’s admin service (in a third terminal). There’s no need to forward Pulsar’s messaging service.
+
+[source,shell]
+----
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/forward-broker-web-service.sh[]
+----

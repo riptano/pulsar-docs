@@ -1,0 +1,6 @@
+In a separate terminal window, port forward the Beam endpoints service.
+
+[source,shell]
+----
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/beam/forward-beam-service.sh[]
+----

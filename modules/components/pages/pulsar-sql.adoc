@@ -2,8 +2,11 @@
 :navtitle: Pulsar SQL with DataStax Luna Streaming
 :description: This guide installs the luna streaming helm chart using minimum values for a working Pulsar cluster that includes SQL workers
 :title: Pulsar SQL with DataStax Luna Streaming
+:helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/values.yaml
 
-Have you ever wanted to use this new feature? Well look no further than this guide to get started. We will be implementing it from scratch and you will find a set of links at the bottom to continue use of the feature.
+Adding the ability to query Apache Pulsar topic data via SQL can be a powerful addition to any Enterprise. Stream processing, real-time analytics, and highly customized dashboards are just a few of the possibilities. Pulsar offers a pre-made plugin for Trino that is included in its download. Additionally, Pulsar has built-in options to create Trino workers and automatically configure the communications between Pulsar’s ledger and Trino.
+
+In this guide, we will use DataStax Pulsar Helm Chart to install a Pulsar cluster and Pulsar SQL. The Trino coordinator and desired number of workers will be created directly in the Pulsar Luna cluster.
 
 == Pre-req's
 
@@ -11,53 +14,22 @@ You will need the following things in place to complete this guide:
 
 * Pulsar cli
 * https://helm.sh/docs/intro/install/[Helm 3 cli^]{external-link-icon}
-* Enough access to a K8s cluster to create a namespace, deployments, and pods
 * https://prestodb.io/docs/current/installation/cli.html[Presto cli^]{external-link-icon}
+* Enough access to a K8s cluster to create a namespace, deployments, and pods
 
 NOTE: Prestodb is being replaced by Trino but Apache Pulsar is using Presto’s version. The Trino cli uses the `X-TRINO-USER` header for authentications but Presto expects `X-PRESTO-USER`, which is why we use the Presto cli.
 
 == Install Luna Streaming helm chart
 
-First add the DataStax Helm chart repo to your Helm store.
-
-[source,shell]
-----
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=helm-repo-add]
-----
-
-Now install the chart using a minimalist values file. This command creates a Helm release named “my-pulsar-cluster” of a DataStax Luna Pulsar cluster in the K8s namespace “datastax-pulsar”. The minimal cluster has no ingress or LoadBalanced services, and only the essential components are created.
-
-[source,shell]
-----
-export VALUES_URL="https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/values.yaml"
-
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=helm-install]
-----
-
-Wait for the broker pod to be running (you might see a few restarts as everything syncs up).
-
-[source,shell]
-----
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=wait-for-broker]
-----
+include::partial$install-helm.adoc[]
 
 == Forward service port
 
 We will need to interact with a few of the services in the K8s cluster. Let’s map a few ports to those services.
 
-In a separate terminal window, port forward the Presto SQL service.
+include::partial$port-forward-sql.adoc[]
 
-[source,shell]
-----
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/forward-pulsar-sql-service.sh[]
-----
-
-Then port forward Pulsar’s admin service (in a third terminal). There’s no need to forward Pulsar’s messaging service.
-
-[source,shell]
-----
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/forward-broker-web-service.sh[]
-----
+include::partial$port-forward-web-service.adoc[]
 
 == Confirm Presto is available
 
@@ -173,7 +145,7 @@ select * from pulsar."public/default".mytopic limit 10
 
 == Connect with JDBC
 
-If you are an overachiever, try querying messages from a Java app using the Presto JDBC client. You’ll need the Java runtime for the next steps.
+Bonus time! Try querying messages from a Java app using the Presto JDBC client. You’ll need the Java runtime for the next steps.
 
 Create a file named “PrestoExample.java” with the following contents. Make sure to update the JDBC connection with the correct values for you environment.
 
@@ -235,5 +207,5 @@ helm uninstall --namespace datastax-pulsar my-pulsar-cluster
 
 Here are links to other guides you might be interested in:
 
-* Something
-* Something else
+* xref:pulsar-beam.adoc[]
+* xref:admin-console-tutorial.adoc[]

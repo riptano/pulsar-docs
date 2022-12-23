@@ -1,0 +1,62 @@
+= Pulsar Beam with Luna Streaming
+:navtitle: Pulsar Beam with Luna Streaming
+:description: Install a minimal Luna Streaming helm chart that includes Pulsar Beam
+:title: Pulsar Beam with Luna Streaming
+:helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/beam/values.yaml
+
+The https://github.com/kafkaesque-io/pulsar-beam[Pulsar Beam] project is an http based streaming and queueing system for use with Pulsar. You can send messages over HTTP, push messages to a webhook or cloud function, chain webhooks and functions together, and messages can be streamed via https://www.html5rocks.com/en/tutorials/eventsource/basics/[server-sent events].
+
+In this guide we will be installing a minimal DataStax Pulsar helm chart that includes Pulsar Beam
+
+== Pre-req's
+
+You will need the following things in place to complete this guide:
+
+* https://helm.sh/docs/intro/install/[Helm 3 cli^]{external-link-icon}
+* enough access to a K8s cluster to create a namespace, deployments, and pods
+* a terminal
+
+== Install Luna Streaming helm chart
+
+include::partial$install-helm.adoc[]
+
+== Forward service port
+
+include::partial$port-forward-beam.adoc[]
+
+== Produce a new message
+
+Open a terminal window and run the following script to produce a new message. Don't worry about creating the topic, if it doesn't exist the topic will be created automatically.
+
+[source,shell]
+----
+TOPIC="my-beam-topic"
+
+curl --request POST \
+  -d "Hi there" \
+  http://127.0.0.1:8085/v2/firehose/persistent/public/default/$TOPIC
+----
+
+== Consume the messages
+
+In that same terminal window run the following curl command to retrieve the messages from that topic.
+
+[source,shell]
+----
+curl http://127.0.0.1:8085/v2/poll/persistent/public/default/$TOPIC?SubscriptionInitialPosition=earliest&SubscriptionType=exclusive&SubscriptionName=my-beam-subscription
+----
+
+== A python producer & consumer
+
+[source,python]
+----
+include::{luna-streaming-examples-repo}/beam/produce-consume.py[]
+----
+
+== Next steps
+
+Here are links to resources and guides you might be interested in:
+
+* https://github.com/kafkaesque-io/pulsar-beam[Learn more^]{external-link-icon} about the Pulsar Beam project
+* The full https://kafkaesque-io.github.io/pulsar-beam-swagger[Pulsar Beam API^]{external-link-icon}
+* xref:pulsar-sql.adoc[]
