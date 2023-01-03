@@ -83,7 +83,9 @@ There are many policies available for controlling resources in Pulsar.
 A full list of commands and configurations is available in the https://pulsar.apache.org/docs/2.10.x/pulsar-admin/[Pulsar admin CLI documentation].
 Resource policies are set at the namespace or topic levels via the pulsar-admin CLI or REST APIs, or managed more directly by setting *resource quotas*.
 
-=== Individual topic message rate
+=== Individual topic publish rate
+
+Set an individual topic's publish rate by byte size or message rate.
 [source,shell]
 ----
 pulsar-admin topics set-publish-rate persistent://tenant/namespace/topic \
@@ -92,6 +94,10 @@ pulsar-admin topics set-publish-rate persistent://tenant/namespace/topic \
 ----
 
 === Namespace bundle quota
+
+Set a namespace bundle quota for a namespace.
+A namespace bundle controls which subset of topics (or bundle) is assigned to which broker.
+Resource quotas for bandwidth, memory usage, and message rate are set to independent namespace bundles as below:
 [source,shell]
 ----
 pulsar-admin resource-quotas set \
@@ -106,6 +112,8 @@ pulsar-admin resource-quotas set \
 ----
 
 === Namespace level quota
+
+Set a resource quota (number of bytes or message rate) to be applied to all topics within a namespace:
 [source,shell]
 ----
 pulsar-admin namespaces set-publish-rate tenant/namespace \
@@ -114,6 +122,9 @@ pulsar-admin namespaces set-publish-rate tenant/namespace \
 ----
 
 === Number of producers and consumers per topic
+
+Pulsar offers even more granular resource control down to the topic and subscription levels.
+Limiting the maximum number of producers and consumers per subscription will directly impact CPU and memory utilization of Pulsar brokers.
 
 Set a namespace-level resource quota to limit the maximum consumers per topic:
 [source,shell]
