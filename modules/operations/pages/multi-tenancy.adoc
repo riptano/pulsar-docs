@@ -1,4 +1,4 @@
-= Multi-tenancy in Pulsar
+= Multi-tenancy
 
 Pulsar was created with support for multi-tenancy.
 Multi-tenant systems run isolated workloads on shared hardware.
@@ -18,10 +18,11 @@ Each tenant has its own <<Security context>>, <<Resource utilization>>, and <<Is
 [#security-context]
 == Security context
 
-Security context on a Pulsar tenant protects message data from being accessed by unauthorized users, including those from other tenants in your organization.
+Security context on a Pulsar tenant protects message data from being accessed by unauthorized users, including those from other tenants within your organization.
 
 === Cluster administrator role
-Set the following configuration parameters in your Pulsar cluster's `broker.conf` file:
+A cluster administrator can perform administrative operations with tenants, namespaces, and topics- in other words, they are a superuser in the Pulsar cluster.
+To make a role a cluster administrator, set the following configuration parameters in your Pulsar cluster's `broker.conf` file:
 [source,shell]
 ----
 authorizationEnabled=true
@@ -30,7 +31,8 @@ authorizationAllowWildcardsMatching=[true|false]
 superUserRoles=<list of role names>
 ----
 
-The `superUserRoles` parameter accepts a comma-separated list of role names. The identified roles can manage tenants, namespaces, and topics.
+The `superUserRoles` parameter accepts a comma-separated list of role names.
+The identified roles can manage tenants, namespaces, and topics.
 
 === Tenant administrator role
 
@@ -43,7 +45,8 @@ pulsar-admin tenants create <tenant-name> \
     --admin-roles <list of admin role names>
 ----
 
-The `admin-roles` parameter accepts a comma-separated list of role names. The identified roles can manage namespaces and topics within the created tenant.
+The `admin-roles` parameter accepts a comma-separated list of role names.
+The identified roles can manage namespaces and topics within the created tenant.
 
 === Namespace and topic access control
 The tenant administrator can define access control privileges within the tenant at both the namespace and topic level:
@@ -80,8 +83,8 @@ When applied at the *topic* level, the role has privileges to produce and consum
 == Resource utilization
 
 There are many policies available for controlling resources in Pulsar.
-A full list of commands and configurations is available in the https://pulsar.apache.org/docs/2.10.x/pulsar-admin/[Pulsar admin CLI documentation].
 Resource policies are set at the namespace or topic levels via the pulsar-admin CLI or REST APIs, or managed more directly by setting *resource quotas*.
+A full list of commands and configurations is available in the https://pulsar.apache.org/docs/2.10.x/pulsar-admin/[Pulsar admin CLI documentation].
 
 === Individual topic publish rate
 
@@ -97,7 +100,7 @@ pulsar-admin topics set-publish-rate persistent://tenant/namespace/topic \
 === Namespace bundle quota
 
 Set a namespace bundle quota for a namespace.
-A namespace bundle controls which subset of topics (or bundle) is assigned to which broker.
+A namespace bundle controls which subset (or "bundle") of topics is assigned to which broker.
 Resource quotas for bandwidth, memory usage, and message rate are set to independent namespace bundles as below:
 [source,shell]
 ----
@@ -146,12 +149,12 @@ More examples are available in the https://pulsar.apache.org/docs/2.10.x/pulsar-
 [#isolation-policies]
 == Isolation policies
 
-Resource utilization isolation can be applied all the way down to the Pulsar broker and Bookkeeper levels with *broker isolation policies* and *bookie affinity groups*.
+Resource isolation policies can be applied all the way down to the Pulsar broker and Bookkeeper levels with *broker isolation policies* and *bookie affinity groups*.
 
 [#broker-isolation]
 === Broker isolation policies
 
-Broker isolation policies limit which brokers can be assigned to which <<namespace bundles>>.
+Broker isolation policies limit which brokers can be assigned to which <<Namespace bundle quota,namespace bundle>>.
 [source,shell]
 ----
 bin/pulsar-admin ns-isolation-policy set \
@@ -183,7 +186,14 @@ pulsar-admin bookies set-bookie-rack \
     --group my-bookie-group-1 \
     --rack rack-1
 ----
+
 [NOTE]
-If a `--group` option is not provided, the bookie is associated with a default group named `default`. 
+====
+If a `--group` option is not provided, the bookie is associated with a default group named `default`.
+====
 
 For more on Pulsar isolation policies, see the https://pulsar.apache.org/docs/2.10.x/pulsar-admin/#ns-isolation-policy[Pulsar documentation.]
+
+== What's next?
+
+For custom roles and multi-tenancy in Astra Streaming, see xref:astra-streaming:ROOT:astream-custom-roles.adoc[].
