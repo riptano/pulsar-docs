@@ -4,3 +4,10 @@ In a separate terminal window, port forward the Beam endpoints service.
 ----
 include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/beam/forward-beam-service.sh[]
 ----
+
+The forwarding service will map the URL:PORT https://127.0.0.1:8085 to Pulsar Proxy running in the new cluster. Because Beam was enabled, the Proxy knows to forward on to the Beam service.
+
+----
+Forwarding from 127.0.0.1:8085 -> 8085
+Forwarding from [::1]:8085 -> 8085
+----
