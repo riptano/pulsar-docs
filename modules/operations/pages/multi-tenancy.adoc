@@ -93,6 +93,7 @@ pulsar-admin topics set-publish-rate persistent://tenant/namespace/topic \
     --msg-publish-rate <msg_rate_number>
 ----
 
+[#namespace-bundle]
 === Namespace bundle quota
 
 Set a namespace bundle quota for a namespace.
@@ -145,4 +146,44 @@ More examples are available in the https://pulsar.apache.org/docs/2.10.x/pulsar-
 [#isolation-policies]
 == Isolation policies
 
-https://pulsar.apache.org/docs/2.10.x/pulsar-admin/#ns-isolation-policy[Namespace isolation policies]
+Resource utilization isolation can be applied all the way down to the Pulsar broker and Bookkeeper levels with *broker isolation policies* and *bookie affinity groups*.
+
+[#broker-isolation]
+=== Broker isolation policies
+
+Broker isolation policies limit which brokers can be assigned to which <<namespace bundles>>.
+[source,shell]
+----
+bin/pulsar-admin ns-isolation-policy set \
+    --namespaces my-tenant/my-namespace \
+    --primary 10.193.216.*  my-cluster policy-name
+    --secondary 10.103.220.* my-cluster secondary-policy-name
+----
+
+The policy is controlled with a regular expression at the namespace level. 
+
+[#bookie-affinity]
+=== Bookie affinity groups
+Similarly, Pulsar can associate a set of bookies with a set of namespaces using bookie affinity groups.
+When a bookie affinity group is set for a namespace, messages written to a topic in that namespace will be persisted to the specified primary group bookies.
+When assigning a bookie to a rack (a logical grouping of bookies, not a physical server rack), the `--group` option specifies which group this bookie will be associated with.
+[source,shell]
+----
+pulsar-admin namespaces set-bookie-affinity-group public/default \
+    --primary-group my-bookie-group-1 \
+    --secondary-group  my-bookie-group-2
+----
+
+If there are not enough bookies in the primary group, bookies from the secondary group will be used if specified. Otherwise, the topics that the messages are written to can’t be created.
+[source,shell]
+----
+pulsar-admin bookies set-bookie-rack \
+    --bookie 127.0.0.1:3181 \
+    --hostname 127.0.0.1:3181 \
+    --group my-bookie-group-1 \
+    --rack rack-1
+----
+[NOTE]
+If a `--group` option is not provided, the bookie is associated with a default group named `default`. 
+
+For more on Pulsar isolation policies, see the https://pulsar.apache.org/docs/2.10.x/pulsar-admin/#ns-isolation-policy[Pulsar documentation.]
