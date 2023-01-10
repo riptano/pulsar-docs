@@ -18,17 +18,17 @@ You will need the following things in place to complete this guide:
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
 * https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^]{external-link-icon} (this example uses version 1.23.4)
 
-== Install Luna Streaming helm chart
+=== Install Luna Streaming Helm chart
 
 include::partial$install-helm.adoc[]
 
-== Forward service port
+=== Forward service port
 
 include::partial$port-forward-beam.adoc[]
 
-== Start a message consumer
+=== Start a message consumer
 
-In a new terminal window, run the following curl command to begin streaming server sent events.
+In a new terminal window, run the following curl command to begin streaming server-sent events.
 See xref:astra-streaming:developing:configure-pulsar-env.adoc[configuring your local environment for Astra Streaming^].
 [source,shell]
 ----
@@ -36,10 +36,15 @@ TOPIC="my-beam-topic"
 curl http://127.0.0.1:8085/v2/sse/persistent/public/default/$TOPIC?SubscriptionInitialPosition=earliest&SubscriptionType=exclusive&SubscriptionName=my-beam-subscription
 ----
 
-== Produce a new message
+Note the use of `SubscriptionInitialPosition=earliest` in the message consumer.
+This instructs Beam to create a subscription on the topic starting at the earliest message.
+Try changing the value to `latest` to only receive new messages that arrive.
 
-Going back to the original terminal window, run the following script to produce a new message. Don't worry about creating the topic, if it doesn't exist the topic will be created automatically.
+=== Produce a new message
 
+Return to the original terminal window and run the following script to produce a new message.
+
+Don't worry about creating the new topic - if a topic doesn't exist, it is created automatically.
 [source,shell]
 ----
 TOPIC="my-beam-topic"
@@ -48,46 +53,48 @@ curl --request POST \
   http://127.0.0.1:8085/v2/firehose/persistent/public/default/$TOPIC
 ----
 
-== Consume the message
+=== Consume the message
 
-The message consumer should output the data of the new message just produced.
-
+The message consumer will output the data of the new message just produced.
+[source,shell]
 ----
 id: {9 0 0 0 <nil> 0xc002287ad0}
 data: Hi there
 ----
 
-TIP: Note the use of `SubscriptionInitialPosition=earliest` when your started the message consumer. This instructs Beam to create a subscription on the topic, starting at the earliest message. Try changing the value to `latest` to only receive new messages that arrive.
+You have now completed the basics of using Beam in a Pulsar Cluster. Refer to the project's https://github.com/kafkaesque-io/pulsar-beam/blob/master/README.md[readme^]{external-link-icon} to see all the possibilities!
 
-You have gone through the basics of using Beam in a Pulsar Cluster. Refer to the project's readme to see all the possibilities.
+== A Python producer and consumer
 
-== A python producer & consumer
+This is another example of producing and consuming messages using Beam.
 
-This is another example of producing and consuming messages using Beam. Unlike the above example that used curl, this example uses the "requests" python library to issue HTTP requests.
+Instead of using curl, this example will use the "requests" Python library to issue HTTP requests.
 
-First create a new file to hold the python code.
-
+=== Create project
+. Create a new file to hold the Python code.
++
 [source,shell]
 ----
 touch beam.py
 ----
 
-Paste the following code in the new file.
-
+. Paste the following code into "beam.py".
++
 [source,python]
 ----
 include::{luna-streaming-examples-repo}/beam/produce-consume.py[]
 ----
 
-Run the python example (we used version 3.8.10).
-
+=== Run example Python code
+. Run the Python example (we used Python version 3.8.10).
++
 [source,shell]
 ----
 python3 beam.py
 ----
 
-The output should show 1 message was published and 1 message was consumed.
-
+. The output should show 1 message was published and 1 message was consumed.
++
 ----
 Published 1 message (200)
 Consumed messages (200):
@@ -107,19 +114,23 @@ Consumed messages (200):
 }
 ----
 
-NOTE: The payload is base64 encoded. Simply decode the string to see the actual message data.
+[NOTE]
+====
+The payload is base64 encoded. Simply decode the string to see the actual message data.
+====
 
-== Clean up
+=== Clean up
 
-Go to each window running an open process and `ctrl-c`. That will end the process. To completely remove all traces of the chart remove the namespace.
-
+. Return to each window running an open process and enter `ctrl-c` to end the process. +
+To completely remove all traces of the Helm chart, remove the namespace.
++
 [source,shell]
 ----
 kubectl delete namespace datastax-pulsar
 ----
 
-If you want to keep the data, just uninstall the chart.
-
+. If you want to keep the data, uninstall only the chart.
++
 [source,shell]
 ----
 helm --namespace datastax-pulsar uninstall my-pulsar-cluster
