@@ -1,21 +1,22 @@
-First add the DataStax Helm chart repo to your Helm store.
-
+. Add the DataStax Helm chart repo to your Helm store.
++
 [source,shell]
 ----
 include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=helm-repo-add]
 ----
 
-Now install the chart using a minimalist values file. This command creates a Helm release named "my-pulsar-cluster" using DataStax Luna chart, in the K8s namespace "datastax-pulsar". The minimal cluster has no ingress or load balanced services and only the essential components are created.
-
+. Install the Helm chart using a minimalist values file. +
+This command creates a Helm release named "my-pulsar-cluster" using the DataStax Luna Helm chart, within the K8s namespace "datastax-pulsar".
+The minimal cluster creates only the essential components and has no ingress or load balanced services.
++
 [source,shell,subs="attributes+"]
 ----
 VALUES_URL="{helmValuesPath}"
-
 include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=helm-install]
 ----
 
-Wait for the broker pod to be running (you might see a few restarts as everything syncs up).
-
+. Wait for the broker pod to be running (you might see a few restarts as everything syncs up).
++
 [source,shell,subs="attributes+"]
 ----
 include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=wait-for-broker]

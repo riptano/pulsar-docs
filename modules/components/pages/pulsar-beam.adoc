@@ -4,17 +4,19 @@
 :title: Pulsar Beam with Luna Streaming
 :helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/beam/values.yaml
 
-The https://github.com/kafkaesque-io/pulsar-beam[Pulsar Beam^]{external-link-icon} project is an http based streaming and queueing system for use with Pulsar. You can send messages over HTTP, push messages to a webhook or cloud function, chain webhooks and functions together, or messages can be streamed via https://www.html5rocks.com/en/tutorials/eventsource/basics/[server-sent events^]{external-link-icon}.
+The https://github.com/kafkaesque-io/pulsar-beam[Pulsar Beam^]{external-link-icon} project is an HTTP-based streaming and queueing system for use with Apache Pulsar.
 
-In this guide we will be installing a minimal DataStax Pulsar helm chart that includes Pulsar Beam
+With Pulsar Beam, you can send messages over HTTP, push messages to a webhook or cloud function, chain webhooks and functions together, or stream messages via https://www.html5rocks.com/en/tutorials/eventsource/basics/[server-sent events^]{external-link-icon}.
 
-== Pre-req's
+In this guide we will install a minimal DataStax Pulsar Helm chart that includes Pulsar Beam.
+
+== Prerequisites
 
 You will need the following things in place to complete this guide:
 
-* https://helm.sh/docs/intro/install/[Helm 3 cli^]{external-link-icon} (we used version 3.8.0)
+* https://helm.sh/docs/intro/install/[Helm 3 CLI^]{external-link-icon} (this example uses version 3.8.0)
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
-* https://kubernetes.io/docs/tasks/tools/[Kubectl cli^]{external-link-icon} (we used version 1.23.4)
+* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^]{external-link-icon} (this example uses version 1.23.4)
 
 == Install Luna Streaming helm chart
 
@@ -27,7 +29,7 @@ include::partial$port-forward-beam.adoc[]
 == Start a message consumer
 
 In a new terminal window, run the following curl command to begin streaming server sent events.
-
+See xref:astra-streaming:developing:configure-pulsar-env.adoc[configuring your local environment for Astra Streaming^].
 [source,shell]
 ----
 TOPIC="my-beam-topic"
