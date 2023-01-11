@@ -1,0 +1,6 @@
+In a separate terminal window, port forward the Starlight for Kafka serivce.
+
+[source,shell]
+----
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/starlight-for-kafka/forward-s4k-service.sh[]
+----
