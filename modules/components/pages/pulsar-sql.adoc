@@ -45,50 +45,59 @@ There’s no need to forward Pulsar’s messaging service ports.
 
 == Confirm Presto is available
 
-In a browser, navigate to http://localhost:8090[http://localhost:8090^].
-
+. In a browser, navigate to http://localhost:8090[http://localhost:8090^]. +
 You will be greeted by Presto’s login.
-
++
 image::presto-sql-login.png[Presto SQL login]
 
-There is no authentication enabled, so input whatever user name you prefer and select “Log In”.
-
+. There is no authentication enabled, so input whatever user name you prefer and select “Log In”. +
 You will be greeted by a blank dashboard.
 This confirms Presto is up and running.
-
++
 image::presto-sql-dashboard.png[Presto SQL dashboard]
 
+[#create-topic]
 == Fill a topic with the data-generator source
+
+In this example, we will use the “data-generator” source connector to create a topic and add sample data simultaneously.
 
 The minimalist Helm chart values use the https://github.com/datastax/release-notes/blob/master/Luna_Streaming_2.10_Release_Notes.md#lunastreaming-all-distribution[datastax/lunastreaming-all^]{external-link-icon} image, which includes all supported Pulsar connectors.
 
-We can use the “data-generator” source connector to create a topic and add sample data all at once. Note the use of the “public” tenant and “default” namespace. You can use whatever tenant and namespace you are comfortable with.
+This example uses the “public” tenant and “default” namespace.
+These are created by default in Pulsar, but you can use whatever tenant and namespace you are comfortable with.
 
-First, download the minimalist Pulsar client. This conf assumes the port forwarding addresses we will do in the next step.
-
+. Download the minimalist Pulsar client.
+This "client.conf" assumes the port forwarding addresses we will perform in the next step.
++
 [source,shell]
 ----
 wget https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/client.conf
 ----
 
-Then set the client environment variable, remembering to replace with the absolute path to client.conf you just downloaded.
-
+. Set the client environment variable. Replace the value with the absolute path to the "client.conf" you just downloaded.
++
 [source,shell]
 ----
 # the client conf path must be an absolute path to the downloaded conf file
 export PULSAR_CLIENT_CONF=<REPLACE_WITH /path/to/client.conf>
 ----
 
-Now navigate to the Pulsar home folder and run the following command. The CLI will use the environment variable's value as configuration for interacting with the Pulsar cluster.
-
+. Navigate to the Pulsar home folder and run the following command.
+The CLI will use the environment variable's value as configuration for interacting with the Pulsar cluster.
++
 [source,shell]
 ----
 ./bin/pulsar-admin sources create --name generator --destination-topic-name public/default/mytopic --source-type data-generator
 ----
++
+[NOTE]
+====
+The topic name will become a table name in Trino, so SQL naming rules apply.
 
-NOTE: The topic name will become a table name in Trino, so SQL naming rules apply. Names can contain only alphanumeric characters and must begin with an alphabetic character or an underscore (_).
+Names can contain only alphanumeric characters and must begin with an alphabetic character or an underscore (_).
+====
 
-Next, confirm the topic was created.
+. Confirm the topic was created.
 
 [source,shell]
 ----
@@ -97,28 +106,32 @@ Next, confirm the topic was created.
 
 You should get an output of:
 
+[source,shell]
 ----
 persistent://public/default/mytopic
 ----
 
 == Interact with the topic data
 
-Now the moment of truth. Open a Presto shell session using the cli. Remember the server’s port number should match the forwarded port number from the previous step. The user can match the name you used to login but doesn’t have to.
+And now, the moment of truth...
 
+. Open a Presto shell session using the Presto CLI.
+The server’s port number should match the forwarded port number from the previous step.
+The user can match the name you used to login earlier in this guide, but doesn’t have to.
++
 [source,shell]
 ----
 ./presto --user test --server localhost:8090
 ----
 
-Once inside the shell, let’s have a look around. First list the catalogs Presto has loaded.
-
+. Once inside the shell, let’s have a look around. List the catalogs Presto has loaded.
++
 [source,shell]
 ----
 presto> show catalogs;
 ----
-
-Output
-
+You should get an output of:
++
 [source,shell]
 ----
  Catalog
@@ -129,18 +142,15 @@ Output
 
 Query 20230103_163242_00000_zvk84, FINISHED, 2 nodes
 ----
-
-Notice similarities between your Pulsar tenant/namespaces and Presto’s output?!
-
-List the tables within the pulsar.”public/default” catalog/schema.
-
+Notice the similarities between your Pulsar tenant/namespaces and Presto’s output.
+. List the tables within the `pulsar.”public/default”` catalog/schema.
++
 [source,shell]
 ----
 presto> show tables in pulsar."public/default";
 ----
-
-Output
-
+You should get an output of:
++
 [source,shell]
 ----
   Table
@@ -150,23 +160,22 @@ Output
 
 Query 20230103_163355_00001_zvk84, FINISHED, 2 nodes
 ----
+Hey presto{emoji-tada}!
+There’s our topic that was created from the data-generator source connector <<create-topic,earlier in this guide>>!
 
-Hey! There’s our topic that was created from the data-generator source connector earlier in the guide.
-
-IMPORTANT: You might ask why there are quotes (“”) around the schema name. This is a result of mapping Presto primitives to Pulsar’s primitives. Presto has catalogs, schemas, and tables. Pulsar has tenants, namespaces, and topics. The Pulsar Presto plugin assumes the catalog name which leaves schema and table, so the tenant and namespace are combined with a forward slash delimited string. Presto has to see that combination as a single string, which means it needs to be wrapped in quotes.
-
-Finally, query the table to see the first 10 rows of data.
-
-[source,shell]
+. Query the table to see the first 10 rows of data.
++
+[source,sql]
 ----
 presto> select * from pulsar."public/default".mytopic limit 10;
 ----
+The output should be the 10 messages that were added to the Pulsar topic previously.
 
-Success! (hopefully) The output should be the 10 messages that were added to the Pulsar topic previously.
-
-NOTE: If you didn’t want to download the Presto cli, you could also interact with the Presto client REST API. In fact thats what the cli uses to interact with the service. Here’s an example HTTP command. The response will include a “nextUri”. Follow that link to see the results.
-
-[source,httprequest]
+.. If you prefer, you can query your table with the Presto client REST API.
+The response will include a “nextUri” value.
+Follow that link to see the results.
++
+[source,]
 ----
 POST http://localhost:8090/v1/statement  HTTP/1.1
 content-type: application/json
@@ -175,14 +184,25 @@ X-Presto-User: test
 select * from pulsar."public/default".mytopic limit 10
 ----
 
-Exit the presto shell
-
+. Exit the presto shell.
++
 [source,shell]
 ----
 presto> exit
 ----
 
-You have successfully interacted with a Pulsar Cluster via SQL. Awesome! Want to put your new learnings to the test? Try using the Presto plugin in https://redash.io/data-sources/presto[Redash^]{external-link-icon} or https://superset.apache.org/docs/databases/presto/[Superset^]{external-link-icon} to create useful dashboards.
+You have successfully interacted with a Pulsar Cluster via SQL. Awesome!{emoji-rocket}
+
+Want to put your new learnings to the test? Try using the Presto plugin in https://redash.io/data-sources/presto[Redash^]{external-link-icon} or https://superset.apache.org/docs/databases/presto/[Superset^]{external-link-icon} to create useful dashboards.
+
+=== Sidebar: Why are there quotes around the schema?
+You might wonder why there are quotes (“”) around the schema name.
+This is a result of mapping Presto primitives to Pulsar’s primitives.
+
+Presto has catalogs, schemas, and tables.
+Pulsar has tenants, namespaces, and topics.
+
+The Pulsar Presto plugin assumes the catalog name which leaves schema and table, so the tenant and namespace are combined with a forward slash delimited string. Presto has to see that combination as a single string, which means it needs to be wrapped in quotes.
 
 == Connect with JDBC
 
