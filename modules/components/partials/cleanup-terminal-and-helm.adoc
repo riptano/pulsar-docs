@@ -1,0 +1,12 @@
+Return to each window running an open process and enter `ctrl-c` to end the process. +
+To completely remove all traces of the Helm chart, remove the namespace.
+[source,shell]
+----
+kubectl delete namespace datastax-pulsar
+----
+
+If you want to keep the data, uninstall only the chart.
+[source,shell]
+----
+helm --namespace datastax-pulsar uninstall my-pulsar-cluster
+----

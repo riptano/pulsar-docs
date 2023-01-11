@@ -1,0 +1,5 @@
+In a new terminal window, port forward the Presto SQL service.
+[source,shell]
+----
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/forward-pulsar-sql-service.sh[]
+----
