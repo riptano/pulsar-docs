@@ -12,7 +12,7 @@ In this guide we will install a minimal DataStax Pulsar Helm chart that includes
 
 == Prerequisites
 
-You will need the following things in place to complete this guide:
+You will need the following prerequisites in place to complete this guide:
 
 * https://helm.sh/docs/intro/install/[Helm 3 CLI^]{external-link-icon} (this example uses version 3.8.0)
 * Enough access to a K8s cluster to create a namespace, deployments, and pods

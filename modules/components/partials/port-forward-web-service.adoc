@@ -1,4 +1,4 @@
-Then port forward Pulsar’s admin service (in a third terminal). There’s no need to forward Pulsar’s messaging service.
+In a new terminal, port forward Pulsar’s admin service.
 
 [source,shell]
 ----

@@ -1,4 +1,4 @@
-In a separate terminal window, port forward the Presto SQL service.
+In a new terminal window, port forward the Presto SQL service.
 
 [source,shell]
 ----

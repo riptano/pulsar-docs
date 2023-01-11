@@ -4,47 +4,65 @@
 :title: Pulsar SQL with DataStax Luna Streaming
 :helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/values.yaml
 
-Adding the ability to query an Apache Pulsar topic data via SQL can be a powerful addition to any Enterprise. Stream processing, real-time analytics, and highly customized dashboards are just a few of the possibilities. Pulsar offers a pre-made plugin for Trino that is included in its distribution. Additionally, Pulsar has built-in options to create Trino workers and automatically configure the communications between Pulsar’s ledger and Trino.
+Pulsar SQL allows enterprises to query Apache Pulsar topic data with SQL.
+This is a powerful feature for an Enterprise, and SQL is a language they're likely familiar with.
+Stream processing, real-time analytics, and highly customized dashboards are just a few of the possibilities.
+Pulsar offers a pre-made plugin for Trino that is included in its distribution.
+Additionally, Pulsar has built-in options to create Trino workers and automatically configure the communications between Pulsar’s ledger and Trino.
 
-In this guide, we will use DataStax Pulsar Helm Chart to install a Pulsar cluster and Pulsar SQL. The Trino coordinator and desired number of workers will be created directly in the cluster.
+In this guide, we will use the DataStax Pulsar Helm Chart to install a Pulsar cluster with Pulsar SQL.
+The Trino coordinator and desired number of workers will be created directly in the cluster.
 
-== Pre-req's
+== Prerequisites
 
-You will need the following things in place to complete this guide:
+You will need the following prerequisites in place to complete this guide:
 
-* Pulsar cli
-* https://helm.sh/docs/intro/install/[Helm 3 cli^]{external-link-icon} (we used version 3.8.0)
-* https://prestodb.io/docs/current/installation/cli.html[Presto cli^]{external-link-icon} (we used version 0.278.1)
+* Pulsar CLI
+* https://prestodb.io/docs/current/installation/cli.html[Presto CLI^]{external-link-icon} (this example version 0.278.1)
+* https://helm.sh/docs/intro/install/[Helm 3 CLI^]{external-link-icon} (this example uses version 3.8.0)
+* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^]{external-link-icon} (this example uses version 1.23.4)
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
-* https://kubernetes.io/docs/tasks/tools/[Kubectl cli^]{external-link-icon} (we used version 1.23.4)
 
-NOTE: Prestodb has been replaced by Trino but Apache Pulsar is using Presto’s version. The Trino cli uses the "X-TRINO-USER" header for authentications but Presto expects "X-PRESTO-USER", which is why we use the Presto cli.
+[IMPORTANT]
+====
+PrestoDB has been replaced by Trino, but Apache Pulsar is using Presto’s version.
+The Trino CLI uses the "X-TRINO-USER" header for authentications but Presto expects "X-PRESTO-USER", which is why we use the Presto CLI.
+====
 
-== Install Luna Streaming helm chart
+== Install Luna Streaming Helm chart
 
 include::partial$install-helm.adoc[]
 
 == Forward service port
 
-We will need to interact with a few of the services in the K8s cluster. Let’s map a few ports to those services.
+We need to interact with services in the K8s cluster, so let’s map a few ports to those services.
 
 include::partial$port-forward-sql.adoc[]
 
 include::partial$port-forward-web-service.adoc[]
 
+There’s no need to forward Pulsar’s messaging service ports.
+
 == Confirm Presto is available
 
-In your browser navigate to http://localhost:8090[http://localhost:8090^]. You should be greeted with Presto’s login.
+In a browser, navigate to http://localhost:8090[http://localhost:8090^].
+
+You will be greeted by Presto’s login.
 
 image::presto-sql-login.png[Presto SQL login]
 
-There is no authentication hooked up. Input whatever user name you prefer and “Log In”. This will greet you with a blank dashboard. That’s your confirmation that Presto is up and running.
+There is no authentication enabled, so input whatever user name you prefer and select “Log In”.
+
+You will be greeted by a blank dashboard.
+This confirms Presto is up and running.
 
 image::presto-sql-dashboard.png[Presto SQL dashboard]
 
-== Use the data-generator source to fill a topic
+== Fill a topic with the data-generator source
 
-The minimalist helm chart values used the `datastax/lunastreaming-all` image to gain use of all the Pulsar connectors. We can use the “data-generator” source connector to create a topic and add sample data all at once. Note the use of the “public” tenant and “default” namespace. You can use whatever tenant and namespace you are comfortable with.
+The minimalist Helm chart values use the https://github.com/datastax/release-notes/blob/master/Luna_Streaming_2.10_Release_Notes.md#lunastreaming-all-distribution[datastax/lunastreaming-all^]{external-link-icon} image, which includes all supported Pulsar connectors.
+
+We can use the “data-generator” source connector to create a topic and add sample data all at once. Note the use of the “public” tenant and “default” namespace. You can use whatever tenant and namespace you are comfortable with.
 
 First, download the minimalist Pulsar client. This conf assumes the port forwarding addresses we will do in the next step.
 
