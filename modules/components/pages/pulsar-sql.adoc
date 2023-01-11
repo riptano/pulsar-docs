@@ -143,7 +143,8 @@ You should get an output of:
 Query 20230103_163242_00000_zvk84, FINISHED, 2 nodes
 ----
 Notice the similarities between your Pulsar tenant/namespaces and Presto’s output.
-. List the tables within the `pulsar.”public/default”` catalog/schema.
+. List the tables within the `pulsar.”public/default”` catalog/schema. +
+<<schema-quotes,Why are there quotes around the schema name?>>
 +
 [source,shell]
 ----
@@ -195,7 +196,8 @@ You have successfully interacted with a Pulsar Cluster via SQL. Awesome!{emoji-r
 
 Want to put your new learnings to the test? Try using the Presto plugin in https://redash.io/data-sources/presto[Redash^]{external-link-icon} or https://superset.apache.org/docs/databases/presto/[Superset^]{external-link-icon} to create useful dashboards.
 
-=== Sidebar: Why are there quotes around the schema?
+[#schema-quotes]
+=== Sidebar: Why are there quotes around the schema name?
 You might wonder why there are quotes (“”) around the schema name.
 This is a result of mapping Presto primitives to Pulsar’s primitives.
 
@@ -206,33 +208,34 @@ The Pulsar Presto plugin assumes the catalog name which leaves schema and table,
 
 == Connect with JDBC
 
-Bonus time! Try querying messages from a Java app using the Presto JDBC client. You’ll need the Java runtime for the next steps.
+Bonus time!
+This example queries messages from a Java app using the Presto JDBC client.
+You’ll need the Java runtime to run the example.
 
-Create a file named “PrestoExample.java” with the following contents. Make sure to update the JDBC connection with the correct values for you environment.
-
+. Create a file named “PrestoExample.java” with the following contents. +
+Remember to update the JDBC connection with the correct values for your environment.
++
 [source,java]
 ----
 include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/PrestoExample.java[]
 ----
-
-Build the java class.
-
+. Build the Java class.
++
 [source,shell]
 ----
 javac PrestoExample.java
 ----
+. Download the https://repo1.maven.org/maven2/io/prestosql/presto-jdbc/334/presto-jdbc-334.jar[version 334 Presto JDBC driver^]{external-link-icon} to the same folder as the Java class.
 
-Download https://repo1.maven.org/maven2/io/prestosql/presto-jdbc/334/presto-jdbc-334.jar[version 334 Presto JDBC driver^]{external-link-icon} to the same folder as the java class.
-
-Run the client and observe the output.
-
+. Run the client and observe the output.
+`-cp` tells Java to use the downloaded presto-jdbc jar in your classpath to connect.
++
 [source,shell]
 ----
 java -cp .:presto-jdbc-334.jar PrestoExample
 ----
 
-Output
-
+You should get an output of:
 [source,shell]
 ----
 Connection established......
@@ -249,24 +252,9 @@ Connection established......
 ----
 
 == Clean up
+include::partial$cleanup-terminal-and-helm.adoc[]
 
-Go to each window running an open process and `ctrl-c`. That will end the process. To completely remove all traces of this example, delete the K8s namespace.
-
-[source,shell]
-----
-kubectl delete namespace datastax-pulsar
-----
-
-If you wanted to keep the data we added to the topic, just uninstall the Helm Chart.
-
-[source,shell]
-----
-helm uninstall --namespace datastax-pulsar my-pulsar-cluster
-----
-
-== Next steps
-
-Here are links to other guides you might be interested in:
+== What's next?
 
 * xref:pulsar-beam.adoc[]
 * xref:admin-console-tutorial.adoc[]

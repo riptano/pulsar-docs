@@ -119,27 +119,13 @@ Consumed messages (200):
 The payload is base64 encoded. Simply decode the string to see the actual message data.
 ====
 
-=== Clean up
-
-. Return to each window running an open process and enter `ctrl-c` to end the process. +
-To completely remove all traces of the Helm chart, remove the namespace.
-+
-[source,shell]
-----
-kubectl delete namespace datastax-pulsar
-----
-
-. If you want to keep the data, uninstall only the chart.
-+
-[source,shell]
-----
-helm --namespace datastax-pulsar uninstall my-pulsar-cluster
-----
+== Clean up
+include::partial$cleanup-terminal-and-helm.adoc[]
 
 == Next steps
 
 Here are links to resources and guides you might be interested in:
 
 * https://github.com/kafkaesque-io/pulsar-beam[Learn more^]{external-link-icon} about the Pulsar Beam project
-* The swagger https://kafkaesque-io.github.io/pulsar-beam-swagger[Pulsar Beam API^]{external-link-icon}
+* https://kafkaesque-io.github.io/pulsar-beam-swagger[Pulsar Beam API^]{external-link-icon}
 * xref:pulsar-sql.adoc[]
