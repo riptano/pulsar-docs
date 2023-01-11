@@ -16,7 +16,7 @@ Support covers only the following Software versions for DataStax Luna Streaming 
 |*Name*
 |*Version*
 
-|DataStax Luna Streaming Distribution 
+|DataStax Luna Streaming Distribution
 |v.1.0.0 and above
 
 |===
@@ -28,19 +28,19 @@ Support covers only the following Software versions for the Open Source Projects
 |*Name*
 |*Version*
 
-|Pulsar Admin Console 
+|Pulsar Admin Console
 |v.1.0.0 and above
 
-|Pulsar Heartbeat 
+|Pulsar Heartbeat
 |v.1.0.0 and above
 
-|DataStax pulsar-sink 
+|DataStax pulsar-sink
 |v.1.0.0 and above
 
-|Starlight for JMS 
+|Starlight for JMS
 |v.1.0.0 and above
 
-|Starlight for RabbitMQ 
+|Starlight for RabbitMQ
 |v.1.0.0 and above
 
 |===
@@ -52,31 +52,41 @@ Support covers only the following Apache Pulsar Connectors (as included in the A
 |*Name*
 |*Version*
 
-|Elasticsearch sink 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
-|JDBC-Clickhouse sink 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
-|JDBC-MariaDB sink 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
-|JDBC-Postgres sink 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
-|Kafka sink 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
-|Kinesis sink 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
+|Cloud storage sink
+|v.2.10.2.1
+|Elasticsearch sink
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|HTTP sink
+|v.2.10.2.11
+|JDBC-Clickhouse sink
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|JDBC-MariaDB sink
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|JDBC-Postgres sink
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|JDBC-SQLite
+|v.2.10.2.11
+|Kafka sink, 2.10.2.11
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|Kinesis sink, 2.10.2.11
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|Snowflake sink
+|v.0.1.13
 |Cassandra source
-|v2.21
+|v2.2.2
 |Data generator source
-|2.10.2.3
-|Debezium MongoDB source 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
-|Debezium MySQL source 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
-|Debezium Postgres source 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
-|Kafka source 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
-|Kinesis source 
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3
+|2.10.2.11
+|Debezium MongoDB source
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|Debezium MySQL source
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|Debezium Microsoft SQL Server Source
+|2.10.2.11
+|Debezium Postgres source
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|Kafka source
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|Kinesis source
+|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
 
 |===
