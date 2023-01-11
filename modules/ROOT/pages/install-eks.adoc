@@ -1,5 +1,4 @@
 = Luna Streaming Installation on Amazon Elastic Kubernetes Environment
-:page-aliases: docs@luna-streaming::install-eks.adoc
 
 This document covers installation of Luna Streaming on the Amazon Elastic Kubernetes Environment (EKS). 
 

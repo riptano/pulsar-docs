@@ -1,5 +1,4 @@
 = Luna Streaming Functions
-:page-aliases: docs@luna-streaming::functions.adoc
 
 Functions are lightweight compute processes that enable you to process each message received on a topic or multiple topics. You can apply custom logic to that message, transforming or enriching it, and then output it to a different topic.
 

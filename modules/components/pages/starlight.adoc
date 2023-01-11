@@ -1,6 +1,4 @@
 = Starlight for Luna Streaming
-:page-aliases: docs@luna-streaming::starlight.adoc
-
 
 Starlight for Luna Streaming allows enterprises to take advantage of the scalability and resiliency of a modern streaming platform with various connectors for Apache Pulsar®.
 

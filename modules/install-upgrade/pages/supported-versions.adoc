@@ -1,5 +1,4 @@
 = Supported Software
-:page-aliases: docs@luna-streaming::supported-versions.adoc
 
 include::partial$supported-versions-tables.adoc[]
 
