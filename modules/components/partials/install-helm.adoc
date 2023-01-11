@@ -15,8 +15,7 @@ VALUES_URL="{helmValuesPath}"
 include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=helm-install]
 ----
 
-. Wait for the broker pod to be in a running state,
-You might see a few restarts as your components start up.
+. Wait for the broker pod to be in a running state. You might see a few restarts as your components start up.
 +
 [source,shell,subs="attributes+"]
 ----
