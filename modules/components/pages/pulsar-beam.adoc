@@ -43,7 +43,6 @@ Try changing the value to `latest` to only receive new messages that arrive.
 === Produce a new message
 
 Return to the original terminal window and run the following script to produce a new message.
-
 Don't worry about creating the new topic - if a topic doesn't exist, it is created automatically.
 [source,shell]
 ----
@@ -67,7 +66,6 @@ You have now completed the basics of using Beam in a Pulsar Cluster. Refer to th
 == A Python producer and consumer
 
 This is another example of producing and consuming messages using Beam.
-
 Instead of using curl, this example will use the "requests" Python library to issue HTTP requests.
 
 === Create project
