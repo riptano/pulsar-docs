@@ -1,5 +1,0 @@
-
-** xref:faqs.adoc[]
-** xref:install-aks.adoc[]
-** xref:install-eks.adoc[]
-** xref:install-gke.adoc[]
