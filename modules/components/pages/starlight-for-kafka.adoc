@@ -1,7 +1,8 @@
 = Using Starlight for Kafka with Luna Streaming
-:navtitle: Starlight for Kafka with Luna Streaming
+:navtitle: Starlight for Kafka
 :description: This guide will take you step-by-step through deploying DataStax Luna Streaming helm chart with the Starlight for Kafka protocol handler extension
 :title: A guide to deploying Luna Streaming with the Starlight for Kafka extension
+:helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/starlight-for-kafka/values.yaml
 
 Starlight for Kafka brings the native Apache Kafka protocol support to Apache Pulsar by introducing a Kafka protocol handler on Pulsar brokers. By adding the Starlight for Kafka protocol handler to your Pulsar cluster, you can migrate your existing Kafka applications and services to Pulsar without modifying the code.
 
@@ -100,11 +101,13 @@ This my first message
 
 == Summary
 
-The combination of Pulsar and Starlight for Kafka is a powerful pair! Kafka users and existing applications using Kafka can enjoy the many benefits of a Pulsar cluster while never having to change tooling or libraries. Other folks that are more confortable with Pulsar tooling and clients can also interact with the same topics. Together new and legacy applications work together to create modern solutions.
+The combination of Pulsar and Starlight for Kafka is a powerful pair! Kafka users and existing applications using Kafka can enjoy the many benefits of a Pulsar cluster while never having to change tooling or libraries. Other folks that are more comfortable with Pulsar tooling and clients can also interact with the same topics. Together new and legacy applications work together to create modern solutions.
 
 == Next steps
 
 Here are links to other guides and resource you might be interested in.
 
-* xref:xxxxx[Something]
-* Something else
+* xref:streaming-learning:use-cases-architectures:starlight/kafka/index.adoc[Messaging with Starlight for Kafka]
+* xref:pulsar-beam.adoc[]
+* xref:pulsar-sql.adoc[]
+* xref:heartbeat-vm.adoc[]
