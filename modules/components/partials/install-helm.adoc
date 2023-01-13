@@ -2,7 +2,7 @@
 +
 [source,shell]
 ----
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=helm-repo-add]
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/using-s4k-guide/install.sh[tag=helm-repo-add]
 ----
 
 . Install the Helm chart using a minimalist values file. +
@@ -12,12 +12,12 @@ The minimal cluster creates only the essential components and has no ingress or 
 [source,shell,subs="attributes+"]
 ----
 VALUES_URL="{helmValuesPath}"
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=helm-install]
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/using-s4k-guide/install.sh[tag=helm-install]
 ----
 
 . Wait for the broker pod to be in a running state. You might see a few restarts as your components start up.
 +
 [source,shell,subs="attributes+"]
 ----
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/install.sh[tag=wait-for-broker]
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/using-s4k-guide/install.sh[tag=wait-for-broker]
 ----
