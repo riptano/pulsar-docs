@@ -6,3 +6,4 @@
 ** xref:pulsar-beam.adoc[Pulsar Beam]
 ** xref:pulsar-sql.adoc[Pulsar SQL]
 ** xref:starlight-for-kafka.adoc[]
+** xref:starlight-for-rabbitmq.adoc[]
