@@ -13,8 +13,8 @@ You will need the following prerequisites in place to complete this guide:
 
 * https://helm.sh/docs/intro/install/[Helm 3 CLI^]{external-link-icon} (we used version 3.8.0)
 * https://www.apache.org/dyn/closer.cgi?path=/kafka/3.3.1/kafka_2.13-3.3.1.tgz[Kafka CLI^]{external-link-icon} (we used version3.3.1)
-* Enough access to a K8s cluster to create a namespace, deployments, and pods
 * https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^]{external-link-icon} (we used version 1.23.4)
+* Enough access to a K8s cluster to create a namespace, deployments, and pods
 
 == Install Luna Streaming helm chart
 
@@ -74,7 +74,9 @@ This my first message
 
 Wait a second! We never created a topic! And where did the "quickstart" topic come from?!
 
-The default behavior of Starlight for Kafka is to create a new single partition, persistent topic when one is not present. You can configure this behavior and many other S4k parameters in the Helm chart. Learn more about the configuration values xref:starlight-for-kafka:configuration:starlight-kafka-configuration.adoc[here].
+The default behavior of Starlight for Kafka is to create a new single partition, persistent topic when one is not present.
+You can configure this behavior and many other S4K parameters in the https://github.com/datastaxdevs/luna-streaming-examples/blob/main/starlight-for-kafka/values.yaml[Helm chart^]{external-link-icon}.
+Learn more about the configuration values xref:starlight-for-kafka:configuration:starlight-kafka-configuration.adoc[here].
 
 Let's have a look at the topic that was created. From your Pulsar home folder, run the following command.
 
@@ -107,7 +109,7 @@ This my first message
 
 == Summary
 
-Pulsar and Starlight for Kafka are a powerful pair!
+Pulsar and Starlight for Kafka are a powerful pair! +
 Kafka users and existing applications using Kafka can enjoy the many benefits of a Pulsar cluster, while never having to change tooling or libraries.
 Other folks that are more comfortable with Pulsar tooling and clients can also interact with the same topics. Together, new and legacy applications work together to create modern solutions.
 
