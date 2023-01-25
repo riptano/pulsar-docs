@@ -18,15 +18,15 @@ You will need the following prerequisites in place to complete this guide:
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
 * https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^]{external-link-icon} (this example uses version 1.23.4)
 
-=== Install Luna Streaming Helm chart
+== Install Luna Streaming Helm chart
 
 include::partial$install-helm.adoc[]
 
-=== Forward service port
+== Forward service port
 
 include::partial$port-forward-beam.adoc[]
 
-=== Start a message consumer
+== Start a message consumer
 
 In a new terminal window, run the following curl command to begin streaming server-sent events.
 See xref:astra-streaming:developing:configure-pulsar-env.adoc[configuring your local environment for Astra Streaming,window="_blank"].
@@ -40,7 +40,7 @@ Note the use of `SubscriptionInitialPosition=earliest` in the message consumer.
 This instructs Beam to create a subscription on the topic starting at the earliest message.
 Try changing the value to `latest` to only receive new messages that arrive.
 
-=== Produce a new message
+== Produce a new message
 
 Return to the original terminal window and run the following script to produce a new message.
 Don't worry about creating the new topic - if a topic doesn't exist, it is created automatically.
@@ -52,7 +52,7 @@ curl --request POST \
   http://127.0.0.1:8085/v2/firehose/persistent/public/default/$TOPIC
 ----
 
-=== Consume the message
+== Consume the message
 
 The message consumer will output the data of the new message just produced.
 [source,shell]

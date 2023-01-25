@@ -1,5 +1,4 @@
 = Luna Streaming Authentication
-:page-aliases: docs@luna-streaming::auth.adoc
 
 The Helm chart can enable token-based authentication for your Pulsar cluster. For more, see https://pulsar.apache.org/docs/en/security-token-admin/[Pulsar token authentication].
 

@@ -1,5 +1,4 @@
 = Troubleshooting
-:page-aliases: docs@luna-streaming::troubleshooting.adoc
 
 To troubleshoot Luna Streaming, look at these potential issues:
 
