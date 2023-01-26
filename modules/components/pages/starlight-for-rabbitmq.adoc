@@ -7,14 +7,14 @@
 Starlight for RabbitMQ brings native RabbitMQ protocol support to Apache Pulsar by introducing a RabbitMQ protocol handler on Pulsar brokers or Pulsar proxies.
 By adding the Starlight for RabbitMQ protocol handler to your Pulsar cluster, you can migrate your existing RabbitMQ applications and services to Pulsar without modifying the code.
 
-== Pre-req's
+== Prerequisites
 
-You will need the following things in place to complete this guide:
+You will need the following prerequisites in place to complete this guide:
 
-* https://helm.sh/docs/intro/install/[Helm 3 cli^]{external-link-icon} (we used version 3.8.0)
+* https://helm.sh/docs/intro/install/[Helm 3 CLI^]{external-link-icon} (we used version 3.8.0)
+* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^]{external-link-icon} (we used version 1.23.4)
 * Python (we used version 3.8.10)
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
-* https://kubernetes.io/docs/tasks/tools/[Kubectl cli^]{external-link-icon} (we used version 1.23.4)
 
 == Install Luna Streaming helm chart
 
@@ -28,18 +28,22 @@ include::partial$port-forward-web-service.adoc[]
 
 include::partial$port-forward-s4r.adoc[]
 
-== Produce a message with the RabbitMQ python client
+== Produce a message with the RabbitMQ Python client
 
-If you hadn't noticed we never opened the Pulsar binary port to accept new messages. Only the admin port and the RabbitMQ port are open. To further show how native Starlight for RabbitMQ is, we will use the pika RabbitMQ python library to produce and consume messages from Pulsar.
+If you hadn't noticed, we never opened the Pulsar binary port to accept new messages.
+Only the admin port and the RabbitMQ port are open.
+To further demonstrate how native Starlight for RabbitMQ is, we will use the Pika RabbitMQ Python library to produce and consume messages from Pulsar.
 
-First save the following python script to a safe place. The script assumes you have opened localhost:5672 port.
+Save the following Python script to a safe place as `test-queue.py`.
+The script assumes you have opened the localhost:5672 port.
 
 [source,python]
 ----
 include::{luna-streaming-examples-repo}/starlight-for-rabbitmq/test-queue.py[]
 ----
 
-Now open a terminal and go to your safe place. Run the following command to execute the python program.
+Open a terminal and return to the safe place where you saved the Python script.
+Run the following command to execute the Python program.
 
 [source,shell]
 ----
@@ -58,11 +62,11 @@ deleted test-queue queue
 
 == Summary
 
-Wow! That was easy. The Luna help chart took care of deploying Starlight for RabbitMQ on Pulsar proxy and opening the correct port. Now your application "talks" to Pulsar as if it were a real RabbitMQ host.
+Wow! That was easy. +
+The Luna Helm chart deployed Starlight for RabbitMQ on the Pulsar proxy and opened the correct port.
+Your application will now "talk" to Pulsar as if it were a real RabbitMQ host.
 
-== Next steps
-
-Here are links to other guides and resource you might be interested in.
+== What's next?
 
 * xref:streaming-learning:use-cases-architectures:starlight/rabbitmq/index.adoc[Messaging with Starlight for RabbitMQ]
 * xref:pulsar-beam.adoc[]
