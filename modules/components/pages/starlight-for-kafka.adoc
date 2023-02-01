@@ -1,0 +1,126 @@
+= Using Starlight for Kafka with Luna Streaming
+:navtitle: Starlight for Kafka
+:description: This guide will take you step-by-step through deploying DataStax Luna Streaming helm chart with the Starlight for Kafka protocol handler extension
+:title: A guide to deploying Luna Streaming with the Starlight for Kafka extension
+:helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/starlight-for-kafka/values.yaml
+
+Starlight for Kafka brings the native Apache Kafka protocol support to Apache Pulsar by introducing a Kafka protocol handler on Pulsar brokers.
+By adding the Starlight for Kafka protocol handler to your Pulsar cluster, you can migrate your existing Kafka applications and services to Pulsar without modifying the code.
+
+== Prerequisites
+
+You will need the following prerequisites in place to complete this guide:
+
+* https://helm.sh/docs/intro/install/[Helm 3 CLI^]{external-link-icon} (we used version 3.8.0)
+* https://www.apache.org/dyn/closer.cgi?path=/kafka/3.3.1/kafka_2.13-3.3.1.tgz[Kafka CLI^]{external-link-icon} (we used version 3.3.1)
+* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^]{external-link-icon} (we used version 1.23.4)
+* Enough access to a K8s cluster to create a namespace, deployments, and pods
+
+== Install Luna Streaming helm chart
+
+include::partial$install-helm.adoc[]
+
+== Forward service port
+
+We will need to interact with a few of the services in the K8s cluster. Let’s map a few ports to those services.
+
+include::partial$port-forward-web-service.adoc[]
+
+include::partial$port-forward-s4k.adoc[]
+
+== Have a look around
+
+The Luna Streaming Helm Chart automatically creates a tenant named "public" and a namespace within that tenant named "default".
+
+The Starlight for Kafka extension creates a few namespaces and topics to function correctly.
+
+List the namespaces in the "public" tenant to see what was created.
+
+[source,shell]
+----
+~/apache-pulsar-2.10.1$ ./bin/pulsar-admin namespaces list public
+----
+
+The output should be similar to the following.
+
+[source,shell]
+----
+public/__kafka
+public/__kafka_producerid
+public/default
+----
+
+Notice the namespaces prefixed with "__kafka".
+These are used by the service for different functions.
+To learn more about Starlight for Kafka operations, see the S4K xref:starlight-for-kafka:ROOT:index.adoc[documentation].
+
+== Produce a message with the Kafka CLI
+
+If you hadn't noticed, we never opened the Pulsar binary port to accept new messages.
+Only the admin port and the Kafka port are open.
+To further show how native Starlight for Kafka is to Pulsar, we will use the Kafka CLI to produce and consume messages from Pulsar.
+
+From within the Kafka directory, run the following command to start the shell.
+
+[source,shell]
+----
+~/kafka_2.13-3.3.1$ ./bin/kafka-console-producer.sh --topic quickstart --bootstrap-server localhost:9092
+----
+
+Type a message, press Enter to send it, then Ctrl-C to exit the producer shell.
+
+[source,shell]
+----
+This my first message
+----
+
+Wait a second! We never created a topic! And where did the "quickstart" topic come from?!
+
+The default behavior of Starlight for Kafka is to create a new single partition, persistent topic when one is not present.
+You can configure this behavior and many other S4K parameters in the https://github.com/datastaxdevs/luna-streaming-examples/blob/main/starlight-for-kafka/values.yaml[Helm chart^]{external-link-icon}.
+Learn more about the configuration values xref:starlight-for-kafka:configuration:starlight-kafka-configuration.adoc[here].
+
+Let's have a look at the topic that was created. From your Pulsar home folder, run the following command.
+
+[source,shell]
+----
+~/apache-pulsar-2.10.1$ ./bin/pulsar-admin topics list public/default
+----
+
+The output will include the newly created topic.
+
+[source,shell]
+----
+persistent://public/default/quickstart-partition-0
+----
+
+== Consume the new message with the Kafka CLI
+
+Let's use the Kafka CLI to consume the message we just produced. Start the consumer shell from the Kafka home folder with the following command.
+
+[source,shell]
+----
+~/kafka_2.13-3.3.1$ ./bin/kafka-console-consumer.sh --topic quickstart --from-beginning --bootstrap-server localhost:9092
+----
+
+The data of our new message will be output. Enter Ctrl-C to exit the shell.
+
+[source,shell]
+----
+This my first message
+----
+
+== Summary
+
+Pulsar and Starlight for Kafka are a powerful pair! +
+Kafka users and existing applications using Kafka can enjoy the many benefits of a Pulsar cluster, while never having to change tooling or libraries.
+Other folks that are more comfortable with Pulsar tooling and clients can also interact with the same topics. Together, new and legacy applications work together to create modern solutions.
+
+== Next steps
+
+Here are links to other guides and resource you might be interested in.
+
+* xref:streaming-learning:use-cases-architectures:starlight/kafka/index.adoc[Messaging with Starlight for Kafka]
+* xref:pulsar-beam.adoc[]
+* xref:pulsar-sql.adoc[]
+* xref:heartbeat-vm.adoc[]
