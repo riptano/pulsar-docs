@@ -20,7 +20,7 @@ In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache
 
 * Cassandra, Elastic, Kinesis, Kafka, and JDBC xref:operations:io-connectors.adoc[connectors]
 
-* The xref:streaming-learning:Starlight suite
+* The xref:streaming-learning:use-cases-architectures:starlight/index.adoc[Starlight] suite of Pulsar protocol handlers for Kafka, RabbitMQ, and JMS
 
 * xref:components:admin-console-vm.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
 
