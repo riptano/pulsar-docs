@@ -10,7 +10,7 @@ The latest release of DataStax Luna Streaming is {luna-version}, which matches t
 
 The prior Luna Streaming release (numbered 1.0.x or 2.7.2) provided the Pulsar 2.7.2 distribution.
 
-Refer to the DataStax Luna Streaming https://github.com/datastax/release-notes/blob/master/Luna_Streaming_2.8_Release_Notes.md[release notes], which are hosted in our public GitHub repo, for information &amp; linked commit IDs that were implemented in the latest Luna Streaming {luna-version} release.
+Refer to the DataStax Luna Streaming https://github.com/datastax/release-notes/blob/master/Luna_Streaming_2.10_Release_Notes.md[release notes], which are hosted in our public GitHub repo, for information &amp; linked commit IDs that were implemented in the latest Luna Streaming {luna-version} release.
 
 == Components
 
@@ -19,6 +19,8 @@ In addition to the distribution of https://pulsar.apache.org/en/versions/[Apache
 * A xref:install-upgrade:quickstart-helm-installs.adoc[Helm chart] that deploys and manages Pulsar on your current CNCF-conformant Kubernetes infrastructure
 
 * Cassandra, Elastic, Kinesis, Kafka, and JDBC xref:operations:io-connectors.adoc[connectors]
+
+* The xref:streaming-learning:use-cases-architectures:starlight/index.adoc[Starlight] suite of Pulsar protocol handlers for Kafka, RabbitMQ, and JMS
 
 * xref:components:admin-console-vm.adoc[Pulsar Admin Console] for simplified administration of your Pulsar environment
 
