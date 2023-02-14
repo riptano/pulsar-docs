@@ -2,6 +2,5 @@
 ** xref:auth.adoc[]
 ** xref:functions.adoc[]
 ** xref:io-connectors.adoc[]
-** xref:io-elastic-sink.adoc[]
 ** xref:scale-cluster.adoc[]
 ** xref:troubleshooting.adoc[]
