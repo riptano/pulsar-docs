@@ -1,6 +1,12 @@
 = Luna Streaming IO connectors
 
-When you have Luna Streaming xref:install-upgrade:quickstart-server-installs.adoc[installed] and running, add IO connectors to connect your deployment to external systems like https://cassandra.apache.org/_/index.html[Apache Cassandra], https://www.elastic.co/[ElasticSearch], and more. +
+When you have Luna Streaming xref:install-upgrade:quickstart-server-installs.adoc[installed] and running, add IO connectors to connect your deployment to external systems like https://cassandra.apache.org/_/index.html[Apache Cassandra], https://www.elastic.co/[ElasticSearch], and more.
+
+[NOTE]
+====
+There are three versions of the DataStax Luna Streaming distribution.
+The lunastreaming-all version contains all connectors.
+====
 
 == Sink Connectors
 
@@ -15,7 +21,8 @@ include::partial$source-connectors.adoc[tag=production]
 == Experimental Connectors
 
 DataStax is always experimenting with connectors.
-Below are the connectors currently in development that have not yet been promoted to official support in *Astra Streaming*, but are available in the luna-streaming-all version of *Luna Streaming*.
+Below are the connectors available in the luna-streaming-all version of *Luna Streaming*.
+We call these *experimental connectors* because they have not yet been promoted to official support in our *Astra Streaming* clusters, but they will work in your Luna Streaming cluster.
 
 === Sink Connectors (experimental)
 
