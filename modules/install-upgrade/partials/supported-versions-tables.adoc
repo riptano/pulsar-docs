@@ -52,7 +52,7 @@ Support covers only the following Apache Pulsar Connectors (as included in the A
 |*Name*
 |*Version*
 |Cassandra enhanced sink
-|v.1.0.0 and above
+|v2.7.2, v2.10.x
 |Cloud storage sink
 |v2.7.2, v2.10.x
 |Elasticsearch sink
