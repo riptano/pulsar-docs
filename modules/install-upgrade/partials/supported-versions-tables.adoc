@@ -6,7 +6,7 @@ Support covers only the following Software versions for Apache Pulsar:
 |*Versions*
 
 |Apache Pulsar
-|2.6.2, 2.7.2, 2.8.1, 2.10.x
+|2.7.2, 2.10.x
 |===
 
 Support covers only the following Software versions for DataStax Luna Streaming Distribution:
@@ -51,42 +51,43 @@ Support covers only the following Apache Pulsar Connectors (as included in the A
 |===
 |*Name*
 |*Version*
-
+|Cassandra enhanced sink
+|v2.7.2, v2.10.x
 |Cloud storage sink
-|v.2.10.2.1
+|v2.7.2, v2.10.x
 |Elasticsearch sink
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
 |HTTP sink
-|v.2.10.2.11
+|v2.7.2, v2.10.x
 |JDBC-Clickhouse sink
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
 |JDBC-MariaDB sink
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
 |JDBC-Postgres sink
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
 |JDBC-SQLite
-|v.2.10.2.11
-|Kafka sink, 2.10.2.11
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
-|Kinesis sink, 2.10.2.11
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
+|Kafka sink
+|v2.7.2, v2.10.x
+|Kinesis sink
+|v2.7.2, v2.10.x
 |Snowflake sink
 |v.0.1.13
 |Cassandra source
 |v2.2.2
 |Data generator source
-|2.10.2.11
+|v2.7.2, v2.10.x
 |Debezium MongoDB source
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
 |Debezium MySQL source
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
 |Debezium Microsoft SQL Server Source
-|2.10.2.11
+|v2.7.2, v2.10.x
 |Debezium Postgres source
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
 |Kafka source
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
 |Kinesis source
-|v.2.6.2, 2.7.2, 2.8.1, 2.10.2.3, 2.10.2.11
+|v2.7.2, v2.10.x
 
 |===
