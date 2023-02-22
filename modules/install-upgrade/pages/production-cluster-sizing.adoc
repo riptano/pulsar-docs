@@ -66,21 +66,18 @@ If your enterprise has its own monitoring and metrics dashboarding system, these
 [#assumptions]
 == Assumptions
 
-The methodology in this guide relies on the following main assumption:
-The ratio of the broker instance count vs. the bookkeeper instance count is static. For this example, we're using 1-to-5 as the broker-to-bookkeeper ratio.
+The methodology in this guide relies on the assumption that the ratio of the broker instance count to the bookkeeper instance count is static.
+For this example, we're using 1-to-5 as the static broker-to-bookkeeper ratio.
 
-However, the broker instance count calculation based on this assumption MUST be adjusted if it violates the minimum Pulsar cluster topology requirements. These requirements are:
+The broker instance count calculation based on this assumption MUST be adjusted if it violates minimum Pulsar cluster topology requirements. These requirements are:
 * At least one broker instance per physical rack or availability zone
 * Broker instances must be evenly distributed across all physical racks or availability zones
 
 Our sizing methodology is mainly driven by Bookkeeper ledger disk storage analysis (requirement vs capacity).
 It is therefore relatively accurate in determining the sizing needs for Bookkeepers.
-Sizing needs for brokers, however, are more challenging.
-Broker workload is mainly CPU and/or memory driven and it is hard to quantify CPU requirement vs. capacity from simple calculations.
+Sizing needs for brokers, however, are more complex. Broker workload is CPU and/or memory driven and it is hard to quantify CPU requirement vs. capacity from simple calculations.
 
-Dedicated functions workers (when relevant) pose an even greater challenge, because the workload characteristics of deployed Pulsar functions can be very random, as well as being CPU intensive, memory intensive, disk I/O intensive, or some combination thereof.
-
-Because of this, if we want to get a more accurate sizing calculation for a Pulsar cluster, we have to turn to a more advanced, performance testing and analysis-based approach.
+Dedicated functions workers (when relevant) pose an even greater challenge, because the workload characteristics of deployed Pulsar functions can be very random, as well as being CPU intensive, memory intensive, disk I/O intensive, or some combination thereof. For these reasons, if we want to get a more accurate sizing calculation for a Pulsar cluster, we have to turn to a more advanced, performance testing and analysis-based approach.
 
 We use the methodology as described in this document as a starting point, and then tune accordingly based on performance results.
 
