@@ -89,15 +89,15 @@ We use the methodology as described in this document as a starting point, and th
 +
 [source,plain]
 ----
-Total message size size  (raw) = 
+Total message size (raw) =
 3 *    // replication factor: 3
-1k *   // average message payload size: 11k bytes
+1k *   // average message payload size: 1k bytes
 100k * // average message throughput: 100k message/sec
 (24 * 3600)    // TTL and retention period: 1 day
   = 25,920,000 MB
   ≅ 25 TB
 ----
-.. We now know our cluster needs 25 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
+.. We now know our cluster needs 25 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB per bookkeeper node and an 85% effective utilization ratio.
 +
 [source,plain]
 ----
@@ -110,7 +110,6 @@ With our <<assumptions,assumption>> of a 1-to-5 broker-to-bookkeeper ratio, we c
 ----
 Broker count(raw)=ceiling(8/5) = 2
 ----
-
 
 == Sizing analysis and calculation example
 
@@ -176,9 +175,9 @@ We apply our <<methodology>> to these characteristics to size a production clust
 +
 [source,plain]
 ----
-Total message size size  (raw) = 
+Total message size (raw) =
 3 *    // replication factor: 3
-1k *   // average message payload size: 11k bytes
+1k *   // average message payload size: 1k bytes
 100k * // average message throughput: 100k message/sec
 (24 * 3600)    // TTL and retention period: 1 day
   = 25,920,000 MB
@@ -246,7 +245,7 @@ Recall that for VM clusters, the VM node count is 1 VM = 1 node, while for clust
 |Pulsar server component
 |Pulsar server instance count
 |CPU core per server instance
-|Memory in GB per server insance
+|Memory in GB per server instance
 |Total CPU core
 |Total memory in GB
 
@@ -317,7 +316,7 @@ Max(11, 8) = 11
 
 For a typical K8s Pulsar deployment, the above Pulsar server instances (pods) can be allocated from one node pool (or node group).
 Within the nodepool, each VM node has the same hardware specifications.
-For CPU and memory, we recommend the following specications for each K8s VM node:
+For CPU and memory, we recommend the following specifications for each K8s VM node:
 * CPU: 8-core
 * Memory: 32 GB
 
