@@ -1,0 +1,7 @@
+= Multi-region georeplication
+Pulsar clusters can be configured to replicate data across multiple regions.
+This requires 
+
+==
+
+==
