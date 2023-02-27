@@ -1,6 +1,7 @@
 = Multi-region georeplication
-Pulsar clusters can be configured to replicate data across multiple regions.
-This requires 
+Pulsar clusters can be configured to replicate data across multiple regions to maximize availability.
+This replication can be *synchronous* or *asynchronous* and implemented *with* or *without* a global Zookeeper (configuration store).
+This example is *asynchronous* and does *not* use a global Zookeeper.
 
 ==
 

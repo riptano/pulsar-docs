@@ -1,4 +1,4 @@
-= VM-based single production cluster
+= VM-based Pulsar production cluster
 
 This page contains sizing and configuration information for a single VM-based production cluster.
 The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
