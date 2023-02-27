@@ -12,6 +12,20 @@ For deployment-specific recommendations, see the following pages:
 * xref:production-cluster-multiregion.adoc[]
 * xref:production-cluster-sandbox.adoc[]
 
+== Considerations
+
+Some questions to consider before cluster sizing:
+
+. What is the desired message replication factor? This will impact the Pulsar broker configuration.
+. What are the Pulsar server components to be deployed? Zookeepers, Bookkeepers, and Brokers are mandatory, but there are other optional components that are highly recommended for production environments.
+. How many physical racks or availability zones are available for the deployment? Georeplication and rack awareness will impact sizing analysis and calculation.
+. What is the Pulsar server component distribution requirement among the physical racks or availability zones?
+DataStax recommends as even a distribution as possible.
+. Is Bookkeeper rack-awareness configuration required? To maximize the high availability of a Pulsar cluster within a specific region, the Pulsar server host VMs need to be distributed evenly among available availability zones (AZs) within that region, and within each AZ, distributed evenly among available physical racks.
+. Will your cluster be deployed on Kubernetes or bare metal VMs? There is a small difference between bare metal and K8s node counts.
+. What is the expected message throughput? This will impact the number of Pulsar brokers and bookkeepers.
+. Do you have existing monitoring and metrics solutions in place? You may not need to deploy the optional monitoring and metrics components.
+
 == Definitions
 
 Pulsar cluster sizing is a complex topic, and it's important to define some terms before we dive in.
@@ -26,7 +40,7 @@ Pulsar cluster sizing is a complex topic, and it's important to define some term
 ** In a K8s-based deployment, 1 VM node equals 1 K8s node, and a K8s node may contain multiple pods with different server components.
 
 [#pulsar-node-count]
-* _Pulsar node count:_ A Pulsar node is a pricing calculation unit. One VM node may represent multiple Pulsar nodes. For example:
+* _Pulsar node count:_ One VM node may represent multiple Pulsar nodes. For example:
 ** One 8-CPU VM node is counted as 1 Pulsar node.
 ** One 16-CPU VM node is counted as 2 Pulsar nodes.
 
