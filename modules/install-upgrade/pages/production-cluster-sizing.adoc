@@ -7,24 +7,9 @@ Of course, the sizing of a cluster depends on factors like use case and expected
 This page summarizes the requirements, assumptions, definitions, and methodologies that inform our cluster sizing recommendations.
 For deployment-specific recommendations, see the following pages:
 
-* xref:production-cluster-bare-metal.adoc[]
-* xref:production-cluster-helm.adoc[]
+* xref:production-cluster-vm.adoc[]
 * xref:production-cluster-multiregion.adoc[]
 * xref:production-cluster-sandbox.adoc[]
-
-== Considerations
-
-Some questions to consider before cluster sizing:
-
-. What is the desired message replication factor? This will impact the Pulsar broker configuration.
-. What are the Pulsar server components to be deployed? Zookeepers, Bookkeepers, and Brokers are mandatory, but there are other optional components that are highly recommended for production environments.
-. How many physical racks or availability zones are available for the deployment? Georeplication and rack awareness will impact sizing analysis and calculation.
-. What is the Pulsar server component distribution requirement among the physical racks or availability zones?
-DataStax recommends as even a distribution as possible.
-. Is Bookkeeper rack-awareness configuration required? To maximize the high availability of a Pulsar cluster within a specific region, the Pulsar server host VMs need to be distributed evenly among available availability zones (AZs) within that region, and within each AZ, distributed evenly among available physical racks.
-. Will your cluster be deployed on Kubernetes or bare metal VMs? There is a small difference between bare metal and K8s node counts.
-. What is the expected message throughput? This will impact the number of Pulsar brokers and bookkeepers.
-. Do you have existing monitoring and metrics solutions in place? You may not need to deploy the optional monitoring and metrics components.
 
 == Definitions
 
@@ -43,6 +28,20 @@ Pulsar cluster sizing is a complex topic, and it's important to define some term
 * _Pulsar node count:_ One VM node may represent multiple Pulsar nodes. For example:
 ** One 8-CPU VM node is counted as 1 Pulsar node.
 ** One 16-CPU VM node is counted as 2 Pulsar nodes.
+
+== Considerations
+
+Some questions to consider before cluster sizing:
+
+. What is the desired message replication factor? This will impact the Pulsar broker configuration.
+. What are the Pulsar server components to be deployed? Zookeepers, Bookkeepers, and Brokers are mandatory, but there are other optional components that are highly <<recommended>> for production environments.
+. How many physical racks or availability zones are available for the deployment? Georeplication and rack awareness will impact sizing analysis and calculation.
+. What is the Pulsar server component distribution requirement among the physical racks or availability zones?
+DataStax recommends as even a distribution as possible.
+. Is Bookkeeper rack-awareness configuration required? To maximize the high availability of a Pulsar cluster within a specific region, the Pulsar server host VMs need to be distributed evenly among available availability zones (AZs) within that region, and within each AZ, distributed evenly among available physical racks.
+. Will your cluster be deployed on Kubernetes or bare metal VMs? There is a small difference between bare metal and K8s node counts.
+. What is the expected message throughput? This will impact the number of Pulsar brokers and bookkeepers.
+. Do you have existing monitoring and metrics solutions in place? You may not need to deploy the optional monitoring and metrics components.
 
 [#required-components]
 == Required server components
@@ -65,8 +64,16 @@ For production deployment, it is NOT recommended to deploy functions workers as 
 * Dedicated Pulsar proxy nodes/pods +
 Proxy pods are more relevant in K8s-based deployments than VM-based deployments.
 
-The diagram below illustrates a minimum Pulsar cluster deployment with a message replication factor of 3.
+// The diagram below illustrates a minimum Pulsar cluster deployment with a message replication factor of 3.
 
+
+=== Broker 
+
+=== Zookeeper
+
+
+=== Bookkeeper
+[#recommended]
 === Recommended server components
 
 The DataStax Luna Streaming Helm chart deployment includes optional but highly recommended server components for better Pulsar cluster metrics monitoring and operation visibility.
@@ -77,19 +84,49 @@ If your enterprise has its own monitoring and metrics dashboarding system, these
 * Pulsar Heartbeat nodes/pods
 * Prometheus/Grafana/Alert manager stack nodes/pods
 
+== Aggregated Pulsar workload
+
+The Pulsar workload required for the sizing analysis is the aggregated workload from all Pulsar clients (producers and consumers) to all involved topics.
+The aggregated workload defines the RAW sizing requirement from the application perspective. +
+The following checklist defines what information needs to be collected to determine the RAW sizing needs:
+
+* Number of active topics +
+For each topic:
+* The message schema of the topic
+* The average message size (uncompressed) which includes message key, message properties, and message payload
+* Average incoming message throughput (e.g. # of messages per second) for
+** “Steady” traffic (e.g. regular season)
+** “Burst” traffic (e.g. peak season)
+* Will the message be compressed? If so:
+** What is the compression algorithm?
+** What is the average message compression ratio?
+* What are the message retention and TTL periods?
+** Retention means how long a message continues to reside in the cluster, even after it is acknowledged.
+** TTL (time-to-live) means how long an unacknowledged message lasts before it is deleted, even before it is acknowledged.
+* Is there the need to use a tiered-storage (a block storage like AWS S3) option to store messages? If so, what is the tiered-storage policy (size and time threshold)?
+
+There are other message processing considerations that are not directly used in the sizing calculation, but may be needed for more advanced performance testing analysis. +
+* How many producers and consumers?
+* For consumers, what subscription types (e.g. exclusive, shared, etc.) are required?
+* Will message transactions be used?
+* Will message batching be used?
+* Will message filtering be used? What are the message filter conditions?
+
 [#assumptions]
 == Assumptions
 
 The methodology in this guide relies on the assumption that the ratio of the broker instance count to the bookkeeper instance count is static.
 For this example, we're using 1-to-5 as the static broker-to-bookkeeper ratio.
 
-The broker instance count calculation based on this assumption MUST be adjusted if it violates minimum Pulsar cluster topology requirements. These requirements are:
+The broker instance count calculation based on this assumption MUST be adjusted if it violates minimum Pulsar cluster topology requirements.
+These requirements are:
 * At least one broker instance per physical rack or availability zone
 * Broker instances must be evenly distributed across all physical racks or availability zones
 
 Our sizing methodology is mainly driven by Bookkeeper ledger disk storage analysis (requirement vs capacity).
 It is therefore relatively accurate in determining the sizing needs for Bookkeepers.
-Sizing needs for brokers, however, are more complex. Broker workload is CPU and/or memory driven and it is hard to quantify CPU requirement vs. capacity from simple calculations.
+Sizing needs for brokers, however, are more complex.
+Broker workload is CPU and/or memory driven and it is hard to quantify CPU requirement vs. capacity from simple calculations.
 
 Dedicated functions workers (when relevant) pose an even greater challenge, because the workload characteristics of deployed Pulsar functions can be very random, as well as being CPU intensive, memory intensive, disk I/O intensive, or some combination thereof. For these reasons, if we want to get a more accurate sizing calculation for a Pulsar cluster, we have to turn to a more advanced, performance testing and analysis-based approach.
 
@@ -144,10 +181,10 @@ Assume a Pulsar cluster has the following workload, topology, and VM hardware ch
 |Message compression
 |None
 
-|Message replication factorfootnote:[This should match the number of the availability zones (see Pulsar topology information below)]
+|Message replication factorfootnote:[This should match the number of the availability zones.]
 |3
 
-|Message retention and TTL periodfootnote:[Unacknowledged messages will expire after 1 day. Acknowledged messages will continue stay in the system up to 1 day]
+|Message retention and TTL periodfootnote:[Unacknowledged messages will expire after 1 day. Acknowledged messages will continue stay in the system up to 1 day.]
 |1 day
 
 |===
@@ -210,8 +247,6 @@ Bookkeeper count(raw)=ceiling(25/(4 * 0.85)) = 8
 ----
 Broker count(raw)=ceiling(8/5) = 2
 ----
-
-.. Now we know the Pulsar server instance counts after considering Pulsar topology requirements.
 
 .Pulsar cluster component count
 [cols=5*, options=header]
@@ -334,9 +369,7 @@ For CPU and memory, we recommend the following specifications for each K8s VM no
 * CPU: 8-core
 * Memory: 32 GB
 
-=== Determine Pulsar node count (Pricing)
 
-The Pulsar node count for pricing is determined with the same methodology as the K8s VM node count.
 
 
 
