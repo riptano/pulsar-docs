@@ -3,7 +3,7 @@
 This page contains sizing and configuration information for a single VM-based production cluster.
 The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
 
-== Sizing analysis and calculation example
+== Sizing analysis and calculation
 
 Assume a Pulsar cluster has the following workload, topology, and VM hardware characteristics:
 
@@ -71,20 +71,108 @@ Total message size (raw) =
 50k * // average message throughput: 50k messages/sec
 (24 * 3600)    // TTL and retention period: 1 day
     = 129,600,000 MB
-    ≅ 124 TB
+    ≅ 129 TB
 ----
-.. We now know our cluster needs 124 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
+.. We now know our cluster needs 129 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
 +
 [source,plain]
 ----
-Bookkeeper count(raw)=ceiling(124/(4 * 0.85)) = 
+Bookkeeper count(raw)=ceiling(129/(4 * 0.85)) ≅ 38
 ----
 
-With our <<assumptions,assumption>> of a 1-to-5 broker-to-bookkeeper ratio, we calculate the number of broker nodes.
-+
+With our xref:production-cluster-sizing.adoc#assumptions[assumptions] of a 1-to-5 broker-to-bookkeeper ratio and 85% bookkeeper utilization rate, we calculate the number of broker nodes.
 [source,plain]
 ----
-Broker count(raw)=ceiling(8/5) = 2
+Broker count(raw)=ceiling(38/5) ≅ 8
 ----
 
+Now that we know the estimated Bookkeeper and Broker counts, we can calculate the Pulsar topology requirements.
+.Pulsar cluster component count
+[cols=5*, options=header]
+|===
+|Pulsar server component
+|Total VM count (raw)
+|Total VM count (adjusted)
+|Per-AZ count distribution (adjusted)
+|Notes
+
+|Zookeeper
+|
+|5
+|2/2/1
+.5+a|* 3 AZs +
+* At least 1 Pulsar server instance per AZ +
+* Even distribution of Pulsar server instances across AZs
+
+|Bookkeeper
+|36
+|36
+|13 per AZ
+
+|Broker
+|8
+|6
+|2 per AZ
+
+|Pulsar proxy
+|
+|3
+|1/1/1
+
+|===
+
+=== Determine VM node count
+
+Now that we know the Pulsar server instance count, we can determine the VM node counts.
+
+.Pulsar cluster CPU and memory requirements
+[cols=6*, options=header]
+|===
+|Pulsar server component
+|Pulsar server instance count
+|CPU core per server instance
+|Memory in GB per server instance
+|Total CPU core
+|Total memory in GB
+
+|Zookeeper
+|5
+|1
+|4
+|5
+|20
+
+|Bookkeeper
+|36
+|4
+|12
+|144
+|432
+
+|Broker
+|9
+|8
+|24
+|72
+|216
+
+|Standalone autorecovery
+|0
+|1
+|2
+|3
+|6
+
+|Pulsar proxy
+|3
+|1
+|2
+|3
+|6
+
+4+|Total CPU and memory resource requirements
+|227
+|680
+
+|===
 

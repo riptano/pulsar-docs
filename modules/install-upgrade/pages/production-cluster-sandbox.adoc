@@ -1,0 +1,183 @@
+= Pulsar sandbox cluster
+
+Want to take a cluster for a spin, but don't need to size for production yet?
+This page sizes the minimum, baseline resources for a Pulsar cluster on VM.
+
+The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
+
+include::partial$hardware-sizing.adoc[]
+
+== Sizing analysis and calculation
+
+Assume a Pulsar cluster has the following workload, topology, and VM hardware characteristics:
+
+.Workload input characteristics
+[cols=2*,options=header]
+|===
+|*Workload input*
+|*Value*
+
+|Average message throughput
+|100 messages/second
+
+|Average message payload size
+|10 K bytes
+
+|Message compression
+|None
+
+|Message replication factorfootnote:[This should match the number of the availability zones (see Pulsar topology information below)]
+|3
+
+|Message retention and TTL periodfootnote:[Unacknowledged messages will expire after 1 day. Acknowledged messages will continue stay in the system up to 1 day]
+|1 day
+
+|===
+
+.Topology characteristics
+[cols=2*,options=header]
+|===
+|*Topology requirements*
+|*Value*
+
+|Availability Zones per region (AZs)footnote:[Pulsar server instances (of the same component type) should be evenly distributed across 3 AZs as much as possible, with minimum 1 Pulsar server instance per component type.]
+|3
+
+|Required Pulsar server components
+|Zookeepers, Bookkeepers, Brokers, Standalone autorecovery, Pulsar Proxy
+
+|Broker to bookkeeper ratio
+|1-to-5
+
+|===
+
+.VM hardware characteristics
+[cols=2*,options=header]
+|===
+|*VM hardware specification*
+|*Value*
+
+|VM Hardware specification
+|The disk space for bookkeeper is 4TB per bookkeeper server instancefootnote:[Effective bookkeeper ledger disk utilization percentage is 85%]
+
+|===
+
+== Sizing calculation
+
+. Determine the Pulsar server instance counts for all required server component types.
+.. Multiply replication factor by average message payload size by average message throughput.
++
+[source,plain]
+----
+Total message size (raw) =
+3 *    // replication factor: 3
+10 kb*   // average message payload size: 10 kilobytes
+100 * // average message throughput: 100 messages/sec
+(24 * 3600)    // TTL and retention period: 1 day
+    = 259 MB
+    ≅ .080 TB
+----
+.. We now know our cluster needs .080 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
++
+[source,plain]
+----
+Bookkeeper count(raw)=ceiling(.864/(4 * 0.85)) ≅ .25
+----
+
+With our xref:production-cluster-sizing.adoc#assumptions[assumptions] of a 1-to-5 broker-to-bookkeeper ratio and 85% bookkeeper utilization rate, we calculate the number of broker nodes.
+[source,plain]
+----
+Broker count(raw)=ceiling(.25/5) ≅ 1
+----
+
+Now that we know the estimated Bookkeeper and Broker counts, we can calculate the Pulsar topology requirements.
+.Pulsar cluster component count
+[cols=5*, options=header]
+|===
+|Pulsar server component
+|Total VM count (raw)
+|Total VM count (adjusted)
+|Per-AZ count distribution (adjusted)
+|Notes
+
+|Zookeeper
+|
+|1
+|2/2/1
+.5+a|* 3 AZs +
+* At least 1 Pulsar server instance per AZ +
+* Even distribution of Pulsar server instances across AZs
+
+|Bookkeeper
+|1
+|1
+|1 AZ
+
+|Broker
+|1
+|1
+|1 per AZ
+
+|Pulsar proxy
+|
+|1
+|1
+
+|===
+
+=== Determine VM node count
+
+Now that we know the Pulsar server instance count, we can determine the VM node counts.
+
+.Pulsar cluster CPU and memory requirements
+[cols=6*, options=header]
+|===
+|Pulsar server component
+|Pulsar server instance count
+|CPU core per server instance
+|Memory in GB per server instance
+|Total CPU core
+|Total memory in GB
+
+|Zookeeper
+|5
+|1
+|4
+|5
+|20
+
+|Bookkeeper
+|36
+|4
+|12
+|144
+|432
+
+|Broker
+|9
+|8
+|24
+|72
+|216
+
+|Standalone autorecovery
+|0
+|1
+|2
+|3
+|6
+
+|Pulsar proxy
+|3
+|1
+|2
+|3
+|6
+
+4+|Total CPU and memory resource requirements
+|227
+|680
+
+|===
+
+
