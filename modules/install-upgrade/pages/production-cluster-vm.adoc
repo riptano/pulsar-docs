@@ -3,6 +3,14 @@
 This page contains sizing and configuration information for a single VM-based production cluster.
 The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
 
+== Minimum cluster sizing
+
+include::partial$minimum-sizing.adoc[]
+
+== Minimum hardware sizing
+
+include::partial$hardware-sizing.adoc[]
+
 == Sizing analysis and calculation
 
 Assume a Pulsar cluster has the following workload, topology, and VM hardware characteristics:
@@ -87,6 +95,7 @@ Broker count(raw)=ceiling(38/5) ≅ 8
 ----
 
 Now that we know the estimated Bookkeeper and Broker counts, we can calculate the Pulsar topology requirements.
+
 .Pulsar cluster component count
 [cols=5*, options=header]
 |===
@@ -176,3 +185,10 @@ Now that we know the Pulsar server instance count, we can determine the VM node 
 
 |===
 
+== What's next?
+
+See more production-ready sizing examples for the following scenarios:
+
+* xref:production-cluster-sizing.adoc[]
+* xref:production-cluster-multiregion.adoc[]
+* xref:production-cluster-sandbox.adoc[]
