@@ -1,6 +1,6 @@
 = Luna Streaming built-in monitoring
 
-Luna Streaming deploys with the Prometheus stack (Prometheus, Alertmanager, and Grafana) for monitoring your cluster. See https://github.com/prometheus-operator/kube-prometheus[kube-prometheus] for full documentation on the Prometheus stack and its components. 
+Luna Streaming deploys with the Prometheus stack (Prometheus, Alertmanager, and Grafana) for monitoring your cluster. See https://github.com/prometheus-operator/kube-prometheus[kube-prometheus] for full documentation on the Prometheus stack and its components.
 
 == Enabling the Prometheus stack
 
@@ -57,12 +57,12 @@ Access the Alert Manager dashboard via `http://localhost:9093`.
 
 After you've deployed Luna Streaming in a cloud provider, access the built-in monitoring via the Load Balancer IP listed by your cloud provider:
 
-image::gcp-all-pods.png[GCP Pods]
+image::GCP-all-pods.png[GCP Pods]
 
 == Ingress
 
 If you're having trouble accessing your web interfaces via the exposed ports, ensure ingress to your Kubernetes cluster has been set up correctly. Detailed instructions for ingress are available https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/customizations/exposing-prometheus-alertmanager-grafana-ingress.md[here].
 
-== Next 
+== What's next?
 
-Learn more about managing your cluster with the Luna Streaming admin console xref:admin-console-tutorial.adoc[here].
+Learn more about managing your cluster with the Luna Streaming admin console xref:components:admin-console-tutorial.adoc[here].
