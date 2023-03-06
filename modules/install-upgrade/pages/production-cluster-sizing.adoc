@@ -1,6 +1,6 @@
 = Production Cluster Sizing
 
-This document summarizes DataStax's recommendations for the sizing and optimization of Apache Pulsars cluster on Linux in a production environment, whether that environment is on Kubernetes or bare metal.
+This document summarizes DataStax's recommendations for the sizing and optimization of Apache Pulsars cluster on Linux in a production environment.
 
 Of course, the sizing of a cluster depends on factors like use case and expected load, so this document is not intended to be a one-size-fits-all guide. Rather, we'd like to demonstrate how we consider and solve the problems inherent in sizing Pulsar clusters, and assist you on your journey to unlocking the scaling power of Pulsar.
 
@@ -24,22 +24,16 @@ Pulsar cluster sizing is a complex topic, and it's important to define some term
 * _VM node count:_ A VM node is the actual host machine.
 ** In a K8s-based deployment, 1 VM node equals 1 K8s node, and a K8s node may contain multiple pods with different server components.
 
-[#pulsar-node-count]
-* _Pulsar node count:_ One VM node may represent multiple Pulsar nodes. For example:
-** One 8-CPU VM node is counted as 1 Pulsar node.
-** One 16-CPU VM node is counted as 2 Pulsar nodes.
-
 == Considerations
 
 Some questions to consider before cluster sizing:
 
-. What is the desired message replication factor? This will impact the Pulsar broker configuration.
+. What is the desired message replication factor? This is determined by the Pulsar broker configuration and will impact the sizing result.
 . What are the Pulsar server components to be deployed? Zookeepers, Bookkeepers, and Brokers are mandatory, but there are other optional components that are highly recommended for production environments. See <<recommended>> for details.
 . How many physical racks or availability zones are available for the deployment? Georeplication and rack awareness will impact sizing analysis and calculation.
 . What is the Pulsar server component distribution requirement among the physical racks or availability zones?
 DataStax recommends as even a distribution as possible.
 . Is Bookkeeper rack-awareness configuration required? To maximize the high availability of a Pulsar cluster within a specific region, the Pulsar server host VMs need to be distributed evenly among available availability zones (AZs) within that region, and within each AZ, distributed evenly among available physical racks.
-. Will your cluster be deployed on Kubernetes or bare metal VMs? There is a small difference between bare metal and K8s node counts.
 . What is the expected message throughput? This will impact the number of Pulsar brokers and bookkeepers.
 . Do you have existing monitoring and metrics solutions in place? You may not need to deploy the optional monitoring and metrics components.
 
@@ -60,7 +54,8 @@ AutoRecovery detects bookkeeper node/pod failure and automatically recovers any 
 For a production environment, is it NOT recommended to deploy autorecovery processes on each bookkeeper node/pod.
 * Dedicated functions worker nodes/pods
 If the environment uses Pulsar functions or Pulsar I/O, Pulsar function workers need to be deployed. +
-For production deployment, it is NOT recommended to deploy functions workers as part of the brokers.
+For production deployment, it is NOT recommended to deploy functions workers as part of the brokers. +
+In a K8s-based deployment, we recommend dedicated node pools for function workers.
 * Dedicated Pulsar proxy nodes/pods +
 Proxy pods are more relevant in K8s-based deployments than VM-based deployments.
 
@@ -296,7 +291,7 @@ Assume a Pulsar cluster has the following workload, topology, and VM hardware ch
 
 === Calculations
 
-We apply our <<methodology>> to these characteristics to size a production cluster. +
+We apply our methodology with <<assumptions>> to these characteristics to size a production cluster. +
 
 . Determine the Pulsar server instance counts for all required server component types.
 .. Multiply replication factor by average message payload size by average message throughput.

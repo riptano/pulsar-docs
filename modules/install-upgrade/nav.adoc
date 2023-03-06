@@ -3,5 +3,5 @@
 ** xref:quickstart-server-installs.adoc[]
 ** xref:supported-versions.adoc[]
 * xref:production-cluster-sizing.adoc[Production Cluster Sizing]
-** xref:production-cluster-sizing-vm.adoc[]
-** xref:production-cluster-sizing-sandbox.adoc[]
+** xref:production-cluster-vm.adoc[]
+** xref:production-cluster-sandbox.adoc[]
