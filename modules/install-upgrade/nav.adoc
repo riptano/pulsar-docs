@@ -4,4 +4,5 @@
 ** xref:supported-versions.adoc[]
 ** xref:production-cluster-sizing.adoc[Production Cluster Sizing]
 *** xref:production-cluster-vm.adoc[]
+*** xref:production-cluster-multiregion.adoc[]
 *** xref:production-cluster-sandbox.adoc[]
