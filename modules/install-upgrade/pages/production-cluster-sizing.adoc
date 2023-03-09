@@ -131,7 +131,7 @@ Gather these workload characteristics to determing your cluster's size requireme
 
 == Example methodology
 
-With the aggregated workload characteristics, we can now apply our methodology with to these characteristics to size a production cluster. +
+With the aggregated workload characteristics, we can now apply our methodology to these characteristics to size a production cluster. +
 
 . Determine the Pulsar server instance counts for all required server component types.
 .. Multiply replication factor by average message payload size by average message throughput.
