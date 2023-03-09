@@ -1,3 +1,14 @@
+:activeTopics: 100
+:messageSize: 1MB
+:messageThroughput: 5000 messages per second
+:retentionPolicy: 1 month
+:ttlPolicy: 1 month
+:tieredStoragePolicy: n/a
+:messageReplicationFactor: 3
+:clusterReplicationFactor: 3
+
+// Example with 3 zones using geo-replication across 2 clouds
+
 = Multi-region georeplication
 Pulsar clusters can be configured to replicate data across multiple regions to maximize availability.
 This replication can be *synchronous* or *asynchronous* and implemented *with* or *without* a global Zookeeper (configuration store).

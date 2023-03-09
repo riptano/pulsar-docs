@@ -1,3 +1,13 @@
+:activeTopics: 100
+:messageSize: 1MB
+:messageThroughput: 5000 messages per second
+:retentionPolicy: 1 month
+:ttlPolicy: 1 month
+:tieredStoragePolicy: n/a
+:messageReplicationFactor: 3
+
+// Example with high throughput for very active systems in 3 zones
+
 = VM-based Pulsar production cluster
 
 This page contains sizing and configuration information for a single VM-based production cluster.

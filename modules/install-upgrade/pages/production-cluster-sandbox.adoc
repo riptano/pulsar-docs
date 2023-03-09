@@ -1,3 +1,13 @@
+:activeTopics: 100
+:messageSize: 1MB
+:messageThroughput: 5000 messages per second
+:retentionPolicy: 1 month
+:ttlPolicy: 1 month
+:tieredStoragePolicy: n/a
+:messageReplicationFactor: 3
+
+// Example with the minimum VMs and recommended components in 3 zones
+
 = Pulsar VM sandbox cluster
 
 Want to take a cluster for a spin, but don't need to size for production yet?
@@ -13,6 +23,101 @@ include::partial$minimum-sizing.adoc[]
 
 include::partial$hardware-sizing.adoc[]
 
+[#required-components]
+== Required server components
+
+The minimum deployment of a Pulsar cluster MUST have the following server components.
+
+* Zookeeper - this is Pulsar’s meta data store. It keeps data about a cluster’s configuration, it helps the proxy direct messages to a broker, and holds Bookie configuration. To start use 1 instance of Zookeeper in your cluster. Let the # of lookups delegate scaling from there.
+
+* Broker - 
+
+* Bookkeeper (bookie) -  this is Pulsar’s data store. Is uses the constsructs of Bookeeper to store message data in a low-latency, resilient way. Start with 3 bookies (instances), that are distributed across the 3 zones. Pulsar uses Bookkeeper’s quorum math to function, so a loss of 1 instancewon’t bring the system down but will have some data loss.
+
+.Bookkeeper Ledger Disk Capacity
+[cols=3*,options=header]
+|===
+|Bookkeeper
+|Node Count by AZs
+|Broker Node Count by AZs
+|300 GB
+|531 (177/AZ)
+|27 (9/AZ)
+|1 TB
+|157 (59/AZ)
+|9 (3/AZ)
+|2 TB
+|78 (26/AZ)
+|6 (2/AZ)
+|4 TB
+|39 (13/AZ)
+|6 (2/AZ)
+|8 TB
+|21 (7/AZ)
+|6 (2/AZ)
+
+|===
+
+=== Bookkeeper
+
+The ledger disk capacity of each bookkeeper node mainly determines the count of the bookkeeper nodes required in the cluster.
+
+Compaction and disk usage settings also impact the bookkeeper node count.
+Compaction requires extra disk space, and the longer the interval between compaction runs, the more disk space is required.
+The frequency of compaction runs can be increased, but this requires additional CPU and memory resources.
+
+Default bookkeeper settings (in bookkeeper.conf) also directly impact ledger disk utilization.
+These settings control when bookkeepers become read-only.
+
+* readOnlyModeEnabled
+* diskUsageThreshold
+* diskUsageWarnThreshold
+* diskUsageLwmThreshold
+* diskCheckInterval
+
+So, assuming the default bookkeeper settings above, the effective ledger disk capacity is 80% of the actual ledger disk capacity.
+With that in mind, the bookkeeper node counts for a 3-disk capacity use case are as follows:
+
+[cols=4*,options=header]
+|===
+|Ledger Disk Capacity
+|Effective Ledger Disk Capacity
+|Raw Node Count
+|Node Count by AZs
+|(3 AZ per region)
+|300 GB
+|240 GB
+|529
+|531 (177/AZ)
+|1 TB
+|0.8 TB
+|155
+|157 (59/AZ)
+|2 TB
+|1.6 TB
+|78
+|78 (26/AZ)
+|4 TB
+|3.2 TB
+|39
+|39 (13/AZ)
+|8 TB
+|6.4 TB
+|20
+|21 (7/AZ)
+
+|===
+
+[#recommended]
+=== Recommended server components
+
+The DataStax Luna Streaming Helm chart deployment includes optional but highly recommended server components for better Pulsar cluster metrics monitoring and operation visibility.
+These components are NOT included in the VM-based deployment.
+If your enterprise has its own monitoring and metrics dashboarding system, these components are NOT required.
+
+* Pulsar AdminConsole nodes/pods
+* Pulsar Heartbeat nodes/pods
+* Prometheus/Grafana/Alert manager stack nodes/pods
 
 == What's next?
 
