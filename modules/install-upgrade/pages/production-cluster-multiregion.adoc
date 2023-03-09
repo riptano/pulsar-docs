@@ -21,7 +21,7 @@ We apply our sizing methodology with the following assumptions: +
 [#aggregate-worksheet]
 == Example workload aggregation worksheet
 
-This initial cluster requirements for the Pulsar cluster described in xref:production-cluster-sizing.adoc#aggregate-worksheet[] are as below:
+This initial cluster requirements for the Pulsar cluster described in xref:production-cluster-sizing.adoc[] are as below:
 
 .Workload input characteristics
 [cols=2*,options=header]
