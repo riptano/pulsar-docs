@@ -1,8 +1,8 @@
-:activeTopics: 100
-:messageSize: 1 MB
-:messageThroughput: 50000 messages per second
-:retentionPolicy: 1 month
-:ttlPolicy: 1 month
+:activeTopics:
+:messageSize: 10000
+:messageThroughput: 50000
+:retentionPolicy: 3600
+:ttlPolicy: 24
 :tieredStoragePolicy: n/a
 :messageReplicationFactor: 3
 
@@ -14,8 +14,11 @@ This page contains sizing and configuration information for a single VM-based pr
 The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
 
 == Sizing analysis and calculation
+Remember the xref:production-cluster-sizing.adoc#aggregate-worksheet[workload aggregation worksheet]?
 
-Assume a Pulsar cluster has the following workload, topology, and VM hardware characteristics:
+We're going to fill one out for our VM-based Pulsar cluster.
+
+This cluster must throughput 50k messages per second, or 4.32 billion messages per day! We'll need to ensure we have enough resources to handle this workload.
 
 .Workload input characteristics
 [cols=2*,options=header]
@@ -23,20 +26,29 @@ Assume a Pulsar cluster has the following workload, topology, and VM hardware ch
 |*Workload input*
 |*Value*
 
-|Average message throughput
-|50 K messages/second
+| Number of active topics
+| {activeTopics}
 
-|Average message payload size
-|10 K bytes
+| Average message size
+| {messageSize} bytes
+
+| Incoming message throughput
+| {messageThroughput} messages per second
+
+| Message retention
+| {retentionPolicy} seconds
+
+| TTL Policyfootnote:[Unacknowledged messages will expire after {ttlPolicy} hours. Acknowledged messages will persist in the system up to {ttlPolicy} hours.]
+| {ttlPolicy} hours
+
+| Tiered storage
+| {tieredStoragePolicy}
 
 |Message compression
 |None
 
 |Message replication factorfootnote:[This should match the number of the availability zones (see Pulsar topology information below)]
-|3
-
-|Message retention and TTL periodfootnote:[Unacknowledged messages will expire after 1 day. Acknowledged messages will continue stay in the system up to 1 day]
-|1 month
+|{messageReplicationFactor}
 
 |===
 
@@ -73,27 +85,27 @@ Assume a Pulsar cluster has the following workload, topology, and VM hardware ch
 . Determine the Pulsar server instance counts for all required server component types.
 .. Multiply replication factor by average message payload size by average message throughput.
 +
-[source,plain]
+[source,plain,subs="attributes+"]
 ----
 Total message size (raw) =
-3 *    // replication factor: 3
-10k *   // average message payload size: 10k bytes
-50k * // average message throughput: 50k messages/sec
-(24 * 3600)    // TTL and retention period: 1 day
+{messageReplicationFactor} * // replication factor
+{messageSize} * // average message payload size
+{messageThroughput} * // average message throughput
+({ttlPolicy} * {retentionPolicy})    // TTL and retention period
     = 129,600,000 MB
-    ≅ 129 TB
+    ≅ 124 TB
 ----
-.. We now know our cluster needs 129 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
+.. We now know our cluster needs 124 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
 +
 [source,plain]
 ----
-Bookkeeper count(raw)=ceiling(129/(4 * 0.85)) ≅ 38
+Bookkeeper count (raw) = ceiling(124 / (4 * 0.85)) = 36
 ----
 
 With our xref:production-cluster-sizing.adoc#assumptions[assumptions] of a 1-to-5 broker-to-bookkeeper ratio and 85% bookkeeper utilization rate, we calculate the number of broker nodes.
 [source,plain]
 ----
-Broker count(raw)=ceiling(38/5) ≅ 8
+Broker count (raw) = ceiling(36 / 5) = 8
 ----
 
 Now that we know the estimated Bookkeeper and Broker counts, we can calculate the Pulsar topology requirements.
@@ -108,7 +120,7 @@ Now that we know the estimated Bookkeeper and Broker counts, we can calculate th
 |Notes
 
 |Zookeeper
-|
+|5
 |5
 |2/2/1
 .5+a|* 3 AZs +
@@ -117,16 +129,16 @@ Now that we know the estimated Bookkeeper and Broker counts, we can calculate th
 
 |Bookkeeper
 |36
-|36
+|13/13/13
 |13 per AZ
 
 |Broker
 |8
-|6
-|2 per AZ
+|3/3/3
+|3 per AZ
 
 |Pulsar proxy
-|
+|1
 |3
 |1/1/1
 

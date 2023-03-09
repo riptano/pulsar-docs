@@ -1,8 +1,8 @@
-:activeTopics: 100
-:messageSize: 1MB
-:messageThroughput: 5000 messages per second
-:retentionPolicy: 1 month
-:ttlPolicy: 1 month
+:activeTopics: 1
+:messageSize: 1000
+:messageThroughput: 100000
+:retentionPolicy: 24
+:ttlPolicy: 24
 :tieredStoragePolicy: n/a
 :messageReplicationFactor: 3
 :clusterReplicationFactor: 3
@@ -10,6 +10,14 @@
 // Example with 3 zones using geo-replication across 2 clouds
 
 = Multi-region georeplication
+This page contains sizing and configuration information for a single VM-based production cluster. +
 Pulsar clusters can be configured to replicate data across multiple regions to maximize availability.
 This replication can be *synchronous* or *asynchronous* and implemented *with* or *without* a global Zookeeper (configuration store).
-This example is *asynchronous* and does *not* use a global Zookeeper.
+
+We apply our sizing methodology with the following assumptions: +
+
+* Replication will be *asynchronous* and *not* use a global Zookeeper.
+* We will replicate *all topics* across two regions.
+* We will assume the same TTL and retention policies as the initial Pulsar cluster (the cluster being replicated from).
+
+== 
