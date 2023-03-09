@@ -1,6 +1,6 @@
 :activeTopics: 100
-:messageSize: 1MB
-:messageThroughput: 5000 messages per second
+:messageSize: 1 MB
+:messageThroughput: 50000 messages per second
 :retentionPolicy: 1 month
 :ttlPolicy: 1 month
 :tieredStoragePolicy: n/a
@@ -12,16 +12,6 @@
 
 This page contains sizing and configuration information for a single VM-based production cluster.
 The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
-
-Start with one of the minimum configurations below, and adjust the configuration to meet your requirements.
-
-== Minimum cluster sizing
-
-include::partial$minimum-sizing.adoc[]
-
-== Minimum hardware sizing
-
-include::partial$hardware-sizing.adoc[]
 
 == Sizing analysis and calculation
 
@@ -46,7 +36,7 @@ Assume a Pulsar cluster has the following workload, topology, and VM hardware ch
 |3
 
 |Message retention and TTL periodfootnote:[Unacknowledged messages will expire after 1 day. Acknowledged messages will continue stay in the system up to 1 day]
-|1 day
+|1 month
 
 |===
 
