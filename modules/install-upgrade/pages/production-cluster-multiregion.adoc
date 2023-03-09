@@ -19,7 +19,7 @@ We apply our sizing methodology with the following assumptions: +
 * We will assume the same time-to-live and retention policies as the initial Pulsar cluster (the cluster being replicated from).
 
 [#aggregate-worksheet]
-== Example workload aggregation worksheet
+== Workload aggregation worksheet
 
 This initial cluster requirements for the Pulsar cluster described in xref:production-cluster-sizing.adoc[] are as below:
 
