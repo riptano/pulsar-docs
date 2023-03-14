@@ -44,7 +44,7 @@ include::partial$port-forward-web-service.adoc[]
 
 == Confirm Presto is available
 
-. In a browser, navigate to http://localhost:8090[http://localhost:8090^]. +
+. In a browser, navigate to \http://localhost:8090. +
 You will be greeted by Presto’s login.
 +
 image::presto-sql-login.png[Presto SQL login]
