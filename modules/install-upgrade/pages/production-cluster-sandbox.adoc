@@ -6,11 +6,10 @@
 :tieredStoragePolicy: n/a
 :messageReplicationFactor: 3
 
-= Pulsar VM sandbox clusters
+= Dev and Test VM sandbox clusters
 
 This page sizes the minimum, baseline resources for a Pulsar cluster on VM.
-Size your cluster through development, test, and finally to production environments starting with the recommended counts below.
-
+Size your cluster through development and test environments starting with the recommended counts below.
 The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
 
 == Development cluster
