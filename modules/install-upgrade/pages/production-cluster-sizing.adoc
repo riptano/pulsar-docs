@@ -32,22 +32,20 @@ Pulsar clusters come in many shapes and sizes. There are minimum components for 
 
 === Required components
 
-* Zookeeper - This is Pulsar’s meta data store. It stores data about a cluster’s configuration, helps the proxy direct messages to a broker, and holds Bookie configurations. To star, use 1 instance of Zookeeper in your cluster and let the number of lookups delegate scaling from there.
+* Zookeeper - This is Pulsar’s meta data store. It stores data about a cluster’s configuration, helps the proxy direct messages to a broker, and holds Bookie configurations.
 
 * Broker - This is Pulsar's message router.
 Ideally, each broker should be fully utilized without becoming a performance bottleneck.
 The best way to optimize this is through performance testing based on your cluster's workload characteristics.
-Start with 1 broker per cluster and scale as needed.
 Fortunately, the Pulsar broker is stateless, so adding or removing brokers has minimal performance impact on the cluster.
 
 * Bookkeeper (bookie) - This is Pulsar’s data store.
 Bookkeeper stores message data in a low-latency, resilient way.
-Start with 3 bookies distributed across 3 availability zones.
 Pulsar uses Bookkeeper’s quorum math to function, so a loss of 1 Bookkeeper instance won’t bring your system down, but will cause some data loss.
 
 * Auto recovery - This is a Pulsar component that recovers Bookkeeper data in the event of a Bookkeeper outage.
-* Pulsar Proxy - This is an optional proxy for routing client requests to brokers.
-* Dedicated or combined functions worker(s) - Your cluster may or may not use functions workers, and may or may not run on the same machine as the broker.
+* Pulsar Proxy - This is a proxy for routing client requests to brokers. Proxy is optional for VM deployments and required for Kubernetes deployments.
+* Dedicated functions worker(s) - Your cluster may or may not use dedicated functions workers.
 
 [#recommended]
 === Recommended server components
@@ -81,7 +79,7 @@ There are other factors that could be a part of the aggregated cluster workload.
 == Assumptions
 
 The methodology in this guide relies on the assumption that the ratio of the broker instance count to the bookkeeper instance count is static.
-For this example, we're using 1-to-5 as the static broker-to-bookkeeper ratio.
+For this example, we're using 1-to-5 as the static broker-to-bookkeeper ratio. 1-to-5 is just an assumption to make sizing easier. A complete performance analysis is required to accurately size a Pulsar cluster.
 
 The broker instance count calculation based on this assumption MUST be adjusted if it violates minimum Pulsar cluster topology requirements.
 These requirements are:
@@ -139,12 +137,12 @@ With the aggregated workload characteristics, we can now apply our methodology t
 [source,plain,subs="attributes+"]
 ----
 Total message size (raw) =
-{messageReplicationFactor} * // replication factor
-{messageSize} * // average message payload size
-{messageThroughput} * // average message throughput
-({ttlPolicy} * {retentionPolicy}) // TTL and retention period
-  = 25,920,000 MB
-  ≅ 25 TB
+{messageReplicationFactor} *           // replication factor
+{messageSize} *        // average message payload size
+{messageThroughput} *      // average message throughput
+({ttlPolicy} * {retentionPolicy})   // TTL and retention period
+= 25,920,000 MB
+≅ 25 TB
 ----
 .. We now know our cluster needs 25 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
 +
