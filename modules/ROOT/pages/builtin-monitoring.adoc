@@ -35,7 +35,7 @@ Access the Prometheus, Grafana, and Alertmanager dashboards with `kubectl port-f
 $ kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090
 ----
 
-Access the Prometheus dashboard via `http://localhost:9090`.
+Access the Prometheus dashboard via \`http://localhost:9090`.
 
 === Accessing Grafana
 
@@ -43,7 +43,7 @@ Access the Prometheus dashboard via `http://localhost:9090`.
 $ kubectl --namespace monitoring port-forward svc/grafana 3000
 ----
 
-Access the Grafana dashboard via `http://localhost:3000`. Use the Grafana login credentials listed in `values.yaml`.
+Access the Grafana dashboard via \`http://localhost:3000`. Use the Grafana login credentials listed in `values.yaml`.
 
 === Accessing Alert Manager
 
@@ -51,7 +51,7 @@ Access the Grafana dashboard via `http://localhost:3000`. Use the Grafana login 
 $ kubectl --namespace monitoring port-forward svc/alertmanager-main 9093
 ----
 
-Access the Alert Manager dashboard via `http://localhost:9093`.
+Access the Alert Manager dashboard via \`http://localhost:9093`.
 
 == Accessing Prometheus Stack via Cloud Provider
 
