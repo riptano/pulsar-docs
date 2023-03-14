@@ -1,5 +1,5 @@
 :activeTopics: 1
-:messageSize: 1000
+:messageSize: 1
 :messageThroughput: 100000
 :retentionPolicy: 3600
 :ttlPolicy: 24
@@ -39,7 +39,6 @@ Pulsar clusters come in many shapes and sizes. There are minimum components for 
 Ideally, each broker should be fully utilized without becoming a performance bottleneck.
 The Pulsar broker is stateless, so it requires considerable computing power but not much storage.
 Start with 1 Broker instance in each zone, and set a scaling rule that watches CPU load.
-
 The best way to optimize this is through performance testing based on your cluster's workload characteristics.
 
 * Bookkeeper (bookie) - This is Pulsar’s data store.
@@ -47,16 +46,27 @@ Bookkeeper stores message data in a low-latency, resilient way.
 Pulsar uses Bookkeeper’s quorum math to function, so a loss of 1 Bookkeeper instance won’t bring your system down, but will cause some data loss.
 Start with at least 3 bookies, with 1 in each AZ. Scale bookies up on disc usage percentage. Scale down manually by making a bookie read-only, offloading its data, then terminating the instance.
 
-* Auto recovery - This is a Pulsar component that recovers Bookkeeper data in the event of a Bookkeeper outage.
-* Pulsar Proxy - This is a proxy for routing client requests to brokers. Proxy is optional for VM deployments and required for Kubernetes deployments.
-* Dedicated functions worker(s) - Your cluster may or may not use dedicated functions workers.
-
 [#recommended]
 === Recommended server components
 
 The DataStax Luna Streaming Helm chart deployment includes optional but highly recommended server components for better Pulsar cluster metrics monitoring and operation visibility.
-These components are NOT included in the VM-based deployment.
 
+* Bookkeeper AutoRecovery - This is a Pulsar component that recovers Bookkeeper data in the event of a bookie outage. While optional you will want the insurance of autorecovery working on your behalf.
+Learn more about Bookkeeper autorecovery https://bookkeeper.apache.org/docs/admin/autorecovery[here].
+A single instance of Autorecovery should be adequate - only in the most heavily-used clusters will you need more.
+* Pulsar proxy - The Pulsar proxy is just that - a proxy.
+It runs at the edge of the cluster with public facing endpoints.
+Without it, your brokers would expose those endpoints, which is not an ideal configuration in production.
+Pulsar proxy also offers special options for cluster extensions, like our Starlight Suite of APIs.
+Start with a proxy in each zone.
+The proxy will be made aware of all the brokers in the same zone and load balance across them.
+Have your load balancer round-robin to all proxy instances in all zones.
+Proxy is optional for VM deployments and required for Kubernetes deployments.
+Scale proxies by their network load or (if running extensions) also scale on CPU usage.
+* Dedicated functions worker(s) - You can optionally run dedicated function workers in a Pulsar cluster.
+Without dedicated function workers, functions run as a seperate process on the Broker.
+Function workers usually need quite a bit of compute and memory, but not much disk.
+Scale the workers based on overall usage (both CPU and memory).
 * Pulsar AdminConsole - This is an optional web-based admin console for managing Pulsar clusters.
 * Pulsar Heartbeat - This is an optional component that monitors the health of Pulsar cluster.
 * Prometheus/Grafana/Alert manager stack - This is an optional stack for monitoring Pulsar cluster metrics.
@@ -64,20 +74,18 @@ These components are NOT included in the VM-based deployment.
 == Aggregated cluster workload
 
 To size a cluster, you need a general understanding of what workloads it will be running.
-Obviously, it’s almost impossible to definitively know the exact applications and message sizes that will be used, and if your cluster is successful, more teams will want to use it! So we’ve collected the “building blocks” of sizing a cluster, which we call an “aggregated cluster workload”. Think of it as a loosely calculated algorithm to approximate cluster sizing.
+Realistically, it’s almost impossible to definitively know the exact applications and message sizes that will be used. If your cluster is successful, more teams will want to use it! So we’ve collected the “building blocks” of sizing a cluster, which we call an “aggregated cluster workload”. Think of it as a loosely calculated algorithm to approximate cluster sizing.
 
-* _Average message size (uncompressed)_ - this is the most important number to understand. A message is sized by the number of bytes. The data that composes a message includes a *message key*, *message properties*, and the *message payload*. A *message key* is roughly the same number of characters as a GUID. *Message properties* is a key/value collection of metadata, so the number of characters varies. The *message payload* accounts for the bulk of the sizing variability. To start, assume the message is a JSON string with some number of characters. +
-For more on message compression, see the https://pulsar.apache.org/docs/2.11.x/concepts-messaging/#compression[Pulsar documentation].
+* _Average message size (uncompressed) - this is the most important number to understand. A message is sized by the number of bytes. A message includes its *message key*, *properties*, and a *message payload*. A *message key* is roughly the same number of characters as a GUID (or hash). *Message properties* is a key/value collection of metadata, so the number of characters varies. The *message payload* accounts for the bulk of the sizing variability. To start, assume the message is a JSON string with some number of characters. +
+For more on message compression, see the https://pulsar.apache.org/docs/2.11.x/concepts-messaging/#compression[Pulsar documentation], or search for “calculate bytes of string” into your favorite search engine - you’ll find quite a few free tools where you can type out a sample JSON-formatted string and see the byte count.
 
-* _Incoming message throughput (e.g. # of messages per second)_ - this is the second most important number to understand. Throughput is expressed as a number of messages that the cluster can produce in a second. Think about this number in terms of steady traffic and burst traffic. Pulsar can scale brokers to handle bursts, so you don’t need to size for maximum workload. If you were streaming in data every time someone clicked on a website and the site received a constant 2000 views per second, then your minimum throughput must be able to handle a load above that requirement, because that stream won't be the only load on the cluster.
+* _Incoming message throughput - this is the second most important number to understand. Throughput is expressed as a number of messages that the cluster can produce in a second. Think about this number in terms of steady traffic and burst traffic. Pulsar can scale brokers to handle bursts, so you don’t need to size for maximum workload, but you do need to consider the time it takes to scale up broker instances. If you were streaming in data every time someone clicked on a web page, and the site received a constant 2000 views per second, then your minimum throughput must be able to handle a load above that requirement, because that stream won't be the only load on the cluster. You likewise wouldn't size the cluster to your existing load, because you hope that load will grow over time.
 
-* _Number of active topics_ - If the applications using the cluster will be event-driven, then there will most likely be quite a few topics, possibly one for every event type. If the cluster is mostly for streaming data, then each data type will have multiple topics supporting it.
-
-* _Message retention and TTL period_ - Assume that most of the topics in the cluster will be persistent, meaning that messages (once acknowledged) are stored for later lookup on disk. The default retention times in Pulsar are XXXX and the default time to live is XXXX. With a feel for average message size and retention policies we can begin to understand storage needs. TTL (time-to-live) determines how long an unacknowledged message lasts before it is deleted, even before it is acknowledged.
+* _Message retention and TTL period_ - Assume that most of the topics in the cluster will be persistent, meaning that messages (once acknowledged) are stored for later lookup on disk. By default, retention time is disabled and the default time to live is 0 (indefinite). With a feel for average message size and retention policies we can begin to understand storage needs. TTL (time-to-live) determines how long an unacknowledged message lasts before it is deleted. A TTL of 0 means Pulsar will continuously try to deliver unacknowledged messages. For more on message retention and TTL, see the https://pulsar.apache.org/docs/cookbooks-retention-expiry/[Pulsar documentation].
 
 * _Tiered storage policies_ - Tiered storage offloads bookkeeper data to cheaper, long-term storage, and can impact cluster sizing. For more on tiered storage, see https://pulsar.apache.org/docs/2.11.x/tiered-storage-overview/[Pulsar documentation].
 
-There are other factors that could be a part of the aggregated cluster workload. As you gain familiarity with Pulsar you can further customize this calculation, but for now, we will estimate with the above numbers to size a cluster.
+There are other factors that could be a part of the aggregated cluster workload. As you gain familiarity with Pulsar you can further customize this calculation. For now, we will estimate with the above numbers to size a cluster.
 
 [#assumptions]
 == Assumptions
@@ -115,7 +123,7 @@ Gather these workload characteristics to determing your cluster's size requireme
 | {activeTopics}
 
 | Average message size
-| {messageSize} bytes
+| {messageSize} Kb
 
 | Incoming message throughput
 | {messageThroughput} messages per second
@@ -135,68 +143,84 @@ Gather these workload characteristics to determing your cluster's size requireme
 
 With the aggregated workload characteristics, we can now apply our methodology to these characteristics to size a production cluster. +
 
-. Determine the Pulsar server instance counts for all required server component types.
-.. Multiply replication factor by average message payload size by average message throughput.
+First, we will size the bookkeeper's disk.
+We size this first because it's the most important component (bookies store message data) and are also the hardest to scale.
+By default, Pulsar sets Bookkeeper ack-quorum size to 2.
+That means at least 2 bookies in the ensemble need to acknowledge receipt of message data before Pulsar will acknowledge receipt of the message.
+But (very important) we want the message replication factor to be an odd number, so we can tolerate 1 Bookie failure.
+
+. Multiply replication factor (3) by average message payload size  (1 Kb) by average message throughput (100,000), then factor in TTL and retention period.
 +
 [source,plain,subs="attributes+"]
 ----
 Total message size (raw) =
 {messageReplicationFactor} *           // replication factor
-{messageSize} *        // average message payload size
+{messageSize} Kb *        // average message payload size
 {messageThroughput} *      // average message throughput
 ({ttlPolicy} * {retentionPolicy})   // TTL and retention period
 = 25,920,000 MB
 ≅ 25 TB
 ----
-.. We now know our cluster needs 25 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
+We now know our cluster needs 25 TB of storage for Bookkeeper ledger data.
+
+. Calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
 +
 [source,plain]
 ----
 Bookkeeper count(raw)=ceiling(25/(4 * 0.85)) = 8
 ----
+We need 8 total bookies across 3 zones. We adjust this to a number that is divisible by the number of zones, so the adjusted bookie count is 9.
 
-.. With our assumption of a 1-to-5 broker-to-bookkeeper ratio, we calculate the number of broker nodes.
+. Given the replication factor of 3, we will (obviously) need at least 1 broker to write messages to the bookies. That gives us a broker-to-bookkeeper ratio of 1:3. Now we can calculate the total number of Brokers across 3 zones.
 +
 [source,plain]
 ----
-Broker count(raw)=ceiling(8/5) = 2
+Broker count(raw)=ceiling(8/3) = 3
 ----
+We will need 3 Brokers (one in each Zone) to serve messages. This should also be evenly divisible by the number of zones.
 
-=== Pulsar server instance counts
+=== Pulsar component instance counts
 
-Now that we know how many server instances of each Pulsar component are required to support our workload, we adjust according to Pulsar topology requirements.
+Now that we know how many server instances of Broker and Bookie are required to support our workload, we include the other components to size the overall cluster.
 
 .Pulsar cluster component count
-[cols=5*, options=header]
+[cols="2,2,2", options=header]
 |===
-|Pulsar server component
-|Total VM count (raw)
-|Total VM count (adjusted)
-|Per-AZ count distribution (adjusted)
+|Component
+|VM Count
 |Notes
 
 |Zookeeper
-|5
-|5
-|2/2/1
-.5+a|* 3 AZs +
-* At least 1 Pulsar server instance per AZ +
-* Even distribution of Pulsar server instances across AZs
+|3
+|1 per zone
 
-|Bookkeeper
-|8
+|Bookkeeper (bookie)
 |9
-|3/3/3
+|Sized above
 
 |Broker
-|2
 |3
-|1/1/1
+|Sized above
 
-|Pulsar proxy
-|1
+|Proxy
 |3
-|1/1/1
+|1 per zone
+
+|Autorecovery
+|1
+|1 per cluster
+
+|Function workers
+|3
+|1 per zone
+
+|Admin
+|1
+|1 per cluster
+
+|Heartbeat
+|1
+|1 per cluster
 
 |===
 
