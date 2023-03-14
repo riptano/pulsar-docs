@@ -6,14 +6,14 @@
 :tieredStoragePolicy: n/a
 :messageReplicationFactor: 3
 
-= Pulsar VM sandbox cluster
+= Pulsar VM sandbox clusters
 
-Want to take a cluster for a spin, but don't need to size for production just yet?
 This page sizes the minimum, baseline resources for a Pulsar cluster on VM.
-Instead of 3 Brokers, 3 Bookies, and 3 Zookeepers for a 3/3/3 production cluster on VM, this cluster has 1 of each for a 3 VM cluster.
+Size your cluster through development, test, and finally to production environments starting with the recommended counts below.
 
 The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
 
+== Development cluster
 .Development cluster sizing
 [cols=4*,options=header]
 |===
@@ -46,6 +46,64 @@ a|Data disks are shared by: +
 * zookeeper data +
 * bookkeeper journal +
 * bookkeeper ledger
+|===
+
+== Test cluster
+
+.Test cluster sizing
+[cols=4*,options=header]
+|===
+|Environment
+|Server Component
+|Node Count
+|Note
+
+.4+|TEST
+|Zookeeper
+|3
+|1 node per AZ
+| (Combined) Broker and Function Worker
+| 3
+| 1 node per AZ +
+Even if the Pulsar function is needed, it runs as part of the brokers. No dedicated function worker node is needed.
+| Bookie
+| 6
+| 2 nodes per AZ +
+See note 3 below
+| Admin Console and Heartbeat
+| 1
+| Shared 1 server host; placed in any rack
+|===
+
+.Test Cluster hardware
+[cols=4*,options=header]
+|===
+|Environment
+|Server Component
+|Hardware Spec
+|Note
+
+.4+|TEST
+|Zookeeper
+a|* CPU: 2 vCPU +
+* Memory: 4 GB
+* Data Disk: 32 GB SSD
+|
+|(Combined) Broker and Function Worker
+a|* CPU: 8 vCPU +
+* Memory: 16 GB
+|No data disk
+|Bookie
+a|* CPU: 4 vCPU +
+* Memory: 16 GB +
+* Data Disk +
+** Journal: 32 GB SSD +
+** Ledger: 256 GB SSD
+|
+|(combined) AdminConsole and Heartbeat
+a|* CPU: 4 vCPU +
+* Memory: 8 GB
+|
 |===
 
 == What's next?
