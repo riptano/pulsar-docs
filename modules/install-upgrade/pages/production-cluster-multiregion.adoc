@@ -14,7 +14,7 @@ Pulsar clusters can be configured to replicate data across multiple regions to m
 
 We apply our sizing methodology with the following assumptions: +
 
-* Replication will be *asynchronous* and *will not* use a global Zookeeper.
+* Replication will be https://pulsar.apache.org/docs/2.10.x/concepts-replication/#asynchronous-geo-replication-in-pulsar[asynchronous] and https://pulsar.apache.org/docs/2.11.x/administration-geo/[will not] use a global Zookeeper. +
 * We will replicate *all topics* across two regions.
 * We will assume the same time-to-live and retention policies as the initial Pulsar cluster (the cluster being replicated from).
 
@@ -56,23 +56,23 @@ With the aggregated workload characteristics, we apply our methodology to these 
 [source,plain,subs="attributes+"]
 ----
 Total message size (raw) =
-{messageReplicationFactor} * // replication factor
-{messageSize} * // average message payload size
-{messageThroughput} * // average message throughput
-({ttlPolicy} * {retentionPolicy}) // TTL and retention period
-  = 25,920,000 MB
-  ≅ 25 TB
+{messageReplicationFactor} *           // replication factor
+{messageSize} *        // average message payload size
+{messageThroughput} *      // average message throughput
+({ttlPolicy} * {retentionPolicy})   // TTL and retention period
+= 25,920,000 MB
+≅ 25 TB
 ----
 
 .. But wait! We need to account for replicating this cluster across two regions.
 Following our assumptions above, we multiply the total message size by the number of regions we are replicating to, which in this case is {clusterReplicationFactor} regions.
-
++
 [source,plain,subs="attributes+"]
 ----
 Adjusted message size (raw) =
 25 TB * // total message size (raw)
-{clusterReplicationFactor} // replication factor
-  ≅ 50 TB
+{clusterReplicationFactor}       // number of clusters
+≅ 50 TB
 ----
 
 .. We now know our cluster needs 50 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.

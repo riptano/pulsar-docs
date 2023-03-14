@@ -88,12 +88,12 @@ This cluster must throughput 50k messages per second, or 4.32 billion messages p
 [source,plain,subs="attributes+"]
 ----
 Total message size (raw) =
-{messageReplicationFactor} * // replication factor
-{messageSize} * // average message payload size
-{messageThroughput} * // average message throughput
-({ttlPolicy} * {retentionPolicy})    // TTL and retention period
-    = 129,600,000 MB
-    ≅ 124 TB
+{messageReplicationFactor} *           // replication factor
+{messageSize} *        // average message payload size
+{messageThroughput} *      // average message throughput
+({ttlPolicy} * {retentionPolicy})   // TTL and retention period
+= 129,600,000 MB
+≅ 124 TB
 ----
 .. We now know our cluster needs 124 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
 +
@@ -129,7 +129,7 @@ Now that we know the estimated Bookkeeper and Broker counts, we can calculate th
 
 |Bookkeeper
 |36
-|13/13/13
+|12/12/12
 |13 per AZ
 
 |Broker
