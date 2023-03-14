@@ -8,9 +8,10 @@
 
 = Production Cluster Sizing
 
-This document summarizes DataStax's recommendations for the sizing and optimization of Apache Pulsars cluster on Linux in a production environment.
+This document summarizes DataStax's recommendations for the sizing and optimization of an Apache Pulsar cluster on Linux in a production environment.
+Remember, a Pulsar *instance* is made of one or many clusters.
 
-Of course, the sizing of a cluster depends on factors like use case and expected load, so this document is not intended to be a one-size-fits-all guide. Rather, we'd like to demonstrate how we consider and solve the problems inherent in sizing Pulsar clusters, and assist you on your journey to unlocking the scaling power of Pulsar.
+Of course, the sizing of a cluster depends on factors like use case and expected load, so this document is not intended to be a one-size-fits-all guide. Rather, we'd like to demonstrate how we calculate and spec the initial size of a Pulsar cluster, and assist you on your journey to unlocking the scaling power of Pulsar.
 
 This page summarizes the requirements, assumptions, definitions, and methodologies that inform our cluster sizing recommendations.
 For deployment-specific recommendations, see the following pages:
@@ -28,20 +29,23 @@ We will call out Kubernetes specifics as they arise in the guide.
 
 == Pulsar cluster components
 
-Pulsar clusters come in many shapes and sizes. There are minimum components for base functionality, and there are some recommended add-on components that make management and observability easier. For this guide we will focus on the required components and what it takes to make them resilient to outages and highly available in a three-zone cloud.
+Pulsar clusters come in many shapes and sizes. There are minimum components for base functionality, and there are recommended components that make message routing, management, and observability easier. For this guide we will focus on the required components and what it takes to make them resilient to outages and highly available in a three-zone cloud.
 
 === Required components
 
-* Zookeeper - This is Pulsar’s meta data store. It stores data about a cluster’s configuration, helps the proxy direct messages to a broker, and holds Bookie configurations.
+* Zookeeper - This is Pulsar’s meta data store. It stores data about a cluster’s configuration, helps the proxy direct messages to the correct broker, and holds Bookie configurations. Start with 1 instance of Zookeeper in each availability zone (AZ) to mitigate a single failure point, and scale Zookeeper as cluster traffic increases.
 
 * Broker - This is Pulsar's message router.
 Ideally, each broker should be fully utilized without becoming a performance bottleneck.
+The Pulsar broker is stateless, so it requires considerable computing power but not much storage.
+Start with 1 Broker instance in each zone, and set a scaling rule that watches CPU load.
+
 The best way to optimize this is through performance testing based on your cluster's workload characteristics.
-Fortunately, the Pulsar broker is stateless, so adding or removing brokers has minimal performance impact on the cluster.
 
 * Bookkeeper (bookie) - This is Pulsar’s data store.
 Bookkeeper stores message data in a low-latency, resilient way.
 Pulsar uses Bookkeeper’s quorum math to function, so a loss of 1 Bookkeeper instance won’t bring your system down, but will cause some data loss.
+Start with at least 3 bookies, with 1 in each AZ. Scale bookies up on disc usage percentage. Scale down manually by making a bookie read-only, offloading its data, then terminating the instance.
 
 * Auto recovery - This is a Pulsar component that recovers Bookkeeper data in the event of a Bookkeeper outage.
 * Pulsar Proxy - This is a proxy for routing client requests to brokers. Proxy is optional for VM deployments and required for Kubernetes deployments.
