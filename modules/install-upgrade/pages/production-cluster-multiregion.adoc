@@ -1,0 +1,134 @@
+:activeTopics: 1
+:messageSize: 1000
+:messageThroughput: 100000
+:retentionPolicy: 3600
+:ttlPolicy: 24
+:tieredStoragePolicy: n/a
+:messageReplicationFactor: 3
+:clusterReplicationFactor: 2
+
+= Multi-region georeplication
+
+This page contains sizing and configuration information for a georeplicated VM-based production cluster. +
+Pulsar clusters can be configured to replicate data across multiple regions to maximize availability.
+
+We apply our sizing methodology with the following assumptions: +
+
+* Replication will be https://pulsar.apache.org/docs/2.10.x/concepts-replication/#asynchronous-geo-replication-in-pulsar[asynchronous] and https://pulsar.apache.org/docs/2.11.x/administration-geo/[will not] use a global Zookeeper. +
+* We will replicate *all topics* across two regions.
+* We will assume the same time-to-live and retention policies as the initial Pulsar cluster (the cluster being replicated from).
+
+[#aggregate-worksheet]
+== Workload aggregation worksheet
+
+This initial cluster requirements for the Pulsar cluster described in xref:production-cluster-sizing.adoc[] are as below:
+
+.Workload input characteristics
+[cols=2*,options=header]
+|===
+|*Workload input*
+|*Value*
+
+| Number of active topics
+| {activeTopics}
+
+| Average message size
+| {messageSize} bytes
+
+| Incoming message throughput
+| {messageThroughput} messages per second
+
+| Message retention
+| {retentionPolicy} seconds
+
+| TTL Policy
+| {ttlPolicy} hours
+
+| Tiered storage
+| {tieredStoragePolicy}
+
+| Number of cluster replications
+| {clusterReplicationFactor}
+
+|===
+
+With the aggregated workload characteristics, we apply our methodology to these characteristics to size a production cluster. +
+[source,plain,subs="attributes+"]
+----
+Total message size (raw) =
+{messageReplicationFactor} *           // replication factor
+{messageSize} *        // average message payload size
+{messageThroughput} *      // average message throughput
+({ttlPolicy} * {retentionPolicy})   // TTL and retention period
+= 25,920,000 MB
+≅ 25 TB
+----
+
+.. But wait! We need to account for replicating this cluster across two regions.
+Following our assumptions above, we multiply the total message size by the number of regions we are replicating to, which in this case is {clusterReplicationFactor} regions.
++
+[source,plain,subs="attributes+"]
+----
+Adjusted message size (raw) =
+25 TB * // total message size (raw)
+{clusterReplicationFactor}       // number of clusters
+≅ 50 TB
+----
+
+.. We now know our cluster needs 50 TB of storage for Bookkeeper ledger data, so we can calculate the number of Bookkeeper nodes with the ledger disk capacity of 4TB and an 85% effective utilization ratio.
++
+[source,plain]
+----
+Bookkeeper count(raw)=ceiling(50/(4 * 0.85)) = 15
+----
+
+.. With our assumption of a 1-to-5 broker-to-bookkeeper ratio, we calculate the number of broker nodes.
++
+[source,plain]
+----
+Broker count(raw)=ceiling(15/5) = 3
+----
+
+=== Pulsar server instance counts
+
+The total Pulsar server instance count doubles, but the individual cluster component counts do not: they are asynchronously replicated individual clusters, so each has their own Zookeeper, Bookkeeper, and Broker instances. +
+
+.Pulsar cluster component count
+[cols=5*, options=header]
+|===
+|Pulsar server component
+|Total VM count (raw)
+|Total VM count (adjusted)
+|Per-AZ count distribution (adjusted)
+|Notes
+
+|Zookeeper
+|5
+|5
+|2/2/1
+.5+a|* 3 AZs +
+* At least 1 Pulsar server instance per AZ +
+* Even distribution of Pulsar server instances across AZs
+
+|Bookkeeper
+|8
+|9
+|3/3/3
+
+|Broker
+|2
+|3
+|1/1/1
+
+|Pulsar proxy
+|1
+|3
+|1/1/1
+
+|===
+
+== What's next?
+
+* xref:production-cluster-sizing.adoc[]
+* xref:production-cluster-vm.adoc[]
+* xref:production-cluster-sandbox.adoc[]

@@ -1,0 +1,68 @@
+[cols=4*,options=header]
+|===
+|Environment
+|Server Component
+|Hardware Spec
+|Note
+
+.2+|DEV
+|(Combined)  Zookeeper, Broker, and Bookkeeper
+a|* CPU: 8 vCPU +
+* Memory: 16 GB
+* Data Disk: 64 GB SSD
+a|Data disks are shared by: +
+* zookeeper data +
+* bookkeeper journal +
+* bookkeeper ledger
+|(combined) AdminConsole, and Heartbeat
+a|* CPU: 4 vCPU +
+* Memory: 8 GB
+|
+
+.4+|TEST
+|Zookeeper
+a|* CPU: 2 vCPU +
+* Memory: 4 GB
+* Data Disk: 32 GB SSD
+|
+|(Combined) Broker and Function Worker
+a|* CPU: 8 vCPU +
+* Memory: 16 GB
+|No data disk
+|Bookie
+a|* CPU: 4 vCPU +
+* Memory: 16 GB +
+* Data Disk +
+** Journal: 32 GB SSD +
+** Ledger: 256 GB SSD
+|
+|(combined) AdminConsole and Heartbeat
+a|* CPU: 4 vCPU +
+* Memory: 8 GB
+|
+
+.6+|PROD
+|Zookeeper
+a|* CPU: 4 vCPU +
+* Memory: 4 GB +
+* Data Disk: 64 GB SSD
+|
+|Broker
+a|* CPU: 8 vCPU +
+* Memory: 16 GB +
+* No data disk
+|(Dedicated) Function Worker*
+|Bookie
+a|* CPU: 8 vCPU +
+* Memory: 32 GB +
+* Data Disk +
+** Journal: 256 GB SSD +
+** Ledger: 1024 GB SSD
+| Ledger disk capacity can be beyond 1TB. Pulsar does not have a node density limit as in C*.
+|AdminConsole
+a|* CPU: 4 vCPU +
+* Memory: 16 GB
+|Heartbeat
+
+|===
+
