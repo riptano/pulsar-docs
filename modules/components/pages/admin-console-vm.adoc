@@ -52,7 +52,7 @@ cd pulsar-admin-console-{admin-console-version}/server
 npm start
 ----
 
-. Open the Admin Console at \`http://localhost:6454`.
+. Open the Admin Console at `http://localhost:6454`.
 
 Port 6454 is specified in `pulsar-admin-console/config/default.json`. To change the default Admin Console configuration, see <<configuration,*Configuration*>> below.
 
@@ -88,8 +88,8 @@ These values can be modified in the JSON configuration file.
 | cluster_name | standalone | Name of Pulsar cluster connecting to.  The cluster name can be retrieved with the CLI command `pulsar-admin clusters list`.  
 | functions_disabled | false | If functions are not enabled in the cluster, disable the function sections (Functions, Sinks, Sources).
 | grafana_url | | If `render_monitoring_tab` is enabled, URL for Grafana. 
-| host_overrides.http | \http://localhost:8964 | URL to display in console to connect to Pulsar Beam HTTP proxy.
-| host_overrides.pulsar | \http://localhost:6650 | URL to display in console to connect to Pulsar.
+| host_overrides.http | http://localhost:8964 | URL to display in console to connect to Pulsar Beam HTTP proxy. 
+| host_overrides.pulsar | http://localhost:6650 | URL to display in console to connect to Pulsar. 
 | host_overrides.ws | //localhost:8080 | URL to display in console to connect to WebSocket proxy. 
 | notice_text | | Custom notice to appear at top of console. 
 | oauth_client_id || This is the client ID that the console will use when authenticating with authentication provider. 
@@ -98,7 +98,7 @@ These values can be modified in the JSON configuration file.
 | server_config.admin_token | | When using `user` or `k8s` auth mode, a Pulsar token is used to connect to the Pulsar cluster. This specifies the token as a string. For full access, a superuser token is recommended. The `token_path` setting will override this value if present.
 | server_config.log_level | info | Log level for the console server.
 | server_config.port | 6454 | The listen port for the console server.
-| server_config.pulsar_url | \http://localhost:8080 | URL for connecting to the Pulsar cluster. Should point to either a broker or Pulsar proxy. The console server must be able to reach this URL.
+| server_config.pulsar_url | http://localhost:8080 | URL for connecting to the Pulsar cluster. Should point to either a broker or Pulsar proxy. The console server must be able to reach this URL.  
 | server_config.ssl.ca_path | | Path to the CA certificate. To enable HTTPS, `ca_path`, `cert_path`, and `key_path` must all be set. 
 | server_config.ssl.cert_path | | Path to the server certificate. To enable HTTPS, `ca_path`, `cert_path`, and `key_path` must all be set.
 | server_config.ssl.hostname_validation | | Verify hostname matches the TLS certificate.  
