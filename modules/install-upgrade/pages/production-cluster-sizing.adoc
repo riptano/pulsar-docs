@@ -16,7 +16,6 @@ Of course, the sizing of a cluster depends on factors like use case and expected
 This page summarizes the requirements, assumptions, definitions, and methodologies that inform our cluster sizing recommendations.
 For deployment-specific recommendations, see the following pages:
 
-* xref:production-cluster-vm.adoc[]
 * xref:production-cluster-multiregion.adoc[]
 * xref:production-cluster-sandbox.adoc[]
 
@@ -229,7 +228,6 @@ With your understanding of how to aggregate a basic cluster workload and the com
 
 See more production-ready sizing examples for the following scenarios:
 
-* xref:production-cluster-vm.adoc[]
 * xref:production-cluster-multiregion.adoc[]
 * xref:production-cluster-sandbox.adoc[]
 

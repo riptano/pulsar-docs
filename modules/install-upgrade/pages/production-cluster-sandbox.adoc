@@ -111,4 +111,3 @@ See more production-ready sizing examples for the following scenarios:
 
 * xref:production-cluster-sizing.adoc[]
 * xref:production-cluster-multiregion.adoc[]
-* xref:production-cluster-vm.adoc[]
