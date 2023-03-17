@@ -57,9 +57,9 @@ But (very important) we want the message replication factor to be an odd number,
 [source,plain,subs="attributes+"]
 ----
 Total message size (raw) =
-{activeTopics} *       // number of active topics
+{activeTopics} *         // number of active topics
 {messageReplicationFactor} *           // replication factor
-{messageSize} Kb *        // average message payload size
+{messageSize} MB *          // average message payload size
 {messageThroughput} *      // average message throughput
 ({ttlPolicy} * {retentionPolicy})   // TTL and retention period
 = 25,920,000 MB
