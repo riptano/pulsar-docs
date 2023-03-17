@@ -47,6 +47,9 @@ This initial cluster requirements for the Pulsar cluster described in xref:produ
 | Tiered storage
 | {tieredStoragePolicy}
 
+| Cluster replication factor
+| {clusterReplicationFactor}
+
 |===
 
 With the aggregated workload characteristics, we apply our methodology to these characteristics to size a production cluster. +
