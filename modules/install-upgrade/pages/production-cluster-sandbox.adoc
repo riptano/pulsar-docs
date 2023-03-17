@@ -1,8 +1,8 @@
-:activeTopics: 100
-:messageSize: 1MB
-:messageThroughput: 5000 messages per second
-:retentionPolicy: 1 month
-:ttlPolicy: 1 month
+:activeTopics: 1
+:messageSize: 1
+:messageThroughput: 100000
+:retentionPolicy: 3600
+:ttlPolicy: 24
 :tieredStoragePolicy: n/a
 :messageReplicationFactor: 3
 
