@@ -88,7 +88,7 @@ There are other factors that could be a part of the aggregated cluster workload.
 [#aggregate-worksheet]
 == Example workload aggregation worksheet
 
-Gather these workload characteristics to determing your cluster's size requirements:
+Gather these workload characteristics to determine your cluster's size requirements:
 
 .Workload input characteristics
 [cols=2*,options=header]
@@ -126,7 +126,7 @@ By default, Pulsar sets Bookkeeper https://pulsar.apache.org/docs/2.11.x/adminis
 That means at least 2 bookies in the ensemble need to acknowledge receipt of message data before Pulsar will acknowledge receipt of the message.
 But (very important) we want the message replication factor to be an odd number, so we can tolerate 1 Bookie failure.
 
-. Multiply replication factor (3) by average message payload size  (1 Kb) by average message throughput (100,000), then factor in TTL and retention period.
+. Multiply replication factor ({replicationFactor}) by average message payload size ({messageSize}) by average message throughput ({messageThroughput}), then factor in TTL ({ttlPolicy}) and retention period ({retentionPolicy}).
 +
 [source,plain,subs="attributes+"]
 ----

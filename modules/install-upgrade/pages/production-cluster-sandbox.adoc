@@ -1,6 +1,6 @@
-:activeTopics: 1
-:messageSize: 1
-:messageThroughput: 100000
+:activeTopics: 250
+:messageSize: 3
+:messageThroughput: 350
 :retentionPolicy: 3600
 :ttlPolicy: 24
 :tieredStoragePolicy: n/a
@@ -11,6 +11,77 @@
 This page sizes the minimum, baseline resources for a Pulsar cluster on VM.
 Size your cluster through development and test environments starting with the recommended counts below.
 The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
+
+== Development cluster
+
+Gather these workload characteristics to determine your cluster's size requirements:
+
+.Workload input characteristics
+[cols=2*,options=header]
+|===
+|*Workload input*
+|*Value*
+
+| Number of active topics
+| {activeTopics}
+
+| Average message size
+| {messageSize} MB
+
+| Incoming message throughput
+| {messageThroughput} messages per second
+
+| Message retention
+| {retentionPolicy} seconds
+
+| TTL Policy
+| {ttlPolicy} hours
+
+| Tiered storage
+| {tieredStoragePolicy}
+
+|===
+
+== Example methodology
+
+With the aggregated workload characteristics, we can now apply our methodology to these characteristics to size a production cluster. +
+
+First, we will size the bookkeeper's disk.
+We size this first because it's the most important component (bookies store message data) and are also the hardest to scale.
+By default, Pulsar sets Bookkeeper https://pulsar.apache.org/docs/2.11.x/administration-zk-bk/#bookkeeper-persistence-policies[ack-quorum] size to 2.
+That means at least 2 bookies in the ensemble need to acknowledge receipt of message data before Pulsar will acknowledge receipt of the message.
+But (very important) we want the message replication factor to be an odd number, so we can tolerate 1 Bookie failure.
+
+. Multiply replication factor ({replicationFactor}) by average message payload size ({messageSize}) by average message throughput ({messageThroughput}), then factor in TTL ({ttlPolicy}) and retention period ({retentionPolicy}).
++
+[source,plain,subs="attributes+"]
+----
+Total message size (raw) =
+{messageReplicationFactor} *           // replication factor
+{messageSize} Kb *        // average message payload size
+{messageThroughput} *      // average message throughput
+({ttlPolicy} * {retentionPolicy})   // TTL and retention period
+= 25,920,000 MB
+≅ 25 TB
+----
+We now know our cluster needs 25 TB of storage for Bookkeeper ledger data.
+
+. Calculate the number of Bookkeeper nodes with an individual ledger disk capacity.
++
+[source,plain]
+----
+Bookkeeper count(raw)=ceiling(25/(4 * 0.85)) = 8
+----
+We need 8 total bookies across 3 zones. Bookies must be evenly distributed, so we adjust this to a number that is divisible by the number of zones.
+
+. Given the replication factor of 3, we will need at least 1 broker to write messages to the bookies. That gives us a broker-to-bookkeeper ratio of 1:3. Now we can calculate the total number of Brokers across 3 zones.
++
+[source,plain]
+----
+Broker count(raw)=ceiling(8/3) = 3
+----
+We will need 3 Brokers (one in each Zone) to serve messages. This should also be evenly divisible by the number of zones.
+
 
 == Development cluster
 .Development cluster sizing
