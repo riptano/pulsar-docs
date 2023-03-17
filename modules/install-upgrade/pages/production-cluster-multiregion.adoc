@@ -1,5 +1,5 @@
 :activeTopics: 1
-:messageSize: 1000
+:messageSize: 1
 :messageThroughput: 100000
 :retentionPolicy: 3600
 :ttlPolicy: 24
@@ -33,7 +33,7 @@ This initial cluster requirements for the Pulsar cluster described in xref:produ
 | {activeTopics}
 
 | Average message size
-| {messageSize} bytes
+| {messageSize} Kb
 
 | Incoming message throughput
 | {messageThroughput} messages per second
@@ -46,9 +46,6 @@ This initial cluster requirements for the Pulsar cluster described in xref:produ
 
 | Tiered storage
 | {tieredStoragePolicy}
-
-| Number of cluster replications
-| {clusterReplicationFactor}
 
 |===
 
