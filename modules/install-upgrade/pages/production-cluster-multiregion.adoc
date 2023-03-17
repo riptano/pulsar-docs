@@ -54,7 +54,7 @@ With the aggregated workload characteristics, we apply our methodology to these 
 ----
 Total message size (raw) =
 {messageReplicationFactor} *           // replication factor
-{messageSize} *        // average message payload size
+{messageSize} *           // average message payload size
 {messageThroughput} *      // average message throughput
 ({ttlPolicy} * {retentionPolicy})   // TTL and retention period
 = 25,920,000 MB

@@ -148,7 +148,7 @@ Bookkeeper count(raw)=ceiling(25/(4 * 0.85)) = 8
 ----
 We need 8 total bookies across 3 zones. Bookies must be evenly distributed, so we adjust this to a number that is divisible by the number of zones.
 
-. Given the replication factor of 3, we will (obviously) need at least 1 broker to write messages to the bookies. That gives us a broker-to-bookkeeper ratio of 1:3. Now we can calculate the total number of Brokers across 3 zones.
+. Given the replication factor of 3, we will need at least 1 broker to write messages to the bookies. That gives us a broker-to-bookkeeper ratio of 1:3. Now we can calculate the total number of Brokers across 3 zones.
 +
 [source,plain]
 ----
