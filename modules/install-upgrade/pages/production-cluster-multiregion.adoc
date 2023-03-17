@@ -14,7 +14,7 @@ Pulsar clusters can be configured to replicate data across multiple regions to m
 
 We apply our sizing methodology with the following assumptions: +
 
-* Replication will be https://pulsar.apache.org/docs/2.10.x/concepts-replication/#asynchronous-geo-replication-in-pulsar[asynchronous] and https://pulsar.apache.org/docs/2.11.x/administration-geo/[will not] use a global Zookeeper. +
+* Replication will be https://pulsar.apache.org/docs/2.10.x/concepts-replication/#asynchronous-geo-replication-in-pulsar[asynchronous^]{external-link-icon} and https://pulsar.apache.org/docs/2.11.x/administration-geo/[will not^]{external-link-icon} use a global Zookeeper. +
 * We will replicate *all topics* across two regions.
 * We will assume the same time-to-live and retention policies as the initial Pulsar cluster (the cluster being replicated from).
 
