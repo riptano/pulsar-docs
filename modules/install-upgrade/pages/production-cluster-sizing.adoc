@@ -28,10 +28,10 @@ Pulsar clusters come in many shapes and sizes. There are minimum components for 
 
 * https://pulsar.apache.org/docs/concepts-architecture-overview/#metadata-store[Zookeeper^]{external-link-icon} - This is Pulsar’s meta data store. It stores data about a cluster’s configuration, helps the proxy direct messages to the correct broker, and holds Bookie configurations. Start with 1 instance of Zookeeper in each availability zone (AZ) to mitigate a single failure point, and scale Zookeeper as cluster traffic increases.
 
-* https://pulsar.apache.org/docs/concepts-architecture-overview/#brokers[Broker^]{external-link-icon} - This is Pulsar's message router.
+* https://pulsar.apache.org/docs/concepts-architecture-overview/#brokers[broker^]{external-link-icon} - This is Pulsar's message router.
 Ideally, each broker should be fully utilized without becoming a performance bottleneck.
 The Pulsar broker is stateless, so it requires considerable computing power but not much storage.
-Start with 1 Broker instance in each zone, and set a scaling rule that watches CPU load.
+Start with 1 broker instance in each zone, and set a scaling rule that watches CPU load.
 The best way to optimize this is through performance testing based on your cluster's workload characteristics.
 
 * https://pulsar.apache.org/docs/concepts-architecture-overview/#apache-bookkeeper[Bookkeeper (bookie)^]{external-link-icon} - This is Pulsar’s data store.
@@ -56,12 +56,47 @@ Have your load balancer round-robin to all proxy instances in all zones.
 Proxy is optional for VM deployments and required for Kubernetes deployments.
 Scale proxies by their network load or (if running extensions) also scale on CPU usage.
 * https://pulsar.apache.org/docs/functions-worker-run-separately/[Dedicated functions worker(s)^]{external-link-icon} - You can optionally run dedicated function workers in a Pulsar cluster.
-Without dedicated function workers, functions run as a seperate process on the Broker.
+Without dedicated function workers, functions run as a seperate process on the broker.
 Function worker spec is usually focused on compute and memory.
 Scale the workers based on overall usage (both CPU and memory).
 * xref:luna-streaming:components:admin-console-tutorial.adoc[Pulsar AdminConsole] - This is an optional web-based admin console for managing Pulsar clusters.
 * xref:luna-streaming:components:heartbeat-vm.adoc[Pulsar Heartbeat] - This is an optional component that monitors the health of Pulsar cluster.
 * xref:luna-streaming:ROOT:builtin-monitoring.adoc[Prometheus/Grafana/Alert manager stack] - This is an optional stack for monitoring Pulsar cluster metrics.
+
+image::pulsar-components.png[]
+
+== Message retention
+The broker ensures messages are received and delivered appropriately, but it is a stateless process so it doesn’t use its memory to track this. Instead, the broker uses Bookkeepers (or "bookies") to store message data and the message’s acknowledgement state.
+A great benefit of Bookkeeper is its quorum policies. These policies make each bookie aware of the other bookies to form a bookkeeper cluster. With a cluster established, the cluster can have acknowledgement rules that form a data replication factor. For example, if you had 3 bookies in a Bookkeeper cluster with an acknowledgement rule that at least 2 of the 3 bookies must have a copy of the data, then the cluster has a replication factor of 2. A Pulsar broker uses the `managedLedgerDefaultAckQuorum` and `managedLedgerDefaultWriteQuorum` configurations to set the bounds of this rule. For more about Bookkeeper persistence, see https://pulsar.apache.org/docs/administration-zk-bk/#bookkeeper-persistence-policies[here].
+
+When a client produces a message, the broker will not acknowledge receipt until the replication factor has been achieved. Continuing from the above example, if the replication factor is 2, a broker’s acknowledgment means a minimum of 2 bookies have confirmed storage of message data. If the broker times out waiting for at least 2 responses from the bookies, then the broker will not acknowledge receipt with the client. The client will need to handle the exception by attempting to resend or fail. This process forms one of Pulsar’s core values - guaranteed message receipt.
+
+Now that the broker has a message, it guarantees delivery to the associated topic’s subscribers. We refer to this as the broker’s backlog. The size of the backlog is sometimes expressed by the number of messages. For example, a Pulsar operator might say, “we try to keep the backlog below 100 messages.” The number of brokers available to process messages directly impacts the size of the backlog. However, the number of messages is not a meaningful number on its own without knowing the size of the messages. Message size is essential information because it determines how full a bookie’s disk will be. If the backlog has 100 messages that are 4Gb each, then 400Gb is occupied on a bookie’s disk. If the backlog has 100 messages that are 1Kb each, then only 100Kb is occupied on the bookie's disk. Quite a difference in storage capacity!
+
+Until all subscribers have acknowledged receipt of a message, the broker will not mark a message as acknowledged. This is another core feature of Pulsar - guaranteed message delivery. But there are realities around this - we must assume that all functions, sinks, and clients subscribed to the message's topic are healthy and programmed correctly to acknowledge receipt.
+
+Unfortunately, this isn't realistic. Things happen. Processes lock up. Networks go down. If we tell Pulsar to indefinitely attempt message delivery to all subscribers on all topics, the backlog would grow out of control, with bookie disks continuously filling and never draining. So, guaranteed message delivery must be managed with some rules.
+
+Pulsar has different ways of managing the broker’s backlog (ie: guaranteed message delivery). Combining these different settings make up the rules of message retention. The rules of message retention directly impact how full a bookie’s disk can be. We can't cover every possability within Pulsar’s message retention system, so we will focus on 3 key areas and let those drive our sizing calculation. For more on message retention and expiration, see https://pulsar.apache.org/docs/concepts-messaging/#message-retention-and-expiry[Pulsar’s message retention and expiry tutorial].
+
+=== Retention policy
+The broker’s goal is to mark a message for deletion, which means all subscribers have acknowledged message receipt and the message can be removed from the bookie's disk. Don’t confuse this with Pulsar’s tiered storage, where you can store the broker’s backlog for a very long time. This is a different concept than retention. Sometimes you want acknowledged messages to stay on disk for a certain period of time, or until a certain size threshold has been reached. For example, when a client is constantly reading a topic’s messages and needs to have the same low latency performance as a consumer of unacknowledged messages, a highly performant reader is required.
+
+Retention can be expressed in size or time. Expressed as size, when the broker’s backlog reaches some size threshold (in Mb), it will begin marking the oldest acknowledged messages for deletion until the size is reduced. Expressed in time, any acknowledged messages older than some time period (like 3 hours) will be marked for deletion. Size and time can also be used together to create a more comprehensive retention rule.
+
+Pulsar’s default behavior disables retention policy, so our sizing calculations will assume this configuration. When all subscribers have acknowledged, the message is removed.
+
+=== Backlog quota size
+As mentioned above, the broker’s backlog size is directly proportional to how much disk is being consusmed on a bookie. Pulsar provides the option to set thresholds of how large the backlog of a certain namespace can get. A policy can also be set to manage behavior for when that backlog threshold is passed.
+
+Pulsar’s default is to not set a backlog quote on a namespace, so our sizing calculations will assume this configuration.
+
+=== Message time to live (TTL)
+TTL determines how long an unacknowledged message will last in the backlog before it is marked for deletion. Pulsar's default behavior disables TTL and stores unacked messages forever, but in a production cluster, there must be limits in place to prevent bookie disks from filling up and crippling a cluster’s health.
+
+The TTL parameter is like a stopwatch attached to each message that defines the amount of time a message is allowed to stay unacknowledged. When the TTL expires, Pulsar automatically moves the message to the acknowledged state (and thus makes it ready for deletion).
+
+TTL is expressed in terms of time, at the namespace level. A default value for all new namespace can be set with the `ttlDurationDefaultInSeconds` broker configuration value.
 
 == Aggregated cluster workload
 
@@ -138,21 +173,21 @@ We now know our cluster needs 3 TB of storage for Bookkeeper ledger data.
 Bookkeeper count(raw)=ceiling(3/(4 * 0.85)) = 1
 ----
 If our bookie has a 4Tb disk and we anticipate at least 3Tb of workload, only 1 Bookie is needed.
-For fault tolerance, we adjust this to a number that is divisible by the number of zones, which equals 3 Bookies.
+For fault tolerance, we adjust this to a number that is divisible by the number of zones, which equals 3 bookies.
 
-. Given the replication factor of 3, we will need at least 1 broker to write messages to the bookies. That gives us a broker-to-bookkeeper ratio of 1:3. Now we can calculate the total number of Brokers across 3 zones.
+. Given the replication factor of 3, we will need at least 1 broker to write messages to the bookies. That gives us a broker-to-bookkeeper ratio of 1:3. Now we can calculate the total number of brokers across 3 zones.
 +
 [source,plain]
 ----
-Broker count(raw)=ceiling(1/3) = 1
+broker count(raw)=ceiling(1/3) = 1
 ----
-We need 1 Broker to serve messages.
+We need 1 broker to serve messages.
 As with other components, this must account for fault tolerance.
 To be evenly divisible by the number of zones, we will set brokers to 3.
 
 === Pulsar component instance counts
 
-Now that we know how many server instances of Broker and Bookie are required to support our workload, we include the other components to size the overall cluster.
+Now that we know how many server instances of broker and Bookie are required to support our workload, we include the other components to size the overall cluster.
 
 .Pulsar cluster component count
 [cols="2,2,2", options=header]
@@ -169,7 +204,7 @@ Now that we know how many server instances of Broker and Bookie are required to 
 |3
 |Calculated above
 
-|Broker
+|broker
 |3
 |Calculated above
 
