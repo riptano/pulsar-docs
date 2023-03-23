@@ -10,7 +10,7 @@
 This document summarizes DataStax's recommendations for the sizing and optimization of an Apache Pulsar cluster on Linux in a production environment.
 Remember, a Pulsar *instance* is made of one or many clusters.
 
-Of course, the sizing of a cluster depends on factors like use case and expected load, so this document is not intended to be a one-size-fits-all guide. Rather, we'd like to demonstrate how we calculate and spec the initial size of a Pulsar cluster, and assist you on your journey to unlocking the scaling power of Pulsar.
+Of course, the sizing of a cluster depends on factors like use case and expected load, so this document is not intended to be a one-size-fits-all guide. Rather, we'd like to demonstrate how we consider and spec the initial size of a Pulsar cluster, and assist you on your journey to unlocking the scaling power of Pulsar.
 
 This page summarizes the requirements, assumptions, definitions, and methodologies that inform our cluster sizing recommendations.
 
@@ -88,7 +88,7 @@ Retention can be expressed in size or time. Expressed as size, when the broker�
 Pulsar’s default behavior disables retention policy, so our sizing calculations will assume this configuration. When all subscribers have acknowledged, the message is removed.
 
 === Backlog quota size
-As mentioned above, the broker’s backlog size is directly proportional to how much disk is being consusmed on a bookie. Pulsar provides the option to set thresholds of how large the backlog of a certain namespace can get. A policy can also be set to manage behavior for when that backlog threshold is passed.
+As mentioned above, the broker’s backlog size is directly proportional to how much disk is being consumed on a bookie. Pulsar provides the option to set thresholds of how large the backlog of a certain namespace can get. A policy can also be set to manage behavior for when that backlog threshold is passed.
 
 Pulsar’s default is to not set a backlog quote on a namespace, so our sizing calculations will assume this configuration.
 
