@@ -1,5 +1,5 @@
 :activeTopics: 1
-:messageSize: 1000
+:messageSize: 1
 :messageThroughput: 100000
 :retentionPolicy: 3600
 :ttlPolicy: 24
@@ -14,7 +14,7 @@ Pulsar clusters can be configured to replicate data across multiple regions to m
 
 We apply our sizing methodology with the following assumptions: +
 
-* Replication will be https://pulsar.apache.org/docs/2.10.x/concepts-replication/#asynchronous-geo-replication-in-pulsar[asynchronous] and https://pulsar.apache.org/docs/2.11.x/administration-geo/[will not] use a global Zookeeper. +
+* Replication will be https://pulsar.apache.org/docs/2.10.x/concepts-replication/#asynchronous-geo-replication-in-pulsar[asynchronous^]{external-link-icon} and https://pulsar.apache.org/docs/2.11.x/administration-geo/[will not^]{external-link-icon} use a global Zookeeper. +
 * We will replicate *all topics* across two regions.
 * We will assume the same time-to-live and retention policies as the initial Pulsar cluster (the cluster being replicated from).
 
@@ -33,7 +33,7 @@ This initial cluster requirements for the Pulsar cluster described in xref:produ
 | {activeTopics}
 
 | Average message size
-| {messageSize} bytes
+| {messageSize} Kb
 
 | Incoming message throughput
 | {messageThroughput} messages per second
@@ -47,7 +47,7 @@ This initial cluster requirements for the Pulsar cluster described in xref:produ
 | Tiered storage
 | {tieredStoragePolicy}
 
-| Number of cluster replications
+| Cluster replication factor
 | {clusterReplicationFactor}
 
 |===
@@ -57,7 +57,7 @@ With the aggregated workload characteristics, we apply our methodology to these 
 ----
 Total message size (raw) =
 {messageReplicationFactor} *           // replication factor
-{messageSize} *        // average message payload size
+{messageSize} *           // average message payload size
 {messageThroughput} *      // average message throughput
 ({ttlPolicy} * {retentionPolicy})   // TTL and retention period
 = 25,920,000 MB
@@ -130,5 +130,4 @@ The total Pulsar server instance count doubles, but the individual cluster compo
 == What's next?
 
 * xref:production-cluster-sizing.adoc[]
-* xref:production-cluster-vm.adoc[]
 * xref:production-cluster-sandbox.adoc[]

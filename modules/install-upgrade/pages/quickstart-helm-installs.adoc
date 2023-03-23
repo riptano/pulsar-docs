@@ -255,7 +255,7 @@ Once all the pods are running, you can access the Pulsar Admin Console by forwar
 
 `kubectl port-forward $(kubectl get pods -l component=adminconsole -o jsonpath='{.items[0].metadata.name}') 8080:80`
 
-Now open a browser to http://localhost:8080. In the Pulsar Admin Console, you can test your Pulsar setup using the built-in clients (Test Clients in the left-hand menu).
+Now open a browser to \http://localhost:8080. In the Pulsar Admin Console, you can test your Pulsar setup using the built-in clients (Test Clients in the left-hand menu).
 
 === Access the Pulsar cluster on localhost
 

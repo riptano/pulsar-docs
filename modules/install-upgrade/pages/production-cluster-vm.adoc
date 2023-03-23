@@ -13,6 +13,16 @@
 This page contains sizing and configuration information for a single VM-based production cluster.
 The methodology and assumptions driving these recommendations are described in xref:production-cluster-sizing.adoc[].
 
+Start with one of the minimum configurations below, and adjust the configuration to meet your requirements.
+
+== Minimum cluster sizing
+
+include::partial$minimum-sizing.adoc[]
+
+== Minimum hardware sizing
+
+include::partial$hardware-sizing.adoc[]
+
 == Sizing analysis and calculation
 Remember the xref:production-cluster-sizing.adoc#aggregate-worksheet[workload aggregation worksheet]?
 
