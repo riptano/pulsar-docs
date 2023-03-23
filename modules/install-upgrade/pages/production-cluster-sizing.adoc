@@ -90,9 +90,6 @@ Gather these workload characteristics to determine your cluster's size requireme
 |*Workload input*
 |*Value*
 
-| Number of active topics
-| {activeTopics}
-
 | Average message size
 | {messageSize} Kb
 
