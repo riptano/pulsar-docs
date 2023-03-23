@@ -13,10 +13,6 @@ Remember, a Pulsar *instance* is made of one or many clusters.
 Of course, the sizing of a cluster depends on factors like use case and expected load, so this document is not intended to be a one-size-fits-all guide. Rather, we'd like to demonstrate how we calculate and spec the initial size of a Pulsar cluster, and assist you on your journey to unlocking the scaling power of Pulsar.
 
 This page summarizes the requirements, assumptions, definitions, and methodologies that inform our cluster sizing recommendations.
-For deployment-specific recommendations, see the following pages:
-
-* xref:production-cluster-multiregion.adoc[]
-* xref:production-cluster-sandbox.adoc[]
 
 == Dedicated VMs or Kubernetes?
 
@@ -204,11 +200,6 @@ Now that we know how many server instances of Broker and Bookie are required to 
 
 Well done, you've sized a Pulsar cluster! +
 With your understanding of how to aggregate a basic cluster workload and the component (and instance counts) needed to support a cluster, it’s time to put it all together. Below are a few examples of common cluster installations using Luna Streaming. Each example takes in to consideration the build of a component’s VM, the number of VMs needed by each component to be highly available and fault tolerant, and a rough uptime calculation (number of 9’s). This should be enough information to calculate beginning service level agreement (SLA) numbers and get your business leaders and developers to buy in.
-
-See more production-ready sizing examples for the following scenarios:
-
-* xref:production-cluster-multiregion.adoc[]
-* xref:production-cluster-sandbox.adoc[]
 
 
 
