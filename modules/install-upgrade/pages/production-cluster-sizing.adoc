@@ -28,7 +28,7 @@ Pulsar clusters come in many shapes and sizes. There are minimum components for 
 
 * https://pulsar.apache.org/docs/concepts-architecture-overview/#metadata-store[Zookeeper^]{external-link-icon} - This is Pulsar’s meta data store. It stores data about a cluster’s configuration, helps the proxy direct messages to the correct broker, and holds Bookie configurations. Start with 1 instance of Zookeeper in each availability zone (AZ) to mitigate a single failure point, and scale Zookeeper as cluster traffic increases. You could scale Zookeeper as traffic within the cluster increases, but it shouldn’t be very often as it can handle quite a bit of load.
 
-* https://pulsar.apache.org/docs/concepts-architecture-overview/#brokers[broker^]{external-link-icon} - This is Pulsar's message router.
+* https://pulsar.apache.org/docs/concepts-architecture-overview/#brokers[Broker^]{external-link-icon} - This is Pulsar's message router.
 Ideally, each broker should be fully utilized without becoming a performance bottleneck.
 The Pulsar broker is stateless, so it requires considerable computing power but not much storage.
 Start with 1 broker instance in each zone, and set a scaling rule that watches CPU load.
