@@ -63,7 +63,7 @@ Scale the workers based on overall usage (both CPU and memory).
 * xref:luna-streaming:components:heartbeat-vm.adoc[Pulsar Heartbeat] - This is an optional component that monitors the health of Pulsar cluster and emits metrics about the cluster that are helpful for observing and debugging issues.
 * Prometheus/Grafana/Alert manager stack - This is the default observability stack for a cluster. The Luna Helm chart includes pre-made dashboards in Grafana and pre-wires all the metrics scraping.
 
-image::pulsar-components.png[]
+image:pulsar-components.png[]
 
 [#message-retention]
 == Message retention
