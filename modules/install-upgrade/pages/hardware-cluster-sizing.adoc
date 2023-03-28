@@ -1,0 +1,7 @@
+= Installation topologies
+
+include::partial$minimum-sizing.adoc[]
+
+== What's next
+
+For more on cluster sizing, see xref:production-cluster-sizing.adoc[].
