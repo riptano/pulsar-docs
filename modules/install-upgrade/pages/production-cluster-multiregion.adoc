@@ -130,4 +130,3 @@ The total Pulsar server instance count doubles, but the individual cluster compo
 == What's next?
 
 * xref:production-cluster-sizing.adoc[]
-* xref:production-cluster-sandbox.adoc[]
