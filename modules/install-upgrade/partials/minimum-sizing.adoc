@@ -5,11 +5,6 @@
 |Node Count
 |Note
 
-// All-In-One Sandbox (1 Node)
-// Development Environment (3 Nodes)
-// Single Region Production Environment (6 Nodes, 1 Region/Datacenter)
-// High Availability Production Environment (12 Nodes, 2 Regions/Datacenters)
-
 |SANDBOX (STANDALONE)
 |(combined) Zookeeper, Broker, and Bookie
 |1
