@@ -15,7 +15,7 @@
 |3
 |
 
-.4+|SINGLE REGION TESTING ENVIRONMENT (1 region, 1 zone)
+.3+|SINGLE REGION TESTING ENVIRONMENT (1 region, 1 zone)
 |Zookeeper
 |3
 |
@@ -25,31 +25,25 @@
 |Bookie
 |3
 |
-|Admin Console and Heartbeat
-|1
-|Shared 1 server host; placed in any rack
 
-.7+|HIGH-AVAILABILITY PRODUCTION ENVIRONMENT (1 region, 3 zones)
+.6+|HIGH-AVAILABILITY PRODUCTION ENVIRONMENT (1 region, 3 zones)
 |Zookeeper
-|3
-|2 node per AZ, assuming replication factor is 3
+|5
+|2/2/1 node per AZ, assuming replication factor is 3
 |Broker
 |3
-|2 node per AZ, assuming replication factor is 3
+|1 node per AZ, assuming replication factor is 3
 |(Dedicated) Function Worker*
 |3
 |1 node per AZ, assuming replication factor is 3 +
 The number of function workers depends on the cluster's functions workload.
 |Bookie
-|3
-|1 node per AZ, assuming replication factor is 3
+|6
+|2 node per AZ, assuming replication factor is 3
 |Pulsar proxy
 |3, assuming replication factor is 3
 |1 node per AZ
-|Admin Console
-|3, assuming replication factor is 3
-|Placed in any AZ
-|Heartbeat
-|3, assuming replication factor is 3
-|Placed in any AZ
+|Autorecovery
+|3
+|1 per AZ
 |===
