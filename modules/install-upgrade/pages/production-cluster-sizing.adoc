@@ -13,6 +13,7 @@ Remember, a Pulsar *instance* is made of one or many clusters.
 Of course, the sizing of a cluster depends on factors like use case and expected load, so this document is not intended to be a one-size-fits-all guide. Rather, we'd like to demonstrate how we consider and spec the initial size of a Pulsar cluster, and assist you on your journey to unlocking the scaling power of Pulsar.
 
 This page summarizes the requirements, assumptions, definitions, and methodologies that inform our cluster sizing recommendations.
+If you're looking for specific deployment topology recommendations, see xref:cluster-sizing-reference.adoc[].
 
 == Dedicated VMs or Kubernetes?
 
@@ -205,7 +206,7 @@ Now that we know how many server instances of broker and Bookie are required to 
 |3
 |Calculated above
 
-|broker
+|Broker
 |3
 |Calculated above
 
