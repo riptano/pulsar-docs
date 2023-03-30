@@ -11,8 +11,20 @@
 |
 
 |DEVELOPMENT (1 region, 1 zone)
-|(combined) Zookeeper, Broker, and Bookie
-|3
+|Zookeeper
+|1
+|
+|Broker
+|1
+|
+|Bookie
+|1
+|
+|Pulsar proxy
+|1
+|
+|(Dedicated) Function Worker
+|1
 |
 
 .3+|SINGLE REGION TESTING ENVIRONMENT (1 region, 1 zone)
@@ -25,25 +37,37 @@
 |Bookie
 |3
 |
+|Pulsar proxy
+|3
+|
+|(Dedicated) Function Worker
+|3
+|
 
 .6+|HIGH-AVAILABILITY PRODUCTION ENVIRONMENT (1 region, 3 zones)
 |Zookeeper
 |5
-|2/2/1 node per AZ, assuming replication factor is 3
+|2/2/1 nodes*
 |Broker
 |3
-|1 node per AZ, assuming replication factor is 3
+|1 nodes per AZ*
 |(Dedicated) Function Worker*
 |3
-|1 node per AZ, assuming replication factor is 3 +
+|1 node per AZ* +
 The number of function workers depends on the cluster's functions workload.
 |Bookie
 |6
-|2 node per AZ, assuming replication factor is 3
+|2 nodes per AZ*
 |Pulsar proxy
-|3, assuming replication factor is 3
+|3*
 |1 node per AZ
 |Autorecovery
-|3
+|3*
 |1 per AZ
 |===
+
+*_Assuming a replication factor of 3._ +
+
+The number of nodes in a highly available cluster depends on the number of zones in the region.
+We recommend aligning the replication factor with the AZ count, so in this example, 3 zones and a replication factor of 3.
+

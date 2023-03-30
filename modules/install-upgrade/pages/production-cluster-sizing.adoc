@@ -38,7 +38,9 @@ The best way to optimize this is through performance testing based on your clust
 * https://pulsar.apache.org/docs/concepts-architecture-overview/#apache-bookkeeper[Bookkeeper (bookie)^]{external-link-icon} - This is Pulsar’s data store.
 Bookkeeper stores message data in a low-latency, resilient way.
 Pulsar uses Bookkeeper’s quorum math to function, so a loss of 1 Bookkeeper instance won’t bring your system down, but will cause some data loss.
-Start with at least 3 bookies, with 1 in each AZ. Scale bookies up on disc usage percentage. Scale down manually by making a bookie read-only, offloading its data, then terminating the instance.
+Start with at least 3 bookies, with 1 in each AZ.
+At least 2 bookies per AZ are required for high availability, so if one bookie goes down, the other bookie in the AZ can take over.
+Scale bookies up on disc usage percentage. Scale down manually by making a bookie read-only, offloading its data, then terminating the instance.
 
 [#recommended]
 === Recommended server components
@@ -234,6 +236,10 @@ Now that we know how many server instances of broker and Bookie are required to 
 
 Well done, you've sized a Pulsar cluster! +
 With your understanding of how to aggregate a basic cluster workload and the component (and instance counts) needed to support a cluster, it’s time to put it all together. Below are a few examples of common cluster installations using Luna Streaming. Each example takes in to consideration the build of a component’s VM, the number of VMs needed by each component to be highly available and fault tolerant, and a rough uptime calculation (number of 9’s). This should be enough information to calculate beginning service level agreement (SLA) numbers and get your business leaders and developers to buy in.
+
+== What's next?
+
+See xref:cluster-sizing-reference.adoc[] for specific deployment topologies.
 
 
 
