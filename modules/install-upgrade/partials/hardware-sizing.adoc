@@ -11,9 +11,9 @@ a|* CPU: 8 vCPU +
 * Memory: 16 GB
 * Data Disk: 64 GB SSD
 a|Data disks are shared by: +
-* zookeeper data +
-* bookkeeper journal +
-* bookkeeper ledger
+* Zookeeper data +
+* Bookkeeper journal +
+* Bookkeeper ledger
 |(combined) AdminConsole, and Heartbeat
 a|* CPU: 4 vCPU +
 * Memory: 8 GB
@@ -41,7 +41,7 @@ a|* CPU: 4 vCPU +
 * Memory: 8 GB
 |
 
-.6+|PROD
+.6+|PRODUCTION
 |Zookeeper
 a|* CPU: 4 vCPU +
 * Memory: 4 GB +

@@ -239,7 +239,7 @@ With your understanding of how to aggregate a basic cluster workload and the com
 
 == What's next?
 
-See xref:cluster-sizing-reference.adoc[] for specific deployment topologies.
+See xref:cluster-sizing-reference.adoc[] for specific deployment topologies and hardware recommendations.
 
 
 

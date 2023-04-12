@@ -9,6 +9,12 @@ This page describes recommended starting points for Pulsar deployments.
 
 include::partial$minimum-sizing.adoc[]
 
+== Hardware sizing
+
+The following table lists the minimum hardware requirements for a Pulsar cluster.
+
+include::partial$hardware-sizing.adoc[]
+
 == What's next
 
 For more on cluster sizing, see xref:production-cluster-sizing.adoc[].
