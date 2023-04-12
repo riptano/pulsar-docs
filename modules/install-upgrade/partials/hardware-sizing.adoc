@@ -47,18 +47,19 @@ a|* CPU: 4 vCPU +
 a|* CPU: 8 vCPU +
 * Memory: 16 GB +
 * No data disk
-|Function Worker*
+|
 |Bookie
 a|* CPU: 8 vCPU +
 * Memory: 32 GB +
 * Data Disk +
 ** Journal: 256 GB SSD +
 ** Ledger: 1024 GB SSD
-| Ledger disk capacity can be beyond 1TB.
+|Ledger disk capacity can be beyond 1TB.
 |Pulsar Proxy, Autorecovery
 a|* CPU: 4 vCPU +
 * Memory: 16 GB
-|Pulsar Proxy, Function Worker
+|
+|Dedicated Function Worker
 a|* CPU: 4 vCPU +
 * Memory: 8 GB
 |
