@@ -5,7 +5,7 @@
 |Hardware Spec
 |Note
 
-.2+|DEVELOPMENT
+|DEVELOPMENT
 |Zookeeper, Broker, and Bookkeeper
 a|* CPU: 8 vCPU +
 * Memory: 16 GB

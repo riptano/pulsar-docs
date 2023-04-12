@@ -15,7 +15,7 @@ We recommend aligning the replication factor with the AZ count, so in this examp
 |1
 |
 
-.5+|DEVELOPMENT (1 region, 1 zone)
+.3+|DEVELOPMENT (1 region, 1 zone)
 |Zookeeper
 |1
 |
