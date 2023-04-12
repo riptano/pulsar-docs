@@ -1,3 +1,8 @@
+[NOTE]
+====
+The number of nodes in a highly available cluster depends on the number of zones in the region.
+We recommend aligning the replication factor with the AZ count, so in this example, 3 zones and a replication factor of 3.
+====
 [cols=4*,options=header]
 |===
 |Environment
@@ -18,12 +23,6 @@
 |1
 |
 |Bookie
-|1
-|
-|Pulsar proxy
-|1
-|
-|(Dedicated) Function Worker
 |1
 |
 
@@ -68,8 +67,4 @@ The number of function workers depends on the cluster's functions workload.
 
 *_Assuming a replication factor of 3._ +
 
-[NOTE]
-====
-The number of nodes in a highly available cluster depends on the number of zones in the region.
-We recommend aligning the replication factor with the AZ count, so in this example, 3 zones and a replication factor of 3.
-====
+

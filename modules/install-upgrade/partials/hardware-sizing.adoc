@@ -14,10 +14,6 @@ a|Data disks are shared by: +
 * Zookeeper data +
 * Bookkeeper journal +
 * Bookkeeper ledger
-|Pulsar Proxy, Function Worker
-a|* CPU: 4 vCPU +
-* Memory: 8 GB
-|
 
 .4+|TEST
 |Zookeeper
@@ -62,6 +58,10 @@ a|* CPU: 8 vCPU +
 |Pulsar Proxy, Autorecovery
 a|* CPU: 4 vCPU +
 * Memory: 16 GB
+|Pulsar Proxy, Function Worker
+a|* CPU: 4 vCPU +
+* Memory: 8 GB
+|
 
 |===
 
