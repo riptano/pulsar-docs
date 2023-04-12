@@ -1,0 +1,20 @@
+= Installation topologies
+
+This page describes recommended starting points for Pulsar deployments.
+
+* SANDBOX (or Pulsar Standalone) is an all-in-one single-node deployment that is useful for taking Pulsar for a test drive.
+* DEVELOPMENT is a 3-node deployment that is not highly available, but able to maintain parity with the TESTING environment.
+* SINGLE REGION TESTING ENVIRONMENT is a highly-available 3/3/3 deployment.
+* HIGH-AVAILABILITY PRODUCTION ENVIRONMENT is a highly-available deployment replicated across 3 zones in 1 region.
+
+include::partial$minimum-sizing.adoc[]
+
+== Hardware sizing
+
+The following table lists the minimum hardware requirements for a Pulsar cluster.
+
+include::partial$hardware-sizing.adoc[]
+
+== What's next
+
+For more on cluster sizing, see xref:production-cluster-sizing.adoc[].

@@ -1,3 +1,8 @@
+[NOTE]
+====
+The number of nodes in a highly available cluster depends on the number of zones in the region.
+We recommend aligning the replication factor with the AZ count, so in this example, 3 zones and a replication factor of 3.
+====
 [cols=4*,options=header]
 |===
 |Environment
@@ -5,67 +10,61 @@
 |Node Count
 |Note
 
-.2+|DEV
+|SANDBOX (STANDALONE)
 |(combined) Zookeeper, Broker, and Bookie
-|3
-|1 node per AZ +
-In the simplest case, Pulsar can run on only 1 server host as a standalone mode.
-|Admin Console, and Heartbeat
 |1
-|Shared 1 server host; placed in any rack
+|
 
-.4+|TEST
+.3+|DEVELOPMENT (1 region, 1 zone)
+|Zookeeper
+|1
+|
+|Broker
+|1
+|
+|Bookie
+|1
+|
+
+.5+|SINGLE REGION TESTING ENVIRONMENT (1 region, 1 zone)
 |Zookeeper
 |3
-|1 node per AZ
-| (Combined) Broker and Function Worker
-| 3
-| 1 node per AZ +
-Even if the Pulsar function is needed, it runs as part of the brokers. No dedicated function worker node is needed.
-| Bookie
-| 6
-| 2 nodes per AZ +
-See note 3 below
-| Admin Console and Heartbeat
-| 1
-| Shared 1 server host; placed in any rack
+|
+|Broker
+|3
+|
+|Bookie
+|3
+|
+|Pulsar proxy
+|3
+|
+|(Dedicated) Function Worker
+|3
+|
 
-.6+|PROD
-| Zookeeper
-| 3
-| 1 node per AZ
-| Broker
-| 3
-| 1 node per AZ (separate physical racks)
-| (Dedicated) Function Worker*
-| 6
-| 2 node per AZ +
-This is optional and only needed when Pulsar functions are required.
-| Bookie
-| 6
-| 2 nodes per AZ (separate physical racks)
-| See note 3) below
-| Admin Console
-| 1
-| Placed in any AZ
-| Heartbeat
-| 1
-| Placed in any AZ
+.6+|HIGH-AVAILABILITY PRODUCTION ENVIRONMENT (1 region, 3 zones)
+|Zookeeper
+|5
+|2/2/1 nodes*
+|Broker
+|3
+|1 nodes per AZ*
+|(Dedicated) Function Worker
+|3
+|1 node per AZ* +
+The number of function workers depends on the cluster's functions workload.
+|Bookie
+|6
+|2 nodes per AZ*
+|Pulsar proxy
+|3
+|1 node per AZ*
+|Autorecovery
+|3
+|1 per AZ*
 |===
 
-Additional recommendations:
+*_Assuming a replication factor of 3._ +
 
-The rack-aware policy is enabled in all environments and both the rack number and the message replication factor are both 3.
 
-Zookeeper node count should always be an odd number.
-The more zookeeper nodes there are, the more tolerance for Zookeeper node failures.
-The trade-off is longer time to achieve write quorum.
-
-Bookie node count depends on the message replication factor.
-To tolerate bookie node downtime (including failure and maintenance), the node count for bookies should be at least 1 count larger than the message replication factor.
-Otherwise, a bookie node failure will lead to message write errors.
-
-When rack-aware policy is enabled, the node count of bookies should be multiples of the number of the racks to ensure message replicas are evenly distributed among racks.
-
-Based on the above considerations, the bookie node count is chosen as 6 for the TEST and PROD environments.
-For the DEV environment, there are only 3 nodes and it can’t tolerate any node downtime.
