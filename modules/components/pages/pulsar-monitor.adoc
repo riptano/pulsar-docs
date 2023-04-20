@@ -84,7 +84,7 @@ NOTE: Kubernetes' pod and service, and individual broker monitoring are only sup
 
 == Docker
 
-Pulsar Heartbeat's official docker image can be pulled https://hub.docker.com/repository/docker/datastax/pulsar-heartbeat/tags?page=1&ordering=last_updated[here]
+Pulsar Heartbeat's official docker image can be pulled https://hub.docker.com/r/datastax/pulsar-heartbeat[here].
 
 === Docker compose
 
