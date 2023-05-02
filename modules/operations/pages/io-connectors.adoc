@@ -19,7 +19,7 @@ The following sink connectors are included in the `<luna-streaming-all>` deploym
 [#datastax-pulsar-sink]
 === DataStax enhanced Cassandra sink connector
 
-To configure, deploy, and use the DataStax enhanced Cassandra sink connector, see the https://docs.datastax.com/en/pulsar-connector/1.4/index.html[DataStax Pulsar connector documentation^]. +
+To configure, deploy, and use the DataStax enhanced Cassandra sink connector, see the https://docs.datastax.com/en/pulsar-connector/docs/index.html[DataStax Pulsar connector documentation^]. +
 
 The DataStax enhanced Cassandra sink connector offers the following advantages over the OSS Pulsar Cassandra sink connector: +
 
