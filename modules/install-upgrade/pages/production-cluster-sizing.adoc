@@ -59,7 +59,7 @@ Have your load balancer round-robin to all proxy instances in all zones.
 Proxy is optional for VM deployments and required for Kubernetes deployments.
 Scale proxies by their network load or (if running extensions) also scale on CPU usage.
 * https://pulsar.apache.org/docs/functions-worker-run-separately/[Dedicated functions worker(s)^]{external-link-icon} - You can optionally run dedicated function workers in a Pulsar cluster.
-Without dedicated function workers, functions run as a seperate process on the broker.
+Without dedicated function workers, functions run as a separate process on the broker.
 Function worker spec is usually focused on compute and memory.
 Scale the workers based on overall usage (both CPU and memory).
 * xref:luna-streaming:components:admin-console-tutorial.adoc[Pulsar AdminConsole] - This is an optional web-based admin console for managing Pulsar clusters, and makes management much easier than tons of CLI commands. The sizing and scaling for AdminConsole has nothing to do with the cluster, as it is not a failure point.
