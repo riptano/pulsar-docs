@@ -1,4 +1,4 @@
 [NOTE]
 ====
-The xref:kaap-operator/index.html[Kubernetes Autoscaling for Apache Pulsar (KAAP)] operator takes care of scaling Pulsar cluster components, deploying new clusters, and even migrating your existing cluster to an operator-managed deployment.
+The xref:kaap-operator::index.adoc[Kubernetes Autoscaling for Apache Pulsar (KAAP)] operator takes care of scaling Pulsar cluster components, deploying new clusters, and even migrating your existing cluster to an operator-managed deployment.
 ====
