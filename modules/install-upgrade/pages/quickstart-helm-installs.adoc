@@ -27,7 +27,7 @@ The resulting configuration includes support for:
 * cert-manager with support for self-signed certificates as well as public certificates using ACME; such as Let's Encrypt
 * Ingress for all HTTP ports (Pulsar Admin Console, Prometheus, Grafana, others)
 
-== Prerequisites 
+== Prerequisites
 
 For an example set of production cluster values, see the DataStax production-ready https://github.com/datastax/pulsar-helm-chart[Helm chart]. +
 
@@ -38,7 +38,14 @@ include::partial$helm-chart-recommendations.adoc[]
 For the local machine running the Helm chart, you will need: +
 
 * https://helm.sh/docs/[Helm] version 3 +
-* A Google, AWS, or Azure account with privileges to install and configure Kubernetes resources. 
+* A Google, AWS, or Azure account with privileges to install and configure Kubernetes resources.
+
+[TIP]
+====
+Interested in a production benchmark of a Pulsar cluster?
+
+Check out https://community.intel.com/t5/Blogs/Tech-Innovation/Cloud/Improve-Apache-Pulsar-Performance-on-3rd-Gen-Intel-Xeon-Scalable/post/1547895[Improve Apache Pulsar Performance on 3rd Gen Intel Xeon Scalable Processors], where Intel and DataStax benchmark a Pulsar cluster on 3rd Gen Intel® Xeon® processors running in AWS VM instances.
+====
 
 === Storage Class Settings
 
