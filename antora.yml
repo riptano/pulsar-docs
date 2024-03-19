@@ -4,8 +4,8 @@ start_page: index.adoc
 
 asciidoc:
   attributes:
-    luna-version: '2.10'
-    pulsar-version: '2.10'
+    luna-version: '3.1'
+    pulsar-version: '3.1'
     admin-console-version: '2.0.4'
     heartbeat-version: '1.0.12'
 
