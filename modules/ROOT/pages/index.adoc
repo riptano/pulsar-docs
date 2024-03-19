@@ -1,8 +1,8 @@
-= Welcome to DataStax Luna Streaming
+= Welcome to {company} Luna Streaming
 :page-tag: luna-streaming,dev,admin,pulsar
 :navtitle: Luna Streaming
 
-{company} Luna Streaming is a production-ready distribution of Apache Pulsar built to run seamlessly on any CNCF conformant version of Kubernetes. DataStax Luna Streaming provides all of the core capabilities included in the Apache Community version of Apache Pulsar, plus a number of additional tools and features to facilitate administration and operational tasks associated with running Apache Pulsar in production.
+{company} Luna Streaming is a production-ready distribution of Apache Pulsar built to run seamlessly on any CNCF conformant version of Kubernetes. {company} Luna Streaming provides all of the core capabilities included in the Apache Community version of Apache Pulsar, plus a number of additional tools and features to facilitate administration and operational tasks associated with running Apache Pulsar in production.
 
 == Release notes
 
