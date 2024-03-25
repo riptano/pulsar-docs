@@ -105,6 +105,3 @@ Download the latest version from the https://github.com/datastax/pulsar-heartbea
 * For installation to existing Kubernetes environments or with a cloud provider, see xref:install-upgrade:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. +
 
 * For Ansible deployment, use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^]. +
-
-== Upgrade to 3.1 Luna Streaming
-include::partial$migration.adoc[]

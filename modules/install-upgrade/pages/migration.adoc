@@ -1,0 +1,3 @@
+= Migration from 2.10 Luna Streaming
+
+include::partial$upgrade-2.10.adoc[]
