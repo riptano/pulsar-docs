@@ -54,15 +54,15 @@ The resulting Luna Streaming deployment includes:
 +
 [source,bash]
 ----
-tar xzvf lunastreaming-2.10.0-bin.tar.gz
-cd lunastreaming-2.10.0
+tar xzvf lunastreaming-3.1.3.0-bin.tar.gz
+cd lunastreaming-3.1.3.0
 ----
 
 . Enter `ls -al` to view your Luna Streaming files:
 +
 [source,bash]
 ----
-➜  lunastreaming-2.10.0.3 ls -al
+➜  lunastreaming-3.1.3.0 ls -al
 total 88
 drwxr-xr-x@  11 firstname.lastname  staff    352 May 17 05:58 .
 drwx------+  98 firstname.lastname  staff   3136 May 24 14:15 ..
@@ -105,3 +105,6 @@ Download the latest version from the https://github.com/datastax/pulsar-heartbea
 * For installation to existing Kubernetes environments or with a cloud provider, see xref:install-upgrade:quickstart-helm-installs.adoc[Quick Start for Helm Chart installs]. +
 
 * For Ansible deployment, use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^]. +
+
+== Upgrade to 3.1 Luna Streaming
+include::partial$upgrade.adoc[]

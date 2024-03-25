@@ -1,0 +1,17 @@
+
+* Upgrading to 3.1 Luna Streaming should only be done from 2.10 Luna Streaming.
+
+* Upgrade is fully supported for all the components (connectors included).
+
+* If you're upgrading Pulsar SQL from 2.11 or earlier, you should copy config files from conf/presto to trino/conf.
+If you're downgrading Pulsar SQL to 2.11 or earlier from newer versions, do the vice-versa.
+
+* Prometheus client version has been changed from 0.5.0 to 0.16.0. Metric type UNTYPED is renamed to UNKNOWN.
+The metrics have been renamed because OpenMetrics's counter name needs a _total suffix.
+E.g `pulsar_expired_token_count` changed to `pulsar_expired_token_total`.
+** Reference PR - https://github.com/apache/pulsar/pull/13785[Bump prometheus client version #13785]
+
+* Downgrade is not supported for Bookies, rest all components support downgrade.
+**  Pulsar 3.1 uses RocksDB 7.x which writes in a format that is not compatible with RocksDB 6.x
+which is used by LunaStreaming 2.10 via Bookkeeper 4.14.
+** Reference Issue - https://github.com/apache/pulsar/issues/22051[(Bug) Downgrade issue #22051 - apache/pulsar · GitHub]
