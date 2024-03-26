@@ -51,7 +51,7 @@ There are several public repos, each with a different purpose. See:
 
 === Is there a prerequisite version of Java needed for the DataStax Luna Streaming installation?
 
-The DataStax Luna Streaming distribution is designed for Java 11. However, because the product releases Docker images, you do not need to install Java (8 or 11) in advance. Java 11 is bundled in the Docker image.
+The DataStax Luna Streaming distribution is designed for Java 17. However, because the product releases Docker images, you do not need to install Java 17 in advance. Java 17 is bundled in the Docker image.
 
 === What are the install options for DataStax Luna Streaming?
 

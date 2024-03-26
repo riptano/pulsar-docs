@@ -33,7 +33,7 @@ tar -xf node-v14.18.3-linux-x64.tar.xz
 +
 [source,bash,subs="attributes+"]
 ----
-wget https://github.com/datastax/pulsar-admin-console/releases/download/{admin-console-version}/pulsar-admin-console-2.0.0.tar.gz
+wget https://github.com/datastax/pulsar-admin-console/releases/download/{admin-console-version}/pulsar-admin-console-2.2.0.tar.gz
 ----
 
 . Extract the tarball:
