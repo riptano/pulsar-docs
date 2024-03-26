@@ -112,7 +112,7 @@ persistent://public/default/mytopic
 
 And now, the moment of truth...
 
-. Open a Trino shell session using the Trin CLI.
+. Open a Trino shell session using the Trino CLI.
 The server’s port number should match the forwarded port number from the previous step.
 The user can match the name you used to login earlier in this guide, but doesn’t have to.
 +

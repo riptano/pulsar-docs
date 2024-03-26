@@ -8,7 +8,7 @@
 
 The latest release of {company} Luna Streaming is {luna-version}, which matches the supported, distributed Pulsar version numbers.
 
-The prior Luna Streaming release (numbered 1.0.x or 2.10.x) provided the Pulsar 2.10.x distribution.
+The prior Luna Streaming release (2.10.x) provided the Pulsar 2.10.x distribution.
 
 Refer to the {company} Luna Streaming https://github.com/datastax/release-notes/blob/master/Luna_Streaming_3.1_Release_Notes.md[release notes], which are hosted in our public GitHub repo, for information &amp; linked commit IDs that were implemented in the latest Luna Streaming {luna-version} release.
 
