@@ -1,0 +1,75 @@
+
+* Upgrading to Luna Streaming 3.1 should only be done from Luna Streaming 2.10.
+
+* Upgrade is fully supported for all the components (connectors included).
+
+* Prometheus client version has been changed from 0.5.0 to 0.16.0. Metric type UNTYPED is renamed to UNKNOWN.
+The metrics have been renamed because OpenMetrics's counter name needs a _total suffix.
+** Renamed Metrics:
+
+[cols="2*"]
+|===
+|*Before*
+|*After*
+|pulsar_expired_token_count
+|pulsar_expired_token_total
+|pulsar_authentication_success_count
+|pulsar_authentication_success_total
+|pulsar_authentication_failures_count
+|pulsar_authentication_failures_total
+|pulsar_source_received_total_1min
+|pulsar_source_received_1min_total
+|pulsar_source_written_total_1min
+|pulsar_source_written_1min_total
+|pulsar_source_source_total_1min
+|pulsar_source_source_exceptions_1min_total
+|pulsar_source_system_exceptions_total_1min
+|pulsar_source_system_exceptions_1min_total
+|pulsar_function_received_total_1min
+|pulsar_function_received_1min_total
+|pulsar_function_user_exceptions_total_1min
+|pulsar_function_user_exceptions_1min_total
+|pulsar_function_system_exceptions_total_1min
+|pulsar_function_system_exceptions_1min_total
+|pulsar_function_processed_successfully_total_1min
+|pulsar_function_processed_successfully_1min_total
+|pulsar_sink_received_total_1min
+|pulsar_sink_received_1min_total
+|pulsar_sink_written_total_1min
+|pulsar_sink_written_1min_total
+|pulsar_sink_sink_exceptions_total_1min
+|pulsar_sink_sink_exceptions_1min_total
+|pulsar_sink_system_exceptions_total_1min
+|pulsar_sink_system_exceptions_1min_total
+|pulsar_lb_unload_broker_count
+|pulsar_lb_unload_broker_total
+|pulsar_lb_unload_bundle_count
+|pulsar_lb_unload_bundle_total
+|pulsar_lb_bundles_split_count
+|pulsar_lb_bundles_split_total
+|pulsar_schema_del_ops_failed_count
+|pulsar_schema_del_ops_failed_total
+|pulsar_schema_get_ops_failed_count
+|pulsar_schema_get_ops_failed_total
+|pulsar_schema_put_ops_failed_count
+|pulsar_schema_put_ops_failed_total
+|pulsar_schema_compatible_count
+|pulsar_schema_compatible_total
+|pulsar_schema_incompatible_count
+|pulsar_schema_incompatible_total
+|pulsar_txn_committed_count
+|pulsar_txn_committed_total
+|pulsar_txn_aborted_count
+|pulsar_txn_aborted_total
+|pulsar_txn_created_count
+|pulsar_txn_created_total
+|pulsar_txn_timeout_count
+|pulsar_txn_timeout_total
+|pulsar_txn_append_log_count
+|pulsar_txn_append_log_total
+|===
+
+* Downgrade is not supported for Bookies and ZooKeeper. All other components such as Broker, Proxy and Functions Worker can be downgraded at any time.
+**  Pulsar 3.1 uses RocksDB 7.x which writes in a format that is not compatible with RocksDB 6.x
+which is used by LunaStreaming 2.10 via Bookkeeper 4.14.
+** Reference Issue - https://github.com/apache/pulsar/issues/22051[(Bug) Downgrade issue #22051 - apache/pulsar · GitHub]
