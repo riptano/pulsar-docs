@@ -18,15 +18,15 @@ The Trino coordinator and desired number of workers will be created directly in 
 You will need the following prerequisites in place to complete this guide:
 
 * Pulsar CLI
-* https://prestodb.io/docs/current/installation/cli.html[Presto CLI^]{external-link-icon} (this example version 0.278.1)
+* https://trino.io/docs/current/client/cli.html[Trino CLI^]{external-link-icon} (this example version 443)
 * https://helm.sh/docs/intro/install/[Helm 3 CLI^]{external-link-icon} (this example uses version 3.8.0)
 * https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^]{external-link-icon} (this example uses version 1.23.4)
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
 
 [IMPORTANT]
 ====
-PrestoDB has been replaced by Trino, but Apache Pulsar is using Presto’s version.
-The Trino CLI uses the "X-TRINO-USER" header for authentications but Presto expects "X-PRESTO-USER", which is why we use the Presto CLI.
+PrestoDB has been replaced by Trino, and Apache Pulsar is using Trino’s version.
+The Trino CLI uses the "X-TRINO-USER" header for authentications.
 ====
 
 == Install Luna Streaming Helm chart
@@ -42,24 +42,24 @@ include::partial$port-forward-sql.adoc[]
 
 include::partial$port-forward-web-service.adoc[]
 
-== Confirm Presto is available
+== Confirm Trino is available
 
-. In a browser, navigate to \http://localhost:8090. +
-You will be greeted by Presto’s login.
+. In a browser, navigate to \http://localhost:8081. +
+You will be greeted by Trino’s login.
 +
-image::presto-sql-login.png[Presto SQL login]
+image::trino-sql-login.png[Trino SQL login]
 
 . There is no authentication enabled, so input whatever user name you prefer and select “Log In”. +
 You will be greeted by a blank dashboard.
-This confirms Presto is up and running.
+This confirms Trino is up and running.
 +
-image::presto-sql-dashboard.png[Presto SQL dashboard]
+image::trino-sql-dashboard.png[Trino SQL dashboard]
 
 [#create-topic]
 == Fill a topic with the data-generator source
 
 In this example, we will use the “data-generator” source connector to create a topic and add sample data simultaneously.
-The minimalist Helm chart values use the https://github.com/datastax/release-notes/blob/master/Luna_Streaming_2.10_Release_Notes.md#lunastreaming-all-distribution[datastax/lunastreaming-all^]{external-link-icon} image, which includes all supported Pulsar connectors. +
+The minimalist Helm chart values use the https://github.com/datastax/release-notes/blob/master/Luna_Streaming_3.1_Release_Notes.md#lunastreaming-all-distribution[datastax/lunastreaming-all^]{external-link-icon} image, which includes all supported Pulsar connectors. +
 This example uses the “public” tenant and “default” namespace.
 These are created by default in Pulsar, but you can use whatever tenant and namespace you are comfortable with.
 
@@ -112,20 +112,20 @@ persistent://public/default/mytopic
 
 And now, the moment of truth...
 
-. Open a Presto shell session using the Presto CLI.
+. Open a Trino shell session using the Trino CLI.
 The server’s port number should match the forwarded port number from the previous step.
 The user can match the name you used to login earlier in this guide, but doesn’t have to.
 +
 [source,shell]
 ----
-./presto --user test --server localhost:8090
+./trino --user test --server localhost:8081
 ----
 
-. Once inside the shell, let’s have a look around. List the catalogs Presto has loaded.
+. Once inside the shell, let’s have a look around. List the catalogs Trino has loaded.
 +
 [source,shell]
 ----
-presto> show catalogs;
+trino> show catalogs;
 ----
 You should get an output of:
 +
@@ -139,12 +139,12 @@ You should get an output of:
 
 Query 20230103_163242_00000_zvk84, FINISHED, 2 nodes
 ----
-Notice the similarities between your Pulsar tenant/namespaces and Presto’s output.
+Notice the similarities between your Pulsar tenant/namespaces and Trino’s output.
 . List the tables within the `pulsar.”public/default”` catalog/schema. +
 +
 [source,shell]
 ----
-presto> show tables in pulsar."public/default";
+trino> show tables in pulsar."public/default";
 ----
 You should get an output of:
 +
@@ -157,77 +157,77 @@ You should get an output of:
 
 Query 20230103_163355_00001_zvk84, FINISHED, 2 nodes
 ----
-Hey presto{emoji-tada}!
+Hey trino{emoji-tada}!
 There’s our topic that was created from the data-generator source connector <<create-topic,earlier in this guide>>!
 
 . Query the table to see the first 10 rows of data.
 +
 [source,sql]
 ----
-presto> select * from pulsar."public/default".mytopic limit 10;
+trino> select * from pulsar."public/default".mytopic limit 10;
 ----
 The output should be the 10 messages that were added to the Pulsar topic previously.
 
-.. If you prefer, you can query your table with the Presto client REST API.
+.. If you prefer, you can query your table with the Trino client REST API.
 The response will include a “nextUri” value.
 Follow that link to see the results.
 +
 [source,]
 ----
-POST http://localhost:8090/v1/statement  HTTP/1.1
+POST http://localhost:8081/v1/statement  HTTP/1.1
 content-type: application/json
-X-Presto-User: test
+X-Trino-User: test
 
 select * from pulsar."public/default".mytopic limit 10
 ----
 
-. Exit the presto shell.
+. Exit the trino shell.
 +
 [source,shell]
 ----
-presto> exit
+trino> exit
 ----
 
 You have successfully interacted with a Pulsar Cluster via SQL. Awesome!{emoji-rocket}
 
-Want to put your new learnings to the test? Try using the Presto plugin in https://redash.io/data-sources/presto[Redash^]{external-link-icon} or https://superset.apache.org/docs/databases/presto/[Superset^]{external-link-icon} to create useful dashboards.
+Want to put your new learnings to the test? Try using the Trino plugin in https://redash.io/data-sources/presto[Redash^]{external-link-icon} or https://superset.apache.org/docs/databases/trino/[Superset^]{external-link-icon} to create useful dashboards.
 
 [#schema-quotes]
 === Sidebar: Why are there quotes around the schema name?
 You might wonder why there are quotes (“”) around the schema name.
-This is a result of mapping Presto primitives to Pulsar’s primitives.
+This is a result of mapping Trino primitives to Pulsar’s primitives.
 
-Presto has catalogs, schemas, and tables.
+Trino has catalogs, schemas, and tables.
 Pulsar has tenants, namespaces, and topics.
-The Pulsar Presto plugin assumes the catalog name which leaves schema and table, so the tenant and namespace are combined with a forward slash delimited string. Presto has to see that combination as a single string, which means it needs to be wrapped in quotes.
+The Pulsar Trino plugin assumes the catalog name which leaves schema and table, so the tenant and namespace are combined with a forward slash delimited string. Trino has to see that combination as a single string, which means it needs to be wrapped in quotes.
 
 == Connect with JDBC
 
 Bonus time!
-This example queries messages from a Java app using the Presto JDBC client.
+This example queries messages from a Java app using the Trino JDBC client.
 You’ll need the Java runtime to run the example.
 
-. Create a file named “PrestoExample.java” with the following contents.
+. Create a file named “TrinoExample.java” with the following contents.
 Remember to update the JDBC connection with the correct values for your environment.
 +
 [source,java]
 ----
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/PrestoExample.java[]
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/TrinoExample.java[]
 ----
 . Build the Java class.
 +
 [source,shell]
 ----
-javac PrestoExample.java
+javac TrinoExample.java
 ----
-. Download the https://repo1.maven.org/maven2/io/prestosql/presto-jdbc/334/presto-jdbc-334.jar[version 334 Presto JDBC driver^]{external-link-icon} to the same folder as the Java class.
+. Download the https://repo1.maven.org/maven2/io/trino/trino-jdbc/443/trino-jdbc-443.jar[version 443 Trino JDBC driver^]{external-link-icon} to the same folder as the Java class.
 
 . Run the client and observe the output.
-`-cp` tells Java to use the downloaded presto-jdbc jar in your classpath to connect.
+`-cp` tells Java to use the downloaded trino-jdbc jar in your classpath to connect.
 +
 [source,shell]
 ----
-java -cp .:presto-jdbc-334.jar PrestoExample
+java -cp .:trino-jdbc-443.jar TrinoExample
 ----
 
 You should get an output of:
