@@ -207,18 +207,18 @@ Bonus time!
 This example queries messages from a Java app using the Trino JDBC client.
 You’ll need the Java runtime to run the example.
 
-. Create a file named “TrinoExample.java” with the following contents.
+. Create a file named “PrestoExample.java” with the following contents.
 Remember to update the JDBC connection with the correct values for your environment.
 +
 [source,java]
 ----
-include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/TrinoExample.java[]
+include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/PrestoExample.java[]
 ----
 . Build the Java class.
 +
 [source,shell]
 ----
-javac TrinoExample.java
+javac PrestoExample.java
 ----
 . Download the https://repo1.maven.org/maven2/io/trino/trino-jdbc/443/trino-jdbc-443.jar[version 443 Trino JDBC driver^]{external-link-icon} to the same folder as the Java class.
 
@@ -227,7 +227,7 @@ javac TrinoExample.java
 +
 [source,shell]
 ----
-java -cp .:trino-jdbc-443.jar TrinoExample
+java -cp .:trino-jdbc-443.jar PrestoExample
 ----
 
 You should get an output of:
