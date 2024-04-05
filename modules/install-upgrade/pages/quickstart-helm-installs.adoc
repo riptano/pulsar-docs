@@ -348,17 +348,17 @@ In addition, you can configure any S3 compatible storage. There is explicit supp
 
 === Pulsar SQL Configuration
 
-If you enable Pulsar SQL, the cluster provides https://prestodb.io/[Presto] access to the data stored in BookKeeper (and tiered storage, if enabled). Presto is exposed on the service named `<release>-sql`.
+If you enable Pulsar SQL, the cluster provides https://trino.io/[Trino] access to the data stored in BookKeeper (and tiered storage, if enabled). Trino is exposed on the service named `<release>-sql`.
 
-The easiest way to access the Presto command line is to log into the bastion host and then connect to the Presto service port, like this:
+The easiest way to access the Trino command line is to log into the bastion host and then connect to the Trino service port, like this:
 
-`bin/pulsar sql --server pulsar-sql:8090`
+`bin/pulsar sql --server pulsar-sql:8081`
 
-Where the value for the `server` option should be the service name plus port. Once you are connected, you can enter Presto commands. Example:
+Where the value for the `server` option should be the service name plus port. Once you are connected, you can enter Trino commands. Example:
 
 [source,sql]
 ---------------------------------------
-presto> SELECT * FROM system.runtime.nodes;
+trino> SELECT * FROM system.runtime.nodes;
                node_id                |         http_uri         | node_version | coordinator | state
 --------------------------------------+--------------------------+--------------+-------------+--------
  64b7c5a1-9a72-4598-b494-b140169abc55 | http://10.244.5.164:8080 | 0.206        | true        | active
@@ -370,17 +370,17 @@ Splits: 17 total, 17 done (100.00%)
 0:04 [2 rows, 144B] [0 rows/s, 37B/s]
 ---------------------------------------
 
-To access Pulsar SQL from outside the cluster, you can enable the `ingress` option which will expose the Presto port on hostname. We have tested with the Traefik ingress, but any Kubernetes ingress should work. You can then run SQL queries using the Presto CLI and monitoring Presto using the built-in UI (point browser to the ingress hostname). Authentication is not enabled on the UI, so you can log in with any username.
+To access Pulsar SQL from outside the cluster, you can enable the `ingress` option which will expose the Trino port on hostname. We have tested with the Traefik ingress, but any Kubernetes ingress should work. You can then run SQL queries using the Trino CLI and monitoring Trino using the built-in UI (point browser to the ingress hostname). Authentication is not enabled on the UI, so you can log in with any username.
 
-It is recommended that you match the Presto CLI version to the version running as part of Pulsar SQL.
+It is recommended that you match the Trino CLI version to the version running as part of Pulsar SQL.
 
-The Presto CLI supports basic authentication, so if you enabled that on the Ingress (using annotations), you can have secure Presto access. Example:
+The Trino CLI supports basic authentication, so if you enabled that on the Ingress (using annotations), you can have secure Trino access. Example:
 
 [source,sql]
 ----------
-presto --server https://presto.example.com --user admin --password
+trino --server https://trino.example.com --user admin --password
 Password:
-presto> show catalogs;
+trino> show catalogs;
  Catalog
 ---------
  pulsar

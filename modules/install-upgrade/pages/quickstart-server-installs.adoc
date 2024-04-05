@@ -16,8 +16,7 @@ The resulting Luna Streaming deployment includes:
 == Requirements
 
 * A Linux server or VM +
-* JDK 11 +
-  Pulsar can run with JDK8, but DataStax Luna Streaming is designed for Java 11. Java 17 LTS will be supported in the future. +
+* JDK 17 +
 * File System +
   DataStax recommends XFS, but ext4 will work +
 * For a single node install, a server with at least 8 CPU and 32 GB of memory is required +
