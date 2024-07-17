@@ -11,9 +11,9 @@ By adding the Starlight for Kafka protocol handler to your Pulsar cluster, you c
 
 You will need the following prerequisites in place to complete this guide:
 
-* https://helm.sh/docs/intro/install/[Helm 3 CLI^]{external-link-icon} (we used version 3.8.0)
-* https://www.apache.org/dyn/closer.cgi?path=/kafka/3.3.1/kafka_2.13-3.3.1.tgz[Kafka CLI^]{external-link-icon} (we used version 3.3.1)
-* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^]{external-link-icon} (we used version 1.23.4)
+* https://helm.sh/docs/intro/install/[Helm 3 CLI^] (we used version 3.8.0)
+* https://www.apache.org/dyn/closer.cgi?path=/kafka/3.3.1/kafka_2.13-3.3.1.tgz[Kafka CLI^] (we used version 3.3.1)
+* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^] (we used version 1.23.4)
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
 
 == Install Luna Streaming helm chart
@@ -77,7 +77,7 @@ This my first message
 Wait a second! We never created a topic! And where did the "quickstart" topic come from?!
 
 The default behavior of Starlight for Kafka is to create a new single partition, persistent topic when one is not present.
-You can configure this behavior and many other S4K parameters in the https://github.com/datastaxdevs/luna-streaming-examples/blob/main/starlight-for-kafka/values.yaml[Helm chart^]{external-link-icon}.
+You can configure this behavior and many other S4K parameters in the https://github.com/datastaxdevs/luna-streaming-examples/blob/main/starlight-for-kafka/values.yaml[Helm chart^].
 Learn more about the configuration values xref:starlight-for-kafka:configuration:starlight-kafka-configuration.adoc[here].
 
 Let's have a look at the topic that was created. From your Pulsar home folder, run the following command.

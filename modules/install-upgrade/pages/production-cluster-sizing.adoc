@@ -29,15 +29,15 @@ Pulsar clusters come in many shapes and sizes. There are minimum components for 
 
 === Required components
 
-* https://pulsar.apache.org/docs/concepts-architecture-overview/#metadata-store[Zookeeper^]{external-link-icon} - This is Pulsar’s meta data store. It stores data about a cluster’s configuration, helps the proxy direct messages to the correct broker, and holds Bookie configurations. Start with 1 instance of Zookeeper in each availability zone (AZ) to mitigate a single failure point, and scale Zookeeper as cluster traffic increases. You could scale Zookeeper as traffic within the cluster increases, but it shouldn’t be very often as it can handle quite a bit of load.
+* https://pulsar.apache.org/docs/concepts-architecture-overview/#metadata-store[Zookeeper^] - This is Pulsar’s meta data store. It stores data about a cluster’s configuration, helps the proxy direct messages to the correct broker, and holds Bookie configurations. Start with 1 instance of Zookeeper in each availability zone (AZ) to mitigate a single failure point, and scale Zookeeper as cluster traffic increases. You could scale Zookeeper as traffic within the cluster increases, but it shouldn’t be very often as it can handle quite a bit of load.
 
-* https://pulsar.apache.org/docs/concepts-architecture-overview/#brokers[Broker^]{external-link-icon} - This is Pulsar's message router.
+* https://pulsar.apache.org/docs/concepts-architecture-overview/#brokers[Broker^] - This is Pulsar's message router.
 Ideally, each broker should be fully utilized without becoming a performance bottleneck.
 The Pulsar broker is stateless, so it requires considerable computing power but not much storage.
 Start with 1 broker instance in each zone, and set a scaling rule that watches CPU load.
 The best way to optimize this is through performance testing based on your cluster's workload characteristics.
 
-* https://pulsar.apache.org/docs/concepts-architecture-overview/#apache-bookkeeper[Bookkeeper (bookie)^]{external-link-icon} - This is Pulsar’s data store.
+* https://pulsar.apache.org/docs/concepts-architecture-overview/#apache-bookkeeper[Bookkeeper (bookie)^] - This is Pulsar’s data store.
 Bookkeeper stores message data in a low-latency, resilient way.
 Pulsar uses Bookkeeper’s quorum math to function, so a loss of 1 Bookkeeper instance won’t bring your system down, but will cause some data loss.
 Start with at least 3 bookies, with 1 in each AZ.
@@ -49,9 +49,9 @@ Scale bookies up on disc usage percentage. Scale down manually by making a booki
 
 The DataStax Luna Streaming Helm chart deployment includes optional but highly recommended server components for better Pulsar cluster metrics monitoring and operation visibility.
 
-* https://bookkeeper.apache.org/docs/admin/autorecovery[Bookkeeper AutoRecovery^]{external-link-icon} - This is a Pulsar component that recovers Bookkeeper data in the event of a bookie outage. While optional you will want the insurance of autorecovery working on your behalf.
+* https://bookkeeper.apache.org/docs/admin/autorecovery[Bookkeeper AutoRecovery^] - This is a Pulsar component that recovers Bookkeeper data in the event of a bookie outage. While optional you will want the insurance of autorecovery working on your behalf.
 A single instance of Autorecovery should be adequate - only in the most heavily-used clusters will you need more.
-* https://pulsar.apache.org/docs/concepts-architecture-overview/#pulsar-proxy[Pulsar proxy^]{external-link-icon} - The Pulsar proxy is just that - a proxy.
+* https://pulsar.apache.org/docs/concepts-architecture-overview/#pulsar-proxy[Pulsar proxy^] - The Pulsar proxy is just that - a proxy.
 It runs at the edge of the cluster with public facing endpoints.
 Without it, your brokers would expose those endpoints, which is not an ideal configuration in production.
 Pulsar proxy also offers special options for cluster extensions, like our xref:starlight-for-kafka::index.adoc[Starlight Suite of APIs].
@@ -60,7 +60,7 @@ The proxy will be made aware of all the brokers in the same zone and load balanc
 Have your load balancer round-robin to all proxy instances in all zones.
 Proxy is optional for VM deployments and required for Kubernetes deployments.
 Scale proxies by their network load or (if running extensions) also scale on CPU usage.
-* https://pulsar.apache.org/docs/functions-worker-run-separately/[Dedicated functions worker(s)^]{external-link-icon} - You can optionally run dedicated function workers in a Pulsar cluster.
+* https://pulsar.apache.org/docs/functions-worker-run-separately/[Dedicated functions worker(s)^] - You can optionally run dedicated function workers in a Pulsar cluster.
 Without dedicated function workers, functions run as a separate process on the broker.
 Function worker spec is usually focused on compute and memory.
 Scale the workers based on overall usage (both CPU and memory).
@@ -73,7 +73,7 @@ image::pulsar-components.png[]
 [#message-retention]
 == Message retention
 The broker ensures messages are received and delivered appropriately, but it is a stateless process so it doesn’t use its memory to track this. Instead, the broker uses Bookkeepers (or "bookies") to store message data and the message’s acknowledgement state.
-A great benefit of Bookkeeper is its quorum policies. These policies make each bookie aware of the other bookies to form a bookkeeper cluster. With a cluster established, the cluster can have acknowledgement rules that form a data replication factor. For example, if you had 3 bookies in a Bookkeeper cluster with an acknowledgement rule that at least 2 of the 3 bookies must have a copy of the data, then the cluster has a replication factor of 2. A Pulsar broker uses the `managedLedgerDefaultAckQuorum` and `managedLedgerDefaultWriteQuorum` configurations to set the bounds of this rule. For more about Bookkeeper persistence, see https://pulsar.apache.org/docs/administration-zk-bk/#bookkeeper-persistence-policies[here^]{external-link-icon}.
+A great benefit of Bookkeeper is its quorum policies. These policies make each bookie aware of the other bookies to form a bookkeeper cluster. With a cluster established, the cluster can have acknowledgement rules that form a data replication factor. For example, if you had 3 bookies in a Bookkeeper cluster with an acknowledgement rule that at least 2 of the 3 bookies must have a copy of the data, then the cluster has a replication factor of 2. A Pulsar broker uses the `managedLedgerDefaultAckQuorum` and `managedLedgerDefaultWriteQuorum` configurations to set the bounds of this rule. For more about Bookkeeper persistence, see https://pulsar.apache.org/docs/administration-zk-bk/#bookkeeper-persistence-policies[here^].
 
 When a client produces a message, the broker will not acknowledge receipt until the replication factor has been achieved. Continuing from the above example, if the replication factor is 2, a broker’s acknowledgment means a minimum of 2 bookies have confirmed storage of message data. If the broker times out waiting for at least 2 responses from the bookies, then the broker will not acknowledge receipt with the client. The client will need to handle the exception by attempting to resend or fail. This process forms one of Pulsar’s core values - guaranteed message receipt.
 
@@ -83,7 +83,7 @@ Until all subscribers have acknowledged receipt of a message, the broker will no
 
 Unfortunately, this isn't realistic. Things happen. Processes lock up. Networks go down. If we tell Pulsar to indefinitely attempt message delivery to all subscribers on all topics, the backlog would grow out of control, with bookie disks continuously filling and never draining. So, guaranteed message delivery must be managed with some rules.
 
-Pulsar has different ways of managing the broker’s backlog (ie: guaranteed message delivery). Combining these different settings make up the rules of message retention. The rules of message retention directly impact how full a bookie’s disk can be. We can't cover every possability within Pulsar’s message retention system, so we will focus on 3 key areas and let those drive our sizing calculation. For more on message retention and expiration, see https://pulsar.apache.org/docs/concepts-messaging/#message-retention-and-expiry[Pulsar’s message retention and expiry documentation^]{external-link-icon}.
+Pulsar has different ways of managing the broker’s backlog (ie: guaranteed message delivery). Combining these different settings make up the rules of message retention. The rules of message retention directly impact how full a bookie’s disk can be. We can't cover every possability within Pulsar’s message retention system, so we will focus on 3 key areas and let those drive our sizing calculation. For more on message retention and expiration, see https://pulsar.apache.org/docs/concepts-messaging/#message-retention-and-expiry[Pulsar’s message retention and expiry documentation^].
 
 === Retention policy
 The broker’s goal is to mark a message for deletion, which means all subscribers have acknowledged message receipt and the message can be removed from the bookie's disk. Don’t confuse this with Pulsar’s tiered storage, where you can store the broker’s backlog for a very long time. This is a different concept than retention. Sometimes you want acknowledged messages to stay on disk for a certain period of time, or until a certain size threshold has been reached. For example, when a client is constantly reading a topic’s messages and needs to have the same low latency performance as a consumer of unacknowledged messages, a highly performant reader is required.
@@ -110,13 +110,13 @@ To size a cluster, you need a general understanding of what workloads it will be
 Realistically, it’s almost impossible to definitively know the exact applications and message sizes that will be used. If your cluster is successful, more teams will want to use it! So we’ve collected the “building blocks” of sizing a cluster, which we call an “aggregated cluster workload”. Think of it as a loosely calculated algorithm to approximate cluster sizing.
 
 * _Average message size (uncompressed)_ - this is the most important number to understand. A message is sized by the number of bytes. A message includes its *message key*, *properties*, and a *message payload*. A *message key* is roughly the same number of characters as a GUID (or hash). *Message properties* is a key/value collection of metadata, so the number of characters varies. The *message payload* accounts for the bulk of the sizing variability. To start, assume the message is a JSON string with some number of characters. +
-For more on message compression, see the https://pulsar.apache.org/docs/concepts-messaging/#compression[Pulsar documentation^]{external-link-icon}, or search for “calculate bytes of string” in your favorite search engine - you’ll find many free tools where you can type out a sample JSON-formatted string and see the byte count.
+For more on message compression, see the https://pulsar.apache.org/docs/concepts-messaging/#compression[Pulsar documentation^], or search for “calculate bytes of string” in your favorite search engine - you’ll find many free tools where you can type out a sample JSON-formatted string and see the byte count.
 
 * _Incoming message throughput_ - this is the second most important number to understand. Throughput is expressed as a number of messages that the cluster can produce in a second. Think about this number in terms of steady traffic and burst traffic. Pulsar can scale brokers to handle bursts, so you don’t need to size for maximum workload, but you do need to consider the time it takes to scale up broker instances. If you were streaming in data every time someone clicked on a web page, and the site received a constant 2000 views per second, then your minimum throughput must be able to handle a load above that requirement, because that stream won't be the only load on the cluster. You likewise wouldn't size the cluster to your existing load, because you hope that load will grow over time.
 
 * _Message retention and TTL period_ - the size or time acknowledged messages are kept on disk. See message retention above for more detail.
 
-* _Tiered storage policies_ - Tiered storage offloads bookkeeper data to cheaper, long-term storage, and can impact cluster sizing if that storage service is included in the cluster. For our calculations we will not be including this feature. For more on tiered storage, see https://pulsar.apache.org/docs/tiered-storage-overview/[Pulsar documentation^]{external-link-icon}.
+* _Tiered storage policies_ - Tiered storage offloads bookkeeper data to cheaper, long-term storage, and can impact cluster sizing if that storage service is included in the cluster. For our calculations we will not be including this feature. For more on tiered storage, see https://pulsar.apache.org/docs/tiered-storage-overview/[Pulsar documentation^].
 
 There are other factors that could be a part of the aggregated cluster workload. As you gain familiarity with Pulsar you can further customize this calculation. For now, we will estimate with the above numbers to size a cluster.
 
