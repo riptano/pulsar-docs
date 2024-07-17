@@ -18,9 +18,9 @@ The Trino coordinator and desired number of workers will be created directly in 
 You will need the following prerequisites in place to complete this guide:
 
 * Pulsar CLI
-* https://prestodb.io/docs/current/installation/cli.html[Presto CLI^] (this example version 0.278.1)
-* https://helm.sh/docs/intro/install/[Helm 3 CLI^] (this example uses version 3.8.0)
-* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^] (this example uses version 1.23.4)
+* https://prestodb.io/docs/current/installation/cli.html[Presto CLI] (this example version 0.278.1)
+* https://helm.sh/docs/intro/install/[Helm 3 CLI] (this example uses version 3.8.0)
+* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI] (this example uses version 1.23.4)
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
 
 [IMPORTANT]
@@ -59,7 +59,7 @@ image::presto-sql-dashboard.png[Presto SQL dashboard]
 == Fill a topic with the data-generator source
 
 In this example, we will use the “data-generator” source connector to create a topic and add sample data simultaneously.
-The minimalist Helm chart values use the https://github.com/datastax/release-notes/blob/master/Luna_Streaming_2.10_Release_Notes.md#lunastreaming-all-distribution[datastax/lunastreaming-all^] image, which includes all supported Pulsar connectors. +
+The minimalist Helm chart values use the https://github.com/datastax/release-notes/blob/master/Luna_Streaming_2.10_Release_Notes.md#lunastreaming-all-distribution[datastax/lunastreaming-all] image, which includes all supported Pulsar connectors. +
 This example uses the “public” tenant and “default” namespace.
 These are created by default in Pulsar, but you can use whatever tenant and namespace you are comfortable with.
 
@@ -190,7 +190,7 @@ presto> exit
 
 You have successfully interacted with a Pulsar Cluster via SQL. Awesome!{emoji-rocket}
 
-Want to put your new learnings to the test? Try using the Presto plugin in https://redash.io/data-sources/presto[Redash^] or https://superset.apache.org/docs/databases/presto/[Superset^] to create useful dashboards.
+Want to put your new learnings to the test? Try using the Presto plugin in https://redash.io/data-sources/presto[Redash] or https://superset.apache.org/docs/databases/presto/[Superset] to create useful dashboards.
 
 [#schema-quotes]
 === Sidebar: Why are there quotes around the schema name?
@@ -220,7 +220,7 @@ include::https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/
 ----
 javac PrestoExample.java
 ----
-. Download the https://repo1.maven.org/maven2/io/prestosql/presto-jdbc/334/presto-jdbc-334.jar[version 334 Presto JDBC driver^] to the same folder as the Java class.
+. Download the https://repo1.maven.org/maven2/io/prestosql/presto-jdbc/334/presto-jdbc-334.jar[version 334 Presto JDBC driver] to the same folder as the Java class.
 
 . Run the client and observe the output.
 `-cp` tells Java to use the downloaded presto-jdbc jar in your classpath to connect.

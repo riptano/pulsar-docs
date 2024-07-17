@@ -8,7 +8,7 @@ If you are new to DataStax Luna Streaming and its Apache Pulsar enhancements, th
 
 === What is DataStax Luna Streaming?
 
-DataStax Luna Streaming is a new Kubernetes-based distribution of Apache Pulsar, based on the technology that https://kesque.com/[Kesque, window=_blank] built to run its Pulsar-as-a-service.
+DataStax Luna Streaming is a new Kubernetes-based distribution of Apache Pulsar, based on the technology that https://kesque.com/[Kesque] built to run its Pulsar-as-a-service.
 
 === What components and features are provided by DataStax Luna Streaming?
 
@@ -41,12 +41,12 @@ They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azur
 
 There are several public repos, each with a different purpose. See:
 
-* https://github.com/datastax/pulsar[https://github.com/datastax/pulsar, window=_blank] : This is the distro repo (a fork of apache/pulsar).  
-* https://github.com/datastax/pulsar-admin-console[https://github.com/datastax/pulsar-admin-console, window=_blank] : This is the repo for the Pulsar admin console, which allows for the configuration and monitoring of Pulsar.
-* https://github.com/datastax/pulsar-heartbeat[https://github.com/datastax/pulsar-heartbeat, window=_blank] : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
-* https://github.com/datastax/pulsar-helm-chart[https://github.com/datastax/pulsar-helm-chart, window=_blank] : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
-* https://github.com/datastax/pulsar-sink[https://github.com/datastax/pulsar-sink, window=_blank] : This is the DataStax Apache Pulsar Connector (`pulsar-sink` for Cassandra) repo.
-* https://github.com/datastax/burnell[https://github.com/datastax/burnell, window=_blank] : This is a utility for Pulsar that provides various functions, such as key initialization for authentication, and JWT token creation API.
+* https://github.com/datastax/pulsar[https://github.com/datastax/pulsar] : This is the distro repo (a fork of apache/pulsar).  
+* https://github.com/datastax/pulsar-admin-console[https://github.com/datastax/pulsar-admin-console] : This is the repo for the Pulsar admin console, which allows for the configuration and monitoring of Pulsar.
+* https://github.com/datastax/pulsar-heartbeat[https://github.com/datastax/pulsar-heartbeat] : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
+* https://github.com/datastax/pulsar-helm-chart[https://github.com/datastax/pulsar-helm-chart] : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
+* https://github.com/datastax/pulsar-sink[https://github.com/datastax/pulsar-sink] : This is the DataStax Apache Pulsar Connector (`pulsar-sink` for Cassandra) repo.
+* https://github.com/datastax/burnell[https://github.com/datastax/burnell] : This is a utility for Pulsar that provides various functions, such as key initialization for authentication, and JWT token creation API.
 
 == Installation
 
@@ -56,9 +56,9 @@ The DataStax Luna Streaming distribution is designed for Java 11. However, becau
 
 === What are the install options for DataStax Luna Streaming?
 
-* Use the Helm chart provided at https://github.com/apache/pulsar-helm-chart[https://github.com/datastax/pulsar-helm-chart^] to install DataStax Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
-* Use the tarball provided at https://github.com/datastax/pulsar/releases[https://github.com/datastax/pulsar/releases^] to install DataStax Luna Streaming on a server or VM. 
-* Use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^] to install DataStax Luna Streaming on a server or VM with our provided playbooks.
+* Use the Helm chart provided at https://github.com/apache/pulsar-helm-chart[https://github.com/datastax/pulsar-helm-chart] to install DataStax Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
+* Use the tarball provided at https://github.com/datastax/pulsar/releases[https://github.com/datastax/pulsar/releases] to install DataStax Luna Streaming on a server or VM. 
+* Use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible] to install DataStax Luna Streaming on a server or VM with our provided playbooks.
 
 === How do I install DataStax Luna Streaming in my Kubernetes cluster?
 

@@ -83,7 +83,7 @@ Python functions are added by loading a Python file (.py) or a zipped Python fil
 +
 Java functions are added by loading a Java jar file (.jar). When adding Java files, also specify the name of the class to execute as the function. 
 +
-Go functions are added by loading a Go file (.go). For more information on packaging a Go function, see https://pulsar.apache.org/docs/en/functions-package/#go[Packaging Functions in Go^].
+Go functions are added by loading a Go file (.go). For more information on packaging a Go function, see https://pulsar.apache.org/docs/en/functions-package/#go[Packaging Functions in Go].
 
 [start=2]
 . Choose your function name and namespace. 
@@ -92,7 +92,7 @@ Your input topics, output topics, log topics, and processing guarantees will aut
 
 . Provide a *Configuration Key* in the dropdown menu.
 +
-For a list of configuration keys, see the https://pulsar.apache.org/functions-rest-api/#operation/registerFunction[Pulsar Functions API Docs^].
+For a list of configuration keys, see the https://pulsar.apache.org/functions-rest-api/#operation/registerFunction[Pulsar Functions API Docs].
 
 . Select *Add* to add your function. 
 

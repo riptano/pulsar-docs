@@ -8,7 +8,7 @@ You have options for installing *DataStax Luna Streaming*:
 
 * Via the provided *DataStax Helm chart* for an existing Kubernetes environment locally or with a cloud provider, as covered in this topic. +
 * Via the *DataStax Luna Streaming tarball* for deployment to a single server/VM, or to multiple servers/VMs. See xref:install-upgrade:quickstart-server-installs.adoc[Quick Start for Server/VM installs]. +
-* Via the *DataStax Ansible scripts* provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible^].
+* Via the *DataStax Ansible scripts* provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible].
 
 The Helm chart and options described below configure an Apache Pulsar cluster.
 It is designed for production use, but can also be used in local development environments with the proper settings.

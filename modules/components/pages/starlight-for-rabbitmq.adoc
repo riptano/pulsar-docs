@@ -4,15 +4,15 @@
 :title: A guide to deploying Luna Streaming with the Starlight for RabbitMQ extension
 :helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/starlight-for-rabbitmq/values.yaml
 
-Starlight for RabbitMQ brings native https://www.rabbitmq.com/[RabbitMQ^] protocol support to https://pulsar.apache.org/[Apache Pulsar™^] by introducing a RabbitMQ protocol handler on Pulsar brokers or Pulsar proxies.
+Starlight for RabbitMQ brings native https://www.rabbitmq.com/[RabbitMQ] protocol support to https://pulsar.apache.org/[Apache Pulsar™] by introducing a RabbitMQ protocol handler on Pulsar brokers or Pulsar proxies.
 By adding the Starlight for RabbitMQ protocol handler to your Pulsar cluster, you can migrate your existing RabbitMQ applications and services to Pulsar without modifying the code.
 
 == Prerequisites
 
 You will need the following prerequisites in place to complete this guide:
 
-* https://helm.sh/docs/intro/install/[Helm 3 CLI^] (we used version 3.8.0)
-* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^] (we used version 1.23.4)
+* https://helm.sh/docs/intro/install/[Helm 3 CLI] (we used version 3.8.0)
+* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI] (we used version 1.23.4)
 * Python (we used version 3.8.10)
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
 
