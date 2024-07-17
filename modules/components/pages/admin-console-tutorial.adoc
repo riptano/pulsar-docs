@@ -1,7 +1,7 @@
-= Pulsar Admin Console 
+= Pulsar Admin Console
 :page-tag: luna-streaming,admin,dev,pulsar
 
-The *DataStax Admin Console for Apache Pulsar®* is a web-based UI from DataStax that administers topics, namespaces, sources, sinks, and various aspects of Apache Pulsar features. 
+The *DataStax Admin Console for Apache Pulsar®* is a web-based UI from DataStax that administers topics, namespaces, sources, sinks, and various aspects of Apache Pulsar features.
 
 * xref:components:admin-console-tutorial.adoc#getting-started[]
 * xref:components:admin-console-tutorial.adoc#features[]
@@ -20,14 +20,14 @@ If you installed the Admin console with the xref:install-upgrade:quickstart-helm
 
 image::GCP-all-pods.png[GCP Pods]
 
-Log in with username `admin`. 
+Log in with username `admin`.
 
 If you're running a xref:install-upgrade:quickstart-server-installs.adoc[server or VM] deployment, see xref:admin-console-vm.adoc[Admin Console on Server/VM] for instructions on deploying and accessing the Admin console.
 
 [#features]
 == Pulsar Admin Console features
 
-To try out your service, use the built-in WebSocket test clients on the Pulsar Admin Console's *Test Clients* page. 
+To try out your service, use the built-in WebSocket test clients on the Pulsar Admin Console's *Test Clients* page.
 
 To see currently available namespaces, go to *Namespaces*, or select the button in the upper right corner.
 
@@ -37,12 +37,12 @@ Messages published to namespaces are automatically replicated to all node(s) in 
 
 image::luna-streaming-admin-console.png[Luna Streaming Admin Console]
 
-For interactive code samples, go to *Code Samples*. 
+For interactive code samples, go to *Code Samples*.
 
 [#send-receive]
 == Sending and receiving Pulsar messages
 
-Go to the Pulsar Admin Console's **Test Clients** page. The quickest way to try your service is to use the test clients and send messages from one client to the other. 
+Go to the Pulsar Admin Console's **Test Clients** page. The quickest way to try your service is to use the test clients and send messages from one client to the other.
 
 In the WebSocket Test Client 1 section, click **Connect**. This action creates a connection from the Pulsar Admin Console that's running in your browser to the Pulsar instance on your server.
 
@@ -52,7 +52,7 @@ image::test-message.png[Send a message using a test client]
 
 In doing so, you published a message to your server, and in the Test Client you're listening to your own topic. +
 
-Your client is working with the Pulsar server. 
+Your client is working with the Pulsar server.
 
 [#create-topics]
 == Create new topics and tenants
@@ -63,7 +63,7 @@ The first part of a full topic name is your tenant name, followed by the namespa
 
 `public/namespace/my-topic`
 
-Select your current tenant using the drop-down at the top right of the Topics page. 
+Select your current tenant using the drop-down at the top right of the Topics page.
 
 To create a new tenant, go to *Tenants*.
 
@@ -79,7 +79,7 @@ For example, selecting Java will show you how to connect your Java project to Pu
 [#connect-to-pulsar]
 == Connecting to Pulsar
 
-This section describes how to connect Pulsar components to the Admin console. 
+This section describes how to connect Pulsar components to the Admin console.
 
 === Creating and showing credentials
 
@@ -151,10 +151,10 @@ Alternatively, you can save the URL authentication parameters in your `client.co
 [#video]
 == Admin console video
 
-You can also follow along with this video from our *Five Minutes About Pulsar* series to get started with the admin console. 
+You can also follow along with this video from our *Five Minutes About Pulsar* series to get started with the admin console.
 
 video::1IwblLfPiPQ[youtube, list=PL2g2h-wyI4SqeKH16czlcQ5x4Q_z-X7_m]
 
 == What's next
 
-For more on building and running a standalone Pulsar Admin console, see the xref:admin-console-vm.adoc[Admin Console on Server/VM] or the Pulsar Admin console repo https://github.com/datastax/pulsar-admin-console#dev[readme, window=_blank].
+For more on building and running a standalone Pulsar Admin console, see the xref:admin-console-vm.adoc[Admin Console on Server/VM] or the Pulsar Admin console repo https://github.com/datastax/pulsar-admin-console#dev[readme].

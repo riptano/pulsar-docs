@@ -2,9 +2,9 @@
 
 When you have Luna Streaming xref:install-upgrade:quickstart-server-installs.adoc[installed] and running, add IO connectors to connect your deployment to external systems like https://cassandra.apache.org/_/index.html[Apache Cassandra], https://www.elastic.co/[ElasticSearch], and more. +
 
-* xref:io-connectors.adoc#sink-connectors[Source connectors]: Source connectors read messages from external topics and persist the messages to Apache Pulsar™ topics. For more, see https://pulsar.apache.org/docs/en/io-connectors/#source-connector[Pulsar built-in connectors^]. +
+* xref:io-connectors.adoc#sink-connectors[Source connectors]: Source connectors read messages from external topics and persist the messages to Apache Pulsar™ topics. For more, see https://pulsar.apache.org/docs/en/io-connectors/#source-connector[Pulsar built-in connectors]. +
 
-* xref:io-connectors.adoc#source-connectors[Sink connectors]: Sink connectors read messages from Pulsar topics and persist the messages to external systems. For more, see https://pulsar.apache.org/docs/en/io-connectors/#sink-connector[Pulsar built-in connectors^]. +
+* xref:io-connectors.adoc#source-connectors[Sink connectors]: Sink connectors read messages from Pulsar topics and persist the messages to external systems. For more, see https://pulsar.apache.org/docs/en/io-connectors/#sink-connector[Pulsar built-in connectors]. +
 
 This doc lists the connectors supported by *Luna Streaming*. 
 
@@ -18,7 +18,7 @@ The following sink connectors are included in the `<luna-streaming-all>` deploym
 [#datastax-pulsar-sink]
 === DataStax enhanced Cassandra sink connector
 
-To configure, deploy, and use the DataStax enhanced Cassandra sink connector, see the https://docs.datastax.com/en/pulsar-connector/1.4/index.html[DataStax Pulsar connector documentation^]. +
+To configure, deploy, and use the DataStax enhanced Cassandra sink connector, see the https://docs.datastax.com/en/pulsar-connector/1.4/index.html[DataStax Pulsar connector documentation]. +
 
 The DataStax enhanced Cassandra sink connector offers the following advantages over the OSS Pulsar Cassandra sink connector: +
 
@@ -42,32 +42,32 @@ The DataStax enhanced Cassandra sink connector offers the following advantages o
 === ElasticSearch sink
 
 To configure, deploy, and use the ElasticSearch sink connector, see the xref:io-elastic-sink.adoc[Elasticsearch sink connector documentation].
-// To configure, deploy, and use the ElasticSearch sink connector, see the https://pulsar.apache.org/docs/next/io-elasticsearch-sink/[Pulsar documentation^].
+// To configure, deploy, and use the ElasticSearch sink connector, see the https://pulsar.apache.org/docs/next/io-elasticsearch-sink/[Pulsar documentation].
 
 [#jdbc-clickhouse-sink]
 === JDBC-Clickhouse sink
 
-To configure, deploy, and use the JDBC-Clickhouse sink connector, see the https://pulsar.apache.org/docs/next/io-jdbc-sink/[Pulsar documentation^].
+To configure, deploy, and use the JDBC-Clickhouse sink connector, see the https://pulsar.apache.org/docs/next/io-jdbc-sink/[Pulsar documentation].
 
 [#jdbc-mariadb-sink]
 === JDBC-MariaDB sink
 
-To configure, deploy, and use the JDBC-MariaDB sink connector, see the https://pulsar.apache.org/docs/next/io-jdbc-sink#example-for-mariadb[Pulsar documentation^].
+To configure, deploy, and use the JDBC-MariaDB sink connector, see the https://pulsar.apache.org/docs/next/io-jdbc-sink#example-for-mariadb[Pulsar documentation].
 
 [#jdbc-postgres-sink]
 === JDBC-PostgreSQL sink
 
-To configure, deploy, and use the JDBC-PostgreSQL connector, see the https://pulsar.apache.org/docs/next/io-jdbc-sink#example-for-postgresql[Pulsar documentation^].
+To configure, deploy, and use the JDBC-PostgreSQL connector, see the https://pulsar.apache.org/docs/next/io-jdbc-sink#example-for-postgresql[Pulsar documentation].
 
 [#kafka-sink]
 === Kafka sink
 
-To configure, deploy, and use the Kafka sink connector, see the https://pulsar.apache.org/docs/next/io-kafka-sink#configuration[Pulsar documentation^].
+To configure, deploy, and use the Kafka sink connector, see the https://pulsar.apache.org/docs/next/io-kafka-sink#configuration[Pulsar documentation].
 
 [#kinesis-sink]
 === Kinesis sink
 
-To configure, deploy, and use the Kinesis sink connector, see the https://pulsar.apache.org/docs/next/io-kinesis-sink#configuration[Pulsar documentation^].
+To configure, deploy, and use the Kinesis sink connector, see the https://pulsar.apache.org/docs/next/io-kinesis-sink#configuration[Pulsar documentation].
 
 [#source-connectors]
 == Source Connectors
@@ -79,31 +79,31 @@ The following sink connectors are included in the `<luna-streaming-all>` deploym
 [#debezium-mongodb-source]
 === Debezium MongoDB source
 
-To configure, deploy, and use the Debezium MongoDB source connector, see the https://pulsar.apache.org/docs/next/io-debezium-source#mongodb-configuration[Pulsar documentation^].
+To configure, deploy, and use the Debezium MongoDB source connector, see the https://pulsar.apache.org/docs/next/io-debezium-source#mongodb-configuration[Pulsar documentation].
 
 [#debezium-mysql-source]
 === Debezium MySQL source
 
-To configure, deploy, and use the Debezium MySQL source connector, see the https://pulsar.apache.org/docs/next/io-debezium-source#configuration-1[Pulsar documentation^].
+To configure, deploy, and use the Debezium MySQL source connector, see the https://pulsar.apache.org/docs/next/io-debezium-source#configuration-1[Pulsar documentation].
 
 [#debezium-postgres-source]
 === Debezium Postgres source
 
-To configure, deploy, and use the Debezium PostgreSQL source connector, see the https://pulsar.apache.org/docs/next/io-debezium-source#configuration-2[Pulsar documentation^].
+To configure, deploy, and use the Debezium PostgreSQL source connector, see the https://pulsar.apache.org/docs/next/io-debezium-source#configuration-2[Pulsar documentation].
 
 [#kafka-source]
 === Kafka source
 
-To configure, deploy, and use the Kafka source connector, see the https://pulsar.apache.org/docs/next/io-kafka-source#configuration[Pulsar documentation^].
+To configure, deploy, and use the Kafka source connector, see the https://pulsar.apache.org/docs/next/io-kafka-source#configuration[Pulsar documentation].
 
 [#kinesis-source]
 === Kinesis source
 
-To configure, deploy, and use the Kinesis source connector, see the https://pulsar.apache.org/docs/next/io-kinesis-source#configuration[Pulsar documentation^].
+To configure, deploy, and use the Kinesis source connector, see the https://pulsar.apache.org/docs/next/io-kinesis-source#configuration[Pulsar documentation].
 
 == What's next?
 
-For more on Pulsar IO connectors, see the https://pulsar.apache.org/docs/en/io-overview/[Pulsar documentation^].
+For more on Pulsar IO connectors, see the https://pulsar.apache.org/docs/en/io-overview/[Pulsar documentation].
 
 
 
