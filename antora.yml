@@ -1,4 +1,5 @@
 name: luna-streaming
+version: '2.10-3.x'
 title: Luna Streaming
 start_page: index.adoc
 
