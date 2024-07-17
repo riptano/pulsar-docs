@@ -4,9 +4,9 @@
 :title: Pulsar Beam with Luna Streaming
 :helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/beam/values.yaml
 
-The https://github.com/kafkaesque-io/pulsar-beam[Pulsar Beam^] project is an HTTP-based streaming and queueing system for use with Apache Pulsar.
+The https://github.com/kafkaesque-io/pulsar-beam[Pulsar Beam] project is an HTTP-based streaming and queueing system for use with Apache Pulsar.
 
-With Pulsar Beam, you can send messages over HTTP, push messages to a webhook or cloud function, chain webhooks and functions together, or stream messages via https://www.html5rocks.com/en/tutorials/eventsource/basics/[server-sent events^].
+With Pulsar Beam, you can send messages over HTTP, push messages to a webhook or cloud function, chain webhooks and functions together, or stream messages via https://www.html5rocks.com/en/tutorials/eventsource/basics/[server-sent events].
 
 In this guide we will install a minimal DataStax Pulsar Helm chart that includes Pulsar Beam.
 
@@ -14,9 +14,9 @@ In this guide we will install a minimal DataStax Pulsar Helm chart that includes
 
 You will need the following prerequisites in place to complete this guide:
 
-* https://helm.sh/docs/intro/install/[Helm 3 CLI^] (this example uses version 3.8.0)
+* https://helm.sh/docs/intro/install/[Helm 3 CLI] (this example uses version 3.8.0)
 * Enough access to a K8s cluster to create a namespace, deployments, and pods
-* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI^] (this example uses version 1.23.4)
+* https://kubernetes.io/docs/tasks/tools/[Kubectl CLI] (this example uses version 1.23.4)
 
 == Install Luna Streaming Helm chart
 
@@ -61,7 +61,7 @@ id: {9 0 0 0 <nil> 0xc002287ad0}
 data: Hi there
 ----
 
-You have now completed the basics of using Beam in a Pulsar Cluster. Refer to the project's https://github.com/kafkaesque-io/pulsar-beam/blob/master/README.md[readme^] to see all the possibilities!
+You have now completed the basics of using Beam in a Pulsar Cluster. Refer to the project's https://github.com/kafkaesque-io/pulsar-beam/blob/master/README.md[readme] to see all the possibilities!
 
 == A Python producer and consumer
 
@@ -124,6 +124,6 @@ include::partial$cleanup-terminal-and-helm.adoc[]
 
 Here are links to resources and guides you might be interested in:
 
-* https://github.com/kafkaesque-io/pulsar-beam[Learn more^] about the Pulsar Beam project
-* https://kafkaesque-io.github.io/pulsar-beam-swagger[Pulsar Beam API^]
+* https://github.com/kafkaesque-io/pulsar-beam[Learn more] about the Pulsar Beam project
+* https://kafkaesque-io.github.io/pulsar-beam-swagger[Pulsar Beam API]
 * xref:pulsar-sql.adoc[]
