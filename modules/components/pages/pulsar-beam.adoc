@@ -29,7 +29,8 @@ include::partial$port-forward-beam.adoc[]
 == Start a message consumer
 
 In a new terminal window, run the following curl command to begin streaming server-sent events.
-See xref:astra-streaming:developing:configure-pulsar-env.adoc[configuring your local environment for Astra Streaming,window="_blank"].
+See xref:astra-streaming:developing:configure-pulsar-env.adoc[configuring your local environment for Astra Streaming].
+
 [source,shell]
 ----
 TOPIC="my-beam-topic"
