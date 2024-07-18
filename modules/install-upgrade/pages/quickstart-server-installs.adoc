@@ -1,7 +1,6 @@
 = Quick Start for Bare Metal/VM installs
 :page-tag: luna-streaming,dev,admin,install
 
-
 This document explains xref:install-upgrade:quickstart-server-installs.adoc#install[installation] of Luna Streaming for Bare Metal/VM deployments with a Pulsar tarball. +
 
 The resulting Luna Streaming deployment includes:
@@ -29,7 +28,7 @@ The resulting Luna Streaming deployment includes:
   Disable Swap and set Linux Transparent Huge Pages (THP) to `madvice`. Check this setting with `cat /sys/kernel/mm/transparent_hugepage/enabled` and `cat /sys/kernel/mm/transparent_hugepage/defrag` +
 
 [#install]
-== Installation 
+== Installation
 
 . Download the DataStax Luna Streaming tarball from the https://github.com/datastax/pulsar/releases[DataStax GitHub repo]. There are three versions of Luna Streaming currently available: +
 +
@@ -50,7 +49,7 @@ The resulting Luna Streaming deployment includes:
 
 |===
 
-. Untar the tarball and change directory into the resulting file. 
+. Untar the tarball and change directory into the resulting file.
 +
 [source,bash]
 ----

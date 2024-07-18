@@ -1,7 +1,6 @@
 = Using Starlight for Kafka with Luna Streaming
 :navtitle: Starlight for Kafka
 :description: This guide will take you step-by-step through deploying DataStax Luna Streaming helm chart with the Starlight for Kafka protocol handler extension
-:title: A guide to deploying Luna Streaming with the Starlight for Kafka extension
 :helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/starlight-for-kafka/values.yaml
 
 Starlight for Kafka brings the native Apache Kafka protocol support to Apache Pulsar by introducing a Kafka protocol handler on Pulsar brokers.
