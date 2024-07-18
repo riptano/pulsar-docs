@@ -15,4 +15,3 @@ asciidoc:
     pulsar-version: '3.1'
     admin-console-version: '2.0.4'
     heartbeat-version: '1.0.12'
-    luna-streaming-examples-repo: 'https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main'
