@@ -1,17 +1,15 @@
 = Scaling your Luna Streaming cluster
-:page-aliases: docs@luna-streaming::scale-cluster.adoc
 
-
-This page will show you how to scale Luna Streaming clusters up for more compute capacity, or down for less. 
+This page will show you how to scale Luna Streaming clusters up for more compute capacity, or down for less.
 
 == Installing Pulsar cluster
 
-For our Pulsar cluster installation, use this https://github.com/datastax/pulsar-helm-chart[Helm chart]. 
+For our Pulsar cluster installation, use this https://github.com/datastax/pulsar-helm-chart[Helm chart].
 
 To start the cluster, use the values provided in this https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[YAML file].
 
 ----
-$ diff ~/dev-values.yaml ~/dev-values_large.yaml 
+$ diff ~/dev-values.yaml ~/dev-values_large.yaml
 40c40,47
 <   replicaCount: 1
 ---
@@ -118,7 +116,7 @@ $ ./bin/bookkeeper shell decommissionbookie -bookieid pulsar-bookkeeper-3.pulsar
 +
 [NOTE]
 ====
-The decommissioning will take some time because it triggers the audit and auto-recovery and blocks until auto-recovery completes. 
+The decommissioning will take some time because it triggers the audit and auto-recovery and blocks until auto-recovery completes.
 ====
 +
 This command will delete the cookie of the decommissioned bookie: `pulsar-bookkeeper-3.pulsar-bookkeeper.default.svc.cluster.local:3181`.

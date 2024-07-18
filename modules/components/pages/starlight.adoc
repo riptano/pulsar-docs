@@ -1,14 +1,12 @@
 = Starlight for Luna Streaming
-:page-aliases: docs@luna-streaming::starlight.adoc
-
 
 Starlight for Luna Streaming allows enterprises to take advantage of the scalability and resiliency of a modern streaming platform with various connectors for Apache Pulsar®.
 
-Starlight is open source and is included in DataStax’s https://www.datastax.com/legal/luna-streaming-supplemental-support-policy[Luna Streaming Enterprise] support for Pulsar. 
+Starlight is open source and is included in DataStax’s https://www.datastax.com/legal/luna-streaming-supplemental-support-policy[Luna Streaming Enterprise] support for Pulsar.
 
-== Starlight for Kafka 
+== Starlight for Kafka
 
-Starlight for Kafka brings native Apache Kafka® protocol support to Apache Pulsar by introducing a Kafka protocol handler on Pulsar brokers. 
+Starlight for Kafka brings native Apache Kafka® protocol support to Apache Pulsar by introducing a Kafka protocol handler on Pulsar brokers.
 
 For more, see the https://docs.datastax.com/en/starlight-kafka/docs/1.0/index.html[Starlight for Kafka documentation].
 

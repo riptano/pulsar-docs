@@ -1,5 +1,4 @@
 = Luna Streaming IO connectors
-:page-aliases: docs@luna-streaming::io-connectors.adoc
 
 When you have Luna Streaming xref:install-upgrade:quickstart-server-installs.adoc[installed] and running, add IO connectors to connect your deployment to external systems like https://cassandra.apache.org/_/index.html[Apache Cassandra], https://www.elastic.co/[ElasticSearch], and more. +
 
@@ -7,7 +6,7 @@ When you have Luna Streaming xref:install-upgrade:quickstart-server-installs.ado
 
 * xref:io-connectors.adoc#source-connectors[Sink connectors]: Sink connectors read messages from Pulsar topics and persist the messages to external systems. For more, see https://pulsar.apache.org/docs/en/io-connectors/#sink-connector[Pulsar built-in connectors]. +
 
-This doc lists the connectors supported by *Luna Streaming*. 
+This doc lists the connectors supported by *Luna Streaming*.
 
 [#sink-connectors]
 == Sink Connectors

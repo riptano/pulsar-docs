@@ -1,7 +1,6 @@
 = Luna Streaming Installation on Azure Kubernetes Service
-:page-aliases: docs@luna-streaming::install-aks.adoc
 
-This document covers installation of Luna Streaming on the Azure Kubernetes Service (AKS). 
+This document covers installation of Luna Streaming on the Azure Kubernetes Service (AKS).
 
 For an example set of production cluster values, see the DataStax production-ready https://github.com/datastax/pulsar-helm-chart[Helm chart]. +
 
@@ -65,7 +64,7 @@ There are two ways to override `default_storage`:
       existingStorageClassName: bookkeeper-storageclass.yaml
 ----
 
-=== AKS-specific storage class 
+=== AKS-specific storage class
 
 Here is an example `storage-values.yaml` as used above for the BookKeeper node. Paste it into a `yaml` file to provision a persistent SSD with the `ext4` file system.
 
@@ -83,7 +82,7 @@ storage_class:
 
 == Install Luna Streaming to AKS
 
-Once you have added your storage settings to the `storage-values.yaml` file, install the Helm chart. 
+Once you have added your storage settings to the `storage-values.yaml` file, install the Helm chart.
 
 . Create the namespace; in this example, we use `pulsar`:
 +
@@ -103,7 +102,7 @@ helm install pulsar datastax-pulsar/pulsar --namespace pulsar --values storage_v
 kubectl config set-context $(kubectl config current-context) --namespace=pulsar
 ----
 
-. Execute `kubectl get pods -A` to view your running pods. 
+. Execute `kubectl get pods -A` to view your running pods.
 . Once your pods are up and running, continue to xref:install-upgrade:quickstart-helm-installs.adoc[Accessing Pulsar Cluster in Cloud] to access and manage your cluster.
 
 == What's next?

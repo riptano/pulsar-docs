@@ -1,8 +1,5 @@
 = Quick Start for Helm Chart installs
-
 :page-tag: luna-streaming,dev,admin,install,pulsar
-:page-aliases: docs@luna-streaming::quickstart-helm-installs.adoc
-
 
 You have options for installing *DataStax Luna Streaming*:
 
@@ -29,7 +26,7 @@ The resulting configuration includes support for:
 * cert-manager with support for self-signed certificates as well as public certificates using ACME; such as Let's Encrypt
 * Ingress for all HTTP ports (Pulsar Admin Console, Prometheus, Grafana, others)
 
-== Prerequisites 
+== Prerequisites
 
 For an example set of production cluster values, see the DataStax production-ready https://github.com/datastax/pulsar-helm-chart[Helm chart]. +
 
@@ -40,7 +37,7 @@ include::partial$helm-chart-recommendations.adoc[]
 For the local machine running the Helm chart, you will need: +
 
 * https://helm.sh/docs/[Helm] version 3 +
-* A Google, AWS, or Azure account with privileges to install and configure Kubernetes resources. 
+* A Google, AWS, or Azure account with privileges to install and configure Kubernetes resources.
 
 === Storage Class Settings
 
@@ -133,7 +130,7 @@ AKS::
 
 First, create the namespace; in this example, we use `pulsar`.
 
-`kubectl create namespace pulsar` 
+`kubectl create namespace pulsar`
 
 Then run this helm command:
 
@@ -143,9 +140,9 @@ TIP: To avoid having to specify the `pulsar` namespace on each subsequent comman
 
 `kubectl config set-context $(kubectl config current-context) --namespace=pulsar`
 
-Once Pulsar is installed, you can now access your Luna Streaming cluster. 
+Once Pulsar is installed, you can now access your Luna Streaming cluster.
 
-=== Access the Luna Streaming cluster 
+=== Access the Luna Streaming cluster
 
 The default values will create a ClusterIP for all components. ClusterIPs are only accessible within the Kubernetes cluster. The easiest way to work with Pulsar is to log into the bastion host (assuming it is in the `pulsar` namespace):
 
@@ -290,11 +287,11 @@ kubectl port-forward -n pulsar $(kubectl get pods -n pulsar -l app.kubernetes.io
 
 There are several example configurations in the https://github.com/datastax/pulsar-helm-chart/blob/master/examples[examples] directory:
 
-* https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[dev-values.yaml example file]. A configuration for setting up a development environment to run in a local Kubernetes environment (for example, https://minikube.sigs.k8s.io/docs/start/[minikube], or https://kind.sigs.k8s.io/[kind]). Message/state persistence, redundancy, authentication, and TLS are disabled. 
+* https://github.com/datastax/pulsar-helm-chart/blob/master/examples/dev-values.yaml[dev-values.yaml example file]. A configuration for setting up a development environment to run in a local Kubernetes environment (for example, https://minikube.sigs.k8s.io/docs/start/[minikube], or https://kind.sigs.k8s.io/[kind]). Message/state persistence, redundancy, authentication, and TLS are disabled.
 +
 TIP: With message/state persistence disabled, the cluster will not survive a restart of the ZooKeeper or BookKeeper.
 
-* `dev-values-persistence.yaml`. Same as above, but persistence is enabled. This will allow for the cluster to survive the restarts of the pods, but requires persistent volume claims (PVC) to be supported by the Kubernetes environment. 
+* `dev-values-persistence.yaml`. Same as above, but persistence is enabled. This will allow for the cluster to survive the restarts of the pods, but requires persistent volume claims (PVC) to be supported by the Kubernetes environment.
 
 * `dev-values-auth.yaml`. A development environment with authentication enabled. New keys and tokens from those keys are automatically generated and stored in Kubernetes secrets. You can retrieve the superuser token from the admin console (*Credentials* menu) or from the secret `token-superuser`.
 +
@@ -309,9 +306,9 @@ helm install pulsar -f dev-values-auth.yaml datastax-pulsar/pulsar
 
 === Enabling the Prometheus stack
 
-You can enable a full Prometheus stack (Prometheus, Alertmanager, Grafana) from [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus). This includes default Prometheus rules and Grafana dashboards for Kubernetes. 
+You can enable a full Prometheus stack (Prometheus, Alertmanager, Grafana) from [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus). This includes default Prometheus rules and Grafana dashboards for Kubernetes.
 
-In an addition, this chart can deploy Grafana dashboards for Pulsar as well as Pulsar-specific rules for Prometheus. 
+In an addition, this chart can deploy Grafana dashboards for Pulsar as well as Pulsar-specific rules for Prometheus.
 
 To enable the Prometheus stack, use the following setting in your values file:
 
@@ -400,7 +397,7 @@ The Helm chart has the following optional dependencies:
 The chart can enable token-based authentication for your Pulsar cluster. For information on token-based
 authentication in Pulsar, see https://pulsar.apache.org/docs/en/security-token-admin/[Pulsar token authentication admin documentation].
 
-For authentication to work, the token-generation keys need to be stored in Kubernetes secrets along with some default tokens (for superuser access). 
+For authentication to work, the token-generation keys need to be stored in Kubernetes secrets along with some default tokens (for superuser access).
 
 The chart includes tooling to automatically create the necessary secrets or you can do this manually.
 
@@ -414,7 +411,7 @@ autoRecovery:
   enableProvisionContainer: yes
 ----
 
-When the provision container is enabled, it will check if the required secrets exist. If they don't exist, it will generate new token keys and use those keys to generate the default set of tokens. 
+When the provision container is enabled, it will check if the required secrets exist. If they don't exist, it will generate new token keys and use those keys to generate the default set of tokens.
 
 The name of the key secrets are:
 
@@ -440,7 +437,7 @@ You can create the certificate like this:
 
 `kubectl create secret tls <tlsSecretName> --key <keyFile> --cert <certFile>`
 
-The resulting secret will be of type `kubernetes.io/tls`. The key should not be in `PKCS 8` format even though that is the format used by Pulsar.  The format will be converted by the chart to `PKCS 8`. 
+The resulting secret will be of type `kubernetes.io/tls`. The key should not be in `PKCS 8` format even though that is the format used by Pulsar.  The format will be converted by the chart to `PKCS 8`.
 
 You can also specify the certificate information directly in the values:
 

@@ -1,7 +1,5 @@
 = Pulsar Heartbeat
-
 :page-tag: luna-streaming,dev,admin,pulsar
-:page-aliases: docs@luna-streaming::pulsar-monitor.adoc
 
 
 Pulsar Heartbeat monitors the availability, tracks the performance, and reports failures of the Pulsar cluster.

@@ -1,11 +1,10 @@
 = Luna Streaming Functions
-:page-aliases: docs@luna-streaming::functions.adoc
 
 Functions are lightweight compute processes that enable you to process each message received on a topic or multiple topics. You can apply custom logic to that message, transforming or enriching it, and then output it to a different topic.
 
 Functions run inside Luna Streaming and are therefore serverless. Write the code for your function in Java, Python, or Go, then upload the code to the Pulsar cluster and deploy the function. The function will be automatically run for each message published to the specified input topic. See https://pulsar.apache.org/docs/en/functions-overview/[Pulsar Functions overview] for more information about Apache Pulsar(R) functions.
 
-== Manage functions using Pulsar Admin CLI 
+== Manage functions using Pulsar Admin CLI
 
 Add functions using the Pulsar Admin CLI. Create a new Python function to consume a message from one topic, add an exclamation point, and publish the results to another topic.
 
@@ -39,15 +38,15 @@ $ ./pulsar-admin functions create \
 +
 If the function is set up and ready to accept messages, you should see "Created Successfully!"
 
-. Use `./pulsar-admin functions list --tenant <tenant-name>` to list the functions in your tenant and confirm your new function was created.  
+. Use `./pulsar-admin functions list --tenant <tenant-name>` to list the functions in your tenant and confirm your new function was created.
 
 === Trigger with CLI
 
-Triggering a function is a convenient way to test that the function is working. When you trigger a function, you are publishing a message on the function’s input topic, which triggers the function to run. 
+Triggering a function is a convenient way to test that the function is working. When you trigger a function, you are publishing a message on the function’s input topic, which triggers the function to run.
 
 To test a function with the Pulsar CLI, send a test value with Pulsar CLI's `trigger`.
 
-. Listen for messages on the output topic: 
+. Listen for messages on the output topic:
 +
 [source, bash]
 ----
@@ -67,11 +66,11 @@ $ ./pulsar-admin functions trigger \
   --trigger-value "Hello world"
 ----
 +
-The trigger sends the string `Hello world` to your exclamation function. Your function should output `Hello world!` to your consumed output. 
+The trigger sends the string `Hello world` to your exclamation function. Your function should output `Hello world!` to your consumed output.
 
 == Add Functions using Pulsar Admin Console
 
-If the Pulsar Admin Console is deployed, you can also add and manage the Pulsar functions in the *Functions* tab of the Admin Console web UI. 
+If the Pulsar Admin Console is deployed, you can also add and manage the Pulsar functions in the *Functions* tab of the Admin Console web UI.
 
 . Select *Choose File* to choose a local Function. In this example, we chose `exclamation_function.py`. Choose the file you want to pull the function from and which function you want to use within that file.
 +
@@ -81,32 +80,32 @@ To specify the class name, it depends on the programming language or runtime of 
 +
 Python functions are added by loading a Python file (.py) or a zipped Python file (.zip). When adding Python files, the Class Name is specified as the name of the Python file without the extension plus the class you want to execute. For example, if the Python file is called `function.py` and the class is `exclamation`, then the class name would be `function.exclamation`. The file can contain multiple classes, but only one will be used. If there is no class in the Python file (when using a basic function, for example) just specify the filename without the extension (ex. `function`).
 +
-Java functions are added by loading a Java jar file (.jar). When adding Java files, also specify the name of the class to execute as the function. 
+Java functions are added by loading a Java jar file (.jar). When adding Java files, also specify the name of the class to execute as the function.
 +
 Go functions are added by loading a Go file (.go). For more information on packaging a Go function, see https://pulsar.apache.org/docs/en/functions-package/#go[Packaging Functions in Go].
 
 [start=2]
-. Choose your function name and namespace. 
+. Choose your function name and namespace.
 +
-Your input topics, output topics, log topics, and processing guarantees will auto-populate. 
+Your input topics, output topics, log topics, and processing guarantees will auto-populate.
 
 . Provide a *Configuration Key* in the dropdown menu.
 +
 For a list of configuration keys, see the https://pulsar.apache.org/functions-rest-api/#operation/registerFunction[Pulsar Functions API Docs].
 
-. Select *Add* to add your function. 
+. Select *Add* to add your function.
 
 You have created a function for this namespace. You can confirm your function was created in the *Manage* tab.
 
 == Manage functions in Admin Console
 
-You can start, stop, and restart your function by selecting *Manage* in the *Functions* dashboard. 
+You can start, stop, and restart your function by selecting *Manage* in the *Functions* dashboard.
 
 image::admin-console-function-added.png[Manage Functions]
 
 === Monitor your function
 
-Functions produce logs to help you in debugging. To view your function's logs, select *Logs* in the *Manage* dashboard. 
+Functions produce logs to help you in debugging. To view your function's logs, select *Logs* in the *Manage* dashboard.
 
 image::admin-console-logs.png[Function Log]
 
@@ -122,11 +121,11 @@ A function that is already running can be updated with a new configuration. The 
 
 If you need to update any other setting of the function, delete and then re-add the function.
 
-To update your function, select *Update* in the *Manage* dashboard. 
+To update your function, select *Update* in the *Manage* dashboard.
 
 === Delete your function
 
-To delete a function, select *Delete* in the *Manage* dashboard. 
+To delete a function, select *Delete* in the *Manage* dashboard.
 
 A *Function-name Deleted Successfully!* flag will appear to let you know you've deleted your function.
 
@@ -136,7 +135,7 @@ To trigger a function in the Pulsar Admin Console, select *Trigger* in the *Mana
 
 image::admin-console-trigger-function.png[Trigger Function]
 
-Enter your message in the *Message to Send* field, and select the output topic. In this case, the trigger sends the string `Hello world!` to your exclamation function with no output function. If the function has an output topic and the function returns data to the output topic, it will be displayed. 
+Enter your message in the *Message to Send* field, and select the output topic. In this case, the trigger sends the string `Hello world!` to your exclamation function with no output function. If the function has an output topic and the function returns data to the output topic, it will be displayed.
 
 == Next
 

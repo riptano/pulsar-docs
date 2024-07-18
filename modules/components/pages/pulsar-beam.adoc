@@ -1,7 +1,6 @@
 = Pulsar Beam with Luna Streaming
 :navtitle: Pulsar Beam with Luna Streaming
 :description: Install a minimal Luna Streaming helm chart that includes Pulsar Beam
-:title: Pulsar Beam with Luna Streaming
 :helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/beam/values.yaml
 
 The https://github.com/kafkaesque-io/pulsar-beam[Pulsar Beam] project is an HTTP-based streaming and queueing system for use with Apache Pulsar.

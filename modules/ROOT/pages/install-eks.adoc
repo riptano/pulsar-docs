@@ -1,7 +1,6 @@
 = Luna Streaming Installation on Amazon Elastic Kubernetes Environment
-:page-aliases: docs@luna-streaming::install-eks.adoc
 
-This document covers installation of Luna Streaming on the Amazon Elastic Kubernetes Environment (EKS). 
+This document covers installation of Luna Streaming on the Amazon Elastic Kubernetes Environment (EKS).
 
 For an example set of production cluster values, see the DataStax production-ready https://github.com/datastax/pulsar-helm-chart[Helm chart]. +
 
@@ -12,7 +11,7 @@ include::partial$helm-chart-recommendations.adoc[]
 For the local machine running the Helm chart, you will need: +
 
 * https://helm.sh/docs/[Helm] version 3 +
-* An AWS account with privileges to install and configure Kubernetes resources. 
+* An AWS account with privileges to install and configure Kubernetes resources.
 
 == Helm chart `values.yaml`
 
@@ -65,7 +64,7 @@ There are two ways to override `default_storage`:
       existingStorageClassName: bookkeeper-storageclass.yaml
 ----
 
-=== EKS-specific storage class 
+=== EKS-specific storage class
 
 Here is an example `storage-values.yaml` as used above for the BookKeeper node. Paste it into a `yaml` file to provision a persistent general purpose (`gp2`) SSD with the `ext4` file system.
 
@@ -81,7 +80,7 @@ storage_class:
 
 == Install Luna Streaming to EKS
 
-Once you have added your storage settings to the `storage-values.yaml` file, install the Helm chart using the `storage-values.yaml` provisioning. 
+Once you have added your storage settings to the `storage-values.yaml` file, install the Helm chart using the `storage-values.yaml` provisioning.
 
 . Create the namespace. In this example, we use `pulsar`:
 +
@@ -101,7 +100,7 @@ helm install pulsar datastax-pulsar/pulsar --namespace pulsar --values storage_v
 `kubectl config set-context $(kubectl config current-context) --namespace=pulsar`
 ----
 
-. Execute `kubectl get pods -A` to view your running pods. 
+. Execute `kubectl get pods -A` to view your running pods.
 
 == What's next?
 
