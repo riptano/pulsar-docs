@@ -56,6 +56,8 @@ asciidoc:
     astra_stream: 'Astra Streaming'
     astra_ui: 'Astra Portal'
     astra_cli: 'Astra CLI'
+    astra-streaming-examples-repo: 'https://raw.githubusercontent.com/datastax/astra-streaming-examples/master'
+    luna-streaming-examples-repo: 'https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main'
     support_url: 'https://support.datastax.com'
     glossary-url: 'https://docs.datastax.com/en/glossary/docs/index.html#'
     emoji-tada: "&#127881;"
