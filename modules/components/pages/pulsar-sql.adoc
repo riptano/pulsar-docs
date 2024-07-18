@@ -1,7 +1,6 @@
 = Using Pulsar SQL with Luna Streaming
 :navtitle: Pulsar SQL with DataStax Luna Streaming
 :description: This guide installs the luna streaming helm chart using minimum values for a working Pulsar cluster that includes SQL workers
-:title: Pulsar SQL with DataStax Luna Streaming
 :helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/pulsar-sql/values.yaml
 
 Pulsar SQL allows enterprises to query Apache Pulsar topic data with SQL.
