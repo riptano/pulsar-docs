@@ -1,11 +1,10 @@
+= Production Cluster Sizing
 :messageSize: 1
 :messageThroughput: 100000
 :retentionPolicy: 3600
 :ttlPolicy: 3
 :tieredStoragePolicy: n/a
 :messageReplicationFactor: 3
-
-= Production Cluster Sizing
 
 This document summarizes DataStax's recommendations for the sizing and optimization of an Apache Pulsar cluster on Linux in a production environment.
 Remember, a Pulsar *instance* is made of one or many clusters.
