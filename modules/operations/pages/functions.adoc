@@ -10,7 +10,7 @@ Add functions using the Pulsar Admin CLI. Create a new Python function to consum
 
 . Create the following Python function in `function.py`:
 +
-[source, python]
+[source,python]
 ----
 from pulsar import Function
 
@@ -24,7 +24,7 @@ class ExclamationFunction(Function):
 +
 . Deploy `function.py` to your Pulsar cluster using the Pulsar Admin CLI:
 +
-[source, bash]
+[source,bash]
 ----
 $ ./pulsar-admin functions create \
   --py function.py \
@@ -48,7 +48,7 @@ To test a function with the Pulsar CLI, send a test value with Pulsar CLI's `tri
 
 . Listen for messages on the output topic: 
 +
-[source, bash]
+[source,bash]
 ----
 $ bin/pulsar-client consume persistent://<tenant-name>/default/<topic-name> \
   --subscription-name my-subscription
@@ -57,7 +57,7 @@ $ bin/pulsar-client consume persistent://<tenant-name>/default/<topic-name> \
 +
 . Test your exclamation function with `trigger`:
 +
-[source, bash]
+[source,bash]
 ----
 $ ./pulsar-admin functions trigger \
   --name exclamation \

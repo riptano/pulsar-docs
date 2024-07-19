@@ -45,7 +45,7 @@ tar xfvz pulsar-admin-console-{admin-console-version}.tar.gz
 . This will create a `/pulsar-admin-console-<version>` directory that contains all necessary dependencies for the Admin Console (except node).
 . Change directory to the `server` subdirectory and run `npm start` to start the Admin Console. This will start the server listening at `localhost:6454`.
 +
-[source=bash,subs="attributes+"]
+[source,bash,subs="attributes+"]
 ----
 cd pulsar-admin-console-{admin-console-version}/server
 npm start
