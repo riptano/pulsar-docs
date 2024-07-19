@@ -171,7 +171,7 @@ The output should be the 10 messages that were added to the Pulsar topic previou
 The response will include a “nextUri” value.
 Follow that link to see the results.
 +
-[source,]
+[source,http]
 ----
 POST http://localhost:8090/v1/statement  HTTP/1.1
 content-type: application/json
