@@ -1,4 +1,5 @@
 = Luna Streaming Installation on Azure Kubernetes Service
+:navtitle: Install on Azure Kubernetes Service
 
 This document covers installation of Luna Streaming on the Azure Kubernetes Service (AKS).
 

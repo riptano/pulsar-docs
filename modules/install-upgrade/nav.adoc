@@ -1,4 +1,7 @@
-* xref:quickstart-helm-installs.adoc[Install & Upgrade]
-** xref:quickstart-helm-installs.adoc[]
-** xref:quickstart-server-installs.adoc[]
-** xref:supported-versions.adoc[]
+.Install & Upgrade
+* xref:quickstart-helm-installs.adoc[]
+* xref:quickstart-server-installs.adoc[]
+* xref:ROOT:install-aks.adoc[]
+* xref:ROOT:install-eks.adoc[]
+* xref:ROOT:install-gke.adoc[]
+* xref:supported-versions.adoc[]
