@@ -1,4 +1,5 @@
 = Luna Streaming FAQs
+:navtitle: FAQs
 :page-tag: luna-streaming,dev,admin,pulsar
 
 If you are new to DataStax Luna Streaming and its Apache Pulsar enhancements, these FAQs are for you.
@@ -21,7 +22,7 @@ In addition to Apache Pulsar itself, DataStax Luna Streaming provides:
 
 === On which version of Apache Pulsar is DataStax Luna Streaming based?
 
-DataStax Luna Streaming {luna-version} is based on its distribution of Apache Pulsar {pulsar-version}, plus features and additional enhancements from DataStax contributors. 
+DataStax Luna Streaming {luna-version} is based on its distribution of Apache Pulsar {pulsar-version}, plus features and additional enhancements from DataStax contributors.
 
 === What does DataStax Luna Streaming provide that I cannot get with open-source Apache Pulsar?
 
@@ -29,18 +30,18 @@ DataStax Luna Streaming is a hardened version of Apache Pulsar that been run thr
 
 === Is DataStax Luna Streaming an open-source project?
 
-Yes, DataStax Luna Streaming is open source. See the <<gitHubRepos,repos FAQ>>. 
+Yes, DataStax Luna Streaming is open source. See the <<gitHubRepos,repos FAQ>>.
 
 === Which Kubernetes platforms are supported by DataStax Luna Streaming?
 
-They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service (AKS), Amazon Elastic Kubernetes Service (EKS), and other commonly used platforms. 
+They include Minikube, K8d, Kind, Google Kubernetes Engine (GKE), Microsoft Azure Kubernetes Service (AKS), Amazon Elastic Kubernetes Service (EKS), and other commonly used platforms.
 
 [#gitHubRepos]
 === Where are the DataStax Luna Streaming public GitHub repos?
 
 There are several public repos, each with a different purpose. See:
 
-* https://github.com/datastax/pulsar[https://github.com/datastax/pulsar] : This is the distro repo (a fork of apache/pulsar).  
+* https://github.com/datastax/pulsar[https://github.com/datastax/pulsar] : This is the distro repo (a fork of apache/pulsar).
 * https://github.com/datastax/pulsar-admin-console[https://github.com/datastax/pulsar-admin-console] : This is the repo for the Pulsar admin console, which allows for the configuration and monitoring of Pulsar.
 * https://github.com/datastax/pulsar-heartbeat[https://github.com/datastax/pulsar-heartbeat] : This is a monitoring/observability tool for Pulsar that tracks the health of the cluster and can generate alerts in Slack and OpsGenie.
 * https://github.com/datastax/pulsar-helm-chart[https://github.com/datastax/pulsar-helm-chart] : This is the Helm chart for deploying the DataStax Pulsar Distro in an existing Kubernetes cluster.
@@ -56,7 +57,7 @@ The DataStax Luna Streaming distribution is designed for Java 11. However, becau
 === What are the install options for DataStax Luna Streaming?
 
 * Use the Helm chart provided at https://github.com/apache/pulsar-helm-chart[https://github.com/datastax/pulsar-helm-chart] to install DataStax Luna Streaming in an existing Kubernetes cluster on your laptop or hosted by a cloud provider.
-* Use the tarball provided at https://github.com/datastax/pulsar/releases[https://github.com/datastax/pulsar/releases] to install DataStax Luna Streaming on a server or VM. 
+* Use the tarball provided at https://github.com/datastax/pulsar/releases[https://github.com/datastax/pulsar/releases] to install DataStax Luna Streaming on a server or VM.
 * Use the DataStax Ansible scripts provided at https://github.com/datastax/pulsar-ansible[https://github.com/datastax/pulsar-ansible] to install DataStax Luna Streaming on a server or VM with our provided playbooks.
 
 === How do I install DataStax Luna Streaming in my Kubernetes cluster?
@@ -72,7 +73,7 @@ Follow the full instructions in xref:install-upgrade:quickstart-server-installs.
 From the Admin Console, you can:
 
 * Add and run Pulsar clients
-* Establish credentials for secure connections 
+* Establish credentials for secure connections
 * Define topics that can be published for streaming apps
 * Set up Pulsar sinks that publish topics and make them available to subscribers, such as for a Cassandra database table
 * Control namespaces used by Pulsar
@@ -88,7 +89,7 @@ https://prometheus.io/docs/introduction/overview/[Prometheus] is an open-source 
 
 == What is Grafana?
 
-https://grafana.com/[Grafana] is a visualization tool that helps you make sense of metrics and related data coming from your apps via Prometheus, for example. 
+https://grafana.com/[Grafana] is a visualization tool that helps you make sense of metrics and related data coming from your apps via Prometheus, for example.
 
 == Pulsar Connector
 
@@ -110,7 +111,7 @@ The DataStax Apache Pulsar Connector allows single-record acknowledgement and ne
 There are two packages:
 
 * The `pulsar-sink` functionality of DataStax Apache Pulsar Connector is included with DataStax Luna Streaming. It's built in!
-* You can optionally download the DataStax Apache Pulsar Connector tarball from the https://downloads.datastax.com/#pulsar-sink[DataStax Downloads] site, and then use it as its own product with your open-source Apache Pulsar install. 
+* You can optionally download the DataStax Apache Pulsar Connector tarball from the https://downloads.datastax.com/#pulsar-sink[DataStax Downloads] site, and then use it as its own product with your open-source Apache Pulsar install.
 
 If you're using open-source software (OSS) Apache Pulsar, you can use DataStax Apache Pulsar Connector with the OSS to take advantage of this `pulsar-sink` for Cassandra. See the DataStax Apache Pulsar Connector https://docs.datastax.com/en/pulsar-connector/[documentation].
 
@@ -118,6 +119,6 @@ If you're using open-source software (OSS) Apache Pulsar, you can use DataStax A
 
 === What client APIs does DataStax Luna Streaming provide?
 
-The same as for Apache Pulsar. See https://pulsar.apache.org/docs/en/client-libraries/. 
+The same as for Apache Pulsar. See https://pulsar.apache.org/docs/en/client-libraries/.
 
 
