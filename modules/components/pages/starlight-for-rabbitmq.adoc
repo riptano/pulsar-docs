@@ -3,7 +3,7 @@
 :description: This guide will take you step-by-step through deploying DataStax Luna Streaming helm chart with the Starlight for RabbitMQ protocol handler extension
 :helmValuesPath: https://raw.githubusercontent.com/datastaxdevs/luna-streaming-examples/main/starlight-for-rabbitmq/values.yaml
 
-Starlight for RabbitMQ brings native https://www.rabbitmq.com/[RabbitMQ] protocol support to https://pulsar.apache.org/[Apache Pulsar™] by introducing a RabbitMQ protocol handler on Pulsar brokers or Pulsar proxies.
+Starlight for RabbitMQ brings native https://www.rabbitmq.com/[RabbitMQ] protocol support to https://pulsar.apache.org/[Apache Pulsar(TM)] by introducing a RabbitMQ protocol handler on Pulsar brokers or Pulsar proxies.
 By adding the Starlight for RabbitMQ protocol handler to your Pulsar cluster, you can migrate your existing RabbitMQ applications and services to Pulsar without modifying the code.
 
 == Prerequisites

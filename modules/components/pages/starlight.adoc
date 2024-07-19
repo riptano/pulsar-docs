@@ -1,18 +1,18 @@
 = Starlight for Luna Streaming
 
-Starlight for Luna Streaming allows enterprises to take advantage of the scalability and resiliency of a modern streaming platform with various connectors for Apache Pulsar®.
+Starlight for Luna Streaming allows enterprises to take advantage of the scalability and resiliency of a modern streaming platform with various connectors for Apache Pulsar(R).
 
 Starlight is open source and is included in DataStax’s https://www.datastax.com/legal/luna-streaming-supplemental-support-policy[Luna Streaming Enterprise] support for Pulsar.
 
 == Starlight for Kafka
 
-Starlight for Kafka brings native Apache Kafka® protocol support to Apache Pulsar by introducing a Kafka protocol handler on Pulsar brokers.
+Starlight for Kafka brings native Apache Kafka(R) protocol support to Apache Pulsar by introducing a Kafka protocol handler on Pulsar brokers.
 
 For more, see the https://docs.datastax.com/en/starlight-kafka/docs/1.0/index.html[Starlight for Kafka documentation].
 
 == Starlight for RabbitMQ
 
-Starlight for RabbitMQ™ combines the industry-standard AMQP 0.9.1 (RabbitMQ) API with the cloud-native and horizontally scalable Pulsar streaming platform, providing a powerful way to modernize your RabbitMQ infrastructure, improve performance, and reduce costs.
+Starlight for RabbitMQ(TM) combines the industry-standard AMQP 0.9.1 (RabbitMQ) API with the cloud-native and horizontally scalable Pulsar streaming platform, providing a powerful way to modernize your RabbitMQ infrastructure, improve performance, and reduce costs.
 
 For more, see https://docs.datastax.com/en/starlight-rabbitmq/docs/1.0/getting-started.html[getting started with Starlight for RabbitMQ].
 
