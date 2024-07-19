@@ -1,4 +1,5 @@
 = Installation topologies
+:navtitle: Cluster Sizing Reference
 
 This page describes recommended starting points for Pulsar deployments.
 

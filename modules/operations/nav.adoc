@@ -1,6 +1,6 @@
-* xref:auth.adoc[Operations]
-** xref:auth.adoc[]
-** xref:functions.adoc[]
-** xref:io-connectors.adoc[]
-** xref:scale-cluster.adoc[]
-** xref:troubleshooting.adoc[]
+.Operations
+* xref:auth.adoc[]
+* xref:functions.adoc[]
+* xref:io-connectors.adoc[]
+* xref:scale-cluster.adoc[]
+* xref:troubleshooting.adoc[]
