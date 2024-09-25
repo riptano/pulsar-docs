@@ -2,9 +2,11 @@
 
 Upgrading to Luna Streaming 3.1 should only be done from Luna Streaming 2.10.
 
-Upgrade is fully supported for all the components (connectors included).
+Upgrade is fully supported for all the components including connectors.
 
-== Functional changes
+== Functional impacts
+
+This section describes changes in Luna Streaming 3.1 that may impact how your deployment functions.
 
 === Default system topics
 
@@ -18,7 +20,234 @@ Changes in Prometheus Metrics:
 * Prometheus Metric type UNTYPED is renamed to UNKNOWN
 * Metrics have been renamed because OpenMetrics's counter name needs a _total suffix
 
-Renamed Metrics:
+.Renamed Metrics
+[cols="2,2"]
+|===
+|Luna Streaming 2.10 |Luna Streaming 3.1
+
+|pulsar_expired_token_count
+|pulsar_expired_token_total
+
+|pulsar_authentication_success_count
+|pulsar_authentication_success_total
+
+|pulsar_authentication_failures_count
+|pulsar_authentication_failures_total
+
+|pulsar_source_received_total_1min
+|pulsar_source_received_1min_total
+
+|pulsar_source_written_total_1min
+|pulsar_source_written_1min_total
+
+|pulsar_source_source_total_1min
+|pulsar_source_source_exceptions_1min_total
+
+|pulsar_source_system_exceptions_total_1min
+|pulsar_source_system_exceptions_1min_total
+
+|pulsar_function_received_total_1min
+|pulsar_function_received_1min_total
+
+|pulsar_function_user_exceptions_total_1min
+|pulsar_function_user_exceptions_1min_total
+
+|pulsar_function_system_exceptions_total_1min
+|pulsar_function_system_exceptions_1min_total
+
+|pulsar_function_processed_successfully_total_1min
+|pulsar_function_processed_successfully_1min_total
+
+|pulsar_sink_received_total_1min
+|pulsar_sink_received_1min_total
+
+|pulsar_sink_written_total_1min
+|pulsar_sink_written_1min_total
+
+|pulsar_sink_sink_exceptions_total_1min
+|pulsar_sink_sink_exceptions_1min_total
+
+|pulsar_sink_system_exceptions_total_1min
+|pulsar_sink_system_exceptions_1min_total
+
+|pulsar_lb_unload_broker_count
+|pulsar_lb_unload_broker_total
+
+|pulsar_lb_unload_bundle_count
+|pulsar_lb_unload_bundle_total
+
+|pulsar_lb_bundles_split_count
+|pulsar_lb_bundles_split_total
+
+|pulsar_schema_del_ops_failed_count
+|pulsar_schema_del_ops_failed_total
+
+|pulsar_schema_get_ops_failed_count
+|pulsar_schema_get_ops_failed_total
+
+|pulsar_schema_put_ops_failed_count
+|pulsar_schema_put_ops_failed_total
+
+|pulsar_schema_compatible_count
+|pulsar_schema_compatible_total
+
+|pulsar_schema_incompatible_count
+|pulsar_schema_incompatible_total
+
+|pulsar_txn_committed_count
+|pulsar_txn_committed_total
+
+|pulsar_txn_aborted_count
+|pulsar_txn_aborted_total
+
+|pulsar_txn_created_count
+|pulsar_txn_created_total
+
+|pulsar_txn_timeout_count
+|pulsar_txn_timeout_total
+
+|pulsar_txn_append_log_count
+|pulsar_txn_append_log_total
+|===
+
+The following PRs have been merged to update metrics:
+
+* https://github.com/apache/pulsar/pull/13785[#13785 - Bump prometheus client version from 0.5.0 to 0.15.0]
+* https://github.com/apache/pulsar/pull/16581[#16581 - Rename Pulsar txn metrics to specify OpenMetrics]
+* https://github.com/apache/pulsar/pull/16610[#16610 - Rename Pulsar schema metrics to specify OpenMetrics]
+* https://github.com/apache/pulsar/pull/16611[#16611 - Rename Pulsar lb metrics to specify OpenMetrics]
+* https://github.com/apache/pulsar/pull/16591[#16591 - Bump prometheus client version from 0.15.0 to 0.16.0]
+* https://github.com/apache/pulsar/pull/17419[#17419 - Removed timestamp from all prometheus metrics.]
+
+=== Pulsar-SQL
+
+If you're upgrading Pulsar SQL from 2.11 or earlier, you should copy the config files from `conf/presto` to `trino/conf`.
+
+If you're downgrading Pulsar SQL to 2.11 or earlier from newer versions, copy the config files from `trino/conf` to `conf/presto`.
+
+=== Other Functional Impacts
+
+[cols="1,2,3"]
+|===
+|PR Link |Title |Functional Impact
+
+|https://github.com/apache/pulsar/pull/19180[#19180]
+|[cleanup][broker] Deprecate blocking AuthorizationService, AuthorizationProvider methods
+|This will affect the public API for the AuthorizationService and the AuthorizationProvider, which only impacts users that are running custom code inside the Pulsar Broker
+
+|https://github.com/apache/pulsar/pull/19182[#19182]
+|[cleanup][broker] Remove AuthorizationProvider methods deprecated in 2.7 and 2.9
+|Removing deprecated methods allowTenantOperationAsync, allowTenantOperation, allowNamespaceOperationAsync, allowNamespaceOperation, allowNamespacePolicyOperationAsync, allowNamespacePolicyOperation, allowTopicOperationAsync, allowTopicOperation. These methods could be used by third party extensions
+
+|https://github.com/apache/pulsar/pull/19197[#19197]
+|[feat][broker] Update AuthenticationProvider to simplify HTTP Authn
+|This changes the public API within the broker as some methods are marked as @Deprecated
+
+|https://github.com/apache/pulsar/pull/19295[#19295]
+|[feat][broker] OneStageAuth State: move authn out of constructor
+|This could break 3rd party plugins in the broker if they were relying on authentication to happen in the constructor. In order to make those implementations fail fast, this PR includes a change to throw an exception when the getAuthRole is called without first calling authenticateAsync or authenticate. That makes these changes semi-backwards compatible.
+
+|https://github.com/apache/pulsar/pull/19314[#19314]
+|[fix][broker] TokenAuthenticationState: authenticate token only once
+|In a sense, this breaks an implicit contract that the class had. However, because the getAuthRole() method will throw an exception if called incorrectly, it is likely that misuse of this class will result in a fail fast behavior.
+
+|https://github.com/apache/pulsar/pull/19455[#19455]
+|[improve][broker] Require authRole is proxyRole to set originalPrincipal
+|This change affects the binary protocol's usage without changing the binary protocol itself. Upgrading existing proxies will not work if the proxyRoles is not correctly configured in the broker.conf.
+
+|https://github.com/apache/pulsar/pull/19486[#19486]
+|[improve][client] Remove default 30s ackTimeout when setting DLQ policy on java consumer
+|Removed setting default ackTimeoutMillis in java ConsumerBuilder when a deadLetterPolicy is set. It has to be specified exclusively to use.
+|===
+
+== Configuration Impacts
+
+=== Removed in 3.1
+
+* https://github.com/apache/pulsar/pull/14506[#14506] removes `managedLedgerNumWorkerThreads`. The `MetadataStore` instance is passed from the `PulsarService` directly to the `ManagedLedgerFactory`.
+
+* The `conf/presto` directory has been removed.
+
+=== Deprecated and default values changed in 3.1
+
+.`broker.conf` and `standalone.conf` values
+[cols="1,1,1"]
+|===
+|Configuration |Luna Streaming 2.10 Default | Luna Streaming 3.1 Default
+
+|Managed ledger cache eviction frequency
+|`managedLedgerCacheEvictionFrequency=100.0`
+|`managedLedgerCacheEvictionFrequency=0`
+
+|Max unacked ranges to persist in ZooKeeper
+|`managedLedgerMaxUnackedRangesToPersistInZooKeeper=1000`
+|`managedLedgerMaxUnackedRangesToPersistInZooKeeper=-1`
+|===
+
+=== Changed in 3.1
+
+.`broker.conf` and `standalone.conf` values
+[cols="1,1,1"]
+|===
+|Configuration |Luna Streaming 2.10 Default | Luna Streaming 3.1 Default
+
+|`systemTopicEnabled`
+Enable or disable system topic
+|false
+|true
+|`topicLevelPoliciesEnabled`
+Enable or disable topic level policies (depends on system topic)
+|false
+|true
+|`supportedNamespaceBundleSplitAlgorithms`
+Supported algorithms for namespace bundle split
+|`range_equally_divide`,`topic_count_equally_divide`,`specified_positions_divide`
+|`range_equally_divide`,`topic_count_equally_divide`,`specified_positions_divide`,`flow_or_qps_equally_divide`
+|`loadBalancerDirectMemoryResourceWeight`
+Direct memory usage weight for calculating resource usage in `ThresholdShedder ` strategy
+|1.0
+|0
+|`fileSystemProfilePath`
+File System Storage profile path
+|`../conf/filesystem_offload_core_site.xml`
+|`conf/filesystem_offload_core_site.xml`
+|`gcsManagedLedgerOffloadMaxBlockSizeInBytes`
+Max block size in bytes for Google Cloud Storage ledger offload
+|67108864
+|134217728
+|===
+
+== Operational Impacts
+
+This section describes changes in Luna Streaming 3.1 that may impact how your deployment operates.
+
+=== Upgrade to JDK 17
+
+Luna Streaming 3.1 uses JDK 17. This changes the Pulsar server module's javac release version to 17.
+
+Client and client-server shared modules will remain at the target Java 8 release.
+
+The modification is described in detail in PIP-156 in https://github.com/apache/pulsar/pull/15207[#15207].
+
+=== Removed Python 2 support
+
+Luna Streaming 3.1 removes Python 2 from build scripts.
+
+Python3 is used in the build image.
+
+The build image has been updated to ubuntu:20.04 as there is no Python 3.7 support in the old Ubuntu.
+
+Executable scripts have been updated to use python3 instead of python.
+
+The modification is described in detail in PIP-155 in https://github.com/apache/pulsar/pull/15376[#15376]
+
+=== Updated Prometheus metrics
+
+Prometheus metrics have been updated in Luna Streaming 3.1.
+
+See <<Prometheus metrics>> for details.
+
+==== Renamed Metrics
 
 [cols="2,2"]
 |===
@@ -108,133 +337,6 @@ Renamed Metrics:
 |pulsar_txn_append_log_count
 |pulsar_txn_append_log_total
 |===
-
-==== Related PRs:
-
-* https://github.com/apache/pulsar/pull/13785[#13785 - Bump prometheus client version from 0.5.0 to 0.15.0]
-* https://github.com/apache/pulsar/pull/16581[#16581 - Rename Pulsar txn metrics to specify OpenMetrics]
-* https://github.com/apache/pulsar/pull/16610[#16610 - Rename Pulsar schema metrics to specify OpenMetrics]
-* https://github.com/apache/pulsar/pull/16611[#16611 - Rename Pulsar lb metrics to specify OpenMetrics]
-* https://github.com/apache/pulsar/pull/16591[#16591 - Bump prometheus client version from 0.15.0 to 0.16.0]
-
-=== Pulsar-SQL
-
-If you're upgrading Pulsar SQL from 2.11 or earlier, you should copy config files from `conf/presto` to `trino/conf`.
-
-If you're downgrading Pulsar SQL to 2.11 or earlier from newer versions, copy config files from `trino/conf` to `conf/presto`.
-
-=== Other Functional Impacts
-
-[cols="1,2,3"]
-|===
-|PR Link |Title |Functional Impact
-
-|https://github.com/apache/pulsar/pull/19180[#19180]
-|[cleanup][broker] Deprecate blocking AuthorizationService, AuthorizationProvider methods
-|This will affect the public API for the AuthorizationService and the AuthorizationProvider, which only impacts users that are running custom code inside the Pulsar Broker
-
-|https://github.com/apache/pulsar/pull/19182[#19182]
-|[cleanup][broker] Remove AuthorizationProvider methods deprecated in 2.7 and 2.9
-|Removing deprecated methods allowTenantOperationAsync, allowTenantOperation, allowNamespaceOperationAsync, allowNamespaceOperation, allowNamespacePolicyOperationAsync, allowNamespacePolicyOperation, allowTopicOperationAsync, allowTopicOperation. These methods could be used by third party extensions
-
-|https://github.com/apache/pulsar/pull/19197[#19197]
-|[feat][broker] Update AuthenticationProvider to simplify HTTP Authn
-|This changes the public API within the broker as some methods are marked as @Deprecated
-
-|https://github.com/apache/pulsar/pull/19295[#19295]
-|[feat][broker] OneStageAuth State: move authn out of constructor
-|This could break 3rd party plugins in the broker if they were relying on authentication to happen in the constructor. In order to make those implementations fail fast, this PR includes a change to throw an exception when the getAuthRole is called without first calling authenticateAsync or authenticate. That makes these changes semi-backwards compatible.
-
-|https://github.com/apache/pulsar/pull/19314[#19314]
-|[fix][broker] TokenAuthenticationState: authenticate token only once
-|In a sense, this breaks an implicit contract that the class had. However, because the getAuthRole() method will throw an exception if called incorrectly, it is likely that misuse of this class will result in a fail fast behavior.
-
-|https://github.com/apache/pulsar/pull/19455[#19455]
-|[improve][broker] Require authRole is proxyRole to set originalPrincipal
-|This change affects the binary protocol's usage without changing the binary protocol itself. Upgrading existing proxies will not work if the proxyRoles is not correctly configured in the broker.conf.
-
-|https://github.com/apache/pulsar/pull/19486[#19486]
-|[improve][client] Remove default 30s ackTimeout when setting DLQ policy on java consumer
-|Removed setting default ackTimeoutMillis in java ConsumerBuilder when a deadLetterPolicy is set. It has to be specified exclusively to use.
-|===
-
-== Configuration Impacts
-
-=== Dropped in 3.1
-
-* https://github.com/apache/pulsar/pull/14506[#14506] removes `managedLedgerNumWorkerThreads` and instead passes the MetadataStore instance from PulsarService directly to the `ManagedLedgerFactory`.
-
-* The `conf/presto` directory has been removed.
-
-=== Deprecated and default values changed in 3.1
-
-.`broker.conf` and `standalone.conf` values
-[cols="1,1,1"]
-|===
-|Configuration |2.10 Default |3.1 Default
-
-|Managed ledger cache eviction frequency
-|`managedLedgerCacheEvictionFrequency=100.0`
-|`managedLedgerCacheEvictionFrequency=0`
-
-|Max unacked ranges to persist in ZooKeeper
-|`managedLedgerMaxUnackedRangesToPersistInZooKeeper=1000`
-|`managedLedgerMaxUnackedRangesToPersistInZooKeeper=-1`
-|===
-
-== Changed in 3.1
-
-.`broker.conf` / `standalone.conf`
-[cols="3*"]
-|===
-|Configuration |2.10 |3.1
-|systemTopicEnabled=
-|false
-|true
-|topicLevelPoliciesEnabled=
-|false
-|true
-|supportedNamespaceBundleSplitAlgorithms=
-|range_equally_divide,topic_count_equally_divide,specified_positions_divide
-|range_equally_divide,topic_count_equally_divide,specified_positions_divide,flow_or_qps_equally_divide
-|The direct memory usage weight when calculating new resource usage.
-It only takes effect in the ThresholdShedder strategy.
-loadBalancerDirectMemoryResourceWeight=
-|1.0
-|0
-|For File System Storage, file system profile path
-fileSystemProfilePath=
-|../conf/filesystem_offload_core_site.xml
-|conf/filesystem_offload_core_site.xml
-|For Google Cloud Storage ledger offload, Max block size in bytes. (64MB by default, 5MB minimum)
-gcsManagedLedgerOffloadMaxBlockSizeInBytes=
-|67108864
-|134217728
-|===
-
-
-== Operational Impacts
-
-=== Upgrade to jdk17
-
-The lunastreaming - 3.1 uses jdk17. This changes Pulsar Server modules' javac release version to 17 except client (shared) modules[1].
-
-The detail modification is described in the PIP-156, https://github.com/apache/pulsar/pull/15207[#15207]
-
-=== Removed Python 2 support
-
-Removed Python 2 from build scripts in lunastreamin-3.1. Instead Python3 used in the build image. Updated build image to ubuntu:20.04 (There is no Python 3.7 support in the old Ubuntu). Used python3 instead of python in the executable scripts[1].
-
-The detail modification is described in the PIP-155, https://github.com/apache/pulsar/pull/15376[#15376]
-
-=== Metrics
-
-* Bumped prometheus client version from 0.5.0 to 0.15.0. Around 25 Metrics names have been changed. #13785
-* Renamed pulsar_txn* metrics, changed suffix from _count to _total #16581
-* Renamed pulsar_schema* metrics, changed suffix from _count to _total #16610
-* Renamed pulsar_lb* metrics, changed suffix from _count to _total #16611
-* All metrics are listed in functional impact.
-* Removed timestamp from all prometheus metrics. https://github.com/apache/pulsar/pull/17419[#17419]
 
 == Known Issues
 
