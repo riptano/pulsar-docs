@@ -297,105 +297,75 @@ Caused by: org.rocksdb.RocksDBException: unknown checksum type 4 in data/bookkee
 ----
 =====
 
-== Upgrade Procedure
+== Upgrade procedure
 
-Lunastreaming can be deployed using three primary modes: Bare Metal, Docker and Kubernetes. Each mode has its own advantages and considerations, allowing organizations to choose the best fit for their infrastructure and operational needs.
+Luna Streaming can be deployed on Bare metal, Docker, and Kubernetes.
 
-=== Bare Metal Deployment
+=== Bare metal deployment
 
-Bare metal deployment involves installing Lunastreaming directly on physical servers. This approach provides direct access to the hardware, enabling optimized performance and control.
+Bare metal deployment installs Luna Streaming directly on physical servers.
 
-==== Procedure
+For detailed instructions on upgrading Pulsar, see the https://pulsar.apache.org/docs/next/administration-upgrade/[Pulsar Upgrade Guide].
 
-There is a well documented procedure present in the pulsar docs. See here.
+// known issues?
 
-==== Known Issues
+=== Docker deployment
 
---todo--: Document any issues that can be anticipated.
+The Docker image for Luna Streaming is available on https://hub.docker.com/r/datastax/lunastreaming[Docker Hub].
 
-=== Docker Compose Deployment
+To upgrade Luna Streaming from version 2.10 to 3.1 in a Docker deployment, update your `docker-compose.yml` file to use the new image version by following these steps:
 
-==== Procedure
-
-===== Update the Docker Compose File
-
-. Locate your docker-compose.yml file: Open the file where your Pulsar services are defined.
-. Change the image version: Update the image version for Pulsar Components to datastax/lunastreaming:3.1_4.5. Ensure you also update any other services that might depend on the Pulsar image.
-
+. Locate your `docker-compose.yml` file, and open the file where your Pulsar services are defined.
+. Update the image version for Pulsar components to `datastax/lunastreaming:3.1_4.7`.
++
 [source,yaml]
 ----
 services:
   zookeeper:
-    image: apachepulsar/pulsar:3.1.0
-  ………… 
+    image: datastax/lunastreaming:3.1_4.7
+  …………
   pulsar-init:
-    image: apachepulsar/pulsar:3.1.0
-  ………… 
+    image: datastax/lunastreaming:3.1_4.7
+  …………
   bookie:
-    image: apachepulsar/pulsar:3.1.0
-  ………… 
+    image: datastax/lunastreaming:3.1_4.7
+  …………
   broker:
-    image: apachepulsar/pulsar:3.1.0
+    image: datastax/lunastreaming:3.1_4.7
 ----
 
-. Review configuration changes. For instance, some environment variables or configurations might have changed between versions.
-
-===== Backup Data
-
-Before proceeding with the upgrade, backup your data to prevent any loss during the transition.
-
-===== Pull the New Image
-
-Run the following command to pull the latest version of Pulsar:
-
-[source,bash]
-----
-docker-compose pull
-----
-
-This command fetches the updated images specified in the docker-compose.yml.
-
-===== Stop and Remove Existing Containers
-
-Stop and remove your existing Pulsar containers to ensure a clean upgrade:
-
+. Ensure you also update any other services that might depend on the Pulsar image.
+. Review configuration changes. Some environment variables or configurations might have changed between versions.
+Review any breaking changes between versions 2.10 and 3.1 to adjust your application code if necessary.
+. Before proceeding with the upgrade, backup your data to prevent any loss during the transition.
+. To fetch the updated images, run `docker-compose pull`.
+. To ensure a clean upgrade, stop and remove your existing Pulsar containers. Run:
++
 [source,bash]
 ----
 docker-compose down
 ----
 
-===== Start the Updated Deployment
-
-Now, start your updated Pulsar deployment using:
-
+. To start the updated Pulsar deployment, run:
++
 [source,bash]
 ----
 docker-compose up -d
 ----
 
-This command will create new containers based on the updated image and configurations.
+This command creates new containers based on the updated image and configurations.
 
-===== Verify the Upgrade
-
-. Check logs: After starting the containers, check the logs to ensure that Pulsar started correctly without errors:
+. Verify the upgrade. Check the logs to ensure that Pulsar starts without errors:
 +
 [source,bash]
 ----
 docker-compose logs -f pulsar
 ----
 
-. Access Pulsar Admin UI: Verify that you can access the Pulsar Admin UI at http://localhost:8080 (or whichever port you configured) to confirm that everything is functioning as expected.
+. To confirm that everything is functioning as expected, verify that you can access the Pulsar Admin UI at `http://localhost:8080` (or whichever port you configured).
+. Run health checks with Pulsar's built-in health check commands or APIs to ensure all services are operational.
 
-. Run health checks: Use Pulsar's built-in health check commands or APIs to ensure all services are operational.
-
-===== Additional Considerations
-
-* Compatibility: Review any breaking changes between versions 2.10 and 3.1 in the release notes to adjust your application code if necessary.
-* Testing: If possible, test your upgraded setup in a staging environment before deploying it to production.
-
-==== Known Issues
-
---todo--: Document any issues that can be anticipated.
+// known issues?
 
 === Kubernetes Deployment with KAAP
 
