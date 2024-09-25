@@ -333,35 +333,41 @@ services:
   broker:
     image: datastax/lunastreaming:3.1_4.7
 ----
-
++
 . Ensure you also update any other services that might depend on the Pulsar image.
 . Review configuration changes. Some environment variables or configurations might have changed between versions.
 Review any breaking changes between versions 2.10 and 3.1 to adjust your application code if necessary.
 . Before proceeding with the upgrade, backup your data to prevent any loss during the transition.
-. To fetch the updated images, run `docker-compose pull`.
+. To fetch the updated images, run:
++
+[source,bash]
+----
+docker-compose pull
+----
++
 . To ensure a clean upgrade, stop and remove your existing Pulsar containers. Run:
 +
 [source,bash]
 ----
 docker-compose down
 ----
-
++
 . To start the updated Pulsar deployment, run:
 +
 [source,bash]
 ----
 docker-compose up -d
 ----
-
++
 This command creates new containers based on the updated image and configurations.
-
++
 . Verify the upgrade. Check the logs to ensure that Pulsar starts without errors:
 +
 [source,bash]
 ----
 docker-compose logs -f pulsar
 ----
-
++
 . To confirm that everything is functioning as expected, verify that you can access the Pulsar Admin UI at `http://localhost:8080` (or whichever port you configured).
 . Run health checks with Pulsar's built-in health check commands or APIs to ensure all services are operational.
 
@@ -371,15 +377,13 @@ docker-compose logs -f pulsar
 
 Deploying Pulsar on Kubernetes allows for a more dynamic and flexible environment through containerization. This mode is well-suited for modern cloud-native applications.
 
-==== Procedure
-
-===== Prepare the Environment
+==== Prepare the Environment
 
 * Kubernetes Cluster: Ensure you have access to a running Kubernetes cluster.
 * Helm Installed: Ensure Helm is installed and configured to work with your Kubernetes cluster.
 * Current Version: Check the current version of Pulsar running in your cluster.
 
-===== Backup Existing Data
+==== Backup Existing Data
 
 Before proceeding with the upgrade, back up your existing Pulsar data and configurations to prevent data loss.
 
@@ -390,7 +394,7 @@ Save current Helm release configurations using:
 helm get values > pulsar-backup-values.yaml
 ----
 
-===== Update Helm Repository
+==== Update Helm Repository
 
 Update the DataStax Pulsar Helm chart repository.
 
@@ -399,7 +403,7 @@ Update the DataStax Pulsar Helm chart repository.
 helm repo update
 ----
 
-===== Modify Configuration for Version Upgrade
+==== Modify Configuration for Version Upgrade
 
 Open helm/kaap-stack/values.yaml and update the following fields to reflect any necessary changes for version 3.1:
 
@@ -450,7 +454,7 @@ helm upgrade pulsar --namespace pulsar --values current-values.yaml --wait
 
 The --wait flag ensures that Helm waits until all pods are ready before completing the upgrade.
 
-===== Monitor Upgrade Process
+==== Monitor Upgrade Process
 
 Check the status of the pods to ensure they are running correctly:
 
@@ -466,17 +470,15 @@ Check the logs for any issues:
 kubectl logs -n
 ----
 
-===== Post-Upgrade Configuration Changes
+==== Post-Upgrade Configuration Changes
 
 Ensure that all necessary configurations are in place and correct after the upgrade. After upgrading, check if any additional configurations are required for new features in version 3.1. Adjust settings related to multi-tenancy, security, and observability as needed.
 
-===== Validate Functionality
+==== Validate Functionality
 
 Test the functionality of your Pulsar cluster by sending messages and ensuring that consumers can read them without issues. Conduct functional tests to ensure that the upgrade did not impact existing applications and that new features work as expected.
 
-==== Known Issues
-
---todo--: Document any issues that can be anticipated.
+// known issues
 
 === Kubernetes Deployment using Helm Chart
 
