@@ -1,0 +1,616 @@
+= Upgrade from 2.10 to 3.1
+
+Upgrading to Luna Streaming 3.1 should only be done from Luna Streaming 2.10.
+
+Upgrade is fully supported for all the components (connectors included).
+
+== Functional changes
+
+=== Default system topics
+
+In Pulsar 3.1, system topics are enabled by default.
+
+=== Prometheus metrics
+
+Changes in Prometheus Metrics:
+
+* Prometheus Client version has changed from 0.5.0 to 0.16.0
+* Prometheus Metric type UNTYPED is renamed to UNKNOWN
+* Metrics have been renamed because OpenMetrics's counter name needs a _total suffix
+
+Renamed Metrics:
+
+[cols="2,2"]
+|===
+|Before |After
+
+|pulsar_expired_token_count
+|pulsar_expired_token_total
+
+|pulsar_authentication_success_count
+|pulsar_authentication_success_total
+
+|pulsar_authentication_failures_count
+|pulsar_authentication_failures_total
+
+|pulsar_source_received_total_1min
+|pulsar_source_received_1min_total
+
+|pulsar_source_written_total_1min
+|pulsar_source_written_1min_total
+
+|pulsar_source_source_total_1min
+|pulsar_source_source_exceptions_1min_total
+
+|pulsar_source_system_exceptions_total_1min
+|pulsar_source_system_exceptions_1min_total
+
+|pulsar_function_received_total_1min
+|pulsar_function_received_1min_total
+
+|pulsar_function_user_exceptions_total_1min
+|pulsar_function_user_exceptions_1min_total
+
+|pulsar_function_system_exceptions_total_1min
+|pulsar_function_system_exceptions_1min_total
+
+|pulsar_function_processed_successfully_total_1min
+|pulsar_function_processed_successfully_1min_total
+
+|pulsar_sink_received_total_1min
+|pulsar_sink_received_1min_total
+
+|pulsar_sink_written_total_1min
+|pulsar_sink_written_1min_total
+
+|pulsar_sink_sink_exceptions_total_1min
+|pulsar_sink_sink_exceptions_1min_total
+
+|pulsar_sink_system_exceptions_total_1min
+|pulsar_sink_system_exceptions_1min_total
+
+|pulsar_lb_unload_broker_count
+|pulsar_lb_unload_broker_total
+
+|pulsar_lb_unload_bundle_count
+|pulsar_lb_unload_bundle_total
+
+|pulsar_lb_bundles_split_count
+|pulsar_lb_bundles_split_total
+
+|pulsar_schema_del_ops_failed_count
+|pulsar_schema_del_ops_failed_total
+
+|pulsar_schema_get_ops_failed_count
+|pulsar_schema_get_ops_failed_total
+
+|pulsar_schema_put_ops_failed_count
+|pulsar_schema_put_ops_failed_total
+
+|pulsar_schema_compatible_count
+|pulsar_schema_compatible_total
+
+|pulsar_schema_incompatible_count
+|pulsar_schema_incompatible_total
+
+|pulsar_txn_committed_count
+|pulsar_txn_committed_total
+
+|pulsar_txn_aborted_count
+|pulsar_txn_aborted_total
+
+|pulsar_txn_created_count
+|pulsar_txn_created_total
+
+|pulsar_txn_timeout_count
+|pulsar_txn_timeout_total
+
+|pulsar_txn_append_log_count
+|pulsar_txn_append_log_total
+|===
+
+==== Related PRs:
+
+* https://github.com/apache/pulsar/pull/13785[#13785 - Bump prometheus client version from 0.5.0 to 0.15.0]
+* https://github.com/apache/pulsar/pull/16581[#16581 - Rename Pulsar txn metrics to specify OpenMetrics]
+* https://github.com/apache/pulsar/pull/16610[#16610 - Rename Pulsar schema metrics to specify OpenMetrics]
+* https://github.com/apache/pulsar/pull/16611[#16611 - Rename Pulsar lb metrics to specify OpenMetrics]
+* https://github.com/apache/pulsar/pull/16591[#16591 - Bump prometheus client version from 0.15.0 to 0.16.0]
+
+=== Pulsar-SQL
+
+If you're upgrading Pulsar SQL from 2.11 or earlier, you should copy config files from `conf/presto` to `trino/conf`.
+
+If you're downgrading Pulsar SQL to 2.11 or earlier from newer versions, copy config files from `trino/conf` to `conf/presto`.
+
+=== Other Functional Impacts
+
+[cols="1,2,3"]
+|===
+|PR Link |Title |Functional Impact
+
+|https://github.com/apache/pulsar/pull/19180[#19180]
+|[cleanup][broker] Deprecate blocking AuthorizationService, AuthorizationProvider methods
+|This will affect the public API for the AuthorizationService and the AuthorizationProvider, which only impacts users that are running custom code inside the Pulsar Broker
+
+|https://github.com/apache/pulsar/pull/19182[#19182]
+|[cleanup][broker] Remove AuthorizationProvider methods deprecated in 2.7 and 2.9
+|Removing deprecated methods allowTenantOperationAsync, allowTenantOperation, allowNamespaceOperationAsync, allowNamespaceOperation, allowNamespacePolicyOperationAsync, allowNamespacePolicyOperation, allowTopicOperationAsync, allowTopicOperation. These methods could be used by third party extensions
+
+|https://github.com/apache/pulsar/pull/19197[#19197]
+|[feat][broker] Update AuthenticationProvider to simplify HTTP Authn
+|This changes the public API within the broker as some methods are marked as @Deprecated
+
+|https://github.com/apache/pulsar/pull/19295[#19295]
+|[feat][broker] OneStageAuth State: move authn out of constructor
+|This could break 3rd party plugins in the broker if they were relying on authentication to happen in the constructor. In order to make those implementations fail fast, this PR includes a change to throw an exception when the getAuthRole is called without first calling authenticateAsync or authenticate. That makes these changes semi-backwards compatible.
+
+|https://github.com/apache/pulsar/pull/19314[#19314]
+|[fix][broker] TokenAuthenticationState: authenticate token only once
+|In a sense, this breaks an implicit contract that the class had. However, because the getAuthRole() method will throw an exception if called incorrectly, it is likely that misuse of this class will result in a fail fast behavior.
+
+|https://github.com/apache/pulsar/pull/19455[#19455]
+|[improve][broker] Require authRole is proxyRole to set originalPrincipal
+|This change affects the binary protocol's usage without changing the binary protocol itself. Upgrading existing proxies will not work if the proxyRoles is not correctly configured in the broker.conf.
+
+|https://github.com/apache/pulsar/pull/19486[#19486]
+|[improve][client] Remove default 30s ackTimeout when setting DLQ policy on java consumer
+|Removed setting default ackTimeoutMillis in java ConsumerBuilder when a deadLetterPolicy is set. It has to be specified exclusively to use.
+|===
+
+== Configuration Impacts
+
+=== Dropped in 3.1
+
+* https://github.com/apache/pulsar/pull/14506[#14506] removes `managedLedgerNumWorkerThreads` and instead passes the MetadataStore instance from PulsarService directly to the `ManagedLedgerFactory`.
+
+* The `conf/presto` directory has been removed.
+
+=== Deprecated and default values changed in 3.1
+
+.`broker.conf` and `standalone.conf` values
+[cols="1,1,1"]
+|===
+|Configuration |2.10 Default |3.1 Default
+
+|Managed ledger cache eviction frequency
+|`managedLedgerCacheEvictionFrequency=100.0`
+|`managedLedgerCacheEvictionFrequency=0`
+
+|Max unacked ranges to persist in ZooKeeper
+|`managedLedgerMaxUnackedRangesToPersistInZooKeeper=1000`
+|`managedLedgerMaxUnackedRangesToPersistInZooKeeper=-1`
+|===
+
+== Changed in 3.1
+
+.`broker.conf` / `standalone.conf`
+[cols="3*"]
+|===
+|Configuration |2.10 |3.1
+|systemTopicEnabled=
+|false
+|true
+|topicLevelPoliciesEnabled=
+|false
+|true
+|supportedNamespaceBundleSplitAlgorithms=
+|range_equally_divide,topic_count_equally_divide,specified_positions_divide
+|range_equally_divide,topic_count_equally_divide,specified_positions_divide,flow_or_qps_equally_divide
+|The direct memory usage weight when calculating new resource usage.
+It only takes effect in the ThresholdShedder strategy.
+loadBalancerDirectMemoryResourceWeight=
+|1.0
+|0
+|For File System Storage, file system profile path
+fileSystemProfilePath=
+|../conf/filesystem_offload_core_site.xml
+|conf/filesystem_offload_core_site.xml
+|For Google Cloud Storage ledger offload, Max block size in bytes. (64MB by default, 5MB minimum)
+gcsManagedLedgerOffloadMaxBlockSizeInBytes=
+|67108864
+|134217728
+|===
+
+
+== Operational Impacts
+
+=== Upgrade to jdk17
+
+The lunastreaming - 3.1 uses jdk17. This changes Pulsar Server modules' javac release version to 17 except client (shared) modules[1].
+
+The detail modification is described in the PIP-156, https://github.com/apache/pulsar/pull/15207[#15207]
+
+=== Removed Python 2 support
+
+Removed Python 2 from build scripts in lunastreamin-3.1. Instead Python3 used in the build image. Updated build image to ubuntu:20.04 (There is no Python 3.7 support in the old Ubuntu). Used python3 instead of python in the executable scripts[1].
+
+The detail modification is described in the PIP-155, https://github.com/apache/pulsar/pull/15376[#15376]
+
+=== Metrics
+
+* Bumped prometheus client version from 0.5.0 to 0.15.0. Around 25 Metrics names have been changed. #13785
+* Renamed pulsar_txn* metrics, changed suffix from _count to _total #16581
+* Renamed pulsar_schema* metrics, changed suffix from _count to _total #16610
+* Renamed pulsar_lb* metrics, changed suffix from _count to _total #16611
+* All metrics are listed in functional impact.
+* Removed timestamp from all prometheus metrics. https://github.com/apache/pulsar/pull/17419[#17419]
+
+== Known Issues
+
+=== Bookkeeper / RocksDB format
+
+In the following scenario bookkeeper instances are failing to downgrade:
+
+1. Install lunastreaming 2.10
+2. Upgrade to lunastreaming 3.1
+3. Downgrade to lunastreaming 2.10
+
+Stack Trace for the failure:
+
+[%collapsible]
+=====
+[source,java]
+----
+2024-02-23T11:42:13,993+0000 [main] INFO  org.apache.bookkeeper.bookie.storage.ldb.SingleDirectoryDbLedgerStorage - Creating single directory db ledger storage on data/bookkeeper/ledgers/current
+2024-02-23T11:42:14,146+0000 [main] INFO  org.apache.bookkeeper.proto.BookieNettyServer - Shutting down BookieNettyServer
+2024-02-23T11:42:14,155+0000 [main] ERROR org.apache.bookkeeper.server.Main - Failed to build bookie server
+java.io.IOException: Error open RocksDB database
+	at org.apache.bookkeeper.bookie.storage.ldb.KeyValueStorageRocksDB.<init>(KeyValueStorageRocksDB.java:200) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.bookie.storage.ldb.KeyValueStorageRocksDB.<init>(KeyValueStorageRocksDB.java:89) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.bookie.storage.ldb.KeyValueStorageRocksDB.lambda$static$0(KeyValueStorageRocksDB.java:63) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.bookie.storage.ldb.LedgerMetadataIndex.<init>(LedgerMetadataIndex.java:68) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.bookie.storage.ldb.SingleDirectoryDbLedgerStorage.<init>(SingleDirectoryDbLedgerStorage.java:170) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.bookie.storage.ldb.DbLedgerStorage.newSingleDirectoryDbLedgerStorage(DbLedgerStorage.java:150) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.bookie.storage.ldb.DbLedgerStorage.initialize(DbLedgerStorage.java:129) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.bookie.Bookie.<init>(Bookie.java:818) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.proto.BookieServer.newBookie(BookieServer.java:152) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.proto.BookieServer.<init>(BookieServer.java:120) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.server.service.BookieService.<init>(BookieService.java:52) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.server.Main.buildBookieServer(Main.java:304) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.server.Main.doMain(Main.java:226) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	at org.apache.bookkeeper.server.Main.main(Main.java:208) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+Caused by: org.rocksdb.RocksDBException: unknown checksum type 4 in data/bookkeeper/ledgers/current/ledgers/000006.sst offset 1020 size 33
+	at org.rocksdb.RocksDB.open(Native Method) ~[org.rocksdb-rocksdbjni-6.10.2.jar:?]
+	at org.rocksdb.RocksDB.open(RocksDB.java:239) ~[org.rocksdb-rocksdbjni-6.10.2.jar:?]
+	at org.apache.bookkeeper.bookie.storage.ldb.KeyValueStorageRocksDB.<init>(KeyValueStorageRocksDB.java:197) ~[com.datastax.oss-bookkeeper-server-4.14.5.1.0.2.jar:4.14.5.1.0.2]
+	... 13 more
+----
+=====
+
+== Upgrade Procedure
+
+Lunastreaming can be deployed using three primary modes: Bare Metal, Docker and Kubernetes. Each mode has its own advantages and considerations, allowing organizations to choose the best fit for their infrastructure and operational needs.
+
+=== Bare Metal Deployment
+
+Bare metal deployment involves installing Lunastreaming directly on physical servers. This approach provides direct access to the hardware, enabling optimized performance and control.
+
+==== Procedure
+
+There is a well documented procedure present in the pulsar docs. See here.
+
+==== Known Issues
+
+--todo--: Document any issues that can be anticipated.
+
+=== Docker Compose Deployment
+
+==== Procedure
+
+===== Update the Docker Compose File
+
+. Locate your docker-compose.yml file: Open the file where your Pulsar services are defined.
+. Change the image version: Update the image version for Pulsar Components to datastax/lunastreaming:3.1_4.5. Ensure you also update any other services that might depend on the Pulsar image.
+
+[source,yaml]
+----
+services:
+  zookeeper:
+    image: apachepulsar/pulsar:3.1.0
+  ………… 
+  pulsar-init:
+    image: apachepulsar/pulsar:3.1.0
+  ………… 
+  bookie:
+    image: apachepulsar/pulsar:3.1.0
+  ………… 
+  broker:
+    image: apachepulsar/pulsar:3.1.0
+----
+
+. Review configuration changes. For instance, some environment variables or configurations might have changed between versions.
+
+===== Backup Data
+
+Before proceeding with the upgrade, backup your data to prevent any loss during the transition.
+
+===== Pull the New Image
+
+Run the following command to pull the latest version of Pulsar:
+
+[source,bash]
+----
+docker-compose pull
+----
+
+This command fetches the updated images specified in the docker-compose.yml.
+
+===== Stop and Remove Existing Containers
+
+Stop and remove your existing Pulsar containers to ensure a clean upgrade:
+
+[source,bash]
+----
+docker-compose down
+----
+
+===== Start the Updated Deployment
+
+Now, start your updated Pulsar deployment using:
+
+[source,bash]
+----
+docker-compose up -d
+----
+
+This command will create new containers based on the updated image and configurations.
+
+===== Verify the Upgrade
+
+. Check logs: After starting the containers, check the logs to ensure that Pulsar started correctly without errors:
++
+[source,bash]
+----
+docker-compose logs -f pulsar
+----
+
+. Access Pulsar Admin UI: Verify that you can access the Pulsar Admin UI at http://localhost:8080 (or whichever port you configured) to confirm that everything is functioning as expected.
+
+. Run health checks: Use Pulsar's built-in health check commands or APIs to ensure all services are operational.
+
+===== Additional Considerations
+
+* Compatibility: Review any breaking changes between versions 2.10 and 3.1 in the release notes to adjust your application code if necessary.
+* Testing: If possible, test your upgraded setup in a staging environment before deploying it to production.
+
+==== Known Issues
+
+--todo--: Document any issues that can be anticipated.
+
+=== Kubernetes Deployment with KAAP
+
+Deploying Pulsar on Kubernetes allows for a more dynamic and flexible environment through containerization. This mode is well-suited for modern cloud-native applications.
+
+==== Procedure
+
+===== Prepare the Environment
+
+* Kubernetes Cluster: Ensure you have access to a running Kubernetes cluster.
+* Helm Installed: Ensure Helm is installed and configured to work with your Kubernetes cluster.
+* Current Version: Check the current version of Pulsar running in your cluster.
+
+===== Backup Existing Data
+
+Before proceeding with the upgrade, back up your existing Pulsar data and configurations to prevent data loss.
+
+Save current Helm release configurations using:
+
+[source,bash]
+----
+helm get values > pulsar-backup-values.yaml
+----
+
+===== Update Helm Repository
+
+Update the DataStax Pulsar Helm chart repository.
+
+[source,bash]
+----
+helm repo update
+----
+
+===== Modify Configuration for Version Upgrade
+
+Open helm/kaap-stack/values.yaml and update the following fields to reflect any necessary changes for version 3.1:
+
+. Update the image.tag to 3.1.0 (or the specific tag you wish to use).
+. Review and modify any other configuration parameters that may have changed between versions, such as resource limits, storage classes, and additional components.
+
+[source,yaml]
+----
+kaap:
+  enabled: true
+  cluster:
+    name: pulsar
+    create: true
+  spec:
+    global:
+      name: pulsar
+      image:
+        datastax/lunastreaming-all: 3.1_4.5
+----
+
+To modify other configurations, update the values.yaml as needed. For example, you might need to set parameters like:
+
+[source,yaml]
+----
+kaap:
+  enabled: true
+  cluster:
+    name: pulsar
+    create: true
+  spec:
+    global:
+      name: pulsar
+    broker:
+      replicas: 2
+      config:
+        loadBalancerNamespaceBundleSplitConditionHitCountThreshold: 1
+        loadBalancerSheddingConditionHitCountThreshold: 1e
+----
+
+===== Install or Upgrade Pulsar
+
+Use Helm to upgrade your existing Pulsar installation:
+
+[source,bash]
+----
+helm upgrade pulsar --namespace pulsar --values current-values.yaml --wait
+----
+
+The --wait flag ensures that Helm waits until all pods are ready before completing the upgrade.
+
+===== Monitor Upgrade Process
+
+Check the status of the pods to ensure they are running correctly:
+
+[source,bash]
+----
+kubectl get pods --namespace pulsar
+----
+
+Check the logs for any issues:
+
+[source,bash]
+----
+kubectl logs -n
+----
+
+===== Post-Upgrade Configuration Changes
+
+Ensure that all necessary configurations are in place and correct after the upgrade. After upgrading, check if any additional configurations are required for new features in version 3.1. Adjust settings related to multi-tenancy, security, and observability as needed.
+
+===== Validate Functionality
+
+Test the functionality of your Pulsar cluster by sending messages and ensuring that consumers can read them without issues. Conduct functional tests to ensure that the upgrade did not impact existing applications and that new features work as expected.
+
+==== Known Issues
+
+--todo--: Document any issues that can be anticipated.
+
+=== Kubernetes Deployment using Helm Chart
+
+==== Procedure
+
+===== Prepare the Environment
+
+* Kubernetes Cluster: Ensure you have access to a running Kubernetes cluster.
+* Helm Installed: Ensure Helm is installed and configured to work with your Kubernetes cluster.
+* Current Version: Check the current version of Pulsar running in your cluster.
+* Helm Chart Repo: Make sure you clone the datastax/pulsar-helm-chart repo.
+
+===== Backup Existing Data
+
+Before proceeding with the upgrade, back up your existing Pulsar data and configurations to prevent data loss.
+
+Save current Helm release configurations using:
+
+[source,bash]
+----
+helm get values > pulsar-backup-values.yaml
+----
+
+===== Update Helm Repository
+
+Update the DataStax Pulsar Helm chart repository.
+
+[source,bash]
+----
+helm repo update
+----
+
+===== Modify Configuration for Version Upgrade
+
+Open helm-chart-sources/pulsar/values.yaml and update the following fields to reflect any necessary changes for version 3.1:
+
+. Update the image.tag to 3.1.0 (or the specific tag you wish to use).
+. Review and modify any other configuration parameters that may have changed between versions, such as resource limits, storage classes, and additional components.
+
+[source,yaml]
+----
+image:
+  broker:
+    # If not using tiered storage, you can use the smaller pulsar image for the broker
+    repository: datastax/lunastreaming-all
+    pullPolicy: IfNotPresent
+    tag: 3.1_4.5
+  brokerSts:
+    # If not using tiered storage, you can use the smaller pulsar image for the broker
+    repository: apachepulsar/pulsar
+    pullPolicy: IfNotPresent
+    tag: latest
+  function:
+    repository: apachepulsar/pulsar
+    pullPolicy: IfNotPresent
+    tag: latest
+  zookeeper:
+    repository: apachepulsar/pulsar
+    pullPolicy: IfNotPresent
+    tag: latestupgr
+  bookkeeper:
+    repository: apachepulsar/pulsar
+    pullPolicy: IfNotPresent
+    tag: latest
+  proxy:
+    repository: apachepulsar/pulsar
+    pullPolicy: IfNotPresent
+    tag: latest
+  bastion:
+    repository: apachepulsar/pulsar
+    pullPolicy: IfNotPresent
+    tag: latest
+----
+
+To modify other configurations, update the values.yaml as needed. For example, you might need to set parameters like:
+
+[source,yaml]
+----
+broker:
+  component: broker
+  replicaCount: 2
+  configData:
+    brokerDeduplicationEnabled: "false"
+----
+
+===== Install or Upgrade Pulsar
+
+Use Helm to upgrade your existing Pulsar installation:
+
+[source,bash]
+----
+helm upgrade pulsar datastax-pulsar/pulsar --namespace pulsar --values current-values.yaml --wait
+----
+
+The --wait flag ensures that Helm waits until all pods are ready before completing the upgrade.
+
+===== Monitor Upgrade Process
+
+Check the status of the pods to ensure they are running correctly:
+
+[source,bash]
+----
+kubectl get pods --namespace pulsar
+----
+
+Check the logs for any issues:
+
+[source,bash]
+----
+kubectl logs -n
+----
+
+===== Post-Upgrade Configuration Changes
+
+Ensure that all necessary configurations are in place and correct after the upgrade. After upgrading, check if any additional configurations are required for new features in version 3.1. Adjust settings related to multi-tenancy, security, and observability as needed.
+
+===== Validate Functionality
+
+Test the functionality of your Pulsar cluster by sending messages and ensuring that consumers can read them without issues. Conduct functional tests to ensure that the upgrade did not impact existing applications and that new features work as expected.
+
+==== Known Issues
+
+--todo--: Document any issues that can be anticipated.
+
+
+
