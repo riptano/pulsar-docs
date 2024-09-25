@@ -247,108 +247,25 @@ Prometheus metrics have been updated in Luna Streaming 3.1.
 
 See <<Prometheus metrics>> for details.
 
-==== Renamed Metrics
-
-[cols="2,2"]
-|===
-|Before |After
-
-|pulsar_expired_token_count
-|pulsar_expired_token_total
-
-|pulsar_authentication_success_count
-|pulsar_authentication_success_total
-
-|pulsar_authentication_failures_count
-|pulsar_authentication_failures_total
-
-|pulsar_source_received_total_1min
-|pulsar_source_received_1min_total
-
-|pulsar_source_written_total_1min
-|pulsar_source_written_1min_total
-
-|pulsar_source_source_total_1min
-|pulsar_source_source_exceptions_1min_total
-
-|pulsar_source_system_exceptions_total_1min
-|pulsar_source_system_exceptions_1min_total
-
-|pulsar_function_received_total_1min
-|pulsar_function_received_1min_total
-
-|pulsar_function_user_exceptions_total_1min
-|pulsar_function_user_exceptions_1min_total
-
-|pulsar_function_system_exceptions_total_1min
-|pulsar_function_system_exceptions_1min_total
-
-|pulsar_function_processed_successfully_total_1min
-|pulsar_function_processed_successfully_1min_total
-
-|pulsar_sink_received_total_1min
-|pulsar_sink_received_1min_total
-
-|pulsar_sink_written_total_1min
-|pulsar_sink_written_1min_total
-
-|pulsar_sink_sink_exceptions_total_1min
-|pulsar_sink_sink_exceptions_1min_total
-
-|pulsar_sink_system_exceptions_total_1min
-|pulsar_sink_system_exceptions_1min_total
-
-|pulsar_lb_unload_broker_count
-|pulsar_lb_unload_broker_total
-
-|pulsar_lb_unload_bundle_count
-|pulsar_lb_unload_bundle_total
-
-|pulsar_lb_bundles_split_count
-|pulsar_lb_bundles_split_total
-
-|pulsar_schema_del_ops_failed_count
-|pulsar_schema_del_ops_failed_total
-
-|pulsar_schema_get_ops_failed_count
-|pulsar_schema_get_ops_failed_total
-
-|pulsar_schema_put_ops_failed_count
-|pulsar_schema_put_ops_failed_total
-
-|pulsar_schema_compatible_count
-|pulsar_schema_compatible_total
-
-|pulsar_schema_incompatible_count
-|pulsar_schema_incompatible_total
-
-|pulsar_txn_committed_count
-|pulsar_txn_committed_total
-
-|pulsar_txn_aborted_count
-|pulsar_txn_aborted_total
-
-|pulsar_txn_created_count
-|pulsar_txn_created_total
-
-|pulsar_txn_timeout_count
-|pulsar_txn_timeout_total
-
-|pulsar_txn_append_log_count
-|pulsar_txn_append_log_total
-|===
-
 == Known Issues
+
+This section describes known issues encountered when upgrading to Luna Streaming 3.1.
 
 === Bookkeeper / RocksDB format
 
-In the following scenario bookkeeper instances are failing to downgrade:
+Pulsar 3.1 uses RocksDB 7.x, which writes in a format that is not compatible with RocksDB 6.x, which is used by LunaStreaming 2.10 via Bookkeeper 4.14.
 
-1. Install lunastreaming 2.10
-2. Upgrade to lunastreaming 3.1
-3. Downgrade to lunastreaming 2.10
+**Downgrading to 2.10 from 3.1 is not supported for Bookies and ZooKeeper**. All other components such as Broker, Proxy and Functions Worker can be downgraded at any time.
 
-Stack Trace for the failure:
+For more information, see https://github.com/apache/pulsar/issues/22051[(Bug) Downgrade issue #22051 - apache/pulsar · GitHub].s
+
+To reproduce the issue where Bookkeeper instances fail to downgrade:
+
+. Install Luna Streaming 2.10.
+. Upgrade to Luna Streaming 3.1.
+. Downgrade to Luna Streaming 2.10.
+
+Stack trace for the downgrade failure:
 
 [%collapsible]
 =====
