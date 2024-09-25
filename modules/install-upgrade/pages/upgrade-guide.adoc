@@ -20,7 +20,7 @@ Changes in Prometheus Metrics:
 * Prometheus Metric type UNTYPED is renamed to UNKNOWN
 * Metrics have been renamed because OpenMetrics's counter name needs a _total suffix
 
-.Renamed Metrics
+.Renamed metrics
 [cols="2,2"]
 |===
 |Luna Streaming 2.10 |Luna Streaming 3.1
@@ -125,7 +125,7 @@ If you're upgrading Pulsar SQL from 2.11 or earlier, you should copy the config 
 
 If you're downgrading Pulsar SQL to 2.11 or earlier from newer versions, copy the config files from `trino/conf` to `conf/presto`.
 
-=== Other Functional Impacts
+=== Other functional impacts
 
 [cols="1,2,3"]
 |===
@@ -160,7 +160,7 @@ If you're downgrading Pulsar SQL to 2.11 or earlier from newer versions, copy th
 |Removed setting default ackTimeoutMillis in java ConsumerBuilder when a deadLetterPolicy is set. It has to be specified exclusively to use.
 |===
 
-== Configuration Impacts
+== Configuration impacts
 
 === Removed in 3.1
 
@@ -217,7 +217,7 @@ Max block size in bytes for Google Cloud Storage ledger offload
 |134217728
 |===
 
-== Operational Impacts
+== Operational impacts
 
 This section describes changes in Luna Streaming 3.1 that may impact how your deployment operates.
 
@@ -247,7 +247,7 @@ Prometheus metrics have been updated in Luna Streaming 3.1.
 
 See <<Prometheus metrics>> for details.
 
-== Known Issues
+== Known issues
 
 This section describes known issues encountered when upgrading to Luna Streaming 3.1.
 
@@ -373,7 +373,7 @@ docker-compose logs -f pulsar
 
 // known issues?
 
-=== Kubernetes Deployment with KAAP
+=== Kubernetes deployment using KAAP Operator
 
 Deploying Luna Streaming on Kubernetes with KAAP (Kubernetes Autoscaling for Apache Pulsar) Operator is a common method for running Pulsar in a cloud-native environment.
 
@@ -457,7 +457,7 @@ kubectl logs -n
 
 // known issues
 
-=== Kubernetes Deployment using Helm Chart
+=== Kubernetes deployment using Helm chart
 
 The Helm chart for Luna Streaming is available in the https://github.com/datastax/pulsar-helm-chart/blob/master/helm-chart-sources/pulsar/values.yaml[Helm chart sources] repository.
 
