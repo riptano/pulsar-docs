@@ -301,77 +301,9 @@ Caused by: org.rocksdb.RocksDBException: unknown checksum type 4 in data/bookkee
 
 Luna Streaming can be deployed on Bare metal, Docker, and Kubernetes.
 
-=== Bare metal deployment
+This guide will only address Kubernetes deployment.
 
-Bare metal deployment installs Luna Streaming directly on physical servers.
-
-For detailed instructions on upgrading Pulsar, see the https://pulsar.apache.org/docs/next/administration-upgrade/[Pulsar Upgrade Guide].
-
-// known issues?
-
-=== Docker deployment
-
-The Docker image for Luna Streaming is available on https://hub.docker.com/r/datastax/lunastreaming[Docker Hub].
-
-To upgrade Luna Streaming from version 2.10 to 3.1 in a Docker deployment, update your `docker-compose.yml` file to use the new image version by following these steps:
-
-. Locate your `docker-compose.yml` file, and open the file where your Pulsar services are defined.
-. Update the image version for Pulsar components to `datastax/lunastreaming:3.1_4.5`.
-+
-[source,yaml]
-----
-services:
-  zookeeper:
-    image: datastax/lunastreaming:3.1_4.5
-  …………
-  pulsar-init:
-    image: datastax/lunastreaming:3.1_4.5
-  …………
-  bookie:
-    image: datastax/lunastreaming:3.1_4.5
-  …………
-  broker:
-    image: datastax/lunastreaming:3.1_4.5
-----
-+
-. Ensure you also update any other services that might depend on the Pulsar image.
-. Review configuration changes. Some environment variables or configurations might have changed between versions.
-Review any breaking changes between versions 2.10 and 3.1 to adjust your application code if necessary.
-. Before proceeding with the upgrade, backup your data to prevent any loss during the transition.
-. To fetch the updated images, run the following command:
-+
-[source,bash]
-----
-docker-compose pull
-----
-+
-. To ensure a clean upgrade, stop and remove your existing Pulsar containers. Run:
-+
-[source,bash]
-----
-docker-compose down
-----
-+
-. To start the updated Pulsar deployment, run the following command:
-+
-[source,bash]
-----
-docker-compose up -d
-----
-+
-This command creates new containers based on the updated image and configurations.
-+
-. Verify the upgrade. Check the logs to ensure that Pulsar starts without errors:
-+
-[source,bash]
-----
-docker-compose logs -f pulsar
-----
-+
-. To confirm that everything is functioning as expected, verify that you can access the Pulsar Admin UI at `http://localhost:8080` (or whichever port you configured).
-. Run health checks with Pulsar's built-in health check commands or APIs to ensure all services are operational.
-
-// known issues?
+For more information on upgrading bare metal and Docker Pulsar deployments, see the https://pulsar.apache.org/docs/3.3.x/administration-upgrade/[Pulsar documentation].
 
 === Kubernetes deployment using KAAP Operator
 
@@ -382,9 +314,9 @@ For more information, see the xref:kaap-operator::index.adoc[KAAP documentation]
 . Back up your existing Pulsar data and configurations to prevent data loss.
 . To save your current Helm release configuration, run the following command:
 +
-[source,bash]
+[source,bash,subs="+quotes"]
 ----
-helm get values > pulsar-backup-values.yaml
+helm get values *RELEASE-NAME* > pulsar-backup-values.yaml
 ----
 +
 . To update the DataStax Pulsar Helm chart repository, run the following command:
@@ -433,25 +365,27 @@ kaap:
 This command assumes the default `pulsar` namespace. If you are using a different namespace, replace `pulsar` with your namespace.
 The `--wait` flag ensures that Helm waits until all pods are ready before completing the upgrade.
 +
-[source,bash]
+[source,bash,subs="+quotes"]
 ----
-helm upgrade pulsar --namespace pulsar --values current-values.yaml --wait
+helm upgrade --namespace *NAMESPACE* --wait --debug --timeout 1200s \
+--dependency-update pulsar *KAAP-REPO-DIRECTORY*/helm/kaap-stack \
+--values *PATH-TO-CURRENT-VALUES-FILE*.yaml
 ----
 +
 . Check the status of the pods to ensure they are running correctly:
 +
-[source,bash]
+[source,bash,subs="+quotes"]
 ----
-kubectl get pods --namespace pulsar
+kubectl get pods --namespace *NAMESPACE*
 ----
-=
+
 . Check the logs for any issues:
 +
-[source,bash]
+[source,bash,subs="+quotes"]
 ----
-kubectl logs -n
+kubectl logs *POD-NAME* -n *NAMESPACE*
 ----
-+
+
 . After upgrading, check if any additional configurations are required for new features in version 3.1. Adjust settings related to multi-tenancy, security, and observability as needed. Ensure all necessary configurations are in place and correct after the upgrade.
 . Test the functionality of your Pulsar cluster by sending messages and ensuring that consumers can read them without issues. Conduct functional tests to ensure that the upgrade did not impact existing applications and that new features work as expected.
 
@@ -466,9 +400,9 @@ Deploying Luna Streaming on Kubernetes using the DataStax Helm chart is another 
 . Back up your existing Pulsar data and configurations to prevent data loss.
 . To save your current Helm release configuration, run the following command:
 +
-[source,bash]
+[source,bash,subs="+quotes"]
 ----
-helm get values > pulsar-backup-values.yaml
+helm get values *RELEASE-NAME* > pulsar-backup-values.yaml
 ----
 +
 . To update the DataStax Pulsar Helm chart repository, run the following command:
@@ -484,12 +418,14 @@ helm repo update
 ----
 image:
   broker:
-    # If not using tiered storage, you can use the smaller pulsar image for the broker
+    # If not using tiered storage, you can use the smaller pulsar image
+    # for the broker
     repository: datastax/lunastreaming-all
     pullPolicy: IfNotPresent
     tag: 3.1_4.5
   brokerSts:
-    # If not using tiered storage, you can use the smaller pulsar image for the broker
+    # If not using tiered storage, you can use the smaller pulsar image
+    # for the broker
     repository: apachepulsar/pulsar
     pullPolicy: IfNotPresent
     tag: latest
@@ -524,30 +460,32 @@ broker:
   configData:
     brokerDeduplicationEnabled: "false"
 ----
-+
+
 . To upgrade your existing Pulsar installation, run the following Helm command.
 This command assumes the default `pulsar` namespace. If you are using a different namespace, replace `pulsar` with your namespace.
 The `--wait` flag ensures that Helm waits until all pods are ready before completing the upgrade.
 +
-[source,bash]
+[source,bash,subs="+quotes"]
 ----
-helm upgrade pulsar datastax-pulsar/pulsar --namespace pulsar --values current-values.yaml --wait
+helm upgrade --namespace *NAMESPACE* --wait --debug --timeout 1200s \
+--dependency-update pulsar *KAAP-REPO-DIRECTORY*/helm/kaap-stack \
+--values *PATH-TO-CURRENT-VALUES-FILE*.yaml
 ----
-+
+
 . To check the status of the pods to ensure they are running correctly, run the following command:
 +
-[source,bash]
+[source,bash,subs="+quotes"]
 ----
-kubectl get pods --namespace pulsar
+kubectl get pods --namespace *NAMESPACE*
 ----
-=
+
 . To check the logs for any issues, run the following command:
 +
-[source,bash]
+[source,bash,subs="+quotes"]
 ----
-kubectl logs -n
+kubectl logs *POD-NAME* -n *NAMESPACE*
 ----
-+
+
 . After upgrading, check if any additional configurations are required for new features in version 3.1. Adjust settings related to multi-tenancy, security, and observability as needed. Ensure all necessary configurations are in place and correct after the upgrade.
 . Test the functionality of your Pulsar cluster by sending messages and ensuring that consumers can read them without issues. Conduct functional tests to ensure that the upgrade did not impact existing applications and that new features work as expected.
 
