@@ -1,9 +1,11 @@
 = Upgrade Luna Streaming from 2.10 to 3.1
 :navtitle: Upgrade from 2.10 to 3.1
 
-Upgrading to Luna Streaming 3.1 should only be done from Luna Streaming 2.10.
+This guide provides instructions and recommendateions for upgrading Luna Streaming from version 2.10 to 3.1.
 
-Upgrade is fully supported for all the components including connectors.
+Upgrades to Luna Streaming 3.1 should only be performed from Luna Streaming 2.10.
+
+All Luna Streaming 2.10 components support the upgrade to 3.1.
 
 == Functional impacts
 
@@ -15,11 +17,11 @@ In Pulsar 3.1, system topics are enabled by default.
 
 === Prometheus metrics
 
-Changes in Prometheus Metrics:
+Prometheus metrics have been updated in Luna Streaming 3.1.
 
-* Prometheus Client version has changed from 0.5.0 to 0.16.0
-* Prometheus Metric type UNTYPED is renamed to UNKNOWN
-* Metrics have been renamed because OpenMetrics's counter name needs a _total suffix
+* Prometheus Client version has changed from `0.5.0` to `0.16.0`
+* Prometheus Metric type `UNTYPED` is renamed to `UNKNOWN`
+* Metrics have been renamed because OpenMetrics's counter name needs a `_total` suffix
 
 .Renamed metrics
 [cols="2,2"]
@@ -111,7 +113,7 @@ Changes in Prometheus Metrics:
 |pulsar_txn_append_log_total
 |===
 
-The following PRs have been merged to update metrics:
+The following PRs were merged to update metrics:
 
 * https://github.com/apache/pulsar/pull/13785[#13785 - Bump prometheus client version from 0.5.0 to 0.15.0]
 * https://github.com/apache/pulsar/pull/16581[#16581 - Rename Pulsar txn metrics to specify OpenMetrics]
@@ -133,39 +135,42 @@ If you're downgrading Pulsar SQL to 2.11 or earlier from newer versions, copy th
 |PR Link |Title |Functional Impact
 
 |https://github.com/apache/pulsar/pull/19180[#19180]
-|[cleanup][broker] Deprecate blocking AuthorizationService, AuthorizationProvider methods
+|Deprecate blocking AuthorizationService, AuthorizationProvider methods
 |This will affect the public API for the AuthorizationService and the AuthorizationProvider, which only impacts users that are running custom code inside the Pulsar Broker
 
 |https://github.com/apache/pulsar/pull/19182[#19182]
-|[cleanup][broker] Remove AuthorizationProvider methods deprecated in 2.7 and 2.9
+|Remove AuthorizationProvider methods deprecated in 2.7 and 2.9
 |Removing deprecated methods allowTenantOperationAsync, allowTenantOperation, allowNamespaceOperationAsync, allowNamespaceOperation, allowNamespacePolicyOperationAsync, allowNamespacePolicyOperation, allowTopicOperationAsync, allowTopicOperation. These methods could be used by third party extensions
 
 |https://github.com/apache/pulsar/pull/19197[#19197]
-|[feat][broker] Update AuthenticationProvider to simplify HTTP Authn
+|Update AuthenticationProvider to simplify HTTP Authn
 |This changes the public API within the broker as some methods are marked as @Deprecated
 
 |https://github.com/apache/pulsar/pull/19295[#19295]
-|[feat][broker] OneStageAuth State: move authn out of constructor
+|OneStageAuth State: move authn out of constructor
 |This could break 3rd party plugins in the broker if they were relying on authentication to happen in the constructor. In order to make those implementations fail fast, this PR includes a change to throw an exception when the getAuthRole is called without first calling authenticateAsync or authenticate. That makes these changes semi-backwards compatible.
 
 |https://github.com/apache/pulsar/pull/19314[#19314]
-|[fix][broker] TokenAuthenticationState: authenticate token only once
+|TokenAuthenticationState: authenticate token only once
 |In a sense, this breaks an implicit contract that the class had. However, because the getAuthRole() method will throw an exception if called incorrectly, it is likely that misuse of this class will result in a fail fast behavior.
 
 |https://github.com/apache/pulsar/pull/19455[#19455]
-|[improve][broker] Require authRole is proxyRole to set originalPrincipal
+|Require authRole is proxyRole to set originalPrincipal
 |This change affects the binary protocol's usage without changing the binary protocol itself. Upgrading existing proxies will not work if the proxyRoles is not correctly configured in the broker.conf.
 
 |https://github.com/apache/pulsar/pull/19486[#19486]
-|[improve][client] Remove default 30s ackTimeout when setting DLQ policy on java consumer
+|Remove default 30s ackTimeout when setting DLQ policy on java consumer
 |Removed setting default ackTimeoutMillis in java ConsumerBuilder when a deadLetterPolicy is set. It has to be specified exclusively to use.
 |===
 
 == Configuration impacts
 
+This section describes changes in Luna Streaming 3.1 that may impact your deployment's configuration.
+
 === Removed in 3.1
 
-* https://github.com/apache/pulsar/pull/14506[#14506] removes `managedLedgerNumWorkerThreads`. The `MetadataStore` instance is passed from the `PulsarService` directly to the `ManagedLedgerFactory`.
+* https://github.com/apache/pulsar/pull/14506[#14506] removes `managedLedgerNumWorkerThreads`.
+The `MetadataStore` instance is passed from the `PulsarService` directly to the `ManagedLedgerFactory`.
 
 * The `conf/presto` directory has been removed.
 
