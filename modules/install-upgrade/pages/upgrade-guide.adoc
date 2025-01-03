@@ -1,7 +1,7 @@
 = Upgrade Luna Streaming from 2.10 to 3.1
 :navtitle: Upgrade from 2.10 to 3.1
 
-This guide provides instructions and recommendateions for upgrading Luna Streaming from version 2.10 to 3.1.
+This guide provides instructions and recommendations for upgrading Luna Streaming from version 2.10 to 3.1.
 
 Upgrades to Luna Streaming 3.1 should only be performed from Luna Streaming 2.10.
 
