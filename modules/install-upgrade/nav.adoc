@@ -4,5 +4,4 @@
 * xref:supported-versions.adoc[]
 * xref:production-cluster-sizing.adoc[]
 * xref:cluster-sizing-reference.adoc[]
-* xref:migration.adoc[]
 * xref:upgrade-guide.adoc[]
